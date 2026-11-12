@@ -4,7 +4,7 @@ vibebiz is a Claude Cowork plugin that works as a product owner for non-technica
 
 The constitution at `.specify/memory/constitution.md` is the governing law of this repository; this file holds the detailed design and must not contradict it. When the two conflict, raise the conflict and resolve it by amendment instead of picking one.
 
-These rules record the design decisions Fio settled on 12/11/2026. A rule here changes only with Fio's yes; when a spec or plan conflicts with this file, raise the conflict instead of picking one.
+These rules record the design decisions Fio settled on 12/11/2026. A rule here changes only with Fio's yes; when a spec or plan conflicts with this file, raise the conflict instead of picking one. The full design detail for the MVP (taxonomy, protocol, lenses, outputs, diagrams, framework library, fashion pack, docs, evals) lives in the appendices of `specs/001-idea-to-prd/spec.md`.
 
 ## Two roles of Spec Kit
 
@@ -31,6 +31,7 @@ These rules record the design decisions Fio settled on 12/11/2026. A rule here c
 - The `challenge` lens never praises an idea, gives at least one reason the idea could be wrong per round, defends "do nothing" and "fix the process" before build is allowed, and records a dismissed risk in `decisions.md` instead of deleting it.
 - `help` routes by situation and answers only from the shipped `docs/`; when the docs do not say, it says so. It reads a skill's current `SKILL.md` before describing it.
 - Vertical packs: the first release ships `packs/retail-fashion` and `packs/ai-patterns-retail` only; electronics and home appliances come later. Lenses fall back to general retail questions for other verticals.
+- Framework library (`packs/frameworks/`): one card per management framework, applied only to fill an open coverage gap, at most two per lens per idea, asked in plain words and named in the outputs; the user may request one by name. The first release ships the fifteen core cards chosen for fashion apparel retail (spec 001, Appendix F); Cynefin sets the router's depth.
 
 ## User workspace contract
 
@@ -72,6 +73,7 @@ The slug comes from the user's idea title, without diacritics. Every other file 
 - Copyright holder is Fioenix for now. Before Finolabs sells a license, Fioenix needs a written assignment or license to Finolabs.
 - Contributions require the CLA (`CLA.md`).
 - Keep the MIT notices of Spec Kit and `grilling` in `THIRD_PARTY_LICENSES.md`.
+- Framework cards and packs describe third-party frameworks (for example Strategyzer's canvases, which are CC BY-SA) in vibebiz's own words and credit their origin; never copy their text, layout or artwork verbatim.
 - The license, the commercial terms and the CLA need a lawyer's review before the repository goes public. The repository stays private until Fio says otherwise.
 - No internal data in the repository: no real people, companies, customers or figures, and no organization's constitution or brand. Example workspaces, vertical packs and eval fixtures are fictional or built from public knowledge. Organization-specific material lives only in a user's workspace.
 - `PRIVACY.md` states that business data stays in the user's workspace and Google Drive and that the plugin sends it nowhere else. TypeSafe/Jev is used only in developer evals, never at runtime.
