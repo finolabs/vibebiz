@@ -104,6 +104,8 @@ def _blocks_of(element):
 
 _REF_KEY = re.compile(r"^(?:ref|figure_id|ref_high|[a-z]+(?:_[a-z]+)*_ref)$")
 _REF_LIST_KEYS = ("refs", "figure_ids")
+# Blocks whose `items` may be bare figure ids (the templates read them as {ref: id}).
+_STRING_ITEM_TYPES = ("figures", "chart")
 
 
 def _item_refs(node):
@@ -115,7 +117,8 @@ def _item_refs(node):
     for key, value in node.items():
         if isinstance(value, str) and _REF_KEY.match(key):
             yield value, (node.get("value", _MISSING) if key == "ref" else _MISSING)
-        elif key in _REF_LIST_KEYS and isinstance(value, list):
+        elif key in _REF_LIST_KEYS and isinstance(value, list) or (
+                key == "items" and node.get("type") in _STRING_ITEM_TYPES and isinstance(value, list)):
             for fid in value:
                 if isinstance(fid, str):
                     yield fid, _MISSING
@@ -283,6 +286,8 @@ def check_data(data, spec_text=None, links_md=None):
             if figures[fid].get("value") != fig.get("value"):
                 add(f"figure-mismatch: {fid} is defined twice with different values "
                     f"({figures[fid].get('value')!r} and {fig.get('value')!r})")
+            else:
+                add(f"figure-duplicate: {fid} is defined twice in numbers")
             continue
         figures[fid] = fig
         if "value" not in fig or fig["value"] is None or fig["value"] == "":
@@ -326,13 +331,13 @@ def check_data(data, spec_text=None, links_md=None):
                 for cited in _SPEC_ID.findall(str(src)):
                     if cited not in spec_ids:
                         add(f"untraceable: {where} cites {cited}, which spec.md does not define")
-        if is_slide:
-            frameworks = element.get("frameworks")
-            if frameworks is not None and (
-                not isinstance(frameworks, list)
-                or any(_blank(f.get("name") if isinstance(f, dict) else f) for f in frameworks)
-            ):
-                add(f"unnamed-framework: {where} lists a framework without a name")
+        # Slides and tech sections both name their frameworks.
+        frameworks = element.get("frameworks")
+        if frameworks is not None and (
+            not isinstance(frameworks, list)
+            or any(_blank(f.get("name") if isinstance(f, dict) else f) for f in frameworks)
+        ):
+            add(f"unnamed-framework: {where} lists a framework without a name")
         blocks = _blocks_of(element)
         for j, block in enumerate(blocks):
             if not isinstance(block, dict):
@@ -388,7 +393,8 @@ def check_data(data, spec_text=None, links_md=None):
             lowered = key.lower()
             if lowered in _PUBLIC_FLAGS and value not in (False, None, "", 0, "false"):
                 add(f"public-sharing: {path or 'root'}.{key} is set; outputs are never public")
-            elif lowered in _SHARING_KEYS and isinstance(value, str) and value.strip().lower() in _PUBLIC_VALUES:
+            elif lowered in _SHARING_KEYS and (value is True or (
+                    isinstance(value, str) and value.strip().lower() in _PUBLIC_VALUES)):
                 add(f"public-sharing: {path or 'root'}.{key} is {value!r}; outputs stay private")
 
     # links.md matches links.

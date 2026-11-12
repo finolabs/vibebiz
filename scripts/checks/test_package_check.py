@@ -251,6 +251,24 @@ class InfographicBlocks(unittest.TestCase):
         slide["blocks"].append({"type": "figures", "figure_ids": ["N-24", "N-gone"]})
         self.assertCaught("unknown-figure: slide 6 block 2 references N-gone")
 
+    def test_bare_figure_ids_in_items_are_checked(self):
+        slide = next(s for s in self.data["board"]["slides"] if s["n"] == 6)
+        slide["blocks"].append({"type": "figures", "items": ["N-24", "N-gone"]})
+        self.assertCaught("unknown-figure: slide 6 block 2 references N-gone")
+
+    def test_same_id_twice_with_the_same_value_is_caught(self):
+        self.data["numbers"].append(dict(self.data["numbers"][0], source=""))
+        self.assertCaught("figure-duplicate: %s is defined twice" % self.data["numbers"][0]["id"])
+
+    def test_sharing_key_set_to_true_is_caught(self):
+        self.data["links"]["visibility"] = True
+        self.assertCaught("public-sharing: links.visibility")
+
+    def test_tech_section_framework_needs_a_name(self):
+        section = self.data["tech"]["sections"][0]
+        section["frameworks"] = [{"id": "fw", "name": ""}]
+        self.assertCaught("unnamed-framework")
+
     def test_old_data_without_new_blocks_stays_valid(self):
         # Unknown optional fields are not required: plain blocks keep passing.
         for slide in self.data["board"]["slides"]:
