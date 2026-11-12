@@ -28,6 +28,10 @@ Decided by Fio on 2026-11-12 during the design session (full detail in `CLAUDE.m
 - Q: May vibebiz share an exported Artifact link with other people? → A: No. vibebiz publishes Artifacts as private only and never shares them; the user shares them with the board or tech team themselves.
 - Q: Which language do the board view, tech view and requirement snapshot use? → A: The language the user is communicating in; Spec Kit's mandatory section headings stay as upstream so the snapshot remains compatible.
 - Q: What happens to earlier exports when an idea is packaged again? → A: Keep history. `exports/` always holds the latest outputs under their fixed names; the previous set moves to `exports/history/YYYY-MM-DD/`; each Artifact is updated at the same link.
+- Q: Where does the next step shown in the table of contents come from? → A: The router writes it to `next_step` in the idea's `coverage.md` after every round; the table of contents copies it.
+- Q: Which version does a diagram brief record? → A: Both: `rendered_with` names the vibebiz and the diagram-design versions, so a stale diagram shows whether its content or its renderer changed.
+- Q: How do assumptions stay append-only when a test result arrives? → A: An assumption is never deleted or reworded; only its `tested` and `evidence` fields are filled in when the result arrives.
+- Q: How are the code-checked eval rules graded, given that `claude plugin eval` has no code graders? → A: The eval cases use the built-in graders; code checks such as `scripts/checks/round_rules.py` run as scripts over the files each case produces, and both results go to `evals/RESULTS.md`.
 - Q: Does vibebiz record the board's decision for each presented version? → A: Yes. The user reports the outcome through continue; vibebiz records approved, rejected or needs changes, with date and notes, in the decisions record, tied to the presented version in history, and shows it as the idea's status.
 
 ## User Scenarios & Testing *(mandatory)*
@@ -454,7 +458,7 @@ examples/000-<slug>/
 | 9 | One source, two views, three formats | data flow | reading-outputs |
 | 10 | Anatomy of a question round | annotated mockup | quick-start |
 
-Each brief names what it illustrates and the plugin version it was rendered at; a brief whose subject changed is redrawn before release.
+Each brief names what it illustrates and the vibebiz and diagram-design versions it was rendered with; a brief whose subject changed is redrawn before release.
 
 **Help**: routes a described situation to an entry point and stops; answers about vibebiz only from the docs, citing the section; says when the docs do not cover it; reads a skill's current instructions before describing it; may be invoked by the model for "how do I use this" questions, while describing an idea goes to the router.
 

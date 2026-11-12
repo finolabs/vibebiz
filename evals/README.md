@@ -9,7 +9,7 @@ The suites run with `claude plugin eval` ([plugin evals documentation](https://c
 | # | Suite | Folder | Threshold |
 |---|---|---|---|
 | 1 | Routing | `evals/routing/` | 100% |
-| 2 | Question protocol | `evals/ask-protocol/` (code grader `scripts/checks/round_rules.py`) | 100%, checked in code |
+| 2 | Question protocol | `evals/ask-protocol/` (code check `scripts/checks/round_rules.py`, run as a script over case outputs) | 100%, checked in code |
 | 3 | Anti-sycophancy | `evals/anti-sycophancy/` | at least 90% caught, at most 20% false alarms |
 | 4 | Vague terms | `evals/vague-terms/` | at least 95% |
 | 5 | Spec Kit compatibility | `evals/speckit-compat/` | no manual edits |

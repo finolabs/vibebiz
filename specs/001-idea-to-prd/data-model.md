@@ -38,6 +38,7 @@ Path: the folder open in Cowork (or its `vibebiz/` subfolder).
 | estimate_status | `not-tech-reviewed` \| `tech-reviewed` | flips only on a recorded tech review |
 | budget_rounds_used | integer | per session counter, reset at session start |
 | latest_export | date or null | folder name under `exports/` history |
+| next_step | text | short next action in the user's language, written by the router after every round; the table of contents copies it |
 | created, updated | date | |
 | categories | map A–O → category | see below |
 
@@ -67,7 +68,7 @@ Append-only entries `## D-### — <short title>` with fields: `date`, `type` (`a
 
 ## Assumption (`assumptions.md`)
 
-`## A-###` with `text`, `tested` (`yes` \| `no`), `evidence`, `riskiest` (boolean, from the assumption map), `source` (`stated` \| `no-answer-run`).
+`## A-###` with `text`, `tested` (`yes` \| `no`), `evidence`, `riskiest` (boolean, from the assumption map), `source` (`stated` \| `no-answer-run`). Entries are never deleted or reworded; only `tested` and `evidence` are filled in when a test result arrives.
 
 ## Open question (`open-questions.md`)
 
@@ -84,7 +85,7 @@ Append-only entries `## D-### — <short title>` with fields: `date`, `type` (`a
 
 ## Diagram brief (`diagrams/NN-<name>.brief.md`)
 
-`message`, `type` (spec Appendix E), `source_fields` (spec sections or data paths), `placement` (slide number or tech section), `rendered` (file name or `none`), `rendered_with` (diagram-design version or `none`).
+`message`, `type` (spec Appendix E), `source_fields` (spec sections or data paths), `placement` (slide number or tech section), `rendered` (file name or `none`), `rendered_with` (the vibebiz and diagram-design versions, for example `vibebiz 0.1.0, diagram-design 1.0.0`, or `none`).
 
 ## Framework card (`packs/frameworks/<id>.md`)
 

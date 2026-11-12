@@ -10,7 +10,7 @@ specs/NNN-<slug>/
   coverage.md                    frontmatter per data-model "Idea"; body: human table of A–O
   plan.md                        business plan; estimate_status mirrored from coverage
   decisions.md                   append-only D-### entries
-  assumptions.md                 append-only A-### entries
+  assumptions.md                 append-only A-### entries (only tested and evidence filled in later)
   open-questions.md              Q-### entries
   glossary.md                    term: plain-language meaning
   checklists/board.md            Definition of Ready for the board view

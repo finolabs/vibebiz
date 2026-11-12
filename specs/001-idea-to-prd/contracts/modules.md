@@ -4,7 +4,7 @@ Modules are reference files under `core/`, copied into each entry skill's `refer
 
 | Module | File | Used by | Reads | Writes | Fills |
 |---|---|---|---|---|---|
-| router | `core/router.md` | new, continue | coverage, ground rules | coverage (cynefin, next step) | chooses frontier, lens, framework, depth |
+| router | `core/router.md` | new, continue | coverage, ground rules | coverage (cynefin, `next_step`) | chooses frontier, lens, framework, depth |
 | ask protocol | `core/ask-protocol.md` | every module that asks | coverage | spec Clarifications, decisions, open questions | rules only (spec Appendix B) |
 | clarify | `core/clarify.md` | router | spec, coverage | spec, coverage, glossary | G, H, N, leftovers |
 | specify | `core/specify.md` | new | user's intake answer | spec draft, coverage | initial statuses |
