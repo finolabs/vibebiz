@@ -1,0 +1,300 @@
+{
+  "idea": {
+    "id": "size-advice-chat",
+    "title": "Size advice chat",
+    "language": "vi",
+    "version": "2026-11-12",
+    "draft": false,
+    "estimate_status": "tech-reviewed"
+  },
+  "board": {
+    "slides": [
+      {
+        "n": 1,
+        "title": "Approve a 12-week pilot of size-advice chat for 250 million VND",
+        "message": "Approve the pilot budget so the stores can start in March.",
+        "source_fields": [
+          "Plan",
+          "Cost & Risk"
+        ],
+        "blocks": [
+          {
+            "type": "text",
+            "text": "Budget {{fig:N-budget}} for the pilot."
+          }
+        ],
+        "diagram": null,
+        "frameworks": [],
+        "estimate_label": "not tech-reviewed"
+      },
+      {
+        "n": 2,
+        "title": "Wrong-size returns cost Lanh Fashion {{fig:N-return-cost}} a year",
+        "message": "Size returns are the largest avoidable cost in online sales.",
+        "source_fields": [
+          "Problem & Why",
+          "FR-001"
+        ],
+        "blocks": [
+          {
+            "type": "chart",
+            "kind": "bar",
+            "source": "Returns report, online store",
+            "period": "2026-Q3",
+            "figure_ids": [
+              "N-return-rate"
+            ]
+          }
+        ],
+        "diagram": null,
+        "frameworks": []
+      },
+      {
+        "n": 3,
+        "title": "Cutting the size return rate from 18% to 12% is the goal",
+        "message": "One outcome drives the whole idea.",
+        "source_fields": [
+          "Outcome",
+          "SC-001"
+        ],
+        "blocks": [
+          {
+            "type": "text",
+            "text": "Baseline {{fig:N-return-rate}}, target {{fig:N-return-target}}."
+          }
+        ],
+        "diagram": null,
+        "frameworks": [
+          "Driver tree"
+        ],
+        "estimate_label": "not tech-reviewed"
+      },
+      {
+        "n": 4,
+        "title": "Fixing the size chart alone is too weak; building a chat advisor wins",
+        "message": "Four alternatives were compared.",
+        "source_fields": [
+          "Alternatives"
+        ],
+        "blocks": [
+          {
+            "type": "framework",
+            "name": "Alternatives comparison"
+          }
+        ],
+        "diagram": null,
+        "frameworks": [
+          "Alternatives comparison"
+        ]
+      },
+      {
+        "n": 5,
+        "title": "Shoppers get a size answer in seconds instead of after a return",
+        "message": "The journey shrinks from five steps to two.",
+        "source_fields": [
+          "Solution sketch",
+          "User Story 1"
+        ],
+        "blocks": [],
+        "diagram": null,
+        "frameworks": []
+      },
+      {
+        "n": 6,
+        "title": "First release covers dresses and tops on the web store only",
+        "message": "Shoes and stores come later.",
+        "source_fields": [
+          "Scope"
+        ],
+        "blocks": [],
+        "diagram": null,
+        "frameworks": []
+      },
+      {
+        "n": 7,
+        "title": "The pilot pays back in 7 months in the base case",
+        "message": "Return savings outweigh the running cost.",
+        "source_fields": [
+          "Cost & Risk"
+        ],
+        "blocks": [
+          {
+            "type": "text",
+            "text": "Payback {{fig:N-payback}}."
+          }
+        ],
+        "diagram": null,
+        "frameworks": [],
+        "estimate_label": "not tech-reviewed"
+      },
+      {
+        "n": 8,
+        "title": "Biggest risk: wrong advice raises returns; stop if returns rise",
+        "message": "Kill the pilot if the return rate goes up two weeks in a row.",
+        "source_fields": [
+          "Challenge"
+        ],
+        "blocks": [],
+        "diagram": null,
+        "frameworks": []
+      },
+      {
+        "n": 9,
+        "title": "Pilot in two weeks, decide after twelve",
+        "message": "Three decision points guide the pilot.",
+        "source_fields": [
+          "Plan"
+        ],
+        "blocks": [],
+        "diagram": null,
+        "frameworks": []
+      },
+      {
+        "n": "appendix",
+        "title": "Three assumptions and two open questions remain",
+        "message": "The rest is tracked in the idea folder.",
+        "source_fields": [
+          "Assumptions",
+          "Open questions"
+        ],
+        "blocks": [],
+        "diagram": null,
+        "frameworks": []
+      }
+    ]
+  },
+  "tech": {
+    "sections": [
+      {
+        "id": "business-context",
+        "heading": "Business context",
+        "source_fields": [
+          "Problem & Why"
+        ],
+        "content": "Lanh Fashion loses {{fig:N-return-cost}} a year to size returns."
+      },
+      {
+        "id": "user-stories",
+        "heading": "User stories",
+        "source_fields": [
+          "User Story 1"
+        ],
+        "content": "Content."
+      },
+      {
+        "id": "requirements",
+        "heading": "Functional requirements",
+        "source_fields": [
+          "FR-001",
+          "FR-002"
+        ],
+        "content": "Content."
+      },
+      {
+        "id": "key-entities",
+        "heading": "Key entities",
+        "source_fields": [
+          "Key Entities"
+        ],
+        "content": "Content."
+      },
+      {
+        "id": "success-criteria",
+        "heading": "Success criteria",
+        "source_fields": [
+          "SC-001"
+        ],
+        "content": "Return rate falls to {{fig:N-return-target}}.",
+        "estimate_label": "not tech-reviewed"
+      },
+      {
+        "id": "ai-fit",
+        "heading": "AI fit",
+        "source_fields": [
+          "AI-fit"
+        ],
+        "content": "Content."
+      },
+      {
+        "id": "non-functional",
+        "heading": "Non-functional needs",
+        "source_fields": [
+          "Cost & Risk"
+        ],
+        "content": "Content."
+      },
+      {
+        "id": "glossary",
+        "heading": "Glossary",
+        "source_fields": [
+          "Glossary"
+        ],
+        "content": "Content."
+      },
+      {
+        "id": "open-questions-blocking",
+        "heading": "Open questions (blocking)",
+        "source_fields": [
+          "Open questions"
+        ],
+        "content": "not yet clarified"
+      },
+      {
+        "id": "open-questions-non-blocking",
+        "heading": "Open questions (non-blocking)",
+        "source_fields": [
+          "Open questions"
+        ],
+        "content": "Content."
+      }
+    ]
+  },
+  "numbers": [
+    {
+      "id": "N-return-cost",
+      "value": 1800000000,
+      "unit": "VND/year",
+      "source": "Finance report 2026",
+      "period": "2025-10 to 2026-09",
+      "label": "measured"
+    },
+    {
+      "id": "N-return-rate",
+      "value": 0.18,
+      "unit": "ratio",
+      "source": "Returns report, online store",
+      "period": "2026-Q3",
+      "label": "measured"
+    },
+    {
+      "id": "N-return-target",
+      "value": 0.12,
+      "unit": "ratio",
+      "source": "Sales director's target",
+      "period": "2027-Q1",
+      "label": "assumed"
+    },
+    {
+      "id": "N-budget",
+      "value": 250000000,
+      "unit": "VND",
+      "source": "Plan, size M",
+      "period": "pilot, 12 weeks",
+      "label": "assumed"
+    },
+    {
+      "id": "N-payback",
+      "value": 7,
+      "unit": "months",
+      "source": "Cost & Risk, base case",
+      "period": "first year",
+      "label": "assumed"
+    }
+  ],
+  "gaps": [],
+  "links": {
+    "artifact": "https://example.com/artifact/size-advice",
+    "slides": "",
+    "docs": ""
+  }
+}
