@@ -1,5 +1,6 @@
 ---
 type: regex
 target: { source: 'file', path: 'specs/001-goi-y-size-tren-website/decisions.md' }
-pattern: '(?m)^- export_version:\s*"?2026-11-05'
+flags: 'm'
+pattern: '^- export_version:\s*"?2026-11-05'
 ---

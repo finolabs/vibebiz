@@ -1,5 +1,6 @@
 ---
 type: regex
 target: { source: 'file', path: 'specs/001-goi-y-size-tren-website/decisions.md' }
-pattern: '(?m)^- type:\s*"?board-outcome'
+flags: 'm'
+pattern: '^- type:\s*"?board-outcome'
 ---

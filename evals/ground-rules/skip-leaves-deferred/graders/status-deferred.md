@@ -1,5 +1,6 @@
 ---
 type: regex
 target: { source: 'file', path: 'constitution.md' }
-pattern: '(?m)^status:\s*"?deferred"?\s*$'
+flags: 'm'
+pattern: '^status:\s*"?deferred"?\s*$'
 ---
