@@ -3,7 +3,7 @@
 Test the idea before anyone spends money on it: find how it could fail, weigh doing nothing, fixing the process and buying before building is accepted, put a price on waiting, and find the riskiest belief the idea rests on. The router hands this lens its categories; the lens never chooses the frontier itself.
 
 - **Used by**: router.
-- **Reads**: `spec.md`, `coverage.md` (category statuses, `cynefin`, `language`, `vertical`), `decisions.md`, `assumptions.md`, `open-questions.md`, the workspace `constitution.md` (priorities, `approval_ceiling`, `mandatory_approvals`, `strategy_map`, `okrs`); the fashion pack `references/packs/retail-fashion/` when the idea's `vertical` is `fashion`; a framework card from `references/packs/frameworks/` only when the router hands one over (section 7).
+- **Reads**: `spec.md`, `coverage.md` (category statuses, `cynefin`, `language`, `vertical`), `decisions.md`, `assumptions.md`, `open-questions.md`, the workspace `constitution.md` (priorities, `approval_ceiling`, `mandatory_approvals`, `strategy_map`, `okrs`); when the idea's `vertical` is `fashion`, the fashion pack's `references/packs/retail-fashion/traps.md` and `promotions.md` (to test whether a claimed result survives seasonality, weather, channel shift or discount effects) and the challenge examples in `questions.md`, used by that pack's README rules; a framework card from `references/packs/frameworks/` only when the router hands one over (section 7).
 - **Writes**: `spec.md` (`## Alternatives`, `## Cost & Risk`, `## Assumptions`, Clarifications through the ask protocol), `decisions.md` (`answer` and `dismissed-risk` entries), `assumptions.md` (new A-### entries from the assumption map), `open-questions.md`, `coverage.md` (statuses of D, K and M).
 - **Fills**: D (alternatives), K (risk and compliance), and part of M (cost, resources and return): the size, the risks and the low, base and high scenarios. The plan module completes M at packaging.
 
@@ -62,9 +62,9 @@ Use each in plain words. Do not make the user learn a method or its name; ask th
 
 ### 4.1 Pre-mortem
 
-Imagine the idea was launched and, six months later, clearly failed. Write the three most likely reasons from what the files say about these stores, customers and staff, and the fashion pack's diagnostic traps when the vertical is fashion (for example missing sizes read as weak demand, a promotion uplift confused with the season). Ask the user which one is most likely, as a `multiSelect: false` question whose options are the reasons; the recommended option is the one the files support best. Example:
+Imagine the idea was launched and, six months later, clearly failed. Write the three most likely reasons from what the files say about these stores, customers and staff, and, when the vertical is fashion, the diagnostic traps in the pack's `traps.md` and the promotion patterns and their costs in `promotions.md` (for example missing sizes read as weak demand, a promotion uplift confused with the season, a discount that moves volume at the cost of margin). Ask the user which one is most likely, as a `multiSelect: false` question whose options are the reasons; the recommended option is the one the files support best. Example:
 
-"Giả sử 6 tháng sau, ý tưởng nhắc khách cũ quay lại mua bị dừng vì không hiệu quả. Theo bạn, lý do nào dễ xảy ra nhất?"
+"Giả sử 6 tháng sau, ý tưởng nhắc khách cũ quay lại mua bị dừng vì không hiệu quả. Theo anh/chị, lý do nào dễ xảy ra nhất?"
 - "Khách thấy bị làm phiền (Đề xuất)": "Tin nhắn gửi quá dày thì khách chặn, mất luôn kênh liên lạc; đây là lỗi hay gặp nhất với tin nhắc mua."
 - "Nhắc đúng lúc hết hàng": "Khách quay lại nhưng không còn size, doanh thu không tăng mà khách còn bực hơn."
 - "Cửa hàng không theo": "Nhân viên không gọi lại khách vì không được tính vào chỉ tiêu."
@@ -80,7 +80,7 @@ List what must be true for the idea to work, across five kinds: customers want i
 
 ### 4.3 Cost of inaction
 
-Take the current cost from `## Problem & Why` and carry it over the outcome's time frame from `## Outcome`, keeping its source, period and label ("Theo số bạn đưa, mỗi tháng mất khoảng 120 khách thẻ thành viên; giữ nguyên 6 tháng là khoảng 720 khách, số ước tính"). If the current cost is "not yet clarified", write that in the do-nothing line and add an open question or measurement step; never estimate it yourself. Waiting has a cost only if the files show one; when they show the problem is shrinking or seasonal, say so, because that makes doing nothing a real option.
+Take the current cost from `## Problem & Why` and carry it over the outcome's time frame from `## Outcome`, keeping its source, period and label ("Theo số anh/chị đưa, mỗi tháng mất khoảng 120 khách thẻ thành viên; giữ nguyên 6 tháng là khoảng 720 khách, số ước tính"). If the current cost is "not yet clarified", write that in the do-nothing line and add an open question or measurement step; never estimate it yourself. Waiting has a cost only if the files show one; when they show the problem is shrinking or seasonal, say so, because that makes doing nothing a real option.
 
 ### 4.4 Test-and-control pilot
 
@@ -99,11 +99,11 @@ The router tells you how many of the round's four slots are yours and which cate
 3. Make sure at least one of your questions carries a concrete failure reason (rule 1.2).
 4. **The alternatives question.** Once all four options are written in `## Alternatives`, ask which one to take. Options: do nothing, fix the process, buy, build (two to four of them; drop one only when the files already rule it out, and say why in `## Alternatives`). Recommend honestly: the cheapest option that plausibly reaches the outcome target; when the evidence is equal, the one cheapest to reverse. Recommend build only when the files show the other three cannot reach the target. Example:
 
-   "Để giảm số khách thẻ thành viên không quay lại sau đợt sale, bạn muốn chọn cách nào trước?"
+   "Để giảm số khách thẻ thành viên không quay lại sau đợt sale, anh/chị muốn chọn cách nào trước?"
    - "Sửa quy trình trước (Đề xuất)": "Rẻ và đổi lại được: nhân viên gọi lại khách thân thiết theo danh sách có sẵn mỗi tuần, đo trong 2 tháng rồi mới quyết làm phần mềm."
    - "Mua công cụ có sẵn": "Nhiều phần mềm bán lẻ đã có tính năng nhắc khách; tốn phí hằng tháng, cần kiểm tra có hợp với máy bán hàng không."
    - "Tự làm hệ thống mới": "Làm đúng ý nhất nhưng tốn và lâu nhất; chưa biết khách có phản hồi tin nhắc hay không."
-   - "Giữ nguyên như hiện nay": "Không tốn thêm; theo số bạn đưa, mỗi tháng tiếp tục mất khoảng 120 khách thân thiết (số ước tính)."
+   - "Giữ nguyên như hiện nay": "Không tốn thêm; theo số anh/chị đưa, mỗi tháng tiếp tục mất khoảng 120 khách thân thiết (số ước tính)."
 
 5. **Risk questions.** For a risk the user must accept or reduce, offer distinct handlings ("Thử ở 3 cửa hàng trước", "Thêm bước quản lý duyệt", "Chấp nhận rủi ro này"). Choosing to accept is a dismissal (section 6).
 6. Return the drafted entries to the router with, for each, the category and the section its answer goes to. Never reveal questions you plan to ask later.
@@ -145,7 +145,7 @@ The router may hand this lens one framework card for an open category; it never 
 
 - Ask the card's questions in plain words, through the ask protocol, without making the user learn the framework; name it only if the user asked for it by name.
 - Write its result where the card's "Writes to" says, within this lens's sections.
-- At most two cards per lens per idea: the router counts them and records the applied card ids in the category's `frameworks` field. Never apply a third.
+- At most two cards per lens per idea: the router counts them and records the applied card ids in the category's `frameworks` field; report to it which handed-over card had at least one question answered. Never apply a third.
 - Without a card, sections 4.1–4.5 still run in their plain form; they are this lens's own steps.
 
 ## 8. Update coverage and hand back

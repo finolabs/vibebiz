@@ -27,4 +27,4 @@ Domain knowledge for fashion retail ideas (apparel, footwear, accessories; store
 3. When you use a formula, ask for the inputs and record each with source and period. Never fill an input from this pack.
 4. Explain a term in one plain sentence the first time (see the writing rules). The definitions here are written to be reused that way.
 5. A trap is a hypothesis to test with a question, not a verdict. Ask for the evidence that rules the trap out.
-6. Vietnamese examples use "bạn" for the user and shop vocabulary the user already uses (tồn kho, size, đợt hàng mới).
+6. Vietnamese examples address the user with the writing rules' default form ("anh/chị"; the writing rules decide when to switch to the user's own form) and use shop vocabulary the user already uses (tồn kho, size, đợt hàng mới).

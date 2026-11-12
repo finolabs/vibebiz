@@ -17,7 +17,9 @@ Mỗi ý tưởng có 15 điểm cần làm rõ, từ "Vấn đề và lý do" �
 
 Các điểm còn lại (dữ liệu, kết nối với hệ thống khác, thuật ngữ) được hỏi thẳng, không cần một góc nhìn riêng.
 
-Góc phản biện luôn có mặt, kể cả khi ý tưởng nghe rất ổn. vibebiz không khen ý tưởng; mỗi vòng hỏi đều nêu ít nhất một lý do ý tưởng có thể thất bại, và nghiêm túc cân nhắc hai phương án "không làm gì" và "sửa quy trình" trước khi bàn tới việc xây hệ thống mới. Nếu bạn quyết định bỏ qua một rủi ro, vibebiz ghi lại quyết định đó cùng lý do của bạn.
+Khi ý tưởng thuộc ngành thời trang, mỗi góc nhìn dùng thêm bộ kiến thức thời trang có sẵn: góc Vấn đề dùng các yếu tố tạo ra doanh số và những cách đọc số dễ nhầm; góc Kết quả dùng danh sách chỉ số có định nghĩa và công thức; góc Phản biện dùng những cách đọc số dễ nhầm và các kiểu khuyến mại cùng cái giá của chúng; góc Phác thảo giải pháp dùng các yếu tố tạo ra doanh số và các kiểu khuyến mại. Bộ kiến thức này chỉ gợi ý câu hỏi; con số trong tài liệu luôn là con số bạn đưa ra.
+
+Góc phản biện luôn có mặt, kể cả khi ý tưởng nghe rất ổn. vibebiz không khen ý tưởng; mỗi vòng có câu hỏi phản biện đều nêu ít nhất một lý do ý tưởng có thể thất bại, và nghiêm túc cân nhắc ba phương án "không làm gì", "sửa quy trình" và "mua sẵn" trước khi bàn tới việc tự xây hệ thống mới. Nếu bạn quyết định bỏ qua một rủi ro, vibebiz ghi lại quyết định đó cùng lý do của bạn.
 
 ## Các phương pháp quản trị
 
