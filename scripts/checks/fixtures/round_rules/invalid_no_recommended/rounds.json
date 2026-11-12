@@ -1,0 +1,122 @@
+{
+  "rounds": [
+    {
+      "date": "2026-11-12",
+      "questions": [
+        {
+          "question": "Nhắc khách quay lại bằng kênh nào là hợp nhất với khách của bạn?",
+          "options": [
+            {
+              "label": "SMS",
+              "description": "Mô tả ngắn."
+            },
+            {
+              "label": "Email",
+              "description": "Mô tả ngắn."
+            }
+          ],
+          "multiSelect": false,
+          "category": "B",
+          "status_before": "missing"
+        },
+        {
+          "question": "Bạn muốn đo thành công bằng chỉ số nào trước?",
+          "options": [
+            {
+              "label": "Tỉ lệ mua lại trong 90 ngày (Khuyến nghị)",
+              "description": "Mô tả ngắn."
+            },
+            {
+              "label": "Doanh thu từ khách cũ",
+              "description": "Mô tả ngắn."
+            }
+          ],
+          "multiSelect": false,
+          "category": "C",
+          "status_before": "partial"
+        },
+        {
+          "question": "Thuật ngữ 'khách quen' trong ý tưởng này nghĩa là gì?",
+          "options": [
+            {
+              "label": "Mua từ 2 lần trở lên (Khuyến nghị)",
+              "description": "Mô tả ngắn."
+            },
+            {
+              "label": "Mua trong 12 tháng gần nhất",
+              "description": "Mô tả ngắn."
+            },
+            {
+              "label": "Có thẻ thành viên",
+              "description": "Mô tả ngắn."
+            }
+          ],
+          "multiSelect": false,
+          "category": "N",
+          "status_before": "missing"
+        },
+        {
+          "question": "Nếu không làm gì thì tháng tới bạn dự kiến mất bao nhiêu khách?",
+          "options": [
+            {
+              "label": "Khoảng như tháng này (Khuyến nghị)",
+              "description": "Mô tả ngắn."
+            },
+            {
+              "label": "Nhiều hơn tháng này",
+              "description": "Mô tả ngắn."
+            }
+          ],
+          "multiSelect": false,
+          "category": "D",
+          "status_before": "missing",
+          "skipped": true
+        }
+      ],
+      "offer": []
+    },
+    {
+      "date": "2026-11-12",
+      "questions": [
+        {
+          "question": "Phiên bản đầu tiên có cần tính điểm thưởng sinh nhật không?",
+          "options": [
+            {
+              "label": "Chưa cần (Khuyến nghị)",
+              "description": "Mô tả ngắn."
+            },
+            {
+              "label": "Cần ngay",
+              "description": "Mô tả ngắn."
+            }
+          ],
+          "multiSelect": false,
+          "category": "E",
+          "status_before": "missing",
+          "skipped": true
+        },
+        {
+          "question": "Nhân viên cửa hàng sẽ phải học thêm gì để dùng hệ thống này?",
+          "options": [
+            {
+              "label": "Một buổi hướng dẫn ngắn (Khuyến nghị)",
+              "description": "Mô tả ngắn."
+            },
+            {
+              "label": "Không cần học thêm",
+              "description": "Mô tả ngắn."
+            }
+          ],
+          "multiSelect": false,
+          "category": "L",
+          "status_before": "missing",
+          "skipped": true
+        }
+      ],
+      "offer": [
+        "pause",
+        "draft"
+      ]
+    }
+  ]
+}

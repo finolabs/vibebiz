@@ -63,3 +63,45 @@ Add `--case '<glob>'` or `--tag <tag>` to run one suite. Runs call the model wit
 ## Fixtures
 
 Each file in `evals/fixtures/` is JSON with `id`, `sector`, `fictional_company`, `persona`, `intake_vi` (the one-line intake a sales director would say, in Vietnamese), `key_facts` (hidden truth: problem, users, baseline cost, outcome, constraints, data, risk, numbers) and `answers` (what the persona says per topic, with a `default` for questions it cannot answer). Everything is invented; company names are fictional and the release review (T101) scans them for real names and figures.
+
+## US1 cases (T023–T026)
+
+Cases sit one level down: `evals/<suite>/<case>/`, so each `prompt.md` sets `plugins: ["../../../dist/vibebiz"]`. Seeded cases carry a `scaffold.sh` that writes a fictional workspace (fixed coverage records, hand-edited marker files) and need `--scaffold` on the run; without it they fail by design rather than pass on an empty folder. Whether `claude plugin eval` finds cases nested one level down is unconfirmed until the first run (`quickstart.md` §3); if it does not, point it at each suite folder or flatten the names.
+
+| Case | Seeded | What it checks |
+|---|---|---|
+| `ask-protocol/all-skipped-offers-pause-or-draft` | yes | Every question skipped: nothing decided, pause or draft offered. |
+| `ask-protocol/budget-offers-continue-pause-draft` | yes | Third round used: continue, pause or draft offered. |
+| `ask-protocol/first-round-shape` | no | First round via the question tool. Code check: round_rules.py over the case output (see evals/README.md). |
+| `ask-protocol/no-answer-records-assumptions` | no | No one to answer: assumptions recorded, nothing decided. |
+| `ask-protocol/skip-leaves-status` | yes | Skip leaves category B unchanged and is listed as Skipped. |
+| `ask-protocol/write-back-after-round` | yes | Answers go to Clarifications, decisions and coverage right after the round. |
+| `routing/contradiction-supersede` | yes | Contradiction of D-001: earlier decision shown, user asked, supersede recorded, D-001 kept. |
+| `routing/frontier-prerequisites` | yes | Frontier respects prerequisites: C partial blocks D and E. |
+| `routing/ordering-and-deferred` | yes | Deferred prerequisite unlocks E; E ranks first by impact times uncertainty. |
+| `routing/two-ideas-split` | no | Two independent problems: split proposed, two numbered folders. |
+| `vague-terms/control-numbers-no-redundant-question` | yes | Control: numbers given, no vague term, no redundant question. |
+| `vague-terms/en-realtime-smart` | yes | Unquantified term in en: I need it to be real-time and smart, and fast for store staff. |
+| `vague-terms/vi-accurate` | yes | Unquantified term in vi: Gợi ý phải chính xác, khách tin được. |
+| `vague-terms/vi-fast-realtime` | yes | Unquantified term in vi: Tao muốn gợi ý size phải nhanh, gần như thời gian thực, khách bấm là ra liền. |
+| `vague-terms/vi-smart-convenient` | yes | Unquantified term in vi: Hệ thống phải thông minh, tiện cho nhân viên cửa hàng, ai cũng dùng được. |
+| `workspace/deleted-index-restored` | yes | index.html deleted: the next action restores it from the idea frontmatter. |
+| `workspace/empty-folder` | no | Empty folder: scaffold, intake, idea folder 001. |
+| `workspace/english-user` | no | English-speaking user: questions and outputs in English. |
+| `workspace/no-answer-run` | no | No one to answer: assumptions recorded as open, nothing invented. |
+| `workspace/no-folder-chat` | no | Chat without a working folder: stop message only, nothing written (simulated with a system prompt). |
+| `workspace/partial-workspace` | yes | Missing pieces restored and listed; existing files untouched. |
+| `workspace/unrelated-files` | yes | Folder with unrelated files: subfolder recommended, files untouched. |
+
+The no-folder case simulates claude.ai chat with a system prompt and by granting only `Skill` and `Read`; Cowork's real no-folder state is covered by the manual smoke test.
+
+### Question-round code check
+
+`ask-protocol/*` cases are graded by built-in graders; the full round rules (counts, recommended first, no None/Other, skip, all-skipped offer, write-back) run in code over what the case produced:
+
+```bash
+python3 scripts/checks/round_rules.py <workspace> --trace <session-trace.jsonl> [--idea <slug>]
+python3 scripts/checks/round_rules.py <workspace> --rounds rounds.json [--idea <slug>]
+```
+
+`--trace` reads every `AskUserQuestion` call from a session trace (structure and write-back rules); `--rounds` adds skip, category and offer data for the skip and all-skipped rules (format in the script's docstring). Headless runs cannot answer the question tool, so skip and offer rules are exercised by the seeded `skip-leaves-status` and `all-skipped-offers-pause-or-draft` cases through file graders and, when a rounds record exists, this script. Rules are proven by `python3 scripts/checks/test_round_rules.py -v`.
