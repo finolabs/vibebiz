@@ -156,3 +156,34 @@ python3 scripts/checks/speckit_integration.py <workspace>/<idea>/exports/spec.md
 `package_check.py` exits 1 when it finds problems; the second command prints the snapshot problems and exits 1; `speckit_integration.py` exits 1 and creates nothing when the snapshot fails the structure check. Its own tests: `python3 -m unittest discover -s scripts/checks -p 'test_speckit_integration.py'`.
 
 Not covered headless (Cowork smoke test, `quickstart.md` section 6): updating an Artifact at the same link on re-packaging, and private image insertion in Slides and Docs.
+
+## US4 cases (T075, T076)
+
+Same layout and `--scaffold` rule as the US1 cases. Every seeded workspace is the fictional "Gợi ý size trên website" idea (and "Nhắc khách quay lại" as a second idea). Today's date in the prompts is 2026-11-13; the seeded export version is 2026-11-12. Statuses follow the state machine `clarifying → ready → packaged → presented → approved | rejected | needs-changes`; `needs-changes` returns to `clarifying` once the user resumes work; reopening `approved` or `rejected` returns to `clarifying` and keeps every earlier decision.
+
+| Suite | Case | What it checks |
+|---|---|---|
+| 7 Table of contents | `index/*` (8) | After each entry skill the index lists exactly the folders present; cases and the post-run command are in `evals/index/README.md`. |
+| 7 Table of contents | `outcomes/board-approved` | A packaged idea reported as presented and approved: `board-outcome` with `outcome: approved`, `export_version` and date; status `approved`. |
+| 7 Table of contents | `outcomes/board-rejected` | Presented idea rejected: reason recorded, status `rejected`. |
+| 7 Table of contents | `outcomes/board-needs-changes` | Presented idea needs changes: status `needs-changes` until work resumes. |
+| 7 Table of contents | `outcomes/needs-changes-returns-to-clarifying` | Change request and resume in one message: outcome kept, status `clarifying`. |
+| 7 Table of contents | `outcomes/reopen-approved-keeps-history` | Approved idea reopened: `clarifying`, the earlier `board-outcome` stays. |
+| 7 Table of contents | `outcomes/outcome-names-presented-version` | The outcome carries the export version the board saw (2026-11-05), not the latest. |
+| 7 Table of contents | `outcomes/outcome-before-packaged-refused` | A ready, never packaged idea: no `board-outcome`, user pointed to packaging. |
+| 7 Table of contents | `outcomes/tech-review-flips-estimate-status` | `tech-review` decision; `estimate_status` becomes `tech-reviewed` in coverage, plan and index; idea status unchanged. |
+| 7 Table of contents | `outcomes/tech-reviewed-next-export-has-no-label` | After a tech review the next export has no "not tech-reviewed" label. |
+
+After `index/*` and `outcomes/*` cases run the `check_index` command from `evals/index/README.md` on the workspace; after `outcomes/tech-reviewed-next-export-has-no-label` also run `python3 scripts/checks/package_check.py <workspace>/specs/001-goi-y-size-tren-website`.
+
+## US6 cases (T091)
+
+| Suite | Case | What it checks |
+|---|---|---|
+| User story 6 | `ground-rules/one-round-max-four-questions` | One round, at most four questions, nothing invented without answers. |
+| User story 6 | `ground-rules/answers-recorded-status-set` | Four answers recorded, `status: set`, index shows rules set. |
+| User story 6 | `ground-rules/skip-leaves-deferred` | All questions skipped: `status: deferred`, `/vibebiz:constitution` named for later. |
+| User story 6 | `ground-rules/first-idea-offers-ground-rules` | A first idea with no rules: rules offered once, skippable, nothing invented. |
+| User story 6 | `ground-rules/plan-reminds-when-deferred` | Deferred rules: the plan reminds and names the command, no conflict recorded. |
+| User story 6 | `ground-rules/over-ceiling-conflict-in-plan-and-board` | Ceiling 150 million VND against a 250 million estimate: `ground-rule-conflict` decision, shown in the plan and the board view. |
+| User story 6 | `ground-rules/control-within-ceiling-no-conflict` | Ceiling 300 million: no conflict, the plan says it fits. |
