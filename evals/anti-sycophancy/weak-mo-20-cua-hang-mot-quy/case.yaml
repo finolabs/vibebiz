@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: anti-sycophancy-weak-mo-20-cua-hang-mot-quy
+context:
+  scaffold_script: scaffold.sh
