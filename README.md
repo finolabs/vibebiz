@@ -22,6 +22,8 @@ Sales and operations directors in retail, online or offline (fashion first; elec
 
 Install the companion plugin `diagram-design` if you want diagrams in the outputs (see below).
 
+On Claude Team or Enterprise, administrators can add a short organization instruction so Claude suggests vibebiz when an employee describes an idea: [docs/admin-setup.md](docs/admin-setup.md).
+
 ## What ships
 
 This section lists each skill when the story that delivers it ships. Each command is a skill of the same name; you can also just say what you want in plain words.

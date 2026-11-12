@@ -22,6 +22,8 @@ Giám đốc kinh doanh và vận hành ngành bán lẻ, bán trực tuyến ha
 
 Cài thêm plugin đi kèm `diagram-design` nếu bạn muốn có sơ đồ trong kết quả (xem bên dưới).
 
+Với gói Claude Team hoặc Enterprise, quản trị viên có thể thêm một đoạn hướng dẫn chung cho tổ chức để Claude gợi ý vibebiz khi nhân viên kể về một ý tưởng: [docs/admin-setup.md](docs/admin-setup.md).
+
 ## Có gì trong bản phát hành
 
 Mục này liệt kê từng kỹ năng khi phần việc tạo ra nó được phát hành. Mỗi lệnh là một kỹ năng (skill) cùng tên; bạn cũng có thể chỉ cần nói điều mình muốn bằng lời thường.
