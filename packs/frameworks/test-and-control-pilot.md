@@ -27,7 +27,7 @@ origin: Controlled experiment design (R. A. Fisher and later retail test-versus-
 
 ## Questions
 Compare pilot stores (with the idea) against control stores (without it) that are alike in size, location type and sales level.
-1. "Bạn có thể thử ở bao nhiêu cửa hàng, và có cửa hàng tương tự để làm nhóm đối chứng không?" Options as ranges, for example "3 cửa hàng thử, 3 cửa hàng đối chứng (Đề xuất)".
+1. "Anh/chị có thể thử ở bao nhiêu cửa hàng, và có cửa hàng tương tự để làm nhóm đối chứng không?" Options as ranges, for example "3 cửa hàng thử, 3 cửa hàng đối chứng (Đề xuất)".
 2. "Cần chạy tối thiểu bao lâu?" Recommend at least 4 to 8 weeks, long enough to cover a full weekly cycle and not a single sale event.
 3. "Trong thời gian thử có đợt khuyến mãi, ngày lễ hay thay đổi mùa nào làm lệch kết quả không?" Plan to pause or compare around it.
 4. "Kết quả thế nào thì mở rộng, thay đổi hay dừng?" Fix the three thresholds before the pilot starts.

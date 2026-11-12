@@ -3,10 +3,10 @@
 Run the interview loop for one idea: decide what to ask next, hand each category to the module that fills it, keep the session within its question budget, and tell the user what comes next. Used by the `new` and `continue` entry skills.
 
 - **Reads**: the idea's `coverage.md`, `spec.md`, `decisions.md`, `assumptions.md`, `open-questions.md`, `glossary.md`; the workspace `constitution.md`; the framework cards in `references/packs/frameworks/`.
-- **Writes**: `coverage.md` (`cynefin`, `budget_rounds_used`, `next_step`, `status` between `clarifying` and `ready`, each category's `frameworks`, `updated`, the body table); `decisions.md` for `supersede` and split decisions.
+- **Writes**: `coverage.md` (`cynefin`, `budget_rounds_used`, `next_step`, `status` between `clarifying` and `ready`, each category's `frameworks`, `updated`, the body table); `decisions.md` for `supersede` entries and for split decisions (type `answer`).
 - **Asks through**: `references/core/ask-protocol.md`, which owns the question rules, the default budget of three rounds, Skip, the all-skipped round, no-answer runs and the per-round write-back of answers, decisions and open questions.
 
-Follow `references/core/writing-rules.md` for everything the user reads. Speak to the user in the idea's `language`.
+Follow `references/core/writing-rules.md` for everything the user reads, including how to address the user. Speak to the user in the idea's `language`.
 
 ## The loop
 
@@ -41,9 +41,9 @@ Classify from what is on file (the intake answer, the spec, the ground rules), n
 - With nobody to answer, classify the same way and record the value; do not invent facts to settle it.
 - **Revisit** at step 2 of every round: when the latest answers or the user's hand edits change a signal (for example the user says the same fix already works in another region, or that customer reaction is unknown, or that the crisis is over), write the new value and apply the new depth from this round on. Categories already `clear` stay `clear`, with one exception: a move to `complex` sets C back to `partial` when it has no kill criteria.
 - Tell the user the depth in one plain sentence in the idea's language when you first set it and whenever it changes, without the word Cynefin or the value name. Examples:
-  - `clear`: "Việc này đã rõ cách làm và dễ quay lại nếu không hiệu quả, nên tôi chỉ hỏi những điểm còn thiếu để bạn trình duyệt nhanh."
-  - `complex`: "Chưa ai biết chắc khách sẽ phản ứng thế nào với ý tưởng này, nên tôi sẽ đề xuất thử nhỏ ở vài cửa hàng và đặt trước ngưỡng dừng."
-  - `chaotic`: "Sự cố hiện tại cần được xử lý trước; tôi đã ghi lại ý tưởng để bạn quay lại sau."
+  - `clear`: "Việc này đã rõ cách làm và dễ quay lại nếu không hiệu quả, nên em chỉ hỏi những điểm còn thiếu để anh/chị mang đi trình duyệt."
+  - `complex`: "Chưa ai biết chắc khách sẽ phản ứng thế nào với ý tưởng này, nên em sẽ đề xuất thử nhỏ ở vài cửa hàng và đặt trước ngưỡng dừng."
+  - `chaotic`: "Sự cố hiện tại cần được xử lý trước; em đã ghi lại ý tưởng để anh/chị quay lại sau."
 
 ## Frontier
 
@@ -84,7 +84,7 @@ Ties: first the category with more categories depending on it (it unlocks more o
 
 The user decides; vibebiz finds facts. Before asking any question, search for the answer in this order: the idea's files; `constitution.md`; other ideas in `specs/` when they describe the same business (for example the number of stores); documents the user pointed to or attached, and their connected documents when Cowork offers a connector for them. Read only; send nothing anywhere.
 
-- When a fact is found, write it where it belongs with its source (file or document name and date), and ask only the decision that remains, quoting the fact. Example: "Theo tài liệu bạn gửi, chuỗi có 24 cửa hàng. Bạn muốn thử ở bao nhiêu cửa hàng trước?"
+- When a fact is found, write it where it belongs with its source (file or document name and date), and ask only the decision that remains, quoting the fact. Example: "Theo tài liệu anh/chị gửi, chuỗi có 24 cửa hàng. Anh/chị muốn thử ở bao nhiêu cửa hàng trước?"
 - When a fact cannot be found, it may become a question; a figure the user does not know becomes a measurement plan or an open question, never your estimate.
 
 ## Who fills what
@@ -113,7 +113,7 @@ Framework cards (`references/packs/frameworks/<id>.md`) give a lens a proven way
 2. **At most two per lens per idea**: count the distinct card ids already listed in the `frameworks` of every category that lens fills. When the count is two, add no new card for that lens; it keeps using the two it has, or none.
 3. **One new card per category per round**: when several cards fit, choose the one whose "When to use" best matches the idea's situation and the depth (none at `clear` unless asked by name; `test-and-control-pilot` first at `complex` when it fits).
 4. **Plain words**: the lens asks the card's questions in everyday words. Do not name the framework in questions or make the user learn it; the outputs name it later.
-5. **Record**: when a round asked at least one question from a card and that question was answered, add the card's id to the `frameworks` list of the category it filled. A card whose questions were all skipped is not recorded.
+5. **Record**: the lens reports which handed-over card had a question answered. When a round asked at least one question from a card and that question was answered, add the card's id to the `frameworks` list of the category it filled. A card whose questions were all skipped is not recorded.
 6. **Not chosen here**: cards with `lens: plan` are applied by the plan module at packaging, and the Cynefin card serves "Depth" only; neither counts toward a lens's two.
 7. **No card, no framework**: if the pack folder or a card is missing, the lens works without it. Never apply a framework from memory without its card.
 
@@ -130,7 +130,7 @@ When an answer conflicts with an earlier decision in `decisions.md`:
 
 1. Do not write the new answer as a decision yet, and do not edit the earlier entry.
 2. Set the affected category to `partial` until the user decides.
-3. In the next round, ask first, through the question tool, which one stands. Show the earlier decision with its date in the question so it stands on its own. Options: keep the earlier decision, or replace it with the new answer; recommend the one better supported by the facts on file, and say why in the option's description. Example: "Ngày 05/11 bạn chọn thử nghiệm ở 3 cửa hàng (D-004). Câu trả lời vừa rồi nói triển khai cả 24 cửa hàng ngay. Bạn giữ phương án nào?"
+3. In the next round, ask first, through the question tool, which one stands. Show the earlier decision with its date in the question so it stands on its own. Options: keep the earlier decision, or replace it with the new answer; recommend the one better supported by the facts on file, and say why in the option's description. Example: "Ngày 05/11 anh/chị chọn thử nghiệm ở 3 cửa hàng. Câu trả lời vừa rồi nói triển khai cả 24 cửa hàng ngay. Anh/chị giữ phương án nào?"
 4. If the new answer stands, append a `supersede` entry naming the old id in `supersedes`, with the date and the user's reason, and apply it to the spec. If the earlier one stands, record the answer in Clarifications and change nothing else. Either way, the earlier entry stays in the record with its date.
 5. Restore the category's status from what is now answered.
 
@@ -159,13 +159,13 @@ When ready, offer through the question tool: package now (recommended), or keep 
 
 ## Budget
 
-When `budget_rounds_used` reaches the session budget (three rounds by default, `references/core/ask-protocol.md`) and the idea is not ready, stop and offer through the question tool:
+When `budget_rounds_used` reaches the session budget (three rounds by default) or its next multiple and the idea is not ready, stop and make the budget offer exactly as `references/core/ask-protocol.md` section 8 words it, with its three choices:
 
-- **Continue**: allow another budget of the same size in this session; the counter keeps counting and the offer returns at the next multiple.
-- **Pause**: everything is already saved. Tell the user in one sentence what comes next and that they resume with `/vibebiz:continue`.
-- **Draft**: an export with every gap labelled "not yet clarified" (in the idea's language). Hand over to the `package` entry skill and say a labelled draft is wanted; if it is not available, tell the user the draft requirement is already saved in the idea folder and offer pause.
+- **"Hỏi tiếp"** (continue): allow another budget of the same size in this session; the counter keeps counting and the offer returns at the next multiple.
+- **"Tạm dừng"** (pause): everything is already saved. Tell the user in one sentence what comes next and that they resume with `/vibebiz:continue`.
+- **"Xuất bản nháp"** (draft): an export with every gap labelled "not yet clarified" (in the idea's language). Hand over to the `package` entry skill and say a labelled draft is wanted; if it is not available, tell the user the draft requirement is already saved in the idea folder and offer pause.
 
-Recommend continue when the frontier still has categories scoring 6 or more, otherwise pause. With nobody to answer, choose pause and stop.
+Recommend "Hỏi tiếp" when the frontier still has categories scoring 6 or more, otherwise "Tạm dừng". With nobody to answer, choose pause and stop.
 
 ## Next step
 

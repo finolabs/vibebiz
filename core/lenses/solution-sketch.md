@@ -3,7 +3,7 @@
 Turn the chosen alternative into something the board can picture and the tech team can build in slices: how the work runs today and how it would run after, three ways to get there, whether a rule, an automation or AI is the right tool, a first journey worth delivering on its own, what can go wrong, and whose work changes. The router hands this lens its categories; the lens never chooses the frontier itself.
 
 - **Used by**: router.
-- **Reads**: `spec.md`, `coverage.md` (category statuses, `cynefin`, `language`, `vertical`), `decisions.md` (above all the decision that chose an alternative), `assumptions.md`, `open-questions.md`, the workspace `constitution.md` (`mandatory_approvals`, priorities); the fashion pack `references/packs/retail-fashion/` when the idea's `vertical` is `fashion`, otherwise the general retail questions in this file; the AI pattern catalog `references/packs/ai-patterns-retail/` for the AI-fit check; a framework card from `references/packs/frameworks/` only when the router hands one over (section 8).
+- **Reads**: `spec.md`, `coverage.md` (category statuses, `cynefin`, `language`, `vertical`), `decisions.md` (above all the decision that chose an alternative), `assumptions.md`, `open-questions.md`, the workspace `constitution.md` (`mandatory_approvals`, priorities); when the idea's `vertical` is `fashion`, the fashion pack's `references/packs/retail-fashion/drivers.md` and `promotions.md` (for journeys and edge cases) and the solution-sketch examples in `questions.md`, used by that pack's README rules, otherwise the general retail questions in this file; the AI pattern catalog `references/packs/ai-patterns-retail/` for the AI-fit check; a framework card from `references/packs/frameworks/` only when the router hands one over (section 8).
 - **Writes**: `spec.md` (`## User Scenarios & Testing` user stories and `### Edge Cases`, `### Functional Requirements`, `## AI-fit`, `## Cost & Risk` for organizational change, `## Assumptions`, Clarifications through the ask protocol), the journey diagram brief `diagrams/NN-journey.brief.md`, `decisions.md`, `assumptions.md` and `open-questions.md` through the ask protocol, `coverage.md` (statuses of E, F, I, J and L).
 - **Fills**: E (scope and behavior), F (AI fit), I (non-functional needs), J (edge cases and failures), L (organizational change).
 
@@ -44,7 +44,7 @@ Use these lists for the scan (section 3) and to set the status after the round (
 - store conditions: internet quality, the devices staff actually use (shared tablet, personal phone, the sales counter computer);
 - how long a delay or a stop is acceptable, and what staff do meanwhile.
 
-**J. Edge cases and failures** (prerequisite E): for each journey, what can go wrong and what happens then: missing or wrong data, the customer does not respond or refuses, stock runs out, a store is offline, the same customer appears twice, a sale period changes the pattern, a person does not do their step.
+**J. Edge cases and failures** (prerequisite E): for each journey, what can go wrong and what happens then: missing or wrong data, the customer does not respond or refuses, stock runs out, a store is offline, the same customer appears twice, a sale period changes the pattern, a person does not do their step. For fashion, draw the sale and promotion cases from the pack's `promotions.md` and the stock and size cases from its `drivers.md`.
 
 **L. Organizational change** (prerequisites B, E): the people whose work changes, what they do differently, the training they need, the targets or bonuses that must change so they do it, and who loses work, authority or information, from the stakeholders recorded in `## Problem & Why`.
 
@@ -100,7 +100,7 @@ When no pattern in the catalog matches, say so, use the three questions above wi
 
 Example question when the files leave a real choice:
 
-"Với ý tưởng nhắc khách cũ quay lại mua, bạn muốn chọn khách cần nhắc theo cách nào?"
+"Với ý tưởng nhắc khách cũ quay lại mua, anh/chị muốn chọn khách cần nhắc theo cách nào?"
 - "Theo quy tắc ngày mua (Đề xuất)": "Đủ để bắt đầu và dễ kiểm tra: nhắc mọi khách không mua sau 60 ngày; không cần AI."
 - "Để AI dự đoán khách sắp rời": "Nhắc ít khách hơn nhưng cần lịch sử mua đủ dài và sạch; khi AI đoán sai, khách trung thành bị bỏ sót."
 
@@ -167,5 +167,5 @@ The router may hand this lens one framework card for an open category; it never 
 
 - Ask the card's questions in plain words, through the ask protocol, without making the user learn the framework; name it only if the user asked for it by name.
 - Write its result where the card's "Writes to" says, within this lens's sections.
-- At most two cards per lens per idea: the router counts them and records the applied card ids in the category's `frameworks` field. Never apply a third.
+- At most two cards per lens per idea: the router counts them and records the applied card ids in the category's `frameworks` field; report to it which handed-over card had at least one question answered. Never apply a third.
 - Without a card, sections 4 and 5 still run in their plain form; they are this lens's own steps.

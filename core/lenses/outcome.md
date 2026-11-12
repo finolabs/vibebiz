@@ -4,10 +4,10 @@ Turn what the user wants to have into the result they want to change, and make t
 
 - **Used by**: router.
 - **Fills**: C (outcome and measurement) and O (completion signals).
-- **Reads**: the idea's `spec.md`, `coverage.md`, `decisions.md`, `assumptions.md` and `open-questions.md`; the workspace `constitution.md` (its `status`, `priorities`, `strategy_map` and `okrs`); the framework cards named in section 7.
-- **Writes**: the `## Outcome` section, `### Measurable Outcomes` under Success Criteria, and the **Acceptance Scenarios** of each user story in `spec.md`; `coverage.md` (status, `frameworks` and `updated` of C and O); and, through the ask protocol, Clarifications, `decisions.md`, `assumptions.md` and `open-questions.md`.
+- **Reads**: the idea's `spec.md`, `coverage.md`, `decisions.md`, `assumptions.md` and `open-questions.md`; the workspace `constitution.md` (its `status`, `priorities`, `strategy_map` and `okrs`); when the idea's `vertical` is `fashion`, the fashion pack's `references/packs/retail-fashion/metrics.md` (metrics with a plain definition and a formula, to propose the outcome metric and check that baseline and target use the same definition) and the outcome examples in `questions.md`; the framework card the router hands over (section 7).
+- **Writes**: the `## Outcome` section, `### Measurable Outcomes` under Success Criteria, and the **Acceptance Scenarios** of each user story in `spec.md`; `coverage.md` (status and `updated` of C and O; the router records `frameworks`); and, through the ask protocol, Clarifications, `decisions.md`, `assumptions.md` and `open-questions.md`.
 
-Ask through `references/core/ask-protocol.md` and write everything the user reads by `references/core/writing-rules.md`.
+Ask through `references/core/ask-protocol.md` and write everything the user reads by `references/core/writing-rules.md`. Use the fashion pack by its README's rules: it suggests, the user's answers decide, and no pack figure is ever written as the user's own.
 
 ## 1. What C and O need to be clear
 
@@ -41,7 +41,7 @@ Break the result the board cares about into the drivers that produce it, and fin
 
 - **Lagging indicator**: the result itself, seen late (monthly revenue, returning customers per quarter).
 - **Leading indicator**: an early signal the idea moves directly and that can be read every week (share of reminder messages opened, replies within 15 minutes).
-- Common retail trees: store revenue = footfall × conversion × units per transaction × average selling price; online revenue = traffic × conversion × average order value. Use the user's own words for each driver and explain a term at first use.
+- Common retail trees: store revenue = footfall × conversion × units per transaction × average selling price; online revenue = traffic × conversion × average order value. Use the user's own words for each driver and explain a term at first use. For fashion, take a metric's plain definition and formula from the pack's `metrics.md`, confirm the definition with the user before recording it, and ask for every input; never fill an input from the pack.
 - Ask which driver the idea is meant to move when the files do not make it clear; recommend the one closest to the root cause on file.
 - Write the tree in `## Outcome` as an indented list, the lagging result at the top, each driver below it, the driver the idea moves marked, and its leading indicator beside it. A diagram is drawn from this list at packaging; do not draw one here.
 
@@ -71,21 +71,21 @@ The baseline item of C counts as answered by a complete measurement plan. Label 
 Read `constitution.md`. When its `status` is `deferred` or it records neither `okrs` nor `strategy_map`, skip this section and write nothing about it.
 
 - **OKRs recorded** (`okrs`): find the objective and key result this outcome moves. When one clearly fits, write the link in `## Outcome` naming the objective and key result in the user's words. When two or more could fit, ask which one, recommending the closest. When none fits, ask through a tool question whether to go on: keep the idea as it is (with a note that it serves no recorded objective this year), or change the outcome to serve a named objective. Recommend from the facts: an idea outside every objective competes for budget with ones inside them. Record the answer as an `answer` decision. Conflicts with the ground rules are flagged later by the plan module; do not write a `ground-rule-conflict` here.
-- **Scorecard recorded** (`strategy_map`): name the perspective the outcome moves (financial, customer, internal process, learning and growth) and the recorded objective under it, using the `balanced-scorecard` card's approach (section 7). Ask only when more than one perspective could fit.
-- Mapping to OKRs uses no card; mapping to the scorecard counts as applying `balanced-scorecard`.
+- **Scorecard recorded** (`strategy_map`): name the perspective the outcome moves (financial, customer, internal process, learning and growth) and the recorded objective under it, asking the `balanced-scorecard` card's questions when the router handed it over (section 7). Ask only when more than one perspective could fit.
+- Mapping to OKRs uses no card. Mapping to the scorecard counts as applying `balanced-scorecard` only when the router handed that card over; without it, name the perspective in plain form and report no card.
 
 ## 7. Framework cards
 
-Use a card only to fill an open gap in C or O that the card's `fills` lists, and apply at most two cards in this lens per idea, counting every card already recorded in the `frameworks` lists of C and O. Read a card from `references/packs/frameworks/<id>.md` and ask its questions in plain words; never make the user learn the framework's name or vocabulary.
+The router chooses cards and hands this lens at most one new card per category per round; the lens never picks one itself. Use a card only when it was handed over, its `lens` is `outcome`, and its `fills` includes a category of yours that is still `missing` or `partial`. The router keeps the limit of two cards per lens per idea. Read the card from `references/packs/frameworks/<id>.md` and ask its questions in plain words; never make the user learn the framework's name or vocabulary. The outcome cards:
 
-| Card id | Use it when |
+| Card id | Fits when |
 |---|---|
 | `driver-tree` | C lacks the driver the idea moves or its leading indicator |
 | `balanced-scorecard` | the ground rules record a `strategy_map` and C lacks its strategy link, or the user asks to tie the idea to the company's strategy perspectives |
 
-- When the user asks for a framework by name, apply it if it fills an open gap here and the two-card limit allows; otherwise say in one plain sentence why it does not fit now and name the card that fits the open gap.
-- Record each applied card's id in the `frameworks` list of the category it filled, and name the framework once in the section it shaped (for example "Cây chỉ số (driver tree): doanh thu online = lượt truy cập × tỷ lệ mua × giá trị đơn trung bình").
-- If a card file is missing, use the technique as this lens describes it and record nothing in `frameworks`.
+- A request for a framework by name is handled by the router, which hands the card over when it fits.
+- Report to the router which handed-over card had at least one question answered; the router records its id in the `frameworks` list of the category it filled. Name the framework once in the section it shaped (for example "Cây chỉ số (driver tree): doanh thu online = lượt truy cập × tỷ lệ mua × giá trị đơn trung bình").
+- Without a card (none handed over, or the card file is missing), sections 2–6 and 8 still run in their plain form; they are this lens's own steps, and no card is reported.
 
 ## 8. Completion signals
 
@@ -104,7 +104,7 @@ The router tells you which of C and O are in the round and how many question slo
 3. Rank the candidates by impact × uncertainty and return the top ones within your slots, highest first. Hold any question that depends on an answer not yet given: the target before the outcome statement and the baseline (or the plan) are settled, the kill criterion before the target, acceptance scenarios before the stories exist.
 4. Hand the questions to the router; the router asks the round.
 
-Example round (C, fictional chain "Áo Mây", no baseline on file): one preview question choosing between three outcome statements, one question on the time frame ("Bạn muốn thấy kết quả của việc trả lời khách nhanh hơn về cỡ trong bao lâu?", options "3 tháng (Đề xuất)", "6 tháng", "Hết mùa Tết"), and one question on the guardrail most at risk.
+Example round (C, fictional chain "Áo Mây", no baseline on file): one preview question choosing between three outcome statements, one question on the time frame ("Anh/chị muốn thấy kết quả của việc trả lời khách nhanh hơn về cỡ trong bao lâu?", options "3 tháng (Đề xuất)", "6 tháng", "Hết mùa Tết"), and one question on the guardrail most at risk.
 
 ## 10. After the answers
 
@@ -120,4 +120,4 @@ Apply each answer to `spec.md`, replacing the template placeholder or the earlie
 
 In English: Outcome; Driver tree; Baseline; Target and time frame; Guardrails; Kill criteria; Company objective served.
 
-Then set the status of C and O by section 1, record applied cards in `frameworks`, set each touched category's `updated` to today, and let the ask protocol finish the write-back. A skipped question changes nothing. Return to the router with the categories whose status changed.
+Then set the status of C and O by section 1, report the applied card to the router, set each touched category's `updated` to today, and let the ask protocol finish the write-back. A skipped question changes nothing. Return to the router with the categories whose status changed.

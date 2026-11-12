@@ -4,10 +4,10 @@ Find the real problem behind the idea before anyone talks about a solution: who 
 
 - **Used by**: router.
 - **Fills**: A (problem and why) and B (users and stakeholders).
-- **Reads**: the idea's `spec.md`, `coverage.md`, `decisions.md`, `assumptions.md`, `open-questions.md` and `glossary.md`; the workspace `constitution.md` (its `vertical`, `mandatory_approvals` and `approval_ceiling`); the fashion pack in `references/packs/retail-fashion/` when the idea's `vertical` is fashion; the framework cards named in section 6.
-- **Writes**: the `## Problem & Why` section of `spec.md`; `coverage.md` (status, `frameworks` and `updated` of A and B); and, through the ask protocol, Clarifications, `decisions.md`, `assumptions.md` and `open-questions.md`.
+- **Reads**: the idea's `spec.md`, `coverage.md`, `decisions.md`, `assumptions.md`, `open-questions.md` and `glossary.md`; the workspace `constitution.md` (its `vertical`, `mandatory_approvals` and `approval_ceiling`); when the idea's `vertical` is `fashion`, the fashion pack's `references/packs/retail-fashion/drivers.md` (what moves results, for sharper questions about where the pain comes from), `traps.md` (readings that look right and are not, to catch a wrongly read cause) and the problem-framing examples in `questions.md`; the framework card the router hands over (section 6).
+- **Writes**: the `## Problem & Why` section of `spec.md`; `coverage.md` (status and `updated` of A and B; the router records `frameworks`); and, through the ask protocol, Clarifications, `decisions.md`, `assumptions.md` and `open-questions.md`.
 
-Ask through `references/core/ask-protocol.md` and write everything the user reads by `references/core/writing-rules.md`.
+Ask through `references/core/ask-protocol.md` and write everything the user reads by `references/core/writing-rules.md`. Use the fashion pack by its README's rules: it suggests, the user's answers decide, and no pack figure is ever written as the user's own.
 
 ## 1. What A and B need to be clear
 
@@ -35,7 +35,7 @@ A is `clear` when all seven items are answered; B is `clear` when all four are. 
 Ask about the most recent real occurrence, never a hypothetical. People describe what usually happens or what might happen in a way that hides the cost and the cause; a real event has a date, a place and a number.
 
 - If the intake answer already tells a real occurrence, use it and do not ask again.
-- Otherwise the round's open question (plain text, at most one per round) asks for it. Example: "Lần gần nhất chuyện này xảy ra là khi nào? Bạn kể ngắn giúp mình: ở cửa hàng hay kênh nào, ai bị ảnh hưởng và mất những gì."
+- Otherwise the round's open question (plain text, at most one per round) asks for it. Example: "Lần gần nhất chuyện này xảy ra là khi nào? Anh/chị kể ngắn giúp em: ở cửa hàng hay kênh nào, ai bị ảnh hưởng và mất những gì."
 - If the user answers with a generality ("thường thì…", "khách hay…"), record what is useful and ask once more for one specific time.
 - If the user describes a solution instead of a problem ("chúng tôi thiếu chatbot", "cần một ứng dụng"), record it as the user's proposed solution and ask what goes wrong today without it. The problem statement never contains the solution.
 
@@ -43,12 +43,12 @@ Ask about the most recent real occurrence, never a hypothetical. People describe
 
 Separate the symptom the user sees ("doanh số giảm") from a cause the business can act on ("thiếu cỡ M và L ở 6 cửa hàng sau tuần đầu mỗi đợt hàng").
 
-- **One "why" per round.** Each step depends on the previous answer, so a round holds at most one step of the chain. Build the options from the user's story, the facts on file and, for fashion, the pack's diagnostic traps (for example missing sizes read as weak demand, a promotion's effect confused with the season or the weather, a shift between channels read as growth). Recommend the cause the evidence on file supports best and say which evidence.
+- **One "why" per round.** Each step depends on the previous answer, so a round holds at most one step of the chain. Build the options from the user's story, the facts on file and, for fashion, the drivers in the pack's `drivers.md` and the diagnostic traps in its `traps.md` (for example missing sizes read as weak demand, a promotion's effect confused with the season or the weather, a shift between channels read as growth). Recommend the cause the evidence on file supports best and say which evidence.
 - Stop when the cause is something the business can change, when the user cannot say why (record an open question with the person who can), or after five steps.
 - When the user names several causes at once that all feed the same symptom (stockouts, slow fitting rooms, many returns), use the fishbone approach instead: group the causes by area (people, process, product, place, data, suppliers) and ask which group drives most of the problem.
 - A cause the user believes but has no data for is an assumption: append it to `assumptions.md` with `source: stated`, `tested: no`, so the challenge lens can test it later. Write it in the spec as the user's judgment, not as a fact.
 
-Example question for one step: "Doanh số áo khoác ở 6 cửa hàng giảm trong tháng 10. Theo bạn, lý do trực tiếp nhất là gì?" with options such as "Thiếu cỡ phổ biến (Đề xuất)" (the description cites the stock report on file), "Mẫu không hợp thời tiết", "Giá cao hơn đối thủ gần đó".
+Example question for one step: "Doanh số áo khoác ở 6 cửa hàng giảm trong tháng 10. Theo anh/chị, lý do trực tiếp nhất là gì?" with options such as "Thiếu cỡ phổ biến (Đề xuất)" (the description cites the stock report on file), "Mẫu không hợp thời tiết", "Giá cao hơn đối thủ gần đó".
 
 ## 4. Current cost
 
@@ -59,7 +59,7 @@ State what the problem costs today in a figure the board can compare with the co
   - lost orders: orders lost per period × average order value;
   - lost customers: customers lost per period × what one customer buys in a year.
 - Look the inputs up first (the idea's files, `constitution.md`, other ideas in the workspace, documents the user connected). Ask only for what is missing, with ranges as options (ask protocol, numbers in ranges).
-- Do the arithmetic yourself and write the result with each input's source and period, labelled measured or assumed. A figure the user estimates is `assumed`, with the source "ước tính của bạn" and the date. Never round a result into a different claim.
+- Do the arithmetic yourself and write the result with each input's source and period, labelled measured or assumed. A figure the user estimates is `assumed`, with the source "ước tính của anh/chị" and the date. Never round a result into a different claim.
 - When nobody can estimate it, do not supply a number. Write a short measurement plan instead (what to count, where the number comes from, for how long, who counts it) and add an open question with that person as owner. The cost item then counts as answered by the plan.
 
 ## 5. Jobs to be done and the problem statement
@@ -69,17 +69,17 @@ State what the problem costs today in a figure the board can compare with the co
 
 ## 6. Framework cards
 
-Use a card only to fill an open gap in A or B that the card's `fills` lists, and apply at most two cards in this lens per idea, counting every card already recorded in the `frameworks` lists of A and B. Read a card from `references/packs/frameworks/<id>.md` and ask its questions in plain words; never make the user learn the framework's name or vocabulary.
+The router chooses cards and hands this lens at most one new card per category per round; the lens never picks one itself. Use a card only when it was handed over, its `lens` is `problem-framing`, and its `fills` includes a category of yours that is still `missing` or `partial`. The router keeps the limit of two cards per lens per idea. Read the card from `references/packs/frameworks/<id>.md` and ask its questions in plain words; never make the user learn the framework's name or vocabulary. The problem-framing cards:
 
-| Card id | Use it when |
+| Card id | Fits when |
 |---|---|
 | `five-whys` | the root cause is missing and one chain of causes is likely |
 | `fishbone` | the root cause is missing and the user names several causes at once (use it instead of `five-whys`, not as well) |
 | `jobs-to-be-done` | who suffers is known but what they are trying to get done is not, or B lacks what users and staff need |
 
-- When the user asks for a framework by name, apply it if it fills an open gap here and the two-card limit allows; otherwise say in one plain sentence why it does not fit now and name the card that fits the open gap.
-- Record each applied card's id in the `frameworks` list of the category it filled, and name the framework once in the section it shaped (for example "Phân tích nguyên nhân theo cách hỏi 5 lần Tại sao (5 Whys)").
-- If a card file is missing, use the technique as this lens describes it and record nothing in `frameworks`.
+- A request for a framework by name is handled by the router, which hands the card over when it fits.
+- Report to the router which handed-over card had at least one question answered; the router records its id in the `frameworks` list of the category it filled. Name the framework once in the section it shaped (for example "Phân tích nguyên nhân theo cách hỏi 5 lần Tại sao (5 Whys)").
+- Without a card (none handed over, or the card file is missing), sections 2–5 still run in their plain form; they are this lens's own steps, and no card is reported.
 
 ## 7. Writing the round's questions for the router
 
@@ -90,7 +90,7 @@ The router tells you which of A and B are in the round and how many question slo
 3. Rank the candidates by impact × uncertainty and return the top ones within your slots, highest first. Hold any question that depends on an answer not yet given (the next "why", the problem statement before the cause is known, the cost before the frequency).
 4. Hand the questions to the router; the router asks the round.
 
-Example round (A, fictional chain "Áo Mây"): one tool question on frequency ("Trong một tháng bình thường, Áo Mây có khoảng bao nhiêu đơn online bị bỏ dở vì khách chờ trả lời về cỡ?", options as ranges built from the user's figures), one tool question on why now ("Vì sao bạn muốn giải quyết chuyện khách chờ trả lời về cỡ ngay trong năm nay?"), and the open question about the last real occurrence.
+Example round (A, fictional chain "Áo Mây"): one tool question on frequency ("Trong một tháng bình thường, Áo Mây có khoảng bao nhiêu đơn online bị bỏ dở vì khách chờ trả lời về cỡ?", options as ranges built from the user's figures), one tool question on why now ("Vì sao anh/chị muốn giải quyết chuyện khách chờ trả lời về cỡ ngay trong năm nay?"), and the open question about the last real occurrence.
 
 ## 8. After the answers
 
@@ -107,4 +107,4 @@ Apply each answer to `## Problem & Why` in `spec.md`, replacing the template pla
 
 In English: Problem; Most recent occurrence; Who suffers and how often; Current cost; Root cause; Jobs to be done; Why now; Stakeholders: who uses it, who is affected, who approves, who may resist and why.
 
-Then set the status of A and B by section 1, record applied cards in `frameworks`, set each touched category's `updated` to today, and let the ask protocol finish the write-back. A skipped question changes nothing. Return to the router with the categories whose status changed.
+Then set the status of A and B by section 1, report the applied card to the router, set each touched category's `updated` to today, and let the ask protocol finish the write-back. A skipped question changes nothing. Return to the router with the categories whose status changed.

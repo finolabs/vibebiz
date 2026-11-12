@@ -35,8 +35,8 @@ Three ways to get a capability: make it, purchase a ready product, or work with 
 
 Never invent figures. When the user does not know, record a range and a gap.
 
-1. "Bạn đã biết có sản phẩm nào có sẵn trên thị trường làm được việc này chưa, hay đối tác nào có thể làm cùng?"
-2. "Mỗi hướng ước tính tốn bao nhiêu lúc đầu và bao nhiêu mỗi năm? Bạn cho một khoảng thấp, vừa, cao."
+1. "Anh/chị đã biết có sản phẩm nào có sẵn trên thị trường làm được việc này chưa, hay đối tác nào có thể làm cùng?"
+2. "Mỗi hướng ước tính tốn bao nhiêu lúc đầu và bao nhiêu mỗi năm? Anh/chị cho một khoảng thấp, vừa, cao."
 3. "Khi chạy được, khoản thu thêm hoặc tiết kiệm được lớn nhất đến từ đâu, và con số hiện tại là bao nhiêu?"
 4. "Hướng nào cần đội kỹ thuật của công ty, và công ty đã đủ người chưa?"
 5. "Nếu phải chờ lâu hơn dự kiến một quý, hướng nào vẫn đáng làm?"

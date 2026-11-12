@@ -26,7 +26,7 @@ origin: General management-accounting practice; no single originator
 
 ## Questions
 Break the top outcome into drivers that multiply or add up to it, two levels is enough. Mark each driver as leading (moves early, for example footfall, conversion) or lagging (arrives late, for example revenue, return rate).
-1. "Con số nào bạn muốn cải thiện nhất nếu ý tưởng này thành công?" Offer two to four candidates from the fashion pack: "Tỷ lệ mua hàng trên lượt vào cửa hàng (Đề xuất)", "Giá trị trung bình mỗi đơn", "Tỷ lệ trả hàng".
+1. "Con số nào anh/chị muốn cải thiện nhất nếu ý tưởng này thành công?" Offer two to four candidates from the fashion pack: "Tỷ lệ mua hàng trên lượt vào cửa hàng (Đề xuất)", "Giá trị trung bình mỗi đơn", "Tỷ lệ trả hàng".
 2. "Hiện giờ con số đó là bao nhiêu, lấy từ báo cáo nào, của giai đoạn nào?" (a fact to look up first; ask only if no file has it)
 3. "Ý tưởng này tác động vào nhánh nào của con số đó?" Show the tree and let the user choose the branch.
 4. "Con số nào không được xấu đi khi làm việc này?" This becomes the guardrail.
