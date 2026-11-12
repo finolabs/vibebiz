@@ -1,6 +1,6 @@
 # Module: router
 
-Run the interview loop for one idea: decide what to ask next, hand each category to the module that fills it, keep the session within its question budget, and tell the user what comes next. Used by the `new` and `continue` entry skills.
+Run the interview loop for one idea: decide what to ask next, hand each category to the module that fills it, keep the session within its question budget, and tell the user what comes next. Used by the `new` and `continue` entry skills, and by `package` when the analyze module's findings send the idea back to the interview (see "Findings from analyze").
 
 - **Reads**: the idea's `coverage.md`, `spec.md`, `decisions.md`, `assumptions.md`, `open-questions.md`, `glossary.md`; the workspace `constitution.md`; the framework cards in `references/packs/frameworks/`.
 - **Writes**: `coverage.md` (`cynefin`, `budget_rounds_used`, `next_step`, `status` between `clarifying` and `ready`, each category's `frameworks`, `updated`, the body table); `decisions.md` for `supersede` entries and for split decisions (type `answer`).
@@ -133,6 +133,18 @@ When an answer conflicts with an earlier decision in `decisions.md`:
 3. In the next round, ask first, through the question tool, which one stands. Show the earlier decision with its date in the question so it stands on its own. Options: keep the earlier decision, or replace it with the new answer; recommend the one better supported by the facts on file, and say why in the option's description. Example: "Ngày 05/11 anh/chị chọn thử nghiệm ở 3 cửa hàng. Câu trả lời vừa rồi nói triển khai cả 24 cửa hàng ngay. Anh/chị giữ phương án nào?"
 4. If the new answer stands, append a `supersede` entry naming the old id in `supersedes`, with the date and the user's reason, and apply it to the spec. If the earlier one stands, record the answer in Clarifications and change nothing else. Either way, the earlier entry stays in the record with its date.
 5. Restore the category's status from what is now answered.
+
+## Findings from analyze
+
+At packaging, the package entry skill hands back the findings of the analyze module (`references/core/analyze.md`) when its verdict is `return-to-interview`, together with any failed content or evidence items of the readiness checklists. Treat them as frontier items for this idea:
+
+1. **Reopen**: set each category a finding names to `partial` where it was `clear`, and set `status` back to `clarifying` if it was `ready`. A finding changes no file content by itself; analyze never edits and neither do you.
+2. **Contradictions first**: handle every contradiction finding before any other question, by "Contradictions" above: show the earlier decision with its date and ask which one stands. A finding marked `restate` is asked the same way, as a confirmation, before the owning module rewrites the out-of-step file.
+3. **Look up before asking**: for `look-up` findings, search by "Facts before questions" first and ask only what stays open.
+4. **Owners elsewhere**: for `owner` findings, record or update the open question with its owner and what it unblocks; do not ask the user for someone else's answer.
+5. **Ask the rest** in normal rounds: rank the remaining findings with the frontier (critical and high before medium and low), use each finding's `ask` line as the starting wording, and keep to four questions a round and the session budget. When the budget is reached, make the usual budget offer; "Xuất bản nháp" goes back to the package skill as a labelled draft.
+6. **Back to packaging**: when readiness holds again, offer to package as in "Readiness"; packaging runs analyze again from the start.
+7. **Nobody to answer**: record each `ask` and `restate` finding as an open question, change no decision, and hand back to the package skill.
 
 ## Two ideas in one
 
