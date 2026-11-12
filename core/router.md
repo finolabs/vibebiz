@@ -1,6 +1,6 @@
 # Module: router
 
-Run the interview loop for one idea: decide what to ask next, hand each category to the module that fills it, keep the session within its question budget, and tell the user what comes next. Used by the `new` and `continue` entry skills, and by `package` when the analyze module's findings send the idea back to the interview (see "Findings from analyze").
+Run the interview loop for one idea: decide what to ask next, hand each category to the module that fills it, keep the session within its question budget, and tell the user what comes next. Used by the `new` and `continue` entry skills, and by `package` when the analyze module's findings send the idea back to the interview (see "Findings from analyze"). The `continue` entry skill records board outcomes and tech reviews itself and hands the board's requested changes here (see "Changes from the board").
 
 - **Reads**: the idea's `coverage.md`, `spec.md`, `decisions.md`, `assumptions.md`, `open-questions.md`, `glossary.md`; the workspace `constitution.md`; the framework cards in `references/packs/frameworks/`.
 - **Writes**: `coverage.md` (`cynefin`, `budget_rounds_used`, `next_step`, `status` between `clarifying` and `ready`, each category's `frameworks`, `updated`, the body table); `decisions.md` for `supersede` entries and for split decisions (type `answer`).
@@ -146,6 +146,17 @@ At packaging, the package entry skill hands back the findings of the analyze mod
 6. **Back to packaging**: when readiness holds again, offer to package as in "Readiness"; packaging runs analyze again from the start.
 7. **Nobody to answer**: record each `ask` and `restate` finding as an open question, change no decision, and hand back to the package skill.
 
+## Changes from the board
+
+When the `continue` entry skill hands over an idea with the board's requested changes (the notes of the latest `board-outcome` entry, after it moved the idea from `needs-changes` or a reopened `approved` or `rejected` to `clarifying`), work on them before the rest of the frontier:
+
+1. **Map each change** to the categories it touches (for example "giảm chi phí thử nghiệm" touches M and the pilot design in D; "đo thêm tỷ lệ trả hàng" touches C). Set each such category to `partial` where it was `clear`. A change records nothing in the requirement by itself: it is the board's request, not the user's answer.
+2. **Contradictions first.** When a change asks for the opposite of a recorded decision (for example the board wants all stores at once while the decision says three pilot stores), handle it by "Contradictions": show the earlier decision with its date and the board's request, and ask which one stands.
+3. **Owners elsewhere.** When a change needs someone else's answer (a figure from finance, a check from legal), record or update the open question with its owner and what it unblocks.
+4. **Ask the rest first.** Rank the remaining changes at impact 3 so they come before other frontier items, keep to four questions a round and the session budget, and word each question so it names what the board asked for, for example "Ban lãnh đạo muốn giảm chi phí thử nghiệm. Thu hẹp còn mấy cửa hàng?".
+5. **Back to packaging.** When readiness holds again, set `status` to `ready` and offer to package as in "Readiness"; packaging makes a new version, and the board's decision on it is recorded against that version. The earlier outcome stays in the record.
+6. **Nobody to answer**: record each change as an open question owned by the user, change no decision, and stop at the budget as usual.
+
 ## Two ideas in one
 
 An idea holds two independent problems when they affect different people or need different outcomes, and each could be approved, built and measured without the other (for example "nhắc khách quay lại mua" and "chấm công nhân viên cửa hàng" in one request).
@@ -165,7 +176,7 @@ The idea is ready to package when all of these hold:
 
 When `cynefin` is `chaotic`, do not set `ready` and do not offer to package, even when the conditions hold: the crisis comes first (see "Depth"). Offer pause instead, and write a `next_step` that names returning to the idea once the situation is stable.
 
-When ready and `status` is `clarifying`, set `status` to `ready`. When a later answer reopens a gap in a `ready` idea, set it back to `clarifying`. Do not change any other status; those transitions belong to packaging and board outcomes.
+When ready and `status` is `clarifying`, set `status` to `ready`. When a later answer reopens a gap in a `ready` idea, set it back to `clarifying`. Do not change any other status; those transitions belong to packaging (`ready` to `packaged`) and to the `continue` entry skill (presented, the board's outcomes, starting on the board's changes and reopening). Do not change `estimate_status` either: only a tech review recorded by `continue` sets it.
 
 When ready, offer through the question tool: package now (recommended), or keep refining the remaining partial points. On package, hand over to the `package` entry skill; if you cannot start it from here, tell the user in one sentence to type `/vibebiz:package`.
 
@@ -187,5 +198,6 @@ After every round, write `next_step` in `coverage.md`: one short action in the i
 - "Chọn giữa phương án cũ và câu trả lời mới về số cửa hàng thử nghiệm"
 - "Đóng gói ý tưởng thành bản trình bày và tài liệu cho đội kỹ thuật"
 - "Hỏi bộ phận kho số đơn trả hàng mỗi tháng" (when the next step waits on someone else)
+- "Sửa phần chi phí theo góp ý của ban lãnh đạo" (while working on the board's changes)
 
 The table of contents copies this text, so write it for a reader who sees nothing else.
