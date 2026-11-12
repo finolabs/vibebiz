@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>vibebiz · Tài liệu yêu cầu cho đội kỹ thuật</title>
+<!--
+  vibebiz tech requirements document. Fixed template: vibebiz writes only the
+  JSON block with id "vibebiz-data" (the idea's exports/data.json, unchanged,
+  the same data as the board deck); layout, styles and the renderer never
+  change between runs.
+
+  Layout: one section per tech.sections[] entry in a fixed order of section
+  ids: business-context, user-stories, requirements, key-entities,
+  success-criteria, assumptions (shown only when present), ai-fit,
+  non-functional, glossary, open-questions. A required section missing from
+  the data, or with no content, still shows with a "not yet clarified" label.
+  Sections whose id is not in the list follow at the end. Each section shows
+  its heading, its content blocks (section.content is a blocks array, the same
+  block types as the board deck; a plain string is shown as one paragraph), an
+  optional diagram slot (section.diagram, a brief id in diagrams[]), and every
+  figure it uses with source, period and the measured or assumed label.
+  Figures come only from numbers[] by id, written in text as {{N-01}}.
+
+  Data shape beyond the export contract is documented in board-deck.html and
+  is the same here.
+
+  Security: self-contained (no external scripts, fonts or images), strict CSP,
+  data inserted only with textContent, createTextNode and setAttribute; links
+  pass safeHref. The single exception is inline SVG, sanitized as described at
+  sanitizeSvg below. Escape every "<" in the JSON block as < so the block
+  cannot close the script tag early; SVG markup inside it is escaped the same way.
+-->
+<style>
+  :root {
+    --bg: #f7f7f5;
+    --surface: #ffffff;
+    --text: #1d1d1f;
+    --muted: #5f6368;
+    --border: #e2e2de;
+    --accent: #2f5bd3;
+    --bar-track: #e8e8e4;
+    --bar-fill: #2f5bd3;
+    --warn-bg: #fff4d6;
+    --warn-text: #7a5300;
+    --ok-bg: #e3f4ea;
+    --ok-text: #1e6b40;
+    --bad-bg: #fde6e4;
+    --bad-text: #9c2b20;
+    --info-bg: #e7eefc;
+    --info-text: #2343a0;
+    --gap-bg: #fde6e4;
+    --gap-text: #9c2b20;
+    --radius: 12px;
+    --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141416;
+      --surface: #1e1e21;
+      --text: #ececee;
+      --muted: #a2a2a8;
+      --border: #333338;
+      --accent: #8aa8ff;
+      --bar-track: #2e2e33;
+      --bar-fill: #8aa8ff;
+      --warn-bg: #3a2f12;
+      --warn-text: #f3cf7a;
+      --ok-bg: #173324;
+      --ok-text: #8fdcb0;
+      --bad-bg: #3d1c19;
+      --bad-text: #f2a39a;
+      --info-bg: #1c2747;
+      --info-text: #a9c0ff;
+      --gap-bg: #3d1c19;
+      --gap-text: #f2a39a;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  a { color: var(--accent); }
+  .muted, .meta { color: var(--muted); }
+  .meta { margin: 4px 0 0; font-size: 0.9rem; }
+  .notice {
+    margin: 12px 0 0;
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    background: var(--warn-bg);
+    color: var(--warn-text);
+    font-size: 0.9rem;
+  }
+  .notice.ok { background: var(--ok-bg); color: var(--ok-text); }
+  .notice.bad { background: var(--bad-bg); color: var(--bad-text); }
+  .badge {
+    display: inline-block;
+    padding: 1px 9px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    line-height: 1.5;
+    background: var(--info-bg);
+    color: var(--info-text);
+    white-space: nowrap;
+  }
+  .badge.ok { background: var(--ok-bg); color: var(--ok-text); }
+  .badge.warn { background: var(--warn-bg); color: var(--warn-text); }
+  .badge.gap { background: var(--gap-bg); color: var(--gap-text); white-space: normal; }
+  .missing { color: var(--bad-text); font-style: italic; }
+  .fig-inline { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .item-id, .fig-id { color: var(--muted); font-variant-numeric: tabular-nums; font-weight: 600; }
+  .text { margin: 0 0 10px; }
+  .list { margin: 0 0 10px; padding-left: 1.3em; }
+  .list li { margin: 4px 0; }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 0 0 12px; }
+  .kpi { border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; }
+  .kpi-value { font-size: 1.6rem; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.2; }
+  .kpi-caption { color: var(--muted); font-size: 0.9rem; margin: 4px 0; }
+  .chart { margin: 0 0 12px; }
+  .chart-title { font-weight: 600; margin-bottom: 6px; }
+  .bar-row { display: grid; grid-template-columns: minmax(90px, 30%) 1fr auto; gap: 8px; align-items: center; margin: 4px 0; }
+  .bar-label { font-size: 0.9rem; }
+  .bar-track { height: 12px; border-radius: 999px; background: var(--bar-track); overflow: hidden; }
+  .bar-fill { display: block; height: 100%; background: var(--bar-fill); }
+  .bar-value { font-variant-numeric: tabular-nums; font-size: 0.9rem; text-align: right; }
+  .chart-source, .table-source { font-size: 0.8rem; color: var(--muted); margin-top: 6px; }
+  .chart-source.missing { color: var(--bad-text); }
+  .table-wrap { overflow-x: auto; margin: 0 0 12px; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+  th, td { text-align: left; vertical-align: top; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  th { font-weight: 600; color: var(--muted); }
+  .diagram { margin: 8px 0 12px; }
+  .diagram svg { display: block; max-width: 100%; height: auto; }
+  .diagram figcaption { font-size: 0.85rem; color: var(--muted); margin-top: 6px; }
+  .diagram.none { border: 1px dashed var(--border); border-radius: var(--radius); padding: 10px 12px; }
+  .no-diagram { margin: 0 0 6px; font-size: 0.85rem; color: var(--warn-text); }
+  .stories { display: grid; gap: 12px; margin: 0 0 12px; }
+  .story { border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; }
+  .story-title { font-size: 1rem; margin: 0 0 6px; }
+  .story-why { margin: 0 0 6px; color: var(--muted); }
+  .scenarios { margin: 0; padding-left: 1.3em; }
+  .scenarios li { margin: 4px 0; }
+  .defs { margin: 0 0 12px; }
+  .defs dt { font-weight: 600; margin-top: 8px; }
+  .defs dd { margin: 2px 0 0; }
+  .q-group { font-size: 0.95rem; margin: 12px 0 4px; }
+  .q-group.blocking { color: var(--bad-text); }
+  .gap-line { margin: 0 0 10px; }
+  .frameworks { font-size: 0.85rem; margin-top: 10px; }
+  .frameworks-title { color: var(--muted); }
+  .based-on { font-size: 0.75rem; color: var(--muted); margin-top: 6px; }
+  .fig-notes { margin-top: 12px; padding-top: 8px; border-top: 1px solid var(--border); font-size: 0.8rem; }
+  .fig-notes-title { color: var(--muted); font-weight: 600; margin-bottom: 2px; }
+  .fig-notes ul { margin: 0; padding: 0; list-style: none; }
+  .fig-notes li { margin: 3px 0; }
+  .links-box { margin-top: 10px; font-size: 0.9rem; }
+  .links-title { color: var(--muted); }
+  .links { display: inline; margin: 0; padding: 0; list-style: none; }
+  .links li { display: inline; margin-right: 12px; }
+  .gaps-list h3 { font-size: 1rem; margin: 16px 0 6px; }
+  footer { margin-top: 32px; font-size: 0.8rem; color: var(--muted); }
+  @media print {
+    :root {
+      --bg: #ffffff; --surface: #ffffff; --text: #000000; --muted: #444444; --border: #cccccc;
+      --accent: #1a3fa8; --bar-track: #e6e6e6; --bar-fill: #1a3fa8;
+      --warn-bg: #fff4d6; --warn-text: #5c3e00; --ok-bg: #e3f4ea; --ok-text: #14502f;
+      --bad-bg: #fde6e4; --bad-text: #7d1f16; --info-bg: #e7eefc; --info-text: #1a3080;
+      --gap-bg: #fde6e4; --gap-text: #7d1f16;
+    }
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    a { color: inherit; }
+  }
+  main { max-width: 860px; margin: 0 auto; padding: 24px 16px 48px; }
+  .doc-head h1 { font-size: 1.6rem; margin: 0 0 4px; }
+  .doc-head .idea-title { margin: 0; font-size: 1.05rem; }
+  .toc { margin: 20px 0 0; padding: 12px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+  .toc-title { font-weight: 600; font-size: 0.9rem; color: var(--muted); }
+  .toc ol { margin: 6px 0 0; padding-left: 1.3em; }
+  .doc-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    margin-top: 16px;
+  }
+  .doc-section h2 { font-size: 1.2rem; margin: 0 0 10px; }
+  .section-gaps { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+  .snapshot { margin-top: 16px; font-size: 0.9rem; }
+  @media (max-width: 600px) {
+    main { padding: 16px 10px 32px; }
+    .doc-section { padding: 16px 14px; }
+    .bar-row { grid-template-columns: 1fr auto; }
+    .bar-track { grid-column: 1 / -1; grid-row: 2; }
+  }
+  @media print {
+    @page { size: A4; margin: 15mm; }
+    main { max-width: none; padding: 0; }
+    .toc { display: none; }
+    .doc-section { border: none; border-radius: 0; padding: 0; margin-top: 18px; }
+    .story, .kpi, .chart, .diagram, table, .fig-notes { break-inside: avoid; page-break-inside: avoid; }
+    .doc-section h2 { break-after: avoid; page-break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header class="doc-head" id="doc-head">
+    <h1 data-label="prdTitle">Tài liệu yêu cầu cho đội kỹ thuật</h1>
+    <p class="idea-title" id="idea-title"></p>
+  </header>
+  <nav class="toc" aria-labelledby="toc-title">
+    <div class="toc-title" id="toc-title" data-label="contents">Mục lục</div>
+    <ol id="toc"></ol>
+  </nav>
+  <div id="sections"></div>
+  <section class="doc-section" id="gaps"></section>
+  <p class="snapshot"><strong data-label="snapshot">Bản yêu cầu dùng được với Spec Kit</strong>: <span id="snapshot-link"></span></p>
+  <footer data-label="footer">Tài liệu do vibebiz dựng từ hồ sơ ý tưởng. Mọi số liệu lấy từ một bảng số liệu chung.</footer>
+</main>
+
+<script type="application/json" id="vibebiz-data">
+{
+  "idea": {
+    "id": "001",
+    "title": "Nhắc khách quay lại cửa hàng qua ứng dụng chat",
+    "language": "vi",
+    "version": "2026-11-12",
+    "draft": false,
+    "estimate_status": "not-tech-reviewed"
+  },
+  "board": {
+    "slides": [
+      {
+        "n": 1,
+        "title": "Đề nghị duyệt thí điểm 12 tuần tại 6 cửa hàng, ngân sách {{N-03}}",
+        "message": "Ban lãnh đạo quyết định trước 30/11/2026 để kịp mùa mua sắm Tết.",
+        "source_fields": [
+          "plan.Decision requested",
+          "plan.Size and scenarios"
+        ],
+        "blocks": [
+          {
+            "type": "figures",
+            "items": [
+              {
+                "ref": "N-03",
+                "caption": "Chi phí bản đầu tiên"
+              },
+              {
+                "ref": "N-07",
+                "caption": "Cửa hàng thí điểm"
+              },
+              {
+                "ref": "N-08",
+                "caption": "Thời gian thí điểm"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": "Nếu được duyệt, đội kỹ thuật bắt đầu từ tháng 12/2026; điểm quyết định mở rộng nằm ở tuần thứ 12."
+          }
+        ],
+        "diagram": null,
+        "frameworks": [
+          {
+            "id": "build-buy-partner",
+            "name": "Tự làm, mua hay hợp tác",
+            "result": "chọn mua công cụ nhắn tin có sẵn"
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "title": "Bốn trên năm khách mua lần đầu không quay lại trong 90 ngày",
+        "message": "Cửa hàng không có cách nhắc khách cũ, nên doanh thu từ khách quay lại đứng yên.",
+        "source_fields": [
+          "spec.Problem & Why"
+        ],
+        "blocks": [
+          {
+            "type": "text",
+            "text": "Tỷ lệ khách quay lại trong 90 ngày chỉ đạt {{N-01}}. Mỗi lần khách cũ quay lại mua trung bình {{N-09}}."
+          },
+          {
+            "type": "list",
+            "items": [
+              "Nhân viên không có danh sách khách cần nhắc.",
+              "Tin nhắn khuyến mãi gửi đồng loạt, không theo lịch sử mua."
+            ]
+          }
+        ],
+        "diagram": null,
+        "frameworks": [
+          {
+            "id": "five-whys",
+            "name": "5 Whys"
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "title": "Mục tiêu: nâng tỷ lệ khách quay lại từ 18% lên 24% sau 12 tuần",
+        "message": "Chỉ một chỉ số chính, kèm một chỉ số bảo vệ trải nghiệm khách.",
+        "source_fields": [
+          "spec.Outcome",
+          "spec.Success Criteria"
+        ],
+        "blocks": [
+          {
+            "type": "figures",
+            "items": [
+              {
+                "ref": "N-01",
+                "caption": "Hiện nay"
+              },
+              {
+                "ref": "N-02",
+                "caption": "Mục tiêu"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": "Chỉ số bảo vệ: tỷ lệ khách hủy nhận tin \u003c {{N-10}} mỗi tháng; vượt ngưỡng này thì dừng gửi và xem lại nội dung."
+          }
+        ],
+        "diagram": "03-driver-tree",
+        "frameworks": [
+          {
+            "id": "driver-tree",
+            "name": "Cây chỉ số"
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "title": "Mua công cụ nhắn tin có sẵn rẻ và nhanh hơn tự xây",
+        "message": "Bốn phương án đã được so sánh trên cùng tiêu chí.",
+        "source_fields": [
+          "spec.Alternatives"
+        ],
+        "blocks": [
+          {
+            "type": "table",
+            "columns": [
+              "Phương án",
+              "Ưu điểm",
+              "Nhược điểm"
+            ],
+            "rows": [
+              [
+                "Giữ nguyên",
+                "Không tốn chi phí",
+                "Tỷ lệ quay lại tiếp tục đứng yên"
+              ],
+              [
+                "Sửa quy trình: nhân viên tự gọi điện",
+                "Làm được ngay",
+                "Tốn giờ công, khó đo"
+              ],
+              [
+                "Mua công cụ có sẵn",
+                "Triển khai trong 4 tuần",
+                "Phí thuê hằng tháng"
+              ],
+              [
+                "Tự xây",
+                "Tùy biến hoàn toàn",
+                "Mất 4 đến 6 tháng"
+              ]
+            ]
+          }
+        ],
+        "diagram": null,
+        "frameworks": []
+      },
+      {
+        "n": 5,
+        "title": "Khách nhận lời nhắc đúng lúc, nhân viên biết ai cần chăm sóc",
+        "message": "Hành trình của khách trước và sau khi có lời nhắc.",
+        "source_fields": [
+          "spec.User Scenarios & Testing",
+          "diagrams/05-journey.brief.md"
+        ],
+        "blocks": [
+          {
+            "type": "text",
+            "text": "Sau 30 ngày kể từ lần mua đầu, khách nhận một tin nhắn gợi ý sản phẩm hợp với món đã mua."
+          }
+        ],
+        "diagram": "05-journey",
+        "frameworks": [
+          {
+            "id": "journey-map",
+            "name": "Bản đồ hành trình khách hàng"
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "title": "Bản đầu tiên chỉ nhắc khách mua lần đầu",
+        "message": "Phần mở rộng làm sau khi thí điểm đạt mục tiêu.",
+        "source_fields": [
+          "spec.Requirements"
+        ],
+        "blocks": [
+          {
+            "type": "list",
+            "items": [
+              "Có trong bản đầu: nhắc sau 30 ngày, gợi ý theo món đã mua, nhân viên xem danh sách khách.",
+              "Làm sau: ưu đãi sinh nhật, nhắc theo mùa."
+            ]
+          }
+        ],
+        "diagram": null,
+        "frameworks": [
+          {
+            "id": "moscow",
+            "name": "MoSCoW"
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "title": "Hoàn vốn trong năm đầu ở cả kịch bản thấp",
+        "message": "Lợi nhuận gộp tăng thêm mỗi năm theo ba kịch bản.",
+        "source_fields": [
+          "spec.Cost & Risk",
+          "plan.Size and scenarios"
+        ],
+        "blocks": [
+          {
+            "type": "chart",
+            "kind": "bar",
+            "title": "Lợi nhuận gộp tăng thêm mỗi năm",
+            "source": "Ước tính sơ bộ trong kế hoạch",
+            "items": [
+              {
+                "ref": "N-04",
+                "caption": "Thấp"
+              },
+              {
+                "ref": "N-05",
+                "caption": "Cơ sở"
+              },
+              {
+                "ref": "N-06",
+                "caption": "Cao"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": "Chi phí bản đầu {{N-03}}; quy mô dự án: vừa (M)."
+          }
+        ],
+        "diagram": null,
+        "frameworks": []
+      },
+      {
+        "n": 8,
+        "title": "Rủi ro lớn nhất là khách thấy phiền và hủy nhận tin",
+        "message": "Điều kiện dừng được đặt trước khi bắt đầu.",
+        "source_fields": [
+          "spec.Cost & Risk",
+          "decisions.md"
+        ],
+        "blocks": [
+          {
+            "type": "list",
+            "items": [
+              "Khách thấy phiền: giới hạn một tin mỗi tháng.",
+              "Dữ liệu số điện thoại thiếu: kiểm tra trước khi thí điểm.",
+              "Dừng khi tỷ lệ hủy nhận tin vượt {{N-10}} hai tháng liền."
+            ]
+          }
+        ],
+        "diagram": null,
+        "frameworks": [
+          {
+            "id": "pre-mortem",
+            "name": "Pre-mortem"
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "title": "Thí điểm 12 tuần, so với 6 cửa hàng đối chứng",
+        "message": "Hai điểm quyết định: tuần 6 và tuần 12.",
+        "source_fields": [
+          "plan.Pilot and rollout"
+        ],
+        "blocks": [
+          {
+            "type": "table",
+            "columns": [
+              "Mốc",
+              "Việc",
+              "Quyết định"
+            ],
+            "rows": [
+              [
+                "Tuần 1 đến 4",
+                "Cài đặt công cụ, hướng dẫn nhân viên",
+                ""
+              ],
+              [
+                "Tuần 6",
+                "Xem tỷ lệ hủy nhận tin",
+                "Tiếp tục hoặc chỉnh nội dung"
+              ],
+              [
+                "Tuần 12",
+                "So tỷ lệ quay lại với cửa hàng đối chứng",
+                "Mở rộng hoặc dừng"
+              ]
+            ]
+          }
+        ],
+        "diagram": null,
+        "frameworks": [
+          {
+            "id": "test-and-control",
+            "name": "Thí điểm có nhóm đối chứng"
+          }
+        ]
+      },
+      {
+        "n": "appendix",
+        "title": "Giả định cần kiểm chứng và câu hỏi còn mở",
+        "message": "Những điều chưa chắc chắn được ghi rõ để theo dõi.",
+        "source_fields": [
+          "assumptions.md",
+          "open-questions.md"
+        ],
+        "blocks": [
+          {
+            "type": "list",
+            "items": [
+              {
+                "id": "A-001",
+                "text": "Khách đồng ý nhận tin nhắn qua ứng dụng chat."
+              },
+              {
+                "id": "A-002",
+                "text": "Ít nhất 70% khách có số điện thoại đúng trong hệ thống."
+              }
+            ]
+          },
+          {
+            "type": "questions",
+            "items": [
+              {
+                "id": "Q-001",
+                "text": "Công cụ nhắn tin có nối được với phần mềm bán hàng hiện tại không?",
+                "owner": "Trưởng nhóm kỹ thuật",
+                "blocking": true
+              },
+              {
+                "id": "Q-002",
+                "text": "Nội dung tin nhắn do ai duyệt?",
+                "owner": "Trưởng phòng marketing",
+                "blocking": false
+              }
+            ]
+          }
+        ],
+        "diagram": null,
+        "frameworks": [
+          {
+            "id": "assumption-map",
+            "name": "Bản đồ giả định"
+          }
+        ]
+      }
+    ]
+  },
+  "tech": {
+    "sections": [
+      {
+        "id": "business-context",
+        "heading": "Bối cảnh kinh doanh",
+        "source_fields": [
+          "spec.Problem & Why",
+          "spec.Outcome"
+        ],
+        "content": [
+          {
+            "type": "text",
+            "text": "Tỷ lệ khách quay lại trong 90 ngày là {{N-01}}; mục tiêu là {{N-02}} sau thí điểm 12 tuần tại {{N-07}}."
+          }
+        ]
+      },
+      {
+        "id": "user-stories",
+        "heading": "Câu chuyện người dùng",
+        "source_fields": [
+          "spec.User Scenarios & Testing"
+        ],
+        "content": [
+          {
+            "type": "stories",
+            "items": [
+              {
+                "priority": "P1",
+                "title": "Khách mua lần đầu nhận lời nhắc sau 30 ngày",
+                "why": "Đây là nhóm khách dễ mất nhất.",
+                "scenarios": [
+                  {
+                    "given": "khách mua lần đầu và đồng ý nhận tin",
+                    "when": "đủ 30 ngày chưa quay lại",
+                    "then": "khách nhận một tin gợi ý sản phẩm hợp với món đã mua"
+                  },
+                  {
+                    "given": "khách đã hủy nhận tin",
+                    "when": "đủ 30 ngày",
+                    "then": "không gửi tin nào"
+                  }
+                ]
+              },
+              {
+                "priority": "P2",
+                "title": "Nhân viên xem danh sách khách cần chăm sóc",
+                "scenarios": [
+                  {
+                    "given": "nhân viên mở danh sách đầu ca",
+                    "when": "có khách sắp đủ 30 ngày",
+                    "then": null
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "requirements",
+        "heading": "Yêu cầu",
+        "source_fields": [
+          "spec.Requirements"
+        ],
+        "content": [
+          {
+            "type": "list",
+            "items": [
+              {
+                "id": "FR-001",
+                "text": "Hệ thống phải gửi tối đa một tin nhắc mỗi tháng cho mỗi khách."
+              },
+              {
+                "id": "FR-002",
+                "text": "Hệ thống phải bỏ qua khách đã hủy nhận tin."
+              },
+              {
+                "id": "FR-003",
+                "text": "Nhân viên phải xem được danh sách khách cần chăm sóc của cửa hàng mình."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "key-entities",
+        "heading": "Dữ liệu chính",
+        "source_fields": [
+          "spec.Key Entities"
+        ],
+        "content": [
+          {
+            "type": "defs",
+            "items": [
+              {
+                "term": "Khách hàng",
+                "meaning": "người đã mua ít nhất một lần, có số điện thoại và trạng thái đồng ý nhận tin"
+              },
+              {
+                "term": "Lần mua",
+                "meaning": "ngày mua, cửa hàng, các món đã mua"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "success-criteria",
+        "heading": "Tiêu chí thành công",
+        "source_fields": [
+          "spec.Success Criteria"
+        ],
+        "content": [
+          {
+            "type": "list",
+            "items": [
+              {
+                "id": "SC-001",
+                "text": "Tỷ lệ khách quay lại trong 90 ngày tại cửa hàng thí điểm đạt {{N-02}}, so với cửa hàng đối chứng."
+              },
+              {
+                "id": "SC-002",
+                "text": "Tỷ lệ khách hủy nhận tin dưới {{N-10}} mỗi tháng."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ai-fit",
+        "heading": "Mức phù hợp của AI",
+        "source_fields": [
+          "spec.AI-fit"
+        ],
+        "content": [
+          {
+            "type": "text",
+            "text": "Lời nhắc theo lịch là tự động hóa, không cần AI. Gợi ý sản phẩm dùng quy tắc theo nhóm hàng trong bản đầu tiên."
+          }
+        ],
+        "diagram": null
+      },
+      {
+        "id": "non-functional",
+        "heading": "Yêu cầu vận hành",
+        "source_fields": [
+          "spec.Requirements"
+        ],
+        "content": [
+          {
+            "type": "list",
+            "items": [
+              "Khoảng 40 nhân viên dùng trên điện thoại tại 6 cửa hàng."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "glossary",
+        "heading": "Thuật ngữ",
+        "source_fields": [
+          "glossary.md"
+        ],
+        "content": [
+          {
+            "type": "defs",
+            "items": [
+              {
+                "term": "Khách quay lại",
+                "meaning": "khách mua thêm ít nhất một lần trong 90 ngày sau lần mua trước"
+              },
+              {
+                "term": "Cửa hàng đối chứng",
+                "meaning": "cửa hàng không dùng lời nhắc, dùng để so sánh kết quả"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "open-questions",
+        "heading": "Câu hỏi mở",
+        "source_fields": [
+          "open-questions.md"
+        ],
+        "content": [
+          {
+            "type": "questions",
+            "items": [
+              {
+                "id": "Q-001",
+                "text": "Công cụ nhắn tin có nối được với phần mềm bán hàng hiện tại không?",
+                "owner": "Trưởng nhóm kỹ thuật",
+                "blocking": true
+              },
+              {
+                "id": "Q-002",
+                "text": "Nội dung tin nhắn do ai duyệt?",
+                "owner": "Trưởng phòng marketing",
+                "blocking": false
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "numbers": [
+    {
+      "id": "N-01",
+      "value": 18,
+      "unit": "%",
+      "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+      "period": "01/2026 đến 06/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-02",
+      "value": 24,
+      "unit": "%",
+      "source": "Mục tiêu do giám đốc bán hàng đặt",
+      "period": "12 tuần thí điểm",
+      "label": "assumed"
+    },
+    {
+      "id": "N-03",
+      "value": 180000000,
+      "unit": "đ",
+      "source": "Ước tính sơ bộ trong kế hoạch",
+      "period": "12 tuần thí điểm",
+      "label": "assumed",
+      "estimate": true
+    },
+    {
+      "id": "N-04",
+      "value": 120000000,
+      "unit": "đ",
+      "source": "Ước tính sơ bộ trong kế hoạch",
+      "period": "năm đầu sau thí điểm",
+      "label": "assumed",
+      "estimate": true
+    },
+    {
+      "id": "N-05",
+      "value": 350000000,
+      "unit": "đ",
+      "source": "Ước tính sơ bộ trong kế hoạch",
+      "period": "năm đầu sau thí điểm",
+      "label": "assumed",
+      "estimate": true
+    },
+    {
+      "id": "N-06",
+      "value": 600000000,
+      "unit": "đ",
+      "source": "Ước tính sơ bộ trong kế hoạch",
+      "period": "năm đầu sau thí điểm",
+      "label": "assumed",
+      "estimate": true
+    },
+    {
+      "id": "N-07",
+      "value": 6,
+      "unit": "cửa hàng",
+      "source": "Kế hoạch thí điểm",
+      "period": "12 tuần thí điểm",
+      "label": "assumed"
+    },
+    {
+      "id": "N-08",
+      "value": 12,
+      "unit": "tuần",
+      "source": "Kế hoạch thí điểm",
+      "period": "12/2026 đến 02/2027",
+      "label": "assumed"
+    },
+    {
+      "id": "N-09",
+      "value": 650000,
+      "unit": "đ",
+      "source": "Báo cáo bán hàng nội bộ (dữ liệu hư cấu)",
+      "period": "01/2026 đến 06/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-10",
+      "value": 2,
+      "unit": "%",
+      "source": "Ngưỡng do giám đốc bán hàng đặt",
+      "period": "mỗi tháng",
+      "label": "assumed"
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "03-driver-tree",
+      "message": "Doanh thu từ khách cũ tăng nhờ nhiều khách quay lại hơn",
+      "type": "tree",
+      "svg": "\u003csvg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 220\" font-family=\"system-ui, sans-serif\" font-size=\"14\">\u003crect x=\"220\" y=\"10\" width=\"200\" height=\"50\" rx=\"8\" fill=\"#e7eefc\" stroke=\"#2f5bd3\"/>\u003ctext x=\"320\" y=\"40\" text-anchor=\"middle\" fill=\"#1d1d1f\">Doanh thu từ khách cũ\u003c/text>\u003cpath d=\"M320 60 V90 M110 90 H530 M110 90 V120 M320 90 V120 M530 90 V120\" stroke=\"#5f6368\" fill=\"none\"/>\u003crect x=\"20\" y=\"120\" width=\"180\" height=\"60\" rx=\"8\" fill=\"#ffffff\" stroke=\"#5f6368\"/>\u003ctext x=\"110\" y=\"148\" text-anchor=\"middle\" fill=\"#1d1d1f\">Số khách quay lại\u003c/text>\u003ctext x=\"110\" y=\"168\" text-anchor=\"middle\" fill=\"#5f6368\">18% lên 24%\u003c/text>\u003crect x=\"230\" y=\"120\" width=\"180\" height=\"60\" rx=\"8\" fill=\"#ffffff\" stroke=\"#5f6368\"/>\u003ctext x=\"320\" y=\"148\" text-anchor=\"middle\" fill=\"#1d1d1f\">Số lần mua mỗi khách\u003c/text>\u003ctext x=\"320\" y=\"168\" text-anchor=\"middle\" fill=\"#5f6368\">giữ nguyên\u003c/text>\u003crect x=\"440\" y=\"120\" width=\"180\" height=\"60\" rx=\"8\" fill=\"#ffffff\" stroke=\"#5f6368\"/>\u003ctext x=\"530\" y=\"148\" text-anchor=\"middle\" fill=\"#1d1d1f\">Giá trị mỗi lần mua\u003c/text>\u003ctext x=\"530\" y=\"168\" text-anchor=\"middle\" fill=\"#5f6368\">giữ nguyên\u003c/text>\u003c/svg>",
+      "fallback": {
+        "columns": [
+          "Chỉ số",
+          "Hiện nay",
+          "Mục tiêu"
+        ],
+        "rows": [
+          [
+            "Số khách quay lại",
+            "{{N-01}}",
+            "{{N-02}}"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "05-journey",
+      "message": "Trước: khách mua xong là hết liên lạc. Sau: khách nhận lời nhắc ở ngày thứ 30",
+      "type": "swimlane",
+      "svg": null,
+      "fallback": {
+        "columns": [
+          "Bước",
+          "Trước",
+          "Sau"
+        ],
+        "rows": [
+          [
+            "Mua lần đầu",
+            "Khách mua và về",
+            "Khách mua và đồng ý nhận tin"
+          ],
+          [
+            "Ngày thứ 30",
+            "Không có gì xảy ra",
+            "Khách nhận tin gợi ý sản phẩm"
+          ],
+          [
+            "Quay lại",
+            "Tùy khách",
+            "Nhân viên biết khách đến vì lời nhắc"
+          ]
+        ]
+      }
+    }
+  ],
+  "gaps": [
+    {
+      "field": "spec.Requirements: giờ cao điểm dùng hệ thống",
+      "section": "non-functional"
+    },
+    {
+      "field": "plan.Pilot and rollout: cách chọn cửa hàng đối chứng",
+      "slide": 9
+    }
+  ],
+  "links": {
+    "board_artifact": null,
+    "tech_artifact": null,
+    "slides": null,
+    "docs": null
+  }
+}
+</script>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---- Shared renderer (identical in board-deck.html and tech-prd.html) ----
+
+  // Labels. Vietnamese is the default and matches the static text in the page.
+  // When the idea's language is not Vietnamese, the renderer starts from the
+  // built-in English labels and overrides any key that data.json supplies in an
+  // optional top-level "labels" object ({ "<key>": "<text>" }, same keys as
+  // below), then rewrites every static element marked data-label="<key>".
+  // For Vietnamese ideas "labels" is ignored, so the static text never drifts.
+  var LABELS = {
+    vi: {
+      readError: "Không đọc được dữ liệu của tài liệu này. Gõ /vibebiz:package để vibebiz đóng gói lại.",
+      version: "Phiên bản {date}",
+      draft: "Bản nháp: một số mục chưa làm rõ và được đánh dấu ngay tại chỗ.",
+      draftShort: "Bản nháp",
+      estimatePending: "Các con số ước tính chưa qua đội kỹ thuật xem lại.",
+      estimateDone: "Các con số ước tính đã qua đội kỹ thuật xem lại.",
+      gap: "Chưa làm rõ",
+      gapField: "Chưa làm rõ: {field}",
+      notTechReviewed: "Chưa qua đội kỹ thuật",
+      measured: "Số đo thực tế",
+      assumed: "Giả định",
+      source: "Nguồn",
+      period: "Kỳ",
+      noSource: "chưa ghi nguồn",
+      noPeriod: "chưa ghi kỳ",
+      noLabel: "chưa ghi đo thực tế hay giả định",
+      missingFigure: "thiếu số liệu {id}",
+      figures: "Số liệu dùng ở đây",
+      chartNoSource: "Biểu đồ này chưa ghi nguồn.",
+      noDiagram: "Không có sơ đồ. Nội dung được trình bày dạng bảng.",
+      frameworks: "Khung phân tích đã dùng",
+      basedOn: "Dựa trên",
+      given: "Cho trước",
+      when: "Khi",
+      then: "Thì",
+      blocking: "Câu hỏi chặn tiến độ",
+      nonBlocking: "Câu hỏi không chặn tiến độ",
+      owner: "Người trả lời",
+      noneBlocking: "Không có.",
+      links: "Liên kết",
+      link_board_artifact: "Bản trình bày cho ban lãnh đạo (Artifact)",
+      link_tech_artifact: "Tài liệu cho đội kỹ thuật (Artifact)",
+      link_slides: "Bản trình bày trên Google Slides",
+      link_docs: "Tài liệu trên Google Docs",
+      gapsTitle: "Các mục chưa làm rõ",
+      noGaps: "Không còn mục nào chưa làm rõ.",
+      page: "Trang {n}",
+      appendix: "Phụ lục",
+      slide1: "Quyết định cần duyệt",
+      slide2: "Vấn đề và chi phí hiện nay",
+      slide3: "Kết quả mong đợi",
+      slide4: "Các phương án đã cân nhắc",
+      slide5: "Giải pháp đề xuất",
+      slide6: "Phạm vi bản đầu tiên",
+      slide7: "Chi phí, nguồn lực và lợi ích",
+      slide8: "Rủi ro và điều kiện dừng",
+      slide9: "Lộ trình thí điểm",
+      slideAppendix: "Giả định và câu hỏi mở",
+      deckTitle: "Trình ban lãnh đạo",
+      prdTitle: "Tài liệu yêu cầu cho đội kỹ thuật",
+      contents: "Mục lục",
+      snapshot: "Bản yêu cầu dùng được với Spec Kit",
+      snapshotNote: "Tệp spec.md nằm cùng thư mục với tài liệu này.",
+      sec_business_context: "Bối cảnh kinh doanh",
+      sec_user_stories: "Câu chuyện người dùng",
+      sec_requirements: "Yêu cầu",
+      sec_key_entities: "Dữ liệu chính",
+      sec_success_criteria: "Tiêu chí thành công",
+      sec_ai_fit: "Mức phù hợp của AI",
+      sec_non_functional: "Yêu cầu vận hành",
+      sec_glossary: "Thuật ngữ",
+      sec_open_questions: "Câu hỏi mở",
+      sec_assumptions: "Giả định",
+      footer: "Tài liệu do vibebiz dựng từ hồ sơ ý tưởng. Mọi số liệu lấy từ một bảng số liệu chung."
+    },
+    en: {
+      readError: "This document's data could not be read. Type /vibebiz:package to package it again.",
+      version: "Version {date}",
+      draft: "Draft: some items are not yet clarified and are marked where they belong.",
+      draftShort: "Draft",
+      estimatePending: "Estimates have not been reviewed by the tech team.",
+      estimateDone: "Estimates have been reviewed by the tech team.",
+      gap: "Not yet clarified",
+      gapField: "Not yet clarified: {field}",
+      notTechReviewed: "Not tech-reviewed",
+      measured: "Measured",
+      assumed: "Assumed",
+      source: "Source",
+      period: "Period",
+      noSource: "no source recorded",
+      noPeriod: "no period recorded",
+      noLabel: "not marked measured or assumed",
+      missingFigure: "missing figure {id}",
+      figures: "Figures used here",
+      chartNoSource: "This chart has no source recorded.",
+      noDiagram: "No diagram. The content is shown as a table.",
+      frameworks: "Frameworks applied",
+      basedOn: "Based on",
+      given: "Given",
+      when: "When",
+      then: "Then",
+      blocking: "Blocking questions",
+      nonBlocking: "Non-blocking questions",
+      owner: "Owner",
+      noneBlocking: "None.",
+      links: "Links",
+      link_board_artifact: "Board deck (Artifact)",
+      link_tech_artifact: "Tech document (Artifact)",
+      link_slides: "Google Slides deck",
+      link_docs: "Google Docs document",
+      gapsTitle: "Items not yet clarified",
+      noGaps: "Nothing is left unclarified.",
+      page: "Slide {n}",
+      appendix: "Appendix",
+      slide1: "Decision requested",
+      slide2: "The problem and what it costs today",
+      slide3: "Expected outcome",
+      slide4: "Alternatives considered",
+      slide5: "Proposed solution",
+      slide6: "First-release scope",
+      slide7: "Cost, resources and return",
+      slide8: "Risks and kill criteria",
+      slide9: "Pilot roadmap",
+      slideAppendix: "Assumptions and open questions",
+      deckTitle: "Board presentation",
+      prdTitle: "Requirements for the tech team",
+      contents: "Contents",
+      snapshot: "Spec Kit-compatible requirement file",
+      snapshotNote: "The file spec.md sits in the same folder as this document.",
+      sec_business_context: "Business context",
+      sec_user_stories: "User stories",
+      sec_requirements: "Requirements",
+      sec_key_entities: "Key entities",
+      sec_success_criteria: "Success criteria",
+      sec_ai_fit: "AI fit",
+      sec_non_functional: "Non-functional needs",
+      sec_glossary: "Glossary",
+      sec_open_questions: "Open questions",
+      sec_assumptions: "Assumptions",
+      footer: "Built by vibebiz from the idea folder. Every figure comes from one shared figures table."
+    }
+  };
+
+  var SVG_NS = "http://www.w3.org/2000/svg";
+  var hasOwn = Object.prototype.hasOwnProperty;
+
+  function el(tag, cls, text) {
+    var node = document.createElement(tag);
+    if (cls) node.className = cls;
+    if (text !== undefined && text !== null) node.textContent = String(text);
+    return node;
+  }
+
+  function arr(value) { return Array.isArray(value) ? value : []; }
+  function str(value) { return typeof value === "string" ? value : (typeof value === "number" ? String(value) : ""); }
+
+  // Only relative workspace paths and https links are rendered as links.
+  function safeHref(href) {
+    if (typeof href !== "string" || href === "") return null;
+    // Reject whitespace and control characters, which browsers strip before reading the scheme.
+    if (/[\u0000-\u0020\u007f\\]/.test(href)) return null;
+    if (/^https:\/\/[^\/]/i.test(href)) return href;
+    // Otherwise only a relative workspace path: no scheme, not protocol-relative, not absolute.
+    if (/^[A-Za-z0-9._-][A-Za-z0-9._\/-]*$/.test(href) && !/^[a-z][a-z0-9+.-]*:/i.test(href)) return href;
+    return null;
+  }
+
+  function link(label, href) {
+    var safe = safeHref(href);
+    if (!safe) return el("span", null, label);
+    var a = el("a", null, label);
+    a.setAttribute("href", safe);
+    if (/^https:/i.test(safe)) { a.setAttribute("target", "_blank"); a.setAttribute("rel", "noopener noreferrer"); }
+    return a;
+  }
+
+  function formatDate(iso) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})(-\d+)?$/.exec(iso || "");
+    return m ? m[3] + "/" + m[2] + "/" + m[1] + (m[4] || "") : (iso || "");
+  }
+
+  // ---- Data ----
+  var data = null;
+  var readError = false;
+  try {
+    data = JSON.parse(document.getElementById("vibebiz-data").textContent);
+  } catch (e) {
+    readError = true;
+  }
+  if (!data || typeof data !== "object") { data = {}; readError = true; }
+
+  var idea = data.idea && typeof data.idea === "object" ? data.idea : {};
+  var lang = /^[A-Za-z]{2,3}(-[A-Za-z0-9]{1,8})*$/.test(str(idea.language)) ? idea.language : "vi";
+  var isVi = lang.toLowerCase() === "vi" || lang.toLowerCase().indexOf("vi-") === 0;
+  var L = {};
+  (function () {
+    var base = isVi ? LABELS.vi : LABELS.en;
+    var k;
+    for (k in base) if (hasOwn.call(base, k)) L[k] = base[k];
+    if (!isVi && data.labels && typeof data.labels === "object") {
+      for (k in data.labels) {
+        if (hasOwn.call(data.labels, k) && hasOwn.call(base, k) && typeof data.labels[k] === "string") L[k] = data.labels[k];
+      }
+    }
+  })();
+  document.documentElement.setAttribute("lang", lang);
+  if (!isVi) {
+    arr(Array.prototype.slice.call(document.querySelectorAll("[data-label]"))).forEach(function (node) {
+      var key = node.getAttribute("data-label");
+      if (hasOwn.call(L, key)) node.textContent = L[key];
+    });
+  }
+
+  function t(key, vars) {
+    var s = hasOwn.call(L, key) ? L[key] : key;
+    return s.replace(/\{(\w+)\}/g, function (m, k) {
+      return vars && vars[k] !== undefined && vars[k] !== null ? String(vars[k]) : m;
+    });
+  }
+
+  var estimatePending = idea.estimate_status !== "tech-reviewed";
+
+  var FIG = {};
+  arr(data.numbers).forEach(function (f) {
+    if (f && typeof f.id === "string") FIG[f.id] = f;
+  });
+
+  var DIAG = {};
+  arr(data.diagrams).forEach(function (d) {
+    if (d && typeof d.id === "string") DIAG[d.id] = d;
+  });
+
+  // gaps[]: strings (the field) or { field, slide, section }.
+  var GAPS = arr(data.gaps).map(function (g) {
+    return typeof g === "string" ? { field: g } : (g && typeof g === "object" ? g : null);
+  }).filter(Boolean);
+
+  function gapsFor(key, value) {
+    return GAPS.filter(function (g) { return g[key] !== undefined && String(g[key]) === String(value); });
+  }
+
+  // ---- Figures: always looked up by id in numbers[] ----
+  function formatValue(f) {
+    var v = f.value;
+    var text;
+    if (typeof v === "number" && isFinite(v)) {
+      try { text = v.toLocaleString(isVi ? "vi-VN" : lang); } catch (e) { text = String(v); }
+    } else {
+      text = str(v);
+    }
+    var unit = str(f.unit);
+    if (!unit) return text;
+    return unit === "%" ? text + unit : text + " " + unit;
+  }
+
+  function isEstimate(f) { return f && f.estimate === true && estimatePending; }
+
+  function useFig(ctx, id) {
+    if (ctx.refs.indexOf(id) < 0) ctx.refs.push(id);
+    return FIG[id] || null;
+  }
+
+  function estimateBadge() { return el("span", "badge warn est", t("notTechReviewed")); }
+
+  function inlineFigure(id, ctx) {
+    var f = useFig(ctx, id);
+    if (!f) return el("span", "missing", t("missingFigure", { id: id }));
+    var span = el("span", "fig-inline", formatValue(f));
+    span.setAttribute("data-figure", id);
+    var wrap = document.createDocumentFragment();
+    wrap.appendChild(span);
+    if (isEstimate(f)) { wrap.appendChild(document.createTextNode(" ")); wrap.appendChild(estimateBadge()); }
+    return wrap;
+  }
+
+  // Text with figure references written as {{N-01}}; everything else stays plain text.
+  function richText(text, ctx) {
+    var frag = document.createDocumentFragment();
+    var s = str(text);
+    var re = /\{\{([A-Za-z0-9._-]+)\}\}/g;
+    var last = 0;
+    var m;
+    while ((m = re.exec(s)) !== null) {
+      if (m.index > last) frag.appendChild(document.createTextNode(s.slice(last, m.index)));
+      frag.appendChild(inlineFigure(m[1], ctx));
+      last = re.lastIndex;
+    }
+    if (last < s.length) frag.appendChild(document.createTextNode(s.slice(last)));
+    return frag;
+  }
+
+  function gapBadge(field) {
+    var b = el("span", "badge gap", field ? t("gapField", { field: field }) : t("gap"));
+    return b;
+  }
+
+  function figureNotes(ctx) {
+    if (!ctx.refs.length) return null;
+    var box = el("div", "fig-notes");
+    box.appendChild(el("div", "fig-notes-title", t("figures")));
+    var ul = el("ul");
+    ctx.refs.forEach(function (id) {
+      var f = FIG[id];
+      var li = el("li");
+      li.appendChild(el("span", "fig-id", id));
+      li.appendChild(document.createTextNode(" "));
+      if (!f) {
+        li.appendChild(el("span", "missing", t("missingFigure", { id: id })));
+        ul.appendChild(li);
+        return;
+      }
+      li.appendChild(el("strong", null, formatValue(f)));
+      li.appendChild(document.createTextNode(" · " + t("source") + ": "));
+      li.appendChild(f.source ? document.createTextNode(str(f.source)) : el("span", "missing", t("noSource")));
+      li.appendChild(document.createTextNode(" · " + t("period") + ": "));
+      li.appendChild(f.period ? document.createTextNode(str(f.period)) : el("span", "missing", t("noPeriod")));
+      li.appendChild(document.createTextNode(" · "));
+      if (f.label === "measured") li.appendChild(el("span", "badge ok", t("measured")));
+      else if (f.label === "assumed") li.appendChild(el("span", "badge", t("assumed")));
+      else li.appendChild(el("span", "missing", t("noLabel")));
+      if (isEstimate(f)) { li.appendChild(document.createTextNode(" ")); li.appendChild(estimateBadge()); }
+      ul.appendChild(li);
+    });
+    box.appendChild(ul);
+    return box;
+  }
+
+  // ---- Inline SVG ----
+  // Inline SVG is the one exception to text-only insertion. It is taken only
+  // from the dedicated field diagrams[].svg, parsed with DOMParser as
+  // image/svg+xml (never as HTML), and before insertion loses: <script>,
+  // <foreignObject>, animation elements (they can rewrite attributes later),
+  // embedding elements, any element outside the SVG namespace, every event
+  // handler attribute (on*), and every href / xlink:href / src that does not
+  // point inside the same SVG ("#id"). Markup that fails to parse, or whose
+  // root is not <svg>, is dropped and the "no diagram" table shows instead.
+  // The Content Security Policy above blocks any load regardless.
+  var SVG_DROP = {
+    script: 1, foreignobject: 1, animate: 1, animatemotion: 1, animatetransform: 1,
+    set: 1, discard: 1, handler: 1, listener: 1, iframe: 1, embed: 1, object: 1,
+    audio: 1, video: 1
+  };
+
+  function sanitizeSvg(markup) {
+    if (typeof markup !== "string" || markup === "" || typeof DOMParser === "undefined") return null;
+    var doc;
+    try { doc = new DOMParser().parseFromString(markup, "image/svg+xml"); } catch (e) { return null; }
+    var root = doc && doc.documentElement;
+    if (!root || root.namespaceURI !== SVG_NS || String(root.localName).toLowerCase() !== "svg") return null;
+    if (doc.getElementsByTagName("parsererror").length) return null;
+    var nodes = [root].concat(Array.prototype.slice.call(root.getElementsByTagName("*")));
+    for (var i = 0; i < nodes.length; i++) {
+      var node = nodes[i];
+      var name = String(node.localName).toLowerCase();
+      if (node !== root && (node.namespaceURI !== SVG_NS || SVG_DROP[name])) {
+        if (node.parentNode) node.parentNode.removeChild(node);
+        continue;
+      }
+      for (var j = node.attributes.length - 1; j >= 0; j--) {
+        var attr = node.attributes[j];
+        var local = String(attr.localName).toLowerCase();
+        var value = String(attr.value).replace(/[\u0000-\u0020]+/g, "");
+        var drop = local.indexOf("on") === 0 ||
+          ((local === "href" || local === "src") && !/^#[A-Za-z0-9_.:-]*$/.test(value)) ||
+          /javascript:|vbscript:/i.test(value);
+        if (drop) node.removeAttributeNode(attr);
+      }
+    }
+    return document.importNode(root, true);
+  }
+
+  function table(columns, rows, ctx) {
+    var wrap = el("div", "table-wrap");
+    var tbl = el("table");
+    var cols = arr(columns);
+    if (cols.length) {
+      var thead = el("thead");
+      var tr = el("tr");
+      cols.forEach(function (c) { tr.appendChild(el("th", null, str(c))); });
+      thead.appendChild(tr);
+      tbl.appendChild(thead);
+    }
+    var tbody = el("tbody");
+    arr(rows).forEach(function (row) {
+      var r = el("tr");
+      arr(row).forEach(function (cell) {
+        var td = el("td");
+        td.appendChild(richText(cell, ctx));
+        r.appendChild(td);
+      });
+      tbody.appendChild(r);
+    });
+    tbl.appendChild(tbody);
+    wrap.appendChild(tbl);
+    return wrap;
+  }
+
+  function diagramSlot(id, ctx) {
+    if (!id) return null;
+    var d = DIAG[id] || null;
+    var fig = el("figure", "diagram");
+    var svg = d ? sanitizeSvg(d.svg) : null;
+    if (svg) {
+      svg.setAttribute("role", "img");
+      if (d.message) svg.setAttribute("aria-label", str(d.message));
+      fig.appendChild(svg);
+      if (d.message) fig.appendChild(el("figcaption", null, str(d.message)));
+      return fig;
+    }
+    fig.className = "diagram none";
+    fig.appendChild(el("p", "no-diagram", t("noDiagram")));
+    if (d && d.message) fig.appendChild(el("figcaption", null, str(d.message)));
+    if (d && d.fallback && typeof d.fallback === "object") fig.appendChild(table(d.fallback.columns, d.fallback.rows, ctx));
+    return fig;
+  }
+
+  // ---- Blocks (board slides and tech sections share them) ----
+  function figItems(block) {
+    return arr(block.items || block.refs).map(function (it) {
+      return typeof it === "string" ? { ref: it } : (it && typeof it === "object" ? it : null);
+    }).filter(Boolean);
+  }
+
+  var BLOCKS = {
+    text: function (b, ctx) {
+      var p = el("p", "text");
+      p.appendChild(richText(b.text, ctx));
+      return p;
+    },
+    list: function (b, ctx) {
+      var ul = el(b.ordered ? "ol" : "ul", "list");
+      arr(b.items).forEach(function (it) {
+        var li = el("li");
+        if (it && typeof it === "object") {
+          if (it.id) { li.appendChild(el("strong", "item-id", str(it.id))); li.appendChild(document.createTextNode(" ")); }
+          li.appendChild(richText(it.text, ctx));
+        } else {
+          li.appendChild(richText(it, ctx));
+        }
+        ul.appendChild(li);
+      });
+      return ul;
+    },
+    figures: function (b, ctx) {
+      var grid = el("div", "kpis");
+      figItems(b).forEach(function (it) {
+        var f = useFig(ctx, str(it.ref));
+        var tile = el("div", "kpi");
+        tile.appendChild(f ? el("div", "kpi-value", formatValue(f)) : el("div", "kpi-value missing", t("missingFigure", { id: it.ref })));
+        if (it.caption) tile.appendChild(el("div", "kpi-caption", str(it.caption)));
+        if (f && isEstimate(f)) tile.appendChild(estimateBadge());
+        grid.appendChild(tile);
+      });
+      return grid;
+    },
+    chart: function (b, ctx) {
+      var fig = el("figure", "chart");
+      if (b.title) fig.appendChild(el("div", "chart-title", str(b.title)));
+      var items = figItems(b);
+      var max = 0;
+      items.forEach(function (it) {
+        var f = FIG[it.ref];
+        if (f && typeof f.value === "number" && f.value > max) max = f.value;
+      });
+      items.forEach(function (it) {
+        var f = useFig(ctx, str(it.ref));
+        var row = el("div", "bar-row");
+        row.appendChild(el("div", "bar-label", str(it.caption || it.ref)));
+        var track = el("div", "bar-track");
+        var fill = el("span", "bar-fill");
+        var pct = f && typeof f.value === "number" && max > 0 ? Math.max(2, Math.round((f.value / max) * 100)) : 0;
+        fill.style.width = pct + "%";
+        track.appendChild(fill);
+        row.appendChild(track);
+        var val = el("div", "bar-value");
+        if (f) {
+          val.appendChild(document.createTextNode(formatValue(f)));
+          if (isEstimate(f)) { val.appendChild(document.createTextNode(" ")); val.appendChild(estimateBadge()); }
+        } else {
+          val.appendChild(el("span", "missing", t("missingFigure", { id: it.ref })));
+        }
+        row.appendChild(val);
+        fig.appendChild(row);
+      });
+      var cap = el("figcaption", "chart-source");
+      if (b.source) cap.textContent = t("source") + ": " + str(b.source);
+      else { cap.className = "chart-source missing"; cap.textContent = t("chartNoSource"); }
+      fig.appendChild(cap);
+      return fig;
+    },
+    table: function (b, ctx) {
+      var wrap = table(b.columns, b.rows, ctx);
+      if (b.source) wrap.appendChild(el("div", "table-source", t("source") + ": " + str(b.source)));
+      return wrap;
+    },
+    stories: function (b, ctx) {
+      var box = el("div", "stories");
+      arr(b.items).forEach(function (s) {
+        if (!s || typeof s !== "object") return;
+        var art = el("article", "story");
+        var h = el("h3", "story-title");
+        if (s.priority) { h.appendChild(el("span", "badge", str(s.priority))); h.appendChild(document.createTextNode(" ")); }
+        h.appendChild(richText(s.title, ctx));
+        art.appendChild(h);
+        if (s.why) { var why = el("p", "story-why"); why.appendChild(richText(s.why, ctx)); art.appendChild(why); }
+        var ol = el("ol", "scenarios");
+        arr(s.scenarios).forEach(function (sc) {
+          if (!sc || typeof sc !== "object") return;
+          var li = el("li");
+          [["given", sc.given], ["when", sc.when], ["then", sc.then]].forEach(function (pair, i) {
+            if (i) li.appendChild(document.createTextNode(" "));
+            li.appendChild(el("strong", null, t(pair[0])));
+            li.appendChild(document.createTextNode(" "));
+            if (pair[1]) li.appendChild(richText(pair[1], ctx));
+            else li.appendChild(gapBadge());
+          });
+          ol.appendChild(li);
+        });
+        if (ol.childNodes.length) art.appendChild(ol);
+        box.appendChild(art);
+      });
+      return box;
+    },
+    defs: function (b, ctx) {
+      var dl = el("dl", "defs");
+      arr(b.items).forEach(function (it) {
+        if (!it || typeof it !== "object") return;
+        dl.appendChild(el("dt", null, str(it.term)));
+        var dd = el("dd");
+        if (it.meaning) dd.appendChild(richText(it.meaning, ctx));
+        else dd.appendChild(gapBadge());
+        dl.appendChild(dd);
+      });
+      return dl;
+    },
+    questions: function (b, ctx) {
+      var box = el("div", "questions");
+      [[true, "blocking"], [false, "nonBlocking"]].forEach(function (group) {
+        var items = arr(b.items).filter(function (q) { return q && typeof q === "object" && (q.blocking === true) === group[0]; });
+        box.appendChild(el("h3", "q-group" + (group[0] ? " blocking" : ""), t(group[1])));
+        if (!items.length) { box.appendChild(el("p", "muted", t("noneBlocking"))); return; }
+        var ul = el("ul", "list");
+        items.forEach(function (q) {
+          var li = el("li");
+          if (q.id) { li.appendChild(el("strong", "item-id", str(q.id))); li.appendChild(document.createTextNode(" ")); }
+          li.appendChild(richText(q.text, ctx));
+          if (q.owner) li.appendChild(el("span", "muted", " · " + t("owner") + ": " + str(q.owner)));
+          ul.appendChild(li);
+        });
+        box.appendChild(ul);
+      });
+      return box;
+    },
+    gap: function (b) {
+      var p = el("p", "gap-line");
+      p.appendChild(gapBadge(str(b.field)));
+      return p;
+    }
+  };
+
+  function renderBlocks(blocks, ctx) {
+    var frag = document.createDocumentFragment();
+    arr(blocks).forEach(function (b) {
+      if (!b || typeof b !== "object" || !hasOwn.call(BLOCKS, b.type)) return;
+      var node = BLOCKS[b.type](b, ctx);
+      if (node) frag.appendChild(node);
+    });
+    return frag;
+  }
+
+  function frameworksBox(list) {
+    var items = arr(list).map(function (fw) {
+      return typeof fw === "string" ? { name: fw } : (fw && typeof fw === "object" ? fw : null);
+    }).filter(function (fw) { return fw && (fw.name || fw.id); });
+    if (!items.length) return null;
+    var box = el("div", "frameworks");
+    box.appendChild(el("span", "frameworks-title", t("frameworks") + ": "));
+    items.forEach(function (fw, i) {
+      if (i) box.appendChild(document.createTextNode(" · "));
+      box.appendChild(el("strong", null, str(fw.name || fw.id)));
+      if (fw.result) box.appendChild(document.createTextNode(" (" + str(fw.result) + ")"));
+    });
+    return box;
+  }
+
+  function basedOn(fields) {
+    var list = arr(fields).map(str).filter(Boolean);
+    if (!list.length) return null;
+    return el("div", "based-on", t("basedOn") + ": " + list.join(", "));
+  }
+
+  function headerMeta(target) {
+    if (readError) { target.appendChild(el("p", "notice bad", t("readError"))); return; }
+    if (idea.version) target.appendChild(el("p", "meta", t("version", { date: formatDate(str(idea.version)) })));
+    if (idea.draft === true) target.appendChild(el("p", "notice", t("draft")));
+    target.appendChild(el("p", estimatePending ? "notice" : "notice ok", estimatePending ? t("estimatePending") : t("estimateDone")));
+    var links = data.links && typeof data.links === "object" ? data.links : {};
+    var ul = el("ul", "links");
+    ["board_artifact", "tech_artifact", "slides", "docs"].forEach(function (key) {
+      var href = links[key];
+      if (typeof href === "string" && /^https:/i.test(href) && safeHref(href)) {
+        var li = el("li");
+        li.appendChild(link(t("link_" + key), href));
+        ul.appendChild(li);
+      }
+    });
+    if (ul.childNodes.length) {
+      var wrap = el("div", "links-box");
+      wrap.appendChild(el("span", "links-title", t("links") + ": "));
+      wrap.appendChild(ul);
+      target.appendChild(wrap);
+    }
+  }
+
+  function gapsList() {
+    var box = el("div", "gaps-list");
+    box.appendChild(el("h3", null, t("gapsTitle")));
+    if (!GAPS.length) { box.appendChild(el("p", "muted", t("noGaps"))); return box; }
+    var ul = el("ul", "list");
+    GAPS.forEach(function (g) {
+      var li = el("li");
+      li.appendChild(gapBadge());
+      li.appendChild(document.createTextNode(" " + str(g.field)));
+      ul.appendChild(li);
+    });
+    box.appendChild(ul);
+    return box;
+  }
+  // ---- End of shared renderer ----
+
+  // ---- Tech document ----
+  var SECTION_MAP = [
+    { id: "business-context", label: "sec_business_context", required: true },
+    { id: "user-stories", label: "sec_user_stories", required: true },
+    { id: "requirements", label: "sec_requirements", required: true },
+    { id: "key-entities", label: "sec_key_entities", required: true },
+    { id: "success-criteria", label: "sec_success_criteria", required: true },
+    { id: "assumptions", label: "sec_assumptions", required: false },
+    { id: "ai-fit", label: "sec_ai_fit", required: true },
+    { id: "non-functional", label: "sec_non_functional", required: true },
+    { id: "glossary", label: "sec_glossary", required: true },
+    { id: "open-questions", label: "sec_open_questions", required: true }
+  ];
+
+  var tech = data.tech && typeof data.tech === "object" ? data.tech : {};
+  var byId = {};
+  var extra = [];
+  arr(tech.sections).forEach(function (s) {
+    if (!s || typeof s !== "object" || typeof s.id !== "string" || hasOwn.call(byId, s.id)) return;
+    byId[s.id] = s;
+  });
+  var known = {};
+  SECTION_MAP.forEach(function (slot) { known[slot.id] = true; });
+  arr(tech.sections).forEach(function (s) {
+    if (s && typeof s.id === "string" && !known[s.id] && byId[s.id] === s) extra.push({ id: s.id, label: null, required: false });
+  });
+
+  document.getElementById("idea-title").textContent = str(idea.title);
+  if (idea.title) document.title = "vibebiz · " + str(idea.title);
+  headerMeta(document.getElementById("doc-head"));
+
+  var toc = document.getElementById("toc");
+  var box = document.getElementById("sections");
+  SECTION_MAP.concat(extra).forEach(function (slot) {
+    var s = hasOwn.call(byId, slot.id) ? byId[slot.id] : null;
+    if (!s && !slot.required) return;
+    var ctx = { refs: [] };
+    var heading = s && s.heading ? str(s.heading) : (slot.label ? t(slot.label) : slot.id);
+    var anchor = "sec-" + slot.id.replace(/[^A-Za-z0-9_-]/g, "-");
+
+    var sec = el("section", "doc-section");
+    sec.setAttribute("id", anchor);
+    sec.appendChild(el("h2", null, heading));
+
+    var content = s ? s.content : null;
+    var blocks = typeof content === "string" ? (content ? [{ type: "text", text: content }] : []) : arr(content);
+    var gaps = gapsFor("section", slot.id);
+    if (!blocks.length || gaps.length) {
+      var gbox = el("div", "section-gaps");
+      if (!blocks.length && !gaps.length) gbox.appendChild(gapBadge());
+      gaps.forEach(function (g) { gbox.appendChild(gapBadge(str(g.field))); });
+      sec.appendChild(gbox);
+    }
+    sec.appendChild(renderBlocks(blocks, ctx));
+    var diagram = s ? diagramSlot(s.diagram, ctx) : null;
+    if (diagram) sec.appendChild(diagram);
+    var fw = s ? frameworksBox(s.frameworks) : null;
+    if (fw) sec.appendChild(fw);
+    var notes = figureNotes(ctx);
+    if (notes) sec.appendChild(notes);
+    var based = s ? basedOn(s.source_fields) : null;
+    if (based) sec.appendChild(based);
+    box.appendChild(sec);
+
+    var li = el("li");
+    // In-page anchor built from the sanitized section id; not a data URL, so it skips safeHref.
+    var a = el("a", null, heading);
+    a.setAttribute("href", "#" + anchor);
+    li.appendChild(a);
+    toc.appendChild(li);
+  });
+
+  document.getElementById("gaps").appendChild(gapsList());
+  document.getElementById("snapshot-link").appendChild(link("spec.md", "spec.md"));
+  document.getElementById("snapshot-link").appendChild(el("span", "muted", " · " + t("snapshotNote")));
+})();
+</script>
+</body>
+</html>
