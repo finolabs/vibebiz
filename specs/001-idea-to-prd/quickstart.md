@@ -42,7 +42,13 @@ Run the persona harness in `evals/persona/` against three fashion ideas and two 
 
 ## 5. Spec Kit integration
 
-Copy `examples/000-*/exports/spec.md` into a scratch Spec Kit 1.4.0 project as a feature spec and run `/speckit-plan`. Expected: the plan generates without editing the snapshot.
+Copy a snapshot into a scratch Spec Kit 1.4.0 project as a feature spec and run `/speckit-plan`. Expected: the plan generates without editing the snapshot.
+
+```bash
+python3 scripts/checks/speckit_integration.py examples/000-*/exports/spec.md
+```
+
+The script checks the snapshot structure first (exit 1, nothing created, when it fails), builds the scratch project under a temporary folder from read-only copies of this repository's `.specify/` templates and `.claude/skills/speckit-*` (the repository's own `.specify/` is never written), copies the snapshot to `specs/001-<slug>/spec.md`, points `.specify/feature.json` at it and prints the command to run, `cd <scratch> && claude -p '/speckit-plan'`, then the pass checks (`cmp` shows the snapshot unedited, `plan.md` exists and is not empty) and the cleanup. It starts no model itself; running the printed command is a model run, so run it as a heavy job and record it in `evals/RESULTS.md`. The same script serves the `evals/speckit-compat/` cases on the workspace they produce.
 
 ## 6. Cowork smoke test (before each release, by hand)
 
