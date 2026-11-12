@@ -24,4 +24,4 @@ First public release. vibebiz is a Claude Cowork plugin that acts as a product o
 - In the headless eval, `package` wrote `data.json`, the links and the snapshot, but not the two HTML views. Without a shell, retyping the 100 KB templates is not feasible; with a shell, as in Cowork's VM, the skill now splices the data with a one-off command. This has not been run in Cowork yet.
 - The Cowork smoke test (upload `vibebiz.plugin` in Cowork and run one idea end to end) has not been run for this version.
 - The fictional example in `examples/000-giu-chan-khach-cu/` was assembled from an eval fixture and the board deck sample data, with the exports rendered from the templates; it is not the record of a live run.
-- The ten documentation diagrams, the help eval suite and the Vietnamese wording pass on the docs are not included yet.
+- The ten documentation diagrams, the help eval suite and the Vietnamese wording pass on the docs other than the quick start are not included yet.
