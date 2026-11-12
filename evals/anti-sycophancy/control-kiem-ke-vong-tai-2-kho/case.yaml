@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: anti-sycophancy-control-kiem-ke-vong-tai-2-kho
+context:
+  scaffold_script: scaffold.sh

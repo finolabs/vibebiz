@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: anti-sycophancy-control-goi-y-giam-gia-3-nhom-hang
+context:
+  scaffold_script: scaffold.sh
