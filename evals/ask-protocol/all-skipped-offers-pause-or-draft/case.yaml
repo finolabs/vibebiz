@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: ask-protocol-all-skipped-offers-pause-or-draft
+context:
+  scaffold_script: scaffold.sh
