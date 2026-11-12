@@ -35,7 +35,7 @@ Optional presentation fields are listed by the templates (the comment at the top
 
 ## `board-deck.html` and `tech-prd.html`
 
-Fixed templates with one `<script type="application/json" id="vibebiz-data">` block holding `data.json` and an inline renderer. The same file is published as a private Artifact and updated at the same link on re-packaging. Diagrams are embedded SVG from the rendered briefs; without diagram-design, a table with a "no diagram" note.
+Fixed templates with one `<script type="application/json" id="vibebiz-data">` block holding `data.json` and an inline renderer. The same file is published as a private Artifact and updated at the same link on re-packaging. Diagrams are embedded SVG from the rendered briefs; without diagram-design, a table with a "no diagram" note. Template blocks are not diagrams: the renderer draws them from `data.json` in a fixed layout (charts, metric tiles, KPI tree, journey, Gantt, gauge, source matrix), whether or not diagram-design is installed; they never stand in for a diagram brief (Fio, 13/11/2026).
 
 ## Google Slides and Docs
 

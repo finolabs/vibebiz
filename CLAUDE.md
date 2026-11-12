@@ -17,7 +17,7 @@ These rules record the design decisions Fio settled on 12/11/2026. A rule here c
 ## Independence
 
 - vibebiz depends on nothing from `finolabs-vibecode`. vibecode is for development teams. Do not reference, import or reuse its skills (for example `shape`, `fnl-ask`) inside the plugin. The only link to a tech team is the Spec Kit-compatible file format.
-- `diagram-design` (cathrynlavery/diagram-design, MIT) is a companion plugin. Never copy it into this repository. vibebiz writes diagram briefs; diagram-design renders them. Its brand profile is the single brand source. Without it, exports show a table with a "no diagram" note; do not draw a substitute.
+- `diagram-design` (cathrynlavery/diagram-design, MIT) is a companion plugin. Never copy it into this repository. vibebiz writes diagram briefs; diagram-design renders them. Its brand profile is the single brand source. Without it, exports show a table with a "no diagram" note; do not draw a substitute. Template blocks are a separate thing (Fio, 13/11/2026): the export templates may draw fixed-layout infographic blocks (charts, metric tiles, KPI tree, customer journey, Gantt, gauge, source matrix) from `exports/data.json`, because their layout is fixed and every value comes from the data. A free-form diagram is never drawn by vibebiz itself.
 
 ## Plugin shape
 
