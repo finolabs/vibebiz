@@ -309,7 +309,7 @@ Readiness to package: A, C, D and E Clear; F Clear when AI is involved; M at lea
 - A round is the current frontier: questions whose prerequisites are settled. At most four questions per round, two to four mutually exclusive options, the recommended option first, no "None" or "Other" (the tool shows Skip and free text), each question understandable on its own, `multiSelect` when options are not exclusive, previews for draft outcomes, stories or flows.
 - Open-ended questions ("tell me about the last time this happened") use plain text.
 - After every round: answers go to the requirement's Clarifications section with the date, decisions to the decisions record, and the coverage record is updated.
-- Question budget: about three rounds per session, then an offer to continue, pause or export a draft.
+- Question budget: three rounds per session by default, then an offer to continue, pause or export a draft.
 - Skip leaves a category unchanged; with nobody to answer, proceed on stated, recorded assumptions.
 
 **Session flow**:
@@ -431,8 +431,8 @@ index.html
 constitution.md
 specs/NNN-<slug>/
   spec.md coverage.md plan.md decisions.md assumptions.md open-questions.md glossary.md
-  checklists/  diagrams/
-  exports/  board-deck.html  tech-prd.html  spec.md  links.md
+  checklists/board.md  checklists/tech.md  diagrams/
+  exports/  board-deck.html  tech-prd.html  spec.md  data.json  links.md
     history/YYYY-MM-DD/
 examples/000-<slug>/
 ```

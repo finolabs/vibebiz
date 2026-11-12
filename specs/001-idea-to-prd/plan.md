@@ -57,7 +57,8 @@ specs/001-idea-to-prd/
 ├── quickstart.md        # Phase 1: validation runs and smoke test
 ├── contracts/           # Phase 1: entry skills, workspace files, exports, modules
 ├── checklists/          # requirements.md (spec quality)
-└── tasks.md             # Phase 2 (/speckit-tasks, not created here)
+├── tasks.md             # Phase 2 (/speckit-tasks)
+└── legal-review.md      # questions for the lawyer (task T102)
 ```
 
 ### Source Code (repository root)
@@ -90,7 +91,7 @@ docs/                            # Vietnamese user docs, English names
 └── diagrams/                    # NN-<name>.brief.md + .svg + .png
 examples/
 └── 000-<slug>/                  # fictional fashion idea, full exports
-evals/                           # claude plugin eval suites; persona/ harness (dev only)
+evals/                           # claude plugin eval suites, RESULTS.md; persona/ harness (dev only)
 scripts/
 ├── build_plugin.py              # dist/vibebiz/ and dist/vibebiz.plugin (dev only)
 └── checks/                      # structural checks + test_*.py (dev only)
@@ -112,7 +113,7 @@ THIRD_PARTY_LICENSES.md  UPSTREAM.md
 | P5 | `help` and situation map, docs with ten diagrams, fictional example, README pair | P1–P4 |
 | P6 | `constitution` skill, strategy map and OKRs, conflict checks in plan | P1, P3 |
 
-Repository documents (license, CLA, privacy and the rest, FR-033) land with P1 so the repository is clean from the first release candidate. Each story starts from its failing eval cases.
+Each story ships its docs entries in the same change (constitution VII) and merges through a reviewed pull request. Repository documents (license, CLA, privacy and the rest, FR-033) land with P1 so the repository is clean from the first release candidate. Each story starts from its failing eval cases.
 
 ## Complexity Tracking
 
