@@ -2,6 +2,8 @@
 
 vibebiz is a Claude Cowork plugin that works as a product owner for non-technical retail leaders. A sales director (online or offline; fashion, electronics, home appliances and similar retail) starts from a vague idea about a system, an AI use or an automation; vibebiz interviews them until the idea is clear, challenged and measurable, and packages it as a PRD for the board and for the internal tech team.
 
+The constitution at `.specify/memory/constitution.md` is the governing law of this repository; this file holds the detailed design and must not contradict it. When the two conflict, raise the conflict and resolve it by amendment instead of picking one.
+
 These rules record the design decisions Fio settled on 12/11/2026. A rule here changes only with Fio's yes; when a spec or plan conflicts with this file, raise the conflict instead of picking one.
 
 ## Two roles of Spec Kit
