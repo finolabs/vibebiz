@@ -20,7 +20,7 @@ If the folder holds no vibebiz workspace (no table of contents, no ground rules 
 
 ## 2. Read every idea
 
-For each folder `specs/NNN-<slug>/`, read the frontmatter of its `coverage.md`: `title`, `status`, `categories` (count those whose `status` is `clear`, out of 15), `next_step` and `updated`. Skip `examples/` entirely; the fictional example is never an idea of the user's.
+For each folder `specs/NNN-<slug>/`, read the frontmatter of its `coverage.md`: `title`, `language`, `status`, `estimate_status`, `categories` (count those whose `status` is `clear`, out of 15), `next_step` and `updated`. Then read the idea's `exports/links.md` when it exists and keep every line whose address starts with `https://`, with the label before the colon. Skip `examples/` entirely: the fictional example is never an idea of the user's and never appears in this list.
 
 Read only; change nothing in an idea's files. If a `coverage.md` is missing or its frontmatter cannot be read, still list the idea by its folder's title words and say its progress could not be read; do not repair it here.
 
@@ -36,10 +36,18 @@ Show one table, ideas ordered by number, with these columns in the user's langua
 |---|---|
 | Ý tưởng | `title` |
 | Trạng thái | the status word below |
+| Ước tính | the estimate word below |
 | Mức rõ | clear categories, as "9/15" |
-| Bước tiếp theo | `next_step`, as written |
+| Bước tiếp theo | `next_step`, as written, then the command to type for it in code style (below) |
+| Tài liệu | each kept link as a Markdown link named by its label; "Chưa có" when there is none |
 | Cập nhật | `updated`, as DD/MM/YYYY |
 
-Status words: `clarifying` → "Đang làm rõ", `ready` → "Sẵn sàng đóng gói", `packaged` → "Đã đóng gói", `presented` → "Đã trình bày", `approved` → "Được duyệt", `rejected` → "Không được duyệt", `needs-changes` → "Cần sửa lại". In English: clarifying, ready to package, packaged, presented, approved, rejected, needs changes.
+Status words (use the same words as the table of contents page, so the user sees one name for one state): `clarifying` → "Đang làm rõ", `ready` → "Sẵn sàng đóng gói", `packaged` → "Đã đóng gói", `presented` → "Đã trình ban lãnh đạo", `approved` → "Được duyệt", `rejected` → "Không được duyệt", `needs-changes` → "Cần chỉnh sửa". In English: clarifying, ready to package, packaged, presented to the board, approved, rejected, needs changes.
 
-After the table, add one sentence: to work on an idea, type `/vibebiz:continue` and name it. Then stop.
+Estimate words: `not-tech-reviewed` → "Chưa qua kỹ thuật thẩm định", `tech-reviewed` → "Đã qua kỹ thuật thẩm định". In English: not tech-reviewed, tech-reviewed.
+
+The command for the next step: when `next_step` already names a `/vibebiz:` command, that one; otherwise `/vibebiz:package` for `ready`, and `/vibebiz:continue` for every other status (it resumes the interview, records the board's decision or the tech team's review, and reopens an approved or rejected idea).
+
+Show only `https://` links: the documents inside the working folder are reached from the table of contents page, and a file path means nothing to the user.
+
+After the table, add two short sentences: to work on an idea, type `/vibebiz:continue` and name it; to report what the board decided or what the tech team concluded, say it in plain words, for example "ban lãnh đạo đã duyệt ý tưởng nhắc khách quay lại". Then say that the table of contents page in the working folder ("Mục lục ý tưởng") shows the same list with buttons to copy each command and links to every document. Then stop.
