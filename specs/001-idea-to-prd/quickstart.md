@@ -26,7 +26,15 @@ Produces `dist/vibebiz/` with six skills, each holding a copy of `core/` in `ref
 
 ## 3. Plugin evals (Claude Code, headless)
 
-Run `claude plugin eval` against `dist/vibebiz/` (exact flags per the [plugin evals documentation](https://code.claude.com/docs/en/plugin-evals.md); confirm when the harness is set up). Suites in `evals/` (spec Appendix I, suites 1–7, 9, 10) with answers embedded in each prompt. Thresholds are those in Appendix I.
+Requires Claude Code 2.1.269 or later and Git 2.31 or later ([plugin evals documentation](https://code.claude.com/docs/en/plugin-evals.md), "Requirements"). From the repository root, after `python3 scripts/build_plugin.py`:
+
+```bash
+claude plugin eval . --ablation none --runs 3 --model <pinned-model> --max-cost-usd <ceiling> --trust-plugin --output-dir evals/results/<label>
+```
+
+Add `--case '<glob>'` or `--tag <tag>` for one suite, `--allow-tools "Bash(python3 scripts/checks/*)"` only for cases that need it, and `--json <path>.json` for a result document. Each case's `prompt.md` sets `plugins: ["../../dist/vibebiz"]` so the built plugin, not the source tree, is the one loaded (documented `plugins` field; add `--ablation with-without` to measure the no-plugin baseline). Cases live in `evals/<case>/` with `prompt.md` and `graders/*.md`; answers are embedded in each prompt. Thresholds are those in Appendix I; record results in `evals/RESULTS.md`.
+
+Status: command and flags taken from the documentation on 12/11/2026; not yet run (a run starts model calls). Confirm at the first run that `.` resolves with the repository root as the target and the `plugins` override loads `dist/vibebiz/`; if not, use the case path as the target.
 
 ## 4. Simulated sessions (suite 8)
 

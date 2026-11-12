@@ -1,0 +1,30 @@
+{
+  "id": "fashion-1-loyalty",
+  "sector": "fashion apparel",
+  "fictional_company": "Lụa Hạ (chuỗi thời trang nữ công sở, 34 cửa hàng, bán online qua website và sàn)",
+  "persona": "Giám đốc kinh doanh, nói ngắn, thiếu kiên nhẫn, không biết thuật ngữ kỹ thuật",
+  "intake_vi": "Tao muốn làm cái hệ thống tích điểm cho khách quen để họ mua lại nhiều hơn.",
+  "key_facts": [
+    {"id": "problem", "category": "problem", "fact": "Chỉ 18% khách mua lần hai trong 90 ngày; khách mua một lần rồi bỏ đi."},
+    {"id": "users", "category": "users", "fact": "Khách nữ 25–40 tuổi; nhân viên cửa hàng quét mã tích điểm tại quầy; 34 cửa hàng và website."},
+    {"id": "cost-today", "category": "baseline", "fact": "Hiện tích điểm bằng thẻ giấy, nhân viên đóng dấu; khoảng 6 triệu đồng mỗi tháng tiền in thẻ và 40 giờ công đối soát cuối tháng."},
+    {"id": "goal", "category": "outcome", "fact": "Nâng tỉ lệ mua lại trong 90 ngày từ 18% lên 25% sau 6 tháng."},
+    {"id": "budget", "category": "constraint", "fact": "Ngân sách tối đa 400 triệu đồng năm đầu."},
+    {"id": "deadline", "category": "constraint", "fact": "Phải chạy trước đợt khuyến mãi Tết, tức trong 5 tháng."},
+    {"id": "data", "category": "data", "fact": "Số điện thoại khách có ở 70% hóa đơn; chưa có dữ liệu online gắn với cửa hàng."},
+    {"id": "risk", "category": "risk", "fact": "Nhân viên cửa hàng ngại thêm một bước ở quầy giờ cao điểm cuối tuần."}
+  ],
+  "answers": [
+    {"topic": "problem", "answer_vi": "Khách vào mua một lần rồi mất tăm. Mới 18% quay lại trong ba tháng, tao thấy thấp."},
+    {"topic": "users", "answer_vi": "Chủ yếu chị em văn phòng 25 đến 40. Nhân viên quầy sẽ là người đụng vào hệ thống nhiều nhất."},
+    {"topic": "baseline", "answer_vi": "Giờ phát thẻ giấy, đóng dấu. In thẻ khoảng 6 triệu một tháng, cuối tháng kế toán ngồi đối soát tốn cỡ 40 giờ."},
+    {"topic": "outcome", "answer_vi": "Tao muốn 25% quay lại trong ba tháng, sáu tháng nữa. Giờ đang 18%."},
+    {"topic": "budget", "answer_vi": "Không quá 400 triệu năm đầu."},
+    {"topic": "deadline", "answer_vi": "Trước Tết, còn năm tháng."},
+    {"topic": "data", "answer_vi": "Số điện thoại có trên khoảng 70% hóa đơn. Online với cửa hàng thì chưa nối."},
+    {"topic": "risk", "answer_vi": "Nhân viên sợ thêm bước ở quầy lúc đông khách thứ Bảy, Chủ nhật."},
+    {"topic": "vague-term:nhanh", "answer_vi": "Nhanh là dưới 10 giây một lần quét ở quầy."},
+    {"topic": "approval", "answer_vi": "Giám đốc tài chính duyệt ngân sách, kế toán trưởng duyệt cách đối soát."},
+    {"topic": "default", "answer_vi": "Cái đó tao chưa nghĩ, mày cứ đề xuất đi."}
+  ]
+}
