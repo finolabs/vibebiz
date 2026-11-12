@@ -1,0 +1,1 @@
+# checklists/board.md (fictional)
