@@ -20,7 +20,7 @@
         "blocks": [
           {
             "type": "text",
-            "text": "Budget {{fig:N-budget}} for the pilot."
+            "text": "Budget {{N-budget}} for the pilot."
           }
         ],
         "diagram": null,
@@ -29,7 +29,7 @@
       },
       {
         "n": 2,
-        "title": "Wrong-size returns cost Lanh Fashion {{fig:N-return-cost}} a year",
+        "title": "Wrong-size returns cost Lanh Fashion {{N-return-cost}} a year",
         "message": "Size returns are the largest avoidable cost in online sales.",
         "source_fields": [
           "Problem & Why",
@@ -41,8 +41,11 @@
             "kind": "bar",
             "source": "Returns report, online store",
             "period": "2026-Q3",
-            "figure_ids": [
-              "N-return-rate"
+            "items": [
+              {
+                "ref": "N-return-rate",
+                "caption": "N-return-rate"
+              }
             ]
           }
         ],
@@ -60,7 +63,7 @@
         "blocks": [
           {
             "type": "text",
-            "text": "Baseline {{fig:N-return-rate}}, target {{fig:N-return-target}}."
+            "text": "Baseline {{N-return-rate}}, target {{N-return-target}}."
           }
         ],
         "diagram": null,
@@ -120,7 +123,7 @@
         "blocks": [
           {
             "type": "text",
-            "text": "Payback {{fig:N-payback}}."
+            "text": "Payback {{N-payback}}."
           }
         ],
         "diagram": null,
@@ -171,7 +174,7 @@
         "source_fields": [
           "Problem & Why"
         ],
-        "content": "Lanh Fashion loses {{fig:N-return-cost}} a year to size returns."
+        "content": "Lanh Fashion loses {{N-return-cost}} a year to size returns."
       },
       {
         "id": "user-stories",
@@ -204,7 +207,7 @@
         "source_fields": [
           "SC-001"
         ],
-        "content": "Return rate falls to {{fig:N-return-target}}.",
+        "content": "Return rate falls to {{N-return-target}}.",
         "estimate_label": "not tech-reviewed"
       },
       {
@@ -232,16 +235,8 @@
         "content": "Content."
       },
       {
-        "id": "open-questions-blocking",
-        "heading": "Open questions (blocking)",
-        "source_fields": [
-          "Open questions"
-        ],
-        "content": "not yet clarified"
-      },
-      {
-        "id": "open-questions-non-blocking",
-        "heading": "Open questions (non-blocking)",
+        "id": "open-questions",
+        "heading": "Open questions",
         "source_fields": [
           "Open questions"
         ],
@@ -271,7 +266,8 @@
       "unit": "ratio",
       "source": "Sales director's target",
       "period": "2027-Q1",
-      "label": "assumed"
+      "label": "assumed",
+      "estimate": true
     },
     {
       "id": "N-budget",
@@ -279,7 +275,8 @@
       "unit": "VND",
       "source": "Plan, size M",
       "period": "pilot, 12 weeks",
-      "label": "assumed"
+      "label": "assumed",
+      "estimate": true
     },
     {
       "id": "N-payback",
@@ -287,13 +284,15 @@
       "unit": "months",
       "source": "Cost & Risk, base case",
       "period": "first year",
-      "label": "assumed"
+      "label": "assumed",
+      "estimate": true
     }
   ],
   "gaps": [],
   "links": {
-    "artifact": "https://example.com/artifact/size-advice",
-    "slides": "",
-    "docs": ""
+    "board_artifact": "https://example.com/artifact/size-advice",
+    "tech_artifact": null,
+    "slides": null,
+    "docs": null
   }
 }

@@ -10,21 +10,28 @@ line as `code: detail`), 2 when the input cannot be read.
 
 Conventions this check relies on (the data contract leaves them open):
 
+These match the export templates; contracts/exports.md "data.json
+conventions" lists them.
+
 * Required board slides: `n` = 1..9 and "appendix". Required tech sections:
   the ids in TECH_SECTIONS. A required slide or section that is not present
-  must be listed in `gaps` as `slide:<n>` / `section:<id>` (an object with a
-  `ref` key of that form also works).
-* A figure is referenced by id from any slide, section or block through
-  `figure_id`, `figure_ids`, or a `{{<id>}}` (or `{{fig:<id>}}`) token in text. A reference
-  may repeat a `value`; it must equal the figures table entry.
-* An estimate is a figure labelled `assumed` (or with `estimate: true`).
-  While `idea.estimate_status` is `not-tech-reviewed`, every slide, section
-  or block that references one carries `estimate_label: "not tech-reviewed"`
-  (on the element itself or on its slide or section). Once `tech-reviewed`,
-  that label must be gone.
-* A chart is a block with `type: "chart"` and must name a non-empty `source`.
-* `frameworks[]` entries are non-empty names; a block with `type: "framework"`
-  names its framework in `name`.
+  must be listed in `gaps` as `{field, slide}` or `{field, section}`. A gap
+  entry never switches off the other checks on an element that is present.
+* A figure is referenced by id through a `{{<id>}}` token in any text, or
+  through `items[].ref` of a `figures` or `chart` block. An `items` entry may
+  also repeat a `value`; it must equal the figures table entry.
+* An estimate is a figure with `estimate: true` (the label `assumed` alone
+  is not an estimate). While `idea.estimate_status` is `not-tech-reviewed`,
+  every slide, section or block that references one carries
+  `estimate_label: "not tech-reviewed"` (on the element itself or on its
+  slide or section). Once `tech-reviewed`, that label must be gone.
+* A chart is a block with `type: "chart"` and must name a non-empty `source`
+  and a non-empty `period`.
+* `frameworks[]` entries are non-empty names or objects with a non-empty
+  `name`; a block with `type: "framework"` names its framework in `name`.
+* A tech section holds its blocks in `content` (an array of blocks or a plain
+  string); a board slide holds them in `blocks`.
+* `links` keys: board_artifact, tech_artifact, slides, docs.
 """
 
 import json
@@ -49,9 +56,9 @@ IDEA_KEYS = ["id", "title", "language", "version", "draft", "estimate_status"]
 STATUSES = ("not-tech-reviewed", "tech-reviewed")
 LABELS = ("measured", "assumed")
 ESTIMATE_LABEL = "not tech-reviewed"
-LINK_KEYS = ["artifact", "slides", "docs"]
+LINK_KEYS = ["board_artifact", "tech_artifact", "slides", "docs"]
 
-_FIG_TOKEN = re.compile(r"\{\{\s*(?:fig:)?([A-Za-z0-9._-]+)\s*\}\}")
+_FIG_TOKEN = re.compile(r"\{\{([A-Za-z0-9._-]+)\}\}")
 _SPEC_ID = re.compile(r"\b(?:FR|SC)-[A-Za-z0-9]+\b")
 _URL = re.compile(r"https?://[^\s)>\]\"']+")
 _PUBLIC_FLAGS = {"public", "is_public", "shared", "publicly_shared", "share_public", "public_url"}
@@ -64,36 +71,41 @@ def _blank(value):
 
 
 def _gap_refs(data):
+    """Slides and sections named by a `{field, slide}` / `{field, section}` gap."""
     refs = set()
     for gap in data.get("gaps") or []:
-        if isinstance(gap, str):
-            refs.add(gap.strip())
-        elif isinstance(gap, dict):
-            ref = gap.get("ref") or gap.get("id")
-            if isinstance(ref, str):
-                refs.add(ref.strip())
-            # The export templates write {field, slide} or {field, section}.
-            if gap.get("slide") is not None:
-                refs.add(f"slide:{gap['slide']}")
-            if isinstance(gap.get("section"), str):
-                refs.add(f"section:{gap['section']}")
+        if not isinstance(gap, dict):
+            continue  # a plain string is a field name, not a slide or section
+        if gap.get("slide") is not None:
+            refs.add(f"slide:{str(gap['slide']).lower()}")
+        if isinstance(gap.get("section"), str):
+            refs.add(f"section:{gap['section']}")
     return refs
 
 
-def _refs_in(node):
-    """Figure ids referenced anywhere inside `node`, with any repeated value.
+def _blocks_of(element):
+    """The blocks of a slide (`blocks`) or tech section (`content` array)."""
+    for key in ("blocks", "content"):
+        if isinstance(element.get(key), list):
+            return element[key]
+    return []
 
-    Yields (figure_id, value_or_MISSING).
-    """
-    missing = object()
+
+def _item_refs(node):
+    """(figure_id, value_or_MISSING) from items[].ref of a figures/chart block."""
+    if isinstance(node, dict) and node.get("type") in ("figures", "chart"):
+        for item in node.get("items") or []:
+            if isinstance(item, dict) and isinstance(item.get("ref"), str):
+                yield item["ref"], item.get("value", _MISSING)
+
+
+_MISSING = object()
+
+
+def _refs_in(node):
+    """Figure ids referenced anywhere inside `node`, with any repeated value."""
     if isinstance(node, dict):
-        if isinstance(node.get("figure_id"), str):
-            yield node["figure_id"], node.get("value", missing)
-        ids = node.get("figure_ids")
-        if isinstance(ids, list):
-            for item in ids:
-                if isinstance(item, str):
-                    yield item, missing
+        yield from _item_refs(node)
         for value in node.values():
             yield from _refs_in(value)
     elif isinstance(node, list):
@@ -101,12 +113,12 @@ def _refs_in(node):
             yield from _refs_in(item)
     elif isinstance(node, str):
         for fig in _FIG_TOKEN.findall(node):
-            yield fig, missing
+            yield fig, _MISSING
 
 
 def _own_refs(element):
     """Figure ids an element references directly, not through its blocks."""
-    shallow = {k: v for k, v in element.items() if k != "blocks"}
+    shallow = {k: v for k, v in element.items() if k not in ("blocks", "content") or not isinstance(v, list)}
     return {fig for fig, _ in _refs_in(shallow)}
 
 
@@ -121,7 +133,7 @@ def _walk(node, path=""):
 
 
 def _is_estimate(figure):
-    return figure.get("label") == "assumed" or figure.get("estimate") is True
+    return figure.get("estimate") is True
 
 
 def _has_estimate_label(element):
@@ -193,8 +205,6 @@ def check_data(data, spec_text=None, links_md=None):
 
     def check_element(kind, name, element, is_slide):
         where = f"{kind} {name}"
-        if f"{kind}:{name}" in gaps:
-            return
         if is_slide:
             if _blank(element.get("title")):
                 add(f"empty-title: {where} has no title")
@@ -220,7 +230,7 @@ def check_data(data, spec_text=None, links_md=None):
                 or any(_blank(f.get("name") if isinstance(f, dict) else f) for f in frameworks)
             ):
                 add(f"unnamed-framework: {where} lists a framework without a name")
-        blocks = element.get("blocks") if isinstance(element.get("blocks"), list) else []
+        blocks = _blocks_of(element)
         for j, block in enumerate(blocks):
             if not isinstance(block, dict):
                 continue
@@ -228,6 +238,8 @@ def check_data(data, spec_text=None, links_md=None):
             btype = block.get("type")
             if btype == "chart" and _blank(block.get("source")):
                 add(f"unsourced-chart: {bwhere} is a chart without a source")
+            if btype == "chart" and _blank(block.get("period")):
+                add(f"chart-no-period: {bwhere} is a chart without a period")
             if (btype == "framework" or "framework" in block) and _blank(
                 block.get("name") if btype == "framework" else block.get("framework")
             ):
@@ -248,7 +260,7 @@ def check_data(data, spec_text=None, links_md=None):
                     f'without the "{ESTIMATE_LABEL}" label')
         # Repeated values must match the table.
         for fid, value in _refs_in_with_values(element):
-            if fid in figures and figures[fid].get("value") != value:
+            if fid in figures and value is not _MISSING and figures[fid].get("value") != value:
                 add(f"figure-mismatch: {where} shows {fid} as {value!r}, numbers says "
                     f"{figures[fid].get('value')!r}")
         if status == "tech-reviewed":
@@ -287,10 +299,11 @@ def check_data(data, spec_text=None, links_md=None):
 
 
 def _refs_in_with_values(node):
-    """(figure_id, value) pairs where a reference repeats a value."""
+    """(figure_id, value) pairs where an items entry repeats a value."""
     if isinstance(node, dict):
-        if isinstance(node.get("figure_id"), str) and "value" in node:
-            yield node["figure_id"], node["value"]
+        for fid, value in _item_refs(node):
+            if value is not _MISSING:
+                yield fid, value
         for value in node.values():
             yield from _refs_in_with_values(value)
     elif isinstance(node, list):

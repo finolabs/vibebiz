@@ -533,8 +533,8 @@ cat > 'specs/001-goi-y-size-tren-website/exports/data.json' <<'VIBEBIZ_SEED_15'
   "numbers": [],
   "gaps": [],
   "links": {
-    "artifact_board": "https://example.invalid/artifact/seed-board",
-    "artifact_tech": "https://example.invalid/artifact/seed-tech",
+    "board_artifact": "https://example.invalid/artifact/seed-board",
+    "tech_artifact": "https://example.invalid/artifact/seed-tech",
     "slides": null,
     "docs": null
   }
