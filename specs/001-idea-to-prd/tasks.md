@@ -169,14 +169,14 @@
 
 ### Tests for User Story 4 ⚠️ (write first, must fail)
 
-- [ ] T075 [P] [US4] Eval suite 7 (table of contents) in `evals/index/`: after each entry skill action `test_index.py` passes on the resulting workspace
-- [ ] T076 [P] [US4] Eval cases in `evals/outcomes/`: reported board approval, rejection and change request recorded as `board-outcome` with `export_version`; status follows the data-model state machine; tech review flips `estimate_status` and removes the label from the next export
+- [x] T075 [P] [US4] Eval suite 7 (table of contents) in `evals/index/`: after each entry skill action `test_index.py` passes on the resulting workspace
+- [x] T076 [P] [US4] Eval cases in `evals/outcomes/`: reported board approval, rejection and change request recorded as `board-outcome` with `export_version`; status follows the data-model state machine; tech review flips `estimate_status` and removes the label from the next export
 
 ### Implementation for User Story 4
 
-- [ ] T077 [US4] Extend `skills/continue/SKILL.md` and `core/router.md`: record board outcomes against the presented version, record tech review, apply state-machine transitions (`needs-changes` returns to `clarifying`; reopening `approved` or `rejected` returns to `clarifying` keeping history)
-- [ ] T078 [US4] Complete `skills/status/SKILL.md` and the index renderer in `templates/workspace/index.html`: statuses, estimate flag, coverage bar, next step with the command to copy, output links, examples section
-- [ ] T079 [US4] Describe what US4 changes in the same change: board outcomes, tech review and statuses in `docs/commands.md`, `docs/reading-outputs.md` and `skills/help/situation-map.md`
+- [x] T077 [US4] Extend `skills/continue/SKILL.md` and `core/router.md`: record board outcomes against the presented version, record tech review, apply state-machine transitions (`needs-changes` returns to `clarifying`; reopening `approved` or `rejected` returns to `clarifying` keeping history)
+- [x] T078 [US4] Complete `skills/status/SKILL.md` and the index renderer in `templates/workspace/index.html`: statuses, estimate flag, coverage bar, next step with the command to copy, output links, examples section
+- [x] T079 [US4] Describe what US4 changes in the same change: board outcomes, tech review and statuses in `docs/commands.md`, `docs/reading-outputs.md` and `skills/help/situation-map.md`
 - [ ] T080 [US4] Run suite 7 and the outcome cases; fix; update `evals/RESULTS.md`
 - [ ] T081 [US4] Open the US4 pull request and pass code review before merge
 
@@ -217,13 +217,13 @@
 
 ### Tests for User Story 6 ⚠️ (write first, must fail)
 
-- [ ] T091 [P] [US6] Eval cases in `evals/ground-rules/`: one round of at most four questions; skip leaves `status: deferred` and the plan reminds; an over-ceiling estimate produces a `ground-rule-conflict` decision shown in the plan and on the board view
+- [x] T091 [P] [US6] Eval cases in `evals/ground-rules/`: one round of at most four questions; skip leaves `status: deferred` and the plan reminds; an over-ceiling estimate produces a `ground-rule-conflict` decision shown in the plan and on the board view
 
 ### Implementation for User Story 6
 
-- [ ] T092 [US6] Write `skills/constitution/SKILL.md`: one round (priorities, approval ceiling, vertical, mandatory approvals), optional strategy map (BSC perspectives with objectives) and OKRs, write `constitution.md`, rebuild the index
-- [ ] T093 [US6] Extend `core/plan.md` and `core/lenses/challenge.md` to check recorded rules, strategy map and OKRs, and record conflicts
-- [ ] T094 [US6] Describe what US6 ships in the same change: `constitution` in `docs/commands.md`, `skills/help/situation-map.md` and the README "What ships" sections
+- [x] T092 [US6] Write `skills/constitution/SKILL.md`: one round (priorities, approval ceiling, vertical, mandatory approvals), optional strategy map (BSC perspectives with objectives) and OKRs, write `constitution.md`, rebuild the index
+- [x] T093 [US6] Extend `core/plan.md` and `core/lenses/challenge.md` to check recorded rules, strategy map and OKRs, and record conflicts
+- [x] T094 [US6] Describe what US6 ships in the same change: `constitution` in `docs/commands.md`, `skills/help/situation-map.md` and the README "What ships" sections
 - [ ] T095 [US6] Run the ground-rules cases; fix; update `evals/RESULTS.md`
 - [ ] T096 [US6] Open the US6 pull request and pass code review before merge
 
