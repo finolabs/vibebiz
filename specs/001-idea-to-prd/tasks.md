@@ -196,12 +196,12 @@
 
 ### Implementation for User Story 5
 
-- [ ] T083 [US5] Write `skills/help/SKILL.md` and finalize `skills/help/situation-map.md`: route and stop, answer only from docs citing the section, say when not covered, read the target skill's current `SKILL.md` before describing it, offer the example
-- [ ] T084 [P] [US5] Complete `docs/quick-start.md`, `docs/commands.md` (stating that each of the six commands is a skill of the same name), `docs/workflow.md` in Vietnamese for non-technical readers
-- [ ] T085 [P] [US5] Complete `docs/reading-outputs.md`, `docs/faq.md`, `docs/glossary.md` in Vietnamese
-- [ ] T086 [US5] Write the ten diagram briefs in `docs/diagrams/01-…10-*.brief.md` (spec Appendix H table) and render `.svg` and `.png` with diagram-design in Claude Code
-- [ ] T087 [US5] Build the fictional example `examples/000-<slug>/` (a fictional fashion chain's win-back reminder idea) by running the plugin end to end, with complete exports; it must pass `package_check.py` and `test_snapshot.py`
-- [ ] T088 [P] [US5] Complete `README.md` and `README.vi.md`: add `help` to "What ships", examples, screenshots or diagrams, and the full install steps
+- [x] T083 [US5] Write `skills/help/SKILL.md` and finalize `skills/help/situation-map.md`: route and stop, answer only from docs citing the section, say when not covered, read the target skill's current `SKILL.md` before describing it, offer the example
+- [x] T084 [P] [US5] Complete `docs/quick-start.md`, `docs/commands.md` (stating that each of the six commands is a skill of the same name), `docs/workflow.md` in Vietnamese for non-technical readers
+- [x] T085 [P] [US5] Complete `docs/reading-outputs.md`, `docs/faq.md`, `docs/glossary.md` in Vietnamese
+- [ ] T086 (parked to 0.1.1, 13/11/2026) [US5] Write the ten diagram briefs in `docs/diagrams/01-…10-*.brief.md` (spec Appendix H table) and render `.svg` and `.png` with diagram-design in Claude Code
+- [x] T087 [US5] Build the fictional example `examples/000-<slug>/` (a fictional fashion chain's win-back reminder idea) by running the plugin end to end, with complete exports; it must pass `package_check.py` and `test_snapshot.py`
+- [x] T088 [P] [US5] Complete `README.md` and `README.vi.md`: add `help` to "What ships", examples, screenshots or diagrams, and the full install steps
 - [ ] T089 [US5] Run suite 9 and `test_docs_map.py`; fix; update `evals/RESULTS.md`
 - [ ] T090 [US5] Open the US5 pull request and pass code review before merge
 
