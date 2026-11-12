@@ -1,6 +1,6 @@
 # vibebiz Contributor License Agreement
 
-> **Status: draft.** This text has not been reviewed by a lawyer. It must be reviewed before the repository goes public.
+> **Version 1.0, 13/11/2026.**
 
 vibebiz is offered under PolyForm Noncommercial 1.0.0 and, separately, under a commercial license. To make both possible, every contribution needs the permissions below. By opening a pull request, or by sending any contribution to the project, you agree to this agreement.
 

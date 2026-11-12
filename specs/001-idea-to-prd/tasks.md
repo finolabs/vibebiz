@@ -238,7 +238,7 @@
 - [ ] T099 Edit every Vietnamese user-facing text (`docs/`, `README.vi.md`, user-facing strings in `templates/` and `core/`) for natural wording
 - [ ] T100 Run the Cowork smoke test in quickstart.md §6 by uploading `dist/vibebiz.plugin`; record the five open checks in `CLAUDE.md` "Platform findings" and fix any failure
 - [ ] T101 Release review per `CLAUDE.md` "Release review": README pair, docs and diagrams, help map, example against what ships, a scan of fixtures, cards, packs and the example for real people, companies or figures (FR-034); update `CHANGELOG.md` for 0.1.0
-- [ ] T102 Prepare the questions for the lawyer's review of `LICENSE`, `COMMERCIAL-LICENSE.md` and `CLA.md` in `specs/001-idea-to-prd/legal-review.md`; the repository stays private
+- [x] T102 ~~Prepare the questions for the lawyer's review~~ Dropped: Fio decided on 13/11/2026 to publish v0.1.0 without a lawyer's review
 
 ---
 

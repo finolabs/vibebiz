@@ -47,7 +47,7 @@ vibebiz là phần mềm **công khai mã nguồn có điều kiện (source-ava
 | Doanh nghiệp dùng vibebiz cho công việc, kể cả doanh nghiệp được tặng vibebiz miễn phí | Giấy phép thương mại bằng văn bản, xem [COMMERCIAL-LICENSE.md](COMMERCIAL-LICENSE.md) |
 | Người đóng góp | Đồng ý với [CLA](CLA.md) |
 
-Các văn bản giấy phép hiện là bản nháp, đang chờ luật sư rà soát. Xem thêm [TERMS.md](TERMS.md).
+Xem thêm [TERMS.md](TERMS.md).
 
 ## Quyền riêng tư
 

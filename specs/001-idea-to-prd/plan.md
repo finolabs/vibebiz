@@ -58,7 +58,6 @@ specs/001-idea-to-prd/
 ├── contracts/           # Phase 1: entry skills, workspace files, exports, modules
 ├── checklists/          # requirements.md (spec quality)
 ├── tasks.md             # Phase 2 (/speckit-tasks)
-└── legal-review.md      # questions for the lawyer (task T102)
 ```
 
 ### Source Code (repository root)

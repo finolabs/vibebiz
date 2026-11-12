@@ -47,7 +47,7 @@ vibebiz is **source-available**: the public code is under the PolyForm Noncommer
 | A business using vibebiz for its work, including a business that is given vibebiz for free | A written commercial license, see [COMMERCIAL-LICENSE.md](COMMERCIAL-LICENSE.md) |
 | A contributor | Agree to the [CLA](CLA.md) |
 
-The license texts are drafts awaiting a lawyer's review. See also [TERMS.md](TERMS.md).
+See also [TERMS.md](TERMS.md).
 
 ## Privacy
 

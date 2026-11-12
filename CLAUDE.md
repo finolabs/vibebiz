@@ -48,7 +48,7 @@ These rules record the design decisions Fio settled on 12/11/2026. A rule here c
 - Contributions require the CLA (`CLA.md`).
 - Keep the MIT notices of Spec Kit and `grilling` in `THIRD_PARTY_LICENSES.md`.
 - Framework cards and packs describe third-party frameworks (for example Strategyzer's canvases, which are CC BY-SA) in vibebiz's own words and credit their origin; never copy their text, layout or artwork verbatim.
-- The license, the commercial terms and the CLA need a lawyer's review before the repository goes public. The repository stays private until Fio says otherwise.
+- The repository goes public with v0.1.0; Fio decided on 13/11/2026 that the license, the commercial terms and the CLA ship without a lawyer's review.
 - No internal data in the repository: no real people, companies, customers or figures, and no organization's constitution or brand. Examples, packs and eval fixtures are fictional or built from public knowledge.
 - `PRIVACY.md` states that business data stays in the user's workspace and Google Drive and that the plugin sends it nowhere else. TypeSafe/Jev is used only in developer evals, never at runtime.
 
