@@ -317,7 +317,7 @@
   .meter-fill { fill: var(--accent); }
 
   /* Diagram */
-  .diagram svg { display: block; width: 100%; height: auto; }
+  .diagram-svg svg { display: block; width: 100%; height: auto; }
   .diagram figcaption { margin-top: 0.6em; font-size: var(--fs-small); color: var(--quiet); }
   .no-diagram { display: flex; gap: 0.45em; align-items: center; margin: 0 0 0.6em; color: var(--quiet); font-size: var(--fs-small); }
   @media (prefers-color-scheme: dark) {
@@ -398,7 +398,8 @@
     --fs-badge: max(0.88cqw, 10px);
     --big: max(9cqw, 52px);
     --tl-mark: max(2.2cqw, 16px);
-    aspect-ratio: 16 / 9;
+    /* At least 16:9; a slide with more content grows instead of clipping. */
+    min-height: calc(100cqw * 9 / 16);
     display: grid; grid-template-rows: auto 1fr auto;
     gap: max(2cqw, 14px);
     padding: var(--pad);
@@ -436,7 +437,8 @@
   .layout-appendix .slide-body, .layout-trace .slide-body { align-content: start; align-items: start; }
   .layout-appendix .hero { display: grid; gap: max(2cqw, 12px); }
   .layout-trace .slide-body { font-size: var(--fs-small); }
-  .layout-trace .slide-body.split { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .layout-trace .slide-body > * { min-width: 0; }
+  .trace-figs td:first-child { white-space: nowrap; }
   .layout-trace th, .layout-trace td { padding: 0.25em 0.6em 0.25em 0; }
   .layout-trace h3 { font-size: var(--fs-body); margin: 0 0 0.5em; }
   .deck-foot { max-width: 1280px; margin: 0 auto; padding: 0 clamp(12px, 3vw, 40px) 32px; font-size: var(--fs-small); color: var(--quiet); }
@@ -462,7 +464,8 @@
     .deck { display: block; padding: 0; }
     .frame { width: 338.67mm; max-width: none; break-after: page; page-break-after: always; break-inside: avoid; page-break-inside: avoid; }
     .frame:last-child { break-after: auto; page-break-after: auto; }
-    .slide { aspect-ratio: auto; min-height: 190.5mm; border: 0; border-radius: 0; }
+    .slide { min-height: 190.5mm; border: 0; border-radius: 0; }
+    .frame:has(.layout-trace), .frame:has(.layout-appendix) { break-inside: auto; page-break-inside: auto; }
   }
 </style>
 </head>
@@ -1838,8 +1841,13 @@
     return "";
   }
 
+  // The board reads plain words: drop a "file.Section: " prefix from a gap field.
+  function gapText(field) {
+    var s = str(field);
+    return PLAIN_GAPS ? s.replace(/^[A-Za-z_-]+\.[^:]{1,80}:\s+/, "") : s;
+  }
   function gapBadge(field) {
-    return el("span", "tag-gap", field ? t("gapField", { field: field }) : t("gap"));
+    return el("span", "tag-gap", field ? t("gapField", { field: gapText(field) }) : t("gap"));
   }
 
   // One compact line: every figure used, grouped by source, period and kind.
@@ -1851,16 +1859,23 @@
     ctx.refs.forEach(function (id) {
       var f = hasOwn.call(FIG, id) ? FIG[id] : null;
       if (!f) { missing.push(id); return; }
-      var key = str(f.source) + "\u0001" + str(f.period) + "\u0001" + str(f.label);
-      if (!hasOwn.call(byKey, key)) { byKey[key] = f; groups.push(f); }
+      // One entry per source and kind; the periods of its figures are listed together.
+      var key = str(f.source) + "\u0001" + str(f.label);
+      if (!hasOwn.call(byKey, key)) { byKey[key] = { f: f, periods: [] }; groups.push(byKey[key]); }
+      var per = str(f.period);
+      if (byKey[key].periods.indexOf(per) < 0) byKey[key].periods.push(per);
     });
     var p = el("p", "sources");
     p.appendChild(el("span", "line-label", t("source") + ": "));
-    groups.forEach(function (f, i) {
+    groups.forEach(function (g, i) {
+      var f = g.f;
       if (i) p.appendChild(document.createTextNode("; "));
       p.appendChild(f.source ? document.createTextNode(str(f.source)) : el("span", "missing", t("noSource")));
       p.appendChild(document.createTextNode(", "));
-      p.appendChild(f.period ? document.createTextNode(str(f.period)) : el("span", "missing", t("noPeriod")));
+      g.periods.forEach(function (per, j) {
+        if (j) p.appendChild(document.createTextNode(", "));
+        p.appendChild(per ? document.createTextNode(per) : el("span", "missing", t("noPeriod")));
+      });
       p.appendChild(document.createTextNode(", "));
       p.appendChild(kindText(f));
     });
@@ -2458,7 +2473,7 @@
     GAPS.forEach(function (g) {
       var li = el("li");
       li.appendChild(gapBadge());
-      li.appendChild(el("span", null, str(g.field)));
+      li.appendChild(el("span", null, gapText(g.field)));
       ul.appendChild(li);
     });
     box.appendChild(ul);
@@ -2467,6 +2482,7 @@
   // ---- End of shared renderer ----
 
   // ---- Board deck ----
+  var PLAIN_GAPS = true;
   var SLIDE_MAP = [
     { n: 1, label: "slide1" }, { n: 2, label: "slide2" }, { n: 3, label: "slide3" },
     { n: 4, label: "slide4" }, { n: 5, label: "slide5" }, { n: 6, label: "slide6" },
@@ -2638,7 +2654,7 @@
     shell.sec.className = "slide layout-trace";
     shell.sec.setAttribute("aria-label", t("traceTitle"));
     shell.head.appendChild(el("h2", "slide-title", t("traceHeadline")));
-    var body = el("div", "slide-body split");
+    var body = el("div", "slide-body");
     var left = el("div", "hero");
     var rows = SLIDE_MAP.map(function (slot) {
       var s = byN[String(slot.n)] || null;
@@ -2651,7 +2667,7 @@
       return [(slot.n === "appendix" ? t("appendix") : String(slot.n)) + ". " + t(slot.label), fields || t("gap"), fws];
     });
     left.appendChild(table([t("traceSlide"), t("basedOn"), t("frameworks")], rows, { refs: [], role: "aside" }));
-    var right = el("div", "aside");
+    var right = el("div", "trace-figs");
     right.appendChild(el("h3", null, t("figuresTable")));
     right.appendChild(figureTable(FIG_ORDER));
     body.appendChild(left);

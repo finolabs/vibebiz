@@ -1802,8 +1802,13 @@
     return "";
   }
 
+  // The board reads plain words: drop a "file.Section: " prefix from a gap field.
+  function gapText(field) {
+    var s = str(field);
+    return PLAIN_GAPS ? s.replace(/^[A-Za-z_-]+\.[^:]{1,80}:\s+/, "") : s;
+  }
   function gapBadge(field) {
-    return el("span", "tag-gap", field ? t("gapField", { field: field }) : t("gap"));
+    return el("span", "tag-gap", field ? t("gapField", { field: gapText(field) }) : t("gap"));
   }
 
   // One compact line: every figure used, grouped by source, period and kind.
@@ -1815,16 +1820,23 @@
     ctx.refs.forEach(function (id) {
       var f = hasOwn.call(FIG, id) ? FIG[id] : null;
       if (!f) { missing.push(id); return; }
-      var key = str(f.source) + "\u0001" + str(f.period) + "\u0001" + str(f.label);
-      if (!hasOwn.call(byKey, key)) { byKey[key] = f; groups.push(f); }
+      // One entry per source and kind; the periods of its figures are listed together.
+      var key = str(f.source) + "\u0001" + str(f.label);
+      if (!hasOwn.call(byKey, key)) { byKey[key] = { f: f, periods: [] }; groups.push(byKey[key]); }
+      var per = str(f.period);
+      if (byKey[key].periods.indexOf(per) < 0) byKey[key].periods.push(per);
     });
     var p = el("p", "sources");
     p.appendChild(el("span", "line-label", t("source") + ": "));
-    groups.forEach(function (f, i) {
+    groups.forEach(function (g, i) {
+      var f = g.f;
       if (i) p.appendChild(document.createTextNode("; "));
       p.appendChild(f.source ? document.createTextNode(str(f.source)) : el("span", "missing", t("noSource")));
       p.appendChild(document.createTextNode(", "));
-      p.appendChild(f.period ? document.createTextNode(str(f.period)) : el("span", "missing", t("noPeriod")));
+      g.periods.forEach(function (per, j) {
+        if (j) p.appendChild(document.createTextNode(", "));
+        p.appendChild(per ? document.createTextNode(per) : el("span", "missing", t("noPeriod")));
+      });
       p.appendChild(document.createTextNode(", "));
       p.appendChild(kindText(f));
     });
@@ -2422,7 +2434,7 @@
     GAPS.forEach(function (g) {
       var li = el("li");
       li.appendChild(gapBadge());
-      li.appendChild(el("span", null, str(g.field)));
+      li.appendChild(el("span", null, gapText(g.field)));
       ul.appendChild(li);
     });
     box.appendChild(ul);
@@ -2431,6 +2443,7 @@
   // ---- End of shared renderer ----
 
   // ---- Tech document ----
+  var PLAIN_GAPS = false;
   var SECTION_MAP = [
     { id: "business-context", label: "sec_business_context", required: true },
     { id: "user-stories", label: "sec_user_stories", required: true },
