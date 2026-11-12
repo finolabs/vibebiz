@@ -12,7 +12,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SKILLS = ["new", "continue", "status", "package", "constitution", "help"]
 CONTENT_DIRS = ["templates", "packs", "docs", "examples"]
-EXCLUDED_NAMES = {".DS_Store", ".gitkeep", ".specify", ".claude", "specs", "evals", "scripts", "__pycache__"}
+# Development folders (.specify, .claude, specs, evals, scripts) sit at the repository root and are never
+# copied; only these junk names are dropped at any depth, so nested content such as an example's specs/ ships.
+EXCLUDED_NAMES = {".DS_Store", ".gitkeep", "__pycache__"}
+BUILD_OUTPUTS = {"vibebiz", "vibebiz.plugin"}
 
 
 def _ignore(_dir, names):
@@ -28,8 +31,21 @@ def _copy_tree(src: Path, dst: Path) -> None:
 
 def build(out: Path, root: Path = ROOT) -> Path:
     """Replace `out` with a fresh build and return the plugin zip path."""
+    out, root = out.resolve(), root.resolve()
+    if out == root or out in root.parents:
+        raise SystemExit(f"refused: output {out} contains the source tree")
+    if out.exists() and not out.is_dir():
+        raise SystemExit(f"refused: output {out} is not a folder")
     if out.exists():
-        shutil.rmtree(out)
+        foreign = sorted(p.name for p in out.iterdir() if p.name not in BUILD_OUTPUTS)
+        if foreign:
+            raise SystemExit(f"refused: output {out} holds files that are not a previous build: {foreign}")
+        for name in BUILD_OUTPUTS:
+            target = out / name
+            if target.is_dir() and not target.is_symlink():
+                shutil.rmtree(target)
+            elif target.exists() or target.is_symlink():
+                target.unlink()
     plugin = out / "vibebiz"
     plugin.mkdir(parents=True)
 

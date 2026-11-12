@@ -2,6 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <title>vibebiz · Mục lục ý tưởng</title>
@@ -206,9 +207,12 @@
   // Only relative workspace paths and https links are rendered as links.
   function safeHref(href) {
     if (typeof href !== "string" || href === "") return null;
-    if (/^https:\/\//i.test(href)) return href;
-    if (/^[a-z][a-z0-9+.-]*:/i.test(href) || href.indexOf("//") === 0) return null;
-    return href;
+    // Reject whitespace and control characters, which browsers strip before reading the scheme.
+    if (/[\u0000-\u0020\u007f\\]/.test(href)) return null;
+    if (/^https:\/\/[^\/]/i.test(href)) return href;
+    // Otherwise only a relative workspace path: no scheme, not protocol-relative, not absolute.
+    if (/^[A-Za-z0-9._-][A-Za-z0-9._\/-]*$/.test(href) && !/^[a-z][a-z0-9+.-]*:/i.test(href)) return href;
+    return null;
   }
 
   function formatDate(iso) {

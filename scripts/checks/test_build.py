@@ -12,7 +12,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import build_plugin  # noqa: E402
 
 SKILLS = {"new", "continue", "status", "package", "constitution", "help"}
-EXCLUDED = {".specify", ".claude", "specs", "evals", "scripts", ".DS_Store", ".gitkeep"}
+DEV_DIRS = {".specify", ".claude", "specs", "evals", "scripts"}
+JUNK = {".DS_Store", ".gitkeep", "__pycache__"}
 MD_LINK = re.compile(r"\[[^\]]*\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)")
 TICK_PATH = re.compile(r"`(references/[^`\s]+)`")
 
@@ -37,10 +38,38 @@ class BuildTest(unittest.TestCase):
         self.assertTrue((self.plugin / ".claude-plugin" / "plugin.json").is_file())
 
     def test_no_excluded_paths(self):
+        top = {p.name for p in self.plugin.iterdir()}
+        self.assertFalse(top & DEV_DIRS, f"development folder shipped: {top & DEV_DIRS}")
         for p in self.plugin.rglob("*"):
             rel = p.relative_to(self.plugin)
-            bad = [part for part in rel.parts if part in EXCLUDED or part.startswith(".git")]
+            bad = [part for part in rel.parts if part in JUNK or part.startswith(".git")]
             self.assertFalse(bad, f"excluded path shipped: {rel}")
+
+    def test_nested_specs_folder_ships(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "repo"
+            (root / ".claude-plugin").mkdir(parents=True)
+            (root / ".claude-plugin" / "plugin.json").write_text("{}")
+            idea = root / "examples" / "000-sample" / "specs"
+            idea.mkdir(parents=True)
+            (idea / "note.md").write_text("x")
+            (root / "specs").mkdir()
+            (root / "specs" / "dev.md").write_text("x")
+            build_plugin.build(Path(tmp) / "dist", root)
+            plugin = Path(tmp) / "dist" / "vibebiz"
+            self.assertTrue((plugin / "examples" / "000-sample" / "specs" / "note.md").is_file())
+            self.assertFalse((plugin / "specs").exists())
+
+    def test_refuses_to_delete_foreign_output(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "out"
+            out.mkdir()
+            (out / "keep.txt").write_text("x")
+            with self.assertRaises(SystemExit):
+                build_plugin.build(out)
+            self.assertTrue((out / "keep.txt").is_file())
+            with self.assertRaises(SystemExit):
+                build_plugin.build(build_plugin.ROOT)
 
     def test_skill_references_resolve_inside_skill(self):
         for skill in sorted(SKILLS):

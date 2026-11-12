@@ -49,7 +49,8 @@ def _strip_comment(text: str, line_no: int) -> str:
                     i += 2
                     continue
                 quote = None
-        elif ch in "'\"":
+        elif ch in "'\"" and text[:i].rstrip()[-1:] in ("", ":", "[", ",", "{", "-"):
+            # A quote opens a string only at the start of a scalar, so "Women's wear" stays plain.
             quote = ch
         elif ch == "#" and (i == 0 or text[i - 1] in " \t"):
             return text[:i].rstrip()

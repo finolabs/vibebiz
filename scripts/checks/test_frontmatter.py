@@ -68,6 +68,13 @@ class ValidShapes(unittest.TestCase):
         data = parse_yaml("a: {b: [1, 2], c: {d: x}}\nlist:\n- one\n- two\nafter: 1\n")
         self.assertEqual(data, {"a": {"b": [1, 2], "c": {"d": "x"}}, "list": ["one", "two"], "after": 1})
 
+    def test_apostrophe_inside_plain_scalar(self):
+        data = parse_yaml("title: Women's wear\nnote: don't # comment\ntags: [x, y's]\nq: 'it''s'\n")
+        self.assertEqual(data["title"], "Women's wear")
+        self.assertEqual(data["note"], "don't")
+        self.assertEqual(data["tags"], ["x", "y's"])
+        self.assertEqual(data["q"], "it's")
+
     def test_empty_frontmatter(self):
         self.assertEqual(frontmatter.parse_frontmatter("---\n---\nbody\n"), ({}, "body\n"))
 
