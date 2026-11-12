@@ -1,6 +1,6 @@
 # Ask protocol
 
-Rules for every question vibebiz puts to the user (spec Appendix B, constitution Principle I). Every module that asks follows this file; it decides nothing about *which* questions to ask (the router and the modules do that), only *how* a round is asked, recorded and stopped.
+Rules for every question vibebiz puts to the user. Every module that asks follows this file; it decides nothing about *which* questions to ask (the router and the modules do that), only *how* a round is asked, recorded and stopped.
 
 - **Used by**: router, clarify, specify, the four lenses, plan, package, constitution.
 - **Reads**: `coverage.md` (category statuses, `budget_rounds_used`, `language`).
@@ -17,7 +17,7 @@ Why these rules exist: the user is a sales director who is not technical and has
 
 ## 2. What a round is
 
-- A **round** is one set of questions asked together: the current frontier the router hands you, meaning only questions whose prerequisite categories (spec Appendix A) are `clear` or `deferred`. Never add a question whose answer depends on another question that is still open; hold it for a later round.
+- A **round** is one set of questions asked together: the current frontier the router hands you, meaning only questions whose prerequisite categories (the router's frontier table) are `clear` or `deferred`. Never add a question whose answer depends on another question that is still open; hold it for a later round.
 - A round has **one to four questions in total**: at most four tool questions sent in **one** `AskUserQuestion` call, plus at most one open question in plain text (section 5), and the total of both never exceeds four.
 - Order the questions as the router ranked them (highest impact times uncertainty first).
 - The intake question (`references/core/specify.md`), the ground-rules round (`constitution`), the format round (`package`) and the budget offer (section 8) are asked with these rules but are not counted against the question budget.
@@ -39,11 +39,11 @@ Each entry in the `AskUserQuestion` call's `questions` list follows all of these
 
 ## 4. Language
 
-Write questions, options and previews in the idea's `language` (Vietnamese by default, research R10). Address the user politely and neutrally ("anh/chị" in Vietnamese). Keep field names in the files in English, as the templates show.
+Write questions, options and previews in the idea's `language` (Vietnamese by default). Address the user in the form `references/core/writing-rules.md` sets for the idea; the Vietnamese examples here use its default, "anh/chị". Keep field names in the files in English, as the templates show.
 
 ## 5. Open questions in plain text
 
-Some questions have no sensible options: "Lần gần nhất chuyện này xảy ra là khi nào, kể ngắn giúp tôi?", "Anh/chị gọi nhóm khách này là gì trong cửa hàng?". Ask these as a plain chat message, never through the tool and never with invented options.
+Some questions have no sensible options: "Lần gần nhất chuyện này xảy ra là khi nào, kể ngắn giúp em?", "Anh/chị gọi nhóm khách này là gì trong cửa hàng?". Ask these as a plain chat message, never through the tool and never with invented options.
 
 - At most one open question per round, sent after the tool call has returned, and counted in the round's limit of four.
 - Ask about something real that already happened, not a hypothetical.
@@ -65,7 +65,7 @@ Before asking anything else, write the round to the idea's files, so a session a
    - answered: `- Q: <the question as asked> → A: <the answer>`
    - skipped: `- Skipped: <the question as asked>`
    Never write a skipped question as an answer and never write the same question twice in one session.
-2. **The right section of `spec.md`**: apply each answer where it belongs (the asking module says where; spec Appendix A lists the section for each category). Replace the "not yet clarified" placeholder or the earlier ambiguous sentence the answer settles; leave no contradictory text behind. Keep every heading unchanged.
+2. **The right section of `spec.md`**: apply each answer where it belongs (the asking module says where; each module's "apply the answers" table lists the section for each of its categories). Replace the "not yet clarified" placeholder or the earlier ambiguous sentence the answer settles; leave no contradictory text behind. Keep every heading unchanged.
 3. **`decisions.md`**: append one `## D-### — <short title>` entry of type `answer` for each answer that settles a choice, with `date`, `text`, `reason` (the user's reason, or the recommendation's reason when they accepted it). Facts the user reported (a story, a figure) go only to `spec.md`. A contradiction of an earlier decision is handled by the router, which records a `supersede` entry.
 4. **`open-questions.md` and `assumptions.md`**: append a Q-### for every point the user said someone else must answer (fill `owner`, `unblocks`, `blocking`, `category`), and an A-### with `source: stated` for every assumption the user stated.
 5. **`glossary.md`**: add or correct the term line when an answer settles what a word means.
@@ -76,13 +76,13 @@ Then tell the user in one or two plain sentences what was recorded and what come
 
 ## 8. Question budget
 
-- The budget is **three counted rounds per session** by default (`budget_rounds_used` in `coverage.md`, reset when a session starts). The user may change it for the session when they choose to continue.
-- When a round's write-back brings the count to the budget, stop asking lens questions and offer, in one `AskUserQuestion` question with exactly these three choices in the idea's language:
+- The budget is **three counted rounds per session** by default (`budget_rounds_used` in `coverage.md`, reset to `0` when a session starts). The router counts the rounds and decides when the budget is reached; this section fixes how the offer is asked.
+- When a round's write-back brings the count to the budget (or to its next multiple) and the idea is not ready, stop asking lens questions and offer, in one `AskUserQuestion` question with exactly these three choices in the idea's language:
   - continue with more questions now ("Hỏi tiếp"),
   - pause and keep everything saved for later ("Tạm dừng"),
   - export a draft with every gap labelled ("Xuất bản nháp").
-  Recommend "Hỏi tiếp" when the next frontier holds a high-impact question the user can answer now, otherwise "Tạm dừng". If the user skips this question, pause.
-- On "Hỏi tiếp", grant one more round at a time and offer again after it. On "Tạm dừng", say in one sentence where the idea stopped and that `/vibebiz:continue` resumes it. On "Xuất bản nháp", hand over to the `package` entry skill's draft path.
+  Recommend "Hỏi tiếp" when the frontier still holds a category scoring 6 or more on the router's impact × uncertainty ranking, otherwise "Tạm dừng". If the user skips this question, or nobody can answer, pause.
+- On "Hỏi tiếp", grant another budget of the same size in this session; the counter keeps counting and the offer returns at the next multiple (after six rounds, then nine). On "Tạm dừng", say in one sentence where the idea stopped and that `/vibebiz:continue` resumes it. On "Xuất bản nháp", hand over to the `package` entry skill's draft path.
 
 ## 9. A round where everything was skipped
 
@@ -144,7 +144,7 @@ The `AskUserQuestion` call:
 }
 ```
 
-Then the open question, in plain text: "Lần gần nhất anh/chị thấy rõ một nhóm khách quen không quay lại là khi nào? Kể ngắn chuyện đã xảy ra giúp tôi."
+Then the open question, in plain text: "Lần gần nhất anh/chị thấy rõ một nhóm khách quen không quay lại là khi nào? Kể ngắn chuyện đã xảy ra giúp em."
 
 The user chooses "Doanh thu khách cũ giảm" and both "Ít khách mua lần hai" and "Chỉ mua khi giảm giá", skips the "quay lại" question, and answers the open question: "Sau đợt sale tháng 7, khách thẻ thành viên ở 3 cửa hàng gần như không quay lại tới tháng 9."
 
@@ -158,7 +158,7 @@ Write-back in `spec.md`:
 - Q: Lý do chính khiến anh/chị muốn nhắc khách cũ quay lại mua ngay trong năm nay là gì? → A: Doanh thu khách cũ giảm
 - Q: Những dấu hiệu nào đang cho anh/chị thấy khách cũ của Áo Mây mua ít đi? → A: Ít khách mua lần hai; Chỉ mua khi giảm giá
 - Skipped: Với ý tưởng nhắc khách cũ, một khách được tính là "quay lại" khi mua lần nữa trong bao lâu kể từ lần mua trước?
-- Q: Lần gần nhất anh/chị thấy rõ một nhóm khách quen không quay lại là khi nào? Kể ngắn chuyện đã xảy ra giúp tôi. → A: Sau đợt sale tháng 7, khách thẻ thành viên ở 3 cửa hàng gần như không quay lại tới tháng 9.
+- Q: Lần gần nhất anh/chị thấy rõ một nhóm khách quen không quay lại là khi nào? Kể ngắn chuyện đã xảy ra giúp em. → A: Sau đợt sale tháng 7, khách thẻ thành viên ở 3 cửa hàng gần như không quay lại tới tháng 9.
 ```
 
 The answers also go into `## Problem & Why` (why now, the signs, the most recent occurrence); `decisions.md` gets D-001 (lý do chính) and D-002 (dấu hiệu dùng để theo dõi). In `coverage.md`, A moves from `missing` to `partial` because of the three answered questions (frequency and current cost are still open). N stays `missing` with its old `updated` date, because its only question was skipped, and nothing is added to `glossary.md`. The router then counts the round and writes `next_step`, and the table of contents is rebuilt.
