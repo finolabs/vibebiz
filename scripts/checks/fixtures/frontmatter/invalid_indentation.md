@@ -1,0 +1,4 @@
+---
+status: set
+    vertical: fashion
+---

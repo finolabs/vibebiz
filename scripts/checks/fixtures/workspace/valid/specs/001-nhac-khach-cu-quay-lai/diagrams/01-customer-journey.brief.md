@@ -1,0 +1,3 @@
+---
+message: Fictional journey
+---

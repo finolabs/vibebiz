@@ -1,0 +1,29 @@
+{
+  "id": "fashion-2-size-returns",
+  "sector": "fashion apparel",
+  "fictional_company": "Mộc Nhiên Denim (thương hiệu quần jean, 12 cửa hàng, 60% doanh thu online)",
+  "persona": "Giám đốc thương mại online, vội, hay nói 'cứ làm đi', dị ứng với từ kỹ thuật",
+  "intake_vi": "Khách online trả hàng nhiều quá vì không vừa size, tao muốn có cái gì đó AI gợi ý size cho họ.",
+  "key_facts": [
+    {"id": "problem", "category": "problem", "fact": "Tỉ lệ trả hàng online 31%, trong đó 58% vì sai size."},
+    {"id": "users", "category": "users", "fact": "Khách mua online qua website, nam nữ 20–35; đội chăm sóc khách hàng 9 người xử lý đổi trả."},
+    {"id": "cost-today", "category": "baseline", "fact": "Mỗi đơn trả tốn trung bình 52.000 đồng vận chuyển hai chiều và xử lý; khoảng 1.900 đơn trả mỗi tháng."},
+    {"id": "goal", "category": "outcome", "fact": "Giảm trả hàng vì size từ 58% xuống còn 40% trong 4 tháng."},
+    {"id": "data", "category": "data", "fact": "Có 2 năm lịch sử đơn và lý do trả; chưa có số đo cơ thể của khách."},
+    {"id": "constraint", "category": "constraint", "fact": "Không được hỏi khách quá 3 câu, vì bỏ giỏ hàng đã ở mức 68%."},
+    {"id": "error-cost", "category": "risk", "fact": "Gợi ý sai size khiến khách mất lòng tin; chấp nhận sai tối đa 1 trên 5 gợi ý."},
+    {"id": "budget", "category": "constraint", "fact": "Ngân sách 250 triệu đồng, quyết định trong quý này."}
+  ],
+  "answers": [
+    {"topic": "problem", "answer_vi": "Trả hàng online 31%, mà quá nửa là sai size, cỡ 58%."},
+    {"topic": "users", "answer_vi": "Khách web, nam nữ 20 đến 35. Bên chăm sóc khách có 9 người lo đổi trả."},
+    {"topic": "baseline", "answer_vi": "Một đơn trả mất khoảng 52 nghìn tiền ship hai chiều với xử lý, tháng nào cũng gần 1.900 đơn."},
+    {"topic": "outcome", "answer_vi": "Kéo trả hàng vì size từ 58% xuống 40% trong bốn tháng."},
+    {"topic": "data", "answer_vi": "Có hai năm lịch sử đơn, có lý do trả. Số đo khách thì chưa có."},
+    {"topic": "constraint", "answer_vi": "Đừng hỏi khách quá ba câu, họ bỏ giỏ tới 68% rồi."},
+    {"topic": "error-cost", "answer_vi": "Gợi ý sai thì khách mất tin. Năm gợi ý sai một là chịu được."},
+    {"topic": "budget", "answer_vi": "250 triệu, quý này phải chốt."},
+    {"topic": "vague-term:chính xác", "answer_vi": "Chính xác là bốn trên năm gợi ý đúng size."},
+    {"topic": "default", "answer_vi": "Cứ làm đi, mày đề xuất tao xem."}
+  ]
+}
