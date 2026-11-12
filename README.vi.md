@@ -24,7 +24,13 @@ Cài thêm plugin đi kèm `diagram-design` nếu bạn muốn có sơ đồ tro
 
 ## Có gì trong bản phát hành
 
-_Hiện chưa có gì. Mục này sẽ liệt kê từng kỹ năng khi câu chuyện người dùng tạo ra nó được phát hành._
+Mục này liệt kê từng kỹ năng khi phần việc tạo ra nó được phát hành. Mỗi lệnh là một kỹ năng (skill) cùng tên; bạn cũng có thể chỉ cần nói điều mình muốn bằng lời thường.
+
+- `/vibebiz:new`: bắt đầu một ý tưởng mới. vibebiz chuẩn bị thư mục làm việc nếu cần, hỏi về một tình huống thật gần đây, viết bản nháp yêu cầu đầu tiên với mọi chỗ còn thiếu được đánh dấu, rồi hỏi bạn từng vòng ngắn (tối đa bốn câu trắc nghiệm, phương án nên chọn đứng đầu) và lưu lại mọi câu trả lời.
+- `/vibebiz:continue`: làm tiếp một ý tưởng. vibebiz đọc lại các tệp (phần bạn tự sửa được giữ nguyên), tóm tắt trong ba dòng điều gì đã rõ, lần trước dừng ở đâu và câu hỏi tiếp theo, rồi hỏi tiếp.
+- `/vibebiz:status`: liệt kê mọi ý tưởng với trạng thái, số điểm đã rõ trên 15 điểm và bước tiếp theo. Lệnh này không hỏi gì.
+
+Chi tiết các lệnh: [docs/commands.md](docs/commands.md).
 
 ## Giấy phép
 

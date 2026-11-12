@@ -24,7 +24,13 @@ Install the companion plugin `diagram-design` if you want diagrams in the output
 
 ## What ships
 
-_Nothing yet. This section lists each skill when the story that delivers it ships._
+This section lists each skill when the story that delivers it ships. Each command is a skill of the same name; you can also just say what you want in plain words.
+
+- `/vibebiz:new`: start a new idea. Sets up the workspace in your folder if needed, asks about a real recent case, drafts a first requirement with every gap marked, then interviews you in short rounds (at most four multiple-choice questions, recommended answer first) and saves every answer.
+- `/vibebiz:continue`: pick an idea back up. Re-reads its files (your own edits win), summarizes in three lines what is settled, where it stopped and the next question, then continues the rounds.
+- `/vibebiz:status`: list every idea with its status, how many of the 15 points are clear and the next step. Asks nothing.
+
+Commands in Vietnamese: [docs/commands.md](docs/commands.md).
 
 ## License
 
