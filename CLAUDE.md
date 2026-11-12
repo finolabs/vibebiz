@@ -30,6 +30,7 @@ These rules record the design decisions Fio settled on 12/11/2026. A rule here c
 - With nobody to answer (a headless or eval run, or the tool unavailable), proceed on stated assumptions, record each as open in `open-questions.md` and the coverage map, and never invent an answer.
 - The `challenge` lens never praises an idea, gives at least one reason the idea could be wrong per round, defends "do nothing" and "fix the process" before build is allowed, and records a dismissed risk in `decisions.md` instead of deleting it.
 - `help` routes by situation and answers only from the shipped `docs/`; when the docs do not say, it says so. It reads a skill's current `SKILL.md` before describing it.
+- Vertical packs: the first release ships `packs/retail-fashion` and `packs/ai-patterns-retail` only; electronics and home appliances come later. Lenses fall back to general retail questions for other verticals.
 
 ## User workspace contract
 
@@ -79,7 +80,7 @@ The slug comes from the user's idea title, without diacritics. Every other file 
 
 ## Evals
 
-The suites agreed in the design: routing respects prerequisites; Ask-protocol conformance; anti-sycophancy (a bad-idea set with a good-idea control); vague-term quantification; Spec Kit compatibility (run `speckit-plan` on an exported `spec.md`); package-check catches seeded omissions; index integrity; simulated end-to-end sessions with a hidden-truth persona across three verticals; `help` routing and no-invention. Structure checks run in code; semantic support and meaning-preservation judgments may use Jev. A Cowork smoke test runs by hand before each release.
+The suites agreed in the design: routing respects prerequisites; Ask-protocol conformance; anti-sycophancy (a bad-idea set with a good-idea control); vague-term quantification; Spec Kit compatibility (run `speckit-plan` on an exported `spec.md`); package-check catches seeded omissions; index integrity; simulated end-to-end sessions with a hidden-truth persona (fashion first, plus other retail verticals to test the core); `help` routing and no-invention. Structure checks run in code; semantic support and meaning-preservation judgments may use Jev. A Cowork smoke test runs by hand before each release.
 
 ## Platform findings and open checks
 
