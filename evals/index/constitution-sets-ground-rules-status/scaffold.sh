@@ -305,7 +305,7 @@ Giảm tỉ lệ trả hàng vì sai size từ 58% xuống 40% trong 4 tháng k�
 
 ## Alternatives
 
-- Không làm gì: tiếp tục mất khoảng 99 triệu đồng mỗi tháng cho đơn trả vì sai size (1.900 đơn x 58% x 52.000 đồng, ước tính chưa kiểm chứng).
+- Không làm gì: tiếp tục mất khoảng 57 triệu đồng mỗi tháng cho đơn trả vì sai size (1.900 đơn x 58% x 52.000 đồng, ước tính chưa kiểm chứng).
 - Sửa quy trình: bảng size rõ hơn, ảnh người mẫu kèm số đo, nhắn xác nhận size trước khi giao.
 - Mua công cụ gợi ý size có sẵn.
 - Tự xây gợi ý dựa trên 2 năm lịch sử đơn và lý do trả.

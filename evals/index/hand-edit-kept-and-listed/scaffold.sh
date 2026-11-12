@@ -284,7 +284,7 @@ Giảm tỉ lệ trả hàng vì sai size từ 58% xuống 40% trong 4 tháng k�
 
 ## Alternatives
 
-- Không làm gì: tiếp tục mất khoảng 99 triệu đồng mỗi tháng cho đơn trả vì sai size (1.900 đơn x 58% x 52.000 đồng, ước tính chưa kiểm chứng).
+- Không làm gì: tiếp tục mất khoảng 57 triệu đồng mỗi tháng cho đơn trả vì sai size (1.900 đơn x 58% x 52.000 đồng, ước tính chưa kiểm chứng).
 - Sửa quy trình: bảng size rõ hơn, ảnh người mẫu kèm số đo, nhắn xác nhận size trước khi giao.
 - Mua công cụ gợi ý size có sẵn.
 - Tự xây gợi ý dựa trên 2 năm lịch sử đơn và lý do trả.
@@ -418,7 +418,7 @@ Cỡ M (ước tính chưa được đội kỹ thuật xem xét).
 |---|---|---|---|---|
 | Low | 180 triệu đồng (giả định) | 2 người trong 3 tháng | tiết kiệm 10 triệu đồng mỗi tháng (giả định) | 4 tháng chạy thử |
 | Base | 250 triệu đồng (giả định) | 3 người trong 4 tháng | tiết kiệm khoảng 17,8 triệu đồng mỗi tháng: 342 đơn x 52.000 đồng (giả định, từ số đo trên đơn trả hiện tại) | 4 tháng chạy thử |
-| High | 320 triệu đồng (giả định) | 4 người trong 5 tháng | tiết kiệm 25 triệu đồng mỗi tháng (giả định) | 4 tháng chạy thử |
+| High | 290 triệu đồng (giả định) | 4 người trong 5 tháng | tiết kiệm 25 triệu đồng mỗi tháng (giả định) | 4 tháng chạy thử |
 
 ## Pilot roadmap and decision points
 
@@ -456,7 +456,7 @@ Giảm tỉ lệ trả hàng vì sai size từ 58% xuống 40% trong 4 tháng k�
 
 ## Alternatives
 
-- Không làm gì: tiếp tục mất khoảng 99 triệu đồng mỗi tháng cho đơn trả vì sai size (1.900 đơn x 58% x 52.000 đồng, ước tính chưa kiểm chứng).
+- Không làm gì: tiếp tục mất khoảng 57 triệu đồng mỗi tháng cho đơn trả vì sai size (1.900 đơn x 58% x 52.000 đồng, ước tính chưa kiểm chứng).
 - Sửa quy trình: bảng size rõ hơn, ảnh người mẫu kèm số đo, nhắn xác nhận size trước khi giao.
 - Mua công cụ gợi ý size có sẵn.
 - Tự xây gợi ý dựa trên 2 năm lịch sử đơn và lý do trả.
