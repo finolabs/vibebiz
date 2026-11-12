@@ -11,6 +11,7 @@ status: clarifying                # clarifying | ready | packaged | presented | 
 estimate_status: not-tech-reviewed  # not-tech-reviewed | tech-reviewed; flips only on a recorded tech review
 budget_rounds_used: 0             # question rounds used this session; reset at session start
 latest_export: null               # date folder name under exports/ history, or null
+next_step: "{{next step}}"        # short next action in the user's language; written by the router after every round
 created: "{{YYYY-MM-DD}}"
 updated: "{{YYYY-MM-DD}}"
 # Each category: status clear | partial | missing | deferred; reason is

@@ -9,8 +9,8 @@
   position as the English one.
 - Every image a doc embeds (Markdown `![..](..)` or `<img src>`) exists.
 - Every diagram brief in `docs/diagrams/*.brief.md` names its subject
-  (frontmatter `message`) and the version it was rendered at (frontmatter
-  `rendered_with`, containing a version number), as in data-model.md
+  (frontmatter `message`) and the versions it was rendered with (frontmatter
+  `rendered_with`, naming both the vibebiz and diagram-design versions), as in data-model.md
   "Diagram brief".
 
 Passes trivially while no skill and no doc exist.
@@ -176,8 +176,9 @@ def _check_briefs(root):
         if not (isinstance(message, str) and message.strip()):
             problems.append(f"{rel}: brief does not name its subject (frontmatter 'message')")
         rendered = data.get("rendered_with")
-        if not (isinstance(rendered, str) and VERSION_RE.search(rendered)):
-            problems.append(f"{rel}: brief does not name the version it was rendered at (frontmatter 'rendered_with')")
+        if not (isinstance(rendered, str) and all(
+                re.search(rf"\b{name}\s+v?\d+\.\d+", rendered) for name in ("vibebiz", "diagram-design"))):
+            problems.append(f"{rel}: brief does not name the vibebiz and diagram-design versions it was rendered with (frontmatter 'rendered_with')")
     return problems
 
 
@@ -240,7 +241,11 @@ INVALID = {
     ),
     "brief without render version": (
         _edit("docs/diagrams/01-big-picture.brief.md", "rendered_with: vibebiz 0.1.0, diagram-design 1.0.0", "rendered_with: none"),
-        "01-big-picture.brief.md: brief does not name the version it was rendered at",
+        "01-big-picture.brief.md: brief does not name the vibebiz and diagram-design versions",
+    ),
+    "brief with only the renderer version": (
+        _edit("docs/diagrams/01-big-picture.brief.md", "rendered_with: vibebiz 0.1.0, diagram-design 1.0.0", "rendered_with: diagram-design 1.0.0"),
+        "01-big-picture.brief.md: brief does not name the vibebiz and diagram-design versions",
     ),
 }
 

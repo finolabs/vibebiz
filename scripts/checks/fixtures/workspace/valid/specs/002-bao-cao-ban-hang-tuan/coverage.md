@@ -9,6 +9,7 @@ status: clarifying
 estimate_status: not-tech-reviewed
 budget_rounds_used: 0
 latest_export: null
+next_step: "/vibebiz:continue"
 created: 2026-11-10
 updated: 2026-11-12
 categories:
