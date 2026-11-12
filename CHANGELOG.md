@@ -20,6 +20,8 @@ First public release. vibebiz is a Claude Cowork plugin that acts as a product o
 
 ### Known gaps
 
-- Not every eval suite in `evals/` has been run against this build; `evals/RESULTS.md` records which ran.
+- Eval coverage is partial. The trigger suite passed 7/7. One valid rerun covered six representative cases: two passed, and two scored 0.8 and 0.89. In the 0.8 case, a contradicting answer superseded an earlier decision without asking first. In the 0.89 case, the Spec Kit snapshot was not a byte-for-byte copy. The other suites have not been rerun after the grader fixes. `evals/RESULTS.md` records every run.
+- In the headless eval, `package` wrote `data.json`, the links and the snapshot, but not the two HTML views. Without a shell, retyping the 100 KB templates is not feasible; with a shell, as in Cowork's VM, the skill now splices the data with a one-off command. This has not been run in Cowork yet.
 - The Cowork smoke test (upload `vibebiz.plugin` in Cowork and run one idea end to end) has not been run for this version.
-- The ten documentation diagrams are not included yet.
+- The fictional example in `examples/000-giu-chan-khach-cu/` was assembled from an eval fixture and the board deck sample data, with the exports rendered from the templates; it is not the record of a live run.
+- The ten documentation diagrams, the help eval suite and the Vietnamese wording pass on the docs are not included yet.
