@@ -36,8 +36,8 @@ A plain-language scope cut. Sort every requested capability into Must, Should, C
 1. "Nếu bản đầu tiên chỉ làm được ba việc, ba việc nào để ý tưởng này vẫn đạt mục tiêu?" (Must)
 2. "Việc nào không có thì bản đầu vẫn chạy được nhưng nhân viên sẽ khó chịu?" (Should)
 3. "Việc nào nghe hay nhưng bỏ đi cũng không ai phản đối?" (Could)
-4. "Việc nào bạn đồng ý để dành cho lần sau, và vì sao?" (Won't this time)
-5. "Nếu thiếu một việc Must, bạn có còn ra mắt không?" (Tests that a Must is truly a Must.)
+4. "Việc nào anh/chị đồng ý để dành cho lần sau, và vì sao?" (Won't this time)
+5. "Nếu thiếu một việc Must, anh/chị có còn ra mắt không?" (Tests that a Must is truly a Must.)
 
 ## Writes to
 

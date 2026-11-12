@@ -6,7 +6,7 @@ Turn the user's first description of an idea into a new idea folder, a draft req
 - **Writes**: `specs/NNN-<slug>/` created from `templates/idea/`; `spec.md` (draft); `coverage.md` (frontmatter and body table).
 - **Fills**: the initial status of every category A–O. Later rounds belong to the router (`references/core/router.md`).
 
-Follow `references/core/writing-rules.md` for everything the user reads and `references/core/ask-protocol.md` for how questions are asked.
+Follow `references/core/writing-rules.md` for everything the user reads (including the address form; the intake answer is the first place the user's own form can show) and `references/core/ask-protocol.md` for how questions are asked.
 
 ## 1. Ask one open intake question
 
@@ -14,7 +14,7 @@ Ask exactly one open question, in plain text (not the question tool), about the 
 
 Example in Vietnamese:
 
-> Trước khi đi vào giải pháp, bạn kể giúp lần gần nhất chuyện này xảy ra: chuyện gì đã diễn ra, ở cửa hàng hay kênh nào, ai bị ảnh hưởng và việc đó tốn của bạn những gì?
+> Trước khi đi vào giải pháp, anh/chị kể giúp em lần gần nhất chuyện này xảy ra: chuyện gì đã diễn ra, ở cửa hàng hay kênh nào, ai bị ảnh hưởng và việc đó tốn của anh/chị những gì?
 
 - Ask nothing else in this step. Choices and multiple-choice rounds start in the router.
 - The intake question is not a question round and does not count toward `budget_rounds_used`.

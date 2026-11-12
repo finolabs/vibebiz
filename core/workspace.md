@@ -6,11 +6,13 @@ Every entry skill loads this module first. It finds the user's working folder, d
 **Writes**: workspace scaffold, idea folders, `index.html`.
 **Fills**: layout and table of contents only; never a coverage category.
 
+Messages to the user follow `references/core/writing-rules.md`, including how to address them; the Vietnamese examples below use its default form.
+
 ## 1. Find the working folder (every entry skill, before anything else)
 
 1. Look for the folder the user opened in Cowork: a user-chosen folder you can read and write with your file tools. A scratch or temporary location the platform gave you is not a working folder.
 2. If there is none (this is claude.ai chat, which has no working folder), say so plainly and stop. Write nothing, ask nothing else, do not continue partway. Use the user's language, Vietnamese by default:
-   - Vietnamese: "vibebiz cần chạy trong Cowork với một thư mục đã mở, vì mọi ý tưởng được lưu thành tệp trong thư mục đó. Bạn mở Cowork, chọn một thư mục làm việc, rồi gõ lại lệnh này nhé."
+   - Vietnamese: "vibebiz cần chạy trong Cowork với một thư mục đã mở, vì mọi ý tưởng được lưu thành tệp trong thư mục đó. Anh/chị mở Cowork, chọn một thư mục làm việc, rồi gõ lại lệnh này nhé."
    - English: "vibebiz needs Cowork with a folder open, because every idea is saved as files in that folder. Open Cowork, choose a working folder, then run this command again."
 3. The skills that work without a workspace (`help` answering a documentation question) skip steps 4 onward and write nothing.
 
@@ -45,7 +47,7 @@ A file with a required name that does not match its marker is the user's own fil
 
 Unrelated files may sit beside a workspace; they never change a Complete or Partial state. If a required name is taken by the user's own file (for example their own `index.html`), treat the folder as Unrelated and ask.
 
-**Ask for Unrelated files** with `AskUserQuestion` (ask-protocol module): one question, two options, recommended first: a `vibebiz/` subfolder (recommended: keeps the user's files untouched) or this folder. Word it without folder jargon, for example "Thư mục này đang có sẵn tệp khác. Mình lập không gian làm việc ở đâu?" with "Thư mục con mới tên vibebiz (khuyên dùng)" and "Ngay trong thư mục này". Skipped or nobody to answer: use the `vibebiz/` subfolder and record that as an assumption in the idea's `assumptions.md` once the idea exists.
+**Ask for Unrelated files** with `AskUserQuestion` (ask-protocol module): one question, two options, recommended first: a `vibebiz/` subfolder (recommended: keeps the user's files untouched) or this folder. Word it without folder jargon, for example "Thư mục này đang có sẵn tệp khác. Em lập không gian làm việc ở đâu?" with "Thư mục con mới tên vibebiz (Đề xuất)" and "Ngay trong thư mục này". Skipped or nobody to answer: use the `vibebiz/` subfolder and record that as an assumption in the idea's `assumptions.md` once the idea exists.
 
 ## 4. Scaffold
 
@@ -74,7 +76,7 @@ Leave no `{{` on a live line of a file you wrote. Never mark a category `clear` 
 1. List what is missing: workspace pieces, and for every folder in `specs/`, any missing file or folder from the idea layout in section 4. A deleted `index.html` counts as missing and is restored from the template, then rebuilt (section 7).
 2. Create only the missing items from the templates. Existing files are never touched, even when they differ from the template.
 3. A restored `coverage.md` starts with every category `missing`: take the id and slug from the folder name and the title from the first heading of `spec.md` (the folder name if there is none). Tell the user the coverage record was rebuilt, and let the router re-derive statuses from the spec at the next round rather than guessing them here.
-4. Report every restored item to the user in plain words ("Mình đã tạo lại: mục lục, nguyên tắc chung"), without file paths where a plain name will do. Say nothing when nothing was missing.
+4. Report every restored item to the user in plain words ("Em đã tạo lại: mục lục, nguyên tắc chung"), without file paths where a plain name will do. Say nothing when nothing was missing.
 
 ## 6. Number and name an idea folder
 
@@ -87,7 +89,7 @@ Leave no `{{` on a live line of a file you wrote. Never mark a category `clear` 
   5. If longer than 40 characters, cut at the last hyphen before the limit.
   6. If nothing is left (a title with no Latin letters or digits), use `idea`.
 
-  Example: "Nhắc khách mua lại qua Zalo" becomes `nhac-khach-mua-lai-qua-zalo`, so the folder is `specs/001-nhac-khach-mua-lai-qua-zalo/`.
+  Example: "Nhắc khách mua lại qua Zalo" becomes `nhac-khach-mua-lai-qua-zalo`, so the first idea's folder inside `specs/` is `001-nhac-khach-mua-lai-qua-zalo/`.
 - Two ideas with the same slug stay distinct through the number prefix.
 - The folder name never changes after creation, even if the title is later edited; the `title` field in `coverage.md` carries the current title.
 

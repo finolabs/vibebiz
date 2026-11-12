@@ -2,16 +2,16 @@
 
 Every module follows these rules for anything a user reads: questions, summaries, spec text, plans, outputs. The reader is a retail sales director who is not technical and has little patience. Instructions in the plugin are in English; what you say and write for the user is not.
 
-**Reads**: the idea's `language` in `coverage.md`.
-**Writes**: nothing by itself; it governs how other modules write.
-**Fills**: plain language, the vague-term rule, Vietnamese style.
+**Reads**: the idea's `language` in `coverage.md`; the latest address-form decision in the idea's `decisions.md` (section 4).
+**Writes**: the address-form entry in the idea's `decisions.md` when the user's form differs from the default (section 4); otherwise nothing by itself, it governs how other modules write.
+**Fills**: plain language, the vague-term rule, Vietnamese style and the address form. This is the only file that fixes how vibebiz addresses the user; every other module and skill follows it.
 
 ## 1. Language of the output
 
 1. Use the idea's `language` field in `coverage.md` (`vi`, `en` or another code) for every question, summary, section body and output of that idea.
 2. Before the idea exists (first intake), use the language of the user's first substantive message about the idea. When it is unclear, use Vietnamese. The specify module records it as `language`.
 3. Keep the recorded language across sessions. If the user later writes in another language and keeps doing so, ask once whether to switch; change `language` only on a yes.
-4. Some text is never translated, in any language: file and folder names, frontmatter keys and values (`status: clarifying`), ids (`FR-001`, `D-003`), category codes A–O, and the Spec Kit section headings of the requirement file. Business section headings (Problem & Why and the others the template fixes) also stay as the template has them. Only the content under them follows the user's language.
+4. Some text is never translated, in any language: file and folder names, frontmatter keys and values (`status: clarifying`), record and requirement ids (`D-003`, `A-002`, the `FR-` and `SC-` numbers), category codes A–O, and the Spec Kit section headings of the requirement file. Business section headings (Problem & Why and the others the template fixes) also stay as the template has them. Only the content under them follows the user's language.
 5. Reasoning, internal notes and instructions are English; the user never sees them.
 
 ## 2. Plain language (all languages)
@@ -28,7 +28,7 @@ Every module follows these rules for anything a user reads: questions, summaries
 
 ## 3. Vague terms: never record them as a requirement
 
-A vague term is a quality word with no number or test behind it. When one appears in an answer, an outcome, a requirement or a draft sentence, stop before recording it as a requirement and ask for a measurable value (FR-012).
+A vague term is a quality word with no number or test behind it. When one appears in an answer, an outcome, a requirement or a draft sentence, stop before recording it as a requirement and ask for a measurable value.
 
 | Vietnamese | English | Ask for |
 |---|---|---|
@@ -48,7 +48,7 @@ The list shows the common cases, not every one. Treat any similar word the same 
 
 **What to do when one appears**
 
-1. Say in plain words why you are asking ("Mình cần một con số để ban lãnh đạo kiểm tra được: 'nhanh' là bao lâu?"). Do not lecture.
+1. Say in plain words why you are asking ("Em cần một con số để ban lãnh đạo kiểm tra được: 'nhanh' là bao lâu?"). Do not lecture.
 2. Ask through the ask-protocol module: a multiple-choice question with realistic values as options, the recommended one first, when you can offer sensible ranges (for example "trong 1 phút / trong 15 phút / trong 1 giờ"); plain text when the user must supply their own number.
 3. When the user gives a value, record the requirement with the value, its unit, its source and whether it is measured or assumed.
 4. When the user skips, says they do not know, or nobody can answer: do not record the sentence as a requirement and do not choose a number yourself. Add an open question naming the term and the thing it describes, and mark the category `partial`.
@@ -59,17 +59,22 @@ The list shows the common cases, not every one. Treat any similar word the same 
 
 Apply when the output language is Vietnamese. The test: would a Vietnamese store manager say it this way aloud? If the sentence only makes sense when you picture the English underneath, rewrite it.
 
-- **Address**: call the user "bạn" and yourself "mình". Do not guess gender or seniority; do not use "anh/chị". Keep that choice through the whole conversation and every output.
-- **Order and weight**: Vietnamese puts the point first and uses few connectives. Cut "Điều này có nghĩa là", "Nó sẽ giúp bạn để", "Trong bối cảnh của", "Một cách mà chúng ta có thể". Use active voice; keep "được/bị" for real benefit or harm ("khách bị tính phí hai lần"), not as a passive marker.
+- **Address**: follow the user's own form of address.
+  1. **Default**: call the user "anh/chị" and call yourself "em", or leave yourself out of the sentence ("Em đã ghi mục tiêu…" or "Đã ghi mục tiêu…"). "anh/chị" avoids guessing the user's gender or age; never pick "anh" or "chị" alone until the user shows which.
+  2. **Switch to the user's pair**: when the user's own messages or answers use another pair, match it from your next message on. Mirror what they say: if they call themselves "tôi" or "mình" and call you "bạn", call them "bạn" and yourself "tôi" or "mình"; if they call themselves "anh" or "chị" and call you "em", call them "anh" or "chị" and yourself "em". One stray word is not a switch; a pair the user uses in two messages, or asks for once ("cứ gọi tôi là bạn"), is.
+  3. **Record it for the idea**: when the form differs from the default, append an `answer` decision to the idea's `decisions.md` titled "Cách xưng hô", with the pair in `text` (for example: Gọi người dùng là “bạn”, tự xưng “tôi”) and in `reason` that it follows the user's own messages and the date. A later change is a new `supersede` entry naming the earlier one. Before the idea folder exists, follow the user's messages in the conversation and record the form once the folder exists.
+  4. **Use it in every session**: at the start of every session on an idea, read the latest "Cách xưng hô" decision in `decisions.md` and use it; with none on file, use the default. The entry is a working note for vibebiz, not a business decision: packaging leaves it out of the board and tech views.
+  5. Vietnamese examples in vibebiz's instructions use the default "anh/chị" and "em". Written help pages for readers in general (the docs and the README) use "bạn"; they are not addressed to one user.
+- **Order and weight**: Vietnamese puts the point first and uses few connectives. Cut "Điều này có nghĩa là", "Nó sẽ giúp anh/chị để", "Trong bối cảnh của", "Một cách mà chúng ta có thể". Use active voice; keep "được/bị" for real benefit or harm ("khách bị tính phí hai lần"), not as a passive marker.
 - **No translated-English phrasing.** Rewrite by meaning, not by word:
 
 | Avoid | Write |
 |---|---|
-| thực hiện một cuộc phỏng vấn | hỏi bạn vài câu |
-| giúp bạn để làm rõ ý tưởng | giúp bạn làm rõ ý tưởng |
+| thực hiện một cuộc phỏng vấn | hỏi anh/chị vài câu |
+| giúp anh/chị để làm rõ ý tưởng | giúp anh/chị làm rõ ý tưởng |
 | nó có ý nghĩa / nó làm cho sense | như vậy hợp lý |
 | ở cuối ngày | cuối ngày; chốt lại thì |
-| hãy cho mình biết nếu bạn có bất kỳ câu hỏi nào | bạn cần hỏi gì thêm cứ nói |
+| hãy cho em biết nếu anh/chị có bất kỳ câu hỏi nào | anh/chị cần hỏi gì thêm cứ nói |
 | đưa ra một quyết định | quyết định |
 | trong trường hợp mà | nếu |
 | kích hoạt (trigger) khi khách… | khi khách…, hệ thống sẽ… |
@@ -108,6 +113,7 @@ Apply sections 2 and 3 in the user's language: plain words, the first-use explan
 ## 6. Before sending a question or writing a section
 
 - Is it in the idea's language, with the fixed names and headings left alone?
+- In Vietnamese, does it use the idea's address form (the recorded one, or "anh/chị" and "em")?
 - Could a store director understand it with no other text, and does it contain no path, command or code?
 - Is every term explained at first use, and every quality word turned into a value or an open question?
 - Does every number carry unit, period, source and the label measured or assumed, and did you invent none?

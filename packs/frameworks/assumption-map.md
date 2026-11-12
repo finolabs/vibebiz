@@ -27,7 +27,7 @@ origin: Assumption mapping as described by David J. Bland and Alexander Osterwal
 ## Questions
 Sort assumptions by five kinds: customers want it, the money works, it can be built, people can use it, and nobody is harmed or breaks a rule. Then rank by how much the idea fails if it is wrong, and how little evidence exists.
 1. "Để ý tưởng này thành công, những điều nào phải đúng?" (open question; also draw from earlier answers and quote them)
-2. For each: "Bạn đã có bằng chứng gì rằng điều này đúng, ví dụ số liệu hay một lần thử?" Options: "Có số liệu", "Mới nghe nói", "Chưa có gì".
+2. For each: "Anh/chị đã có bằng chứng gì rằng điều này đúng, ví dụ số liệu hay một lần thử?" Options: "Có số liệu", "Mới nghe nói", "Chưa có gì".
 3. "Nếu điều này sai, ý tưởng còn đáng làm không?" Options: "Không còn (Đề xuất nếu hậu quả nặng)", "Còn nhưng phải đổi hướng", "Vẫn đáng làm".
 4. Confirm the riskiest one: the most damaging if wrong and the least evidence. Ask: "Cách rẻ nhất để kiểm tra điều này trong hai tuần là gì?"
 

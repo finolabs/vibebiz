@@ -7,7 +7,7 @@ Fill the gaps no thinking lens owns, and tidy what the lenses left half done. Th
 - **Writes**: `spec.md` (Clarifications, Key Entities, Requirements, Assumptions, and the section of any leftover category), `glossary.md`, `coverage.md`, plus the records the ask protocol writes (`decisions.md`, `open-questions.md`, `assumptions.md`).
 - **Fills**: G (data and entities), H (integrations), N (terminology), and leftover `partial` categories the router hands over.
 
-Ask every question through `references/core/ask-protocol.md`, write in plain language by `references/core/writing-rules.md`, and keep to the round the router gives you.
+Ask every question through `references/core/ask-protocol.md`, write in plain language and address the user by `references/core/writing-rules.md`, and keep to the round the router gives you.
 
 ## 1. What each category needs to be clear
 
@@ -32,7 +32,7 @@ An idea whose chosen alternative needs no system (for example "fix the process")
 - two words used for the same thing in the idea's files (choose one);
 - unquantified quality words from the writing rules' list, which must become a number or an open question.
 
-**Leftover partial categories**. When the router hands over a category another module owns that is still `partial` and only details remain (a missing number, an unclear word, a "not yet clarified" placeholder, a `[NEEDS CLARIFICATION]` marker, a vague adjective), check it against what spec Appendix A lists for that category and ask only about the missing details. If what is missing is a new line of thinking (for example the alternatives were never compared), do not ask: return it to the router for its owning lens.
+**Leftover partial categories**. When the router hands over a category another module owns that is still `partial` and only details remain (a missing number, an unclear word, a "not yet clarified" placeholder, a `[NEEDS CLARIFICATION]` marker, a vague adjective), check it against that category's elements in the router's frontier table (`references/core/router.md`) and the owning module's list, and ask only about the missing details. If what is missing is a new line of thinking (for example the alternatives were never compared), do not ask: return it to the router for its owning lens.
 
 ## 2. Scan before asking
 
@@ -80,7 +80,7 @@ After the round, write back as the ask protocol's section 7 says (Clarifications
 | H: what happens when the other system is down | `### Edge Cases` |
 | N: the meaning of a term | `glossary.md` as `- **<term>**: <plain-language meaning>`, sorted alphabetically; then use that one term across `spec.md`, adding "(trước đây gọi là \"X\")" once where the old word was used |
 | A vague quality word turned into a number | the requirement or success criterion that used it (`### Functional Requirements` or `### Measurable Outcomes`), with the number and its source, period and label |
-| A leftover detail of another category | that category's section in spec Appendix A (for example C's baseline in `## Outcome` and `### Measurable Outcomes`) |
+| A leftover detail of another category | the section the owning module's "apply the answers" table names for it (for example C's baseline in `## Outcome` and `### Measurable Outcomes`) |
 
 Rules for every edit:
 

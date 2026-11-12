@@ -36,7 +36,7 @@ One card, two layers. The journey map follows the customer step by step across s
 
 Ask about one real occurrence, never an average day. Plain words, one round at most.
 
-1. "Bạn kể lại lần gần nhất một khách đi từ lúc tìm đến lúc nhận hàng nhé: bước đầu tiên là gì, rồi tiếp theo?"
+1. "Anh/chị kể lại lần gần nhất một khách đi từ lúc tìm đến lúc nhận hàng nhé: bước đầu tiên là gì, rồi tiếp theo?"
 2. "Ở bước nào khách hoặc nhân viên phải chờ, hỏi lại hay làm lại?" (Offer the steps already named as options.)
 3. "Ở mỗi bước, ai ở phía sau lo việc đó: nhân viên cửa hàng, kho, chăm sóc khách hàng, hay hệ thống?"
 4. "Sau khi có ý tưởng này, bước nào biến mất, bước nào mới xuất hiện, và nhân viên nào đổi việc?"

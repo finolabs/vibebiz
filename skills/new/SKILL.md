@@ -10,7 +10,7 @@ Take a sales director from a sentence about an idea to a first written requireme
 Load each module from this skill's own folder when its step starts, and follow it exactly:
 
 - `references/core/workspace.md`: working folder, workspace states, scaffold, repair, table of contents.
-- `references/core/writing-rules.md`: wording of everything the user reads.
+- `references/core/writing-rules.md`: wording of everything the user reads, including how to address the user.
 - `references/core/ask-protocol.md`: how every question is asked, recorded and stopped.
 - `references/core/specify.md`: intake question, idea folder, draft requirement, first coverage.
 - `references/core/router.md`: the question rounds, budget, readiness and next step.
@@ -45,7 +45,7 @@ First use means the workspace held no idea folder in `specs/` before this action
 
 Ask one question through the question tool, counted outside the question budget (ask protocol): record the ground rules now (four short questions) or later. Recommend "later", because the user came to work on their idea and every rule can be set at any time. Example:
 
-> Bạn có muốn ghi luôn vài luật chung cho mọi ý tưởng (ưu tiên năm nay, mức chi bạn tự duyệt, ngành hàng, việc luôn cần người duyệt) không?
+> Anh/chị có muốn ghi luôn vài luật chung cho mọi ý tưởng (ưu tiên năm nay, mức chi anh/chị tự duyệt, ngành hàng, việc luôn cần người duyệt) không?
 > - "Để sau (Đề xuất)": "Đi thẳng vào ý tưởng; luật chung ghi lúc nào cũng được."
 > - "Ghi ngay": "Bốn câu ngắn, giúp các câu hỏi sau sát với doanh nghiệp hơn."
 
@@ -58,7 +58,7 @@ On "now", ask one round of at most four questions under the ask protocol:
 3. **Steps that always need a person** (`mandatory_approvals`): `multiSelect`, options such as price changes, messages sent to customers, refunds, use of customers' personal data.
 4. **This year's priorities** (`priorities`): the round's one open question, in plain text, because only the user knows them.
 
-Write the answers into `constitution.md` frontmatter by the data model's "Ground rules" fields, set `status: set` only when at least one answer was given, set `updated` to today, rebuild its human body from the frontmatter, and rebuild the table of contents by the workspace module's rules. Skipped questions leave their fields unchanged. With nobody to answer, leave the ground rules deferred and do not invent them.
+Write the answers into the matching fields of `constitution.md` frontmatter (`vertical`, `approval_ceiling`, `mandatory_approvals`, `priorities`, as the workspace template names them), set `status: set` only when at least one answer was given, set `updated` to today, rebuild its human body from the frontmatter, and rebuild the table of contents by the workspace module's rules. Skipped questions leave their fields unchanged. With nobody to answer, leave the ground rules deferred and do not invent them.
 
 ## 5. First use: the example
 
