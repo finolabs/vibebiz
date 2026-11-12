@@ -59,6 +59,8 @@ def check_card(path) -> list[str]:
     for key in REQUIRED_KEYS:
         if key not in data:
             problems.append(f"{name}: missing frontmatter key '{key}'")
+        elif key == "fills" and data[key] == [] and data.get("lens") == "router":
+            continue  # the router's own card (Cynefin) sets depth and fills no category
         elif data[key] is None or data[key] == "" or data[key] == []:
             problems.append(f"{name}: frontmatter key '{key}' is empty")
 
@@ -76,7 +78,8 @@ def check_card(path) -> list[str]:
 
     headings = {m.group(1).strip().lower() for m in _HEADING_RE.finditer(body)}
     for section in REQUIRED_SECTIONS:
-        if section.lower() not in headings:
+        # A heading may add a qualifier, as in "Fashion example (fictional)".
+        if not any(h == section.lower() or h.startswith(section.lower() + " (") for h in headings):
             problems.append(f"{name}: missing section '{section}'")
     return problems
 
