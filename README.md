@@ -32,6 +32,7 @@ This section lists each skill when the story that delivers it ships. Each comman
 - `/vibebiz:continue`: pick an idea back up. Re-reads its files (your own edits win), summarizes in three lines what is settled, where it stopped and the next question, then continues the rounds.
 - `/vibebiz:package`: package a clarified idea for the board and the tech team. Checks readiness (or offers a labelled draft), builds the plan, checks for gaps and contradictions, then makes a board deck and a requirements document as private Claude Artifacts or your own Google Slides and Docs, plus a Spec Kit-compatible requirement file. The same figures appear in every view with their source; earlier versions are kept. Nothing is shared or made public.
 - `/vibebiz:status`: list every idea with its status, how many of the 15 points are clear and the next step. Asks nothing.
+- `/vibebiz:constitution`: record or update your organization's ground rules in one round of at most four questions: this year's priorities, the budget you approve alone, your business, and the steps that always need a person to approve; optionally your strategy objectives and OKRs. Skip it and the rules stay "later". Challenge and planning check every idea against them, and the plan and the board deck show any conflict. Changing a recorded rule shows the change and asks before saving.
 
 Commands in Vietnamese: [docs/commands.md](docs/commands.md).
 

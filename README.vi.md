@@ -32,6 +32,7 @@ Mục này liệt kê từng kỹ năng khi phần việc tạo ra nó được 
 - `/vibebiz:continue`: làm tiếp một ý tưởng. vibebiz đọc lại các tệp (phần bạn tự sửa được giữ nguyên), tóm tắt trong ba dòng điều gì đã rõ, lần trước dừng ở đâu và câu hỏi tiếp theo, rồi hỏi tiếp.
 - `/vibebiz:package`: đóng gói một ý tưởng đã rõ để trình ban lãnh đạo và gửi đội kỹ thuật. vibebiz kiểm tra ý tưởng đã đủ điều kiện chưa (hoặc đề nghị bản nháp có ghi rõ chỗ thiếu), lập kế hoạch, soát chỗ thiếu và chỗ mâu thuẫn, rồi tạo bản trình bày và tài liệu yêu cầu dưới dạng Artifact riêng tư trên Claude hoặc Google Slides, Google Docs của chính bạn, kèm một tệp yêu cầu dùng được với Spec Kit. Mọi con số giống nhau ở mọi bản và có nguồn. vibebiz giữ lại các phiên bản cũ, không chia sẻ và không để công khai tài liệu nào.
 - `/vibebiz:status`: liệt kê mọi ý tưởng với trạng thái, số điểm đã rõ trên 15 điểm và bước tiếp theo. Lệnh này không hỏi gì.
+- `/vibebiz:constitution`: ghi hoặc sửa luật chung của công ty trong một vòng tối đa bốn câu hỏi: ưu tiên năm nay, mức chi bạn tự duyệt, ngành hàng và những việc luôn cần người duyệt; có thể thêm mục tiêu chiến lược và OKR nếu công ty đã có. Bỏ qua thì luật chung được để sau. Khi phản biện và lập kế hoạch, vibebiz đối chiếu từng ý tưởng với các luật này; chỗ nào vượt luật được ghi rõ trong kế hoạch và bản trình bày. Khi sửa luật đã ghi, vibebiz cho bạn xem phần thay đổi và hỏi trước khi lưu.
 
 Chi tiết các lệnh: [docs/commands.md](docs/commands.md).
 

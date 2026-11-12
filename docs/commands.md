@@ -11,7 +11,7 @@ Mỗi lệnh là một kỹ năng (skill) cùng tên trong plugin vibebiz. Bạn
 **vibebiz sẽ làm gì**:
 
 1. Chuẩn bị thư mục làm việc nếu chưa có. Nếu thư mục đã có tệp khác, vibebiz hỏi bạn muốn dùng thư mục này hay tạo một thư mục con riêng (nên chọn thư mục con). vibebiz chỉ bổ sung phần còn thiếu và không ghi đè tệp nào của bạn.
-2. Lần đầu dùng, vibebiz mời bạn ghi vài luật chung cho mọi ý tưởng (ưu tiên năm nay, mức chi bạn tự duyệt, ngành hàng, việc luôn cần người duyệt). Bạn có thể để sau.
+2. Lần đầu dùng, vibebiz mời bạn ghi vài luật chung cho mọi ý tưởng (ưu tiên năm nay, mức chi bạn tự duyệt, ngành hàng, việc luôn cần người duyệt). Bạn có thể để sau và ghi bất cứ lúc nào bằng `/vibebiz:constitution`.
 3. Hỏi một câu mở về tình huống thật gần nhất đã khiến bạn nghĩ tới ý tưởng.
 4. Tạo một thư mục riêng cho ý tưởng, viết bản nháp yêu cầu đầu tiên và cho bạn xem bảng những điểm đã rõ và còn thiếu.
 5. Hỏi từng vòng ngắn, mỗi vòng tối đa bốn câu trắc nghiệm, phương án nên chọn luôn đứng đầu. Bạn có thể bỏ qua câu nào cũng được; câu bị bỏ qua không bị tính là đã đồng ý. Sau mỗi vòng, câu trả lời được ghi ngay vào tệp.
@@ -49,3 +49,17 @@ Cách đọc từng tài liệu: [Đọc các tài liệu vibebiz tạo ra](read
 **Dùng khi**: bạn muốn xem nhanh tất cả ý tưởng đang đến đâu. Ví dụ: "Các ý tưởng của tôi đến đâu rồi?"
 
 **vibebiz sẽ làm gì**: liệt kê mọi ý tưởng với trạng thái, số điểm đã rõ trên 15 điểm, bước tiếp theo và ngày cập nhật, rồi cập nhật lại mục lục. Lệnh này không hỏi bạn câu nào. Ý tưởng mẫu (nếu có) không nằm trong danh sách.
+
+## /vibebiz:constitution
+
+**Dùng khi**: bạn muốn ghi hoặc sửa luật chung cho mọi ý tưởng của công ty. Ví dụ: "Ghi luật chung cho công ty", "Đổi mức chi tôi tự duyệt thành 300 triệu", "Thêm OKR năm nay của công ty".
+
+**vibebiz sẽ làm gì**:
+
+1. Chuẩn bị thư mục làm việc nếu chưa có, như khi bắt đầu ý tưởng mới. Bạn có thể ghi luật chung trước khi có ý tưởng nào.
+2. Hỏi một vòng tối đa bốn câu: ngành hàng của bạn, mức chi bạn được tự duyệt, những việc luôn cần người duyệt (ví dụ đổi giá bán, gửi tin cho khách, hoàn tiền, dùng dữ liệu cá nhân của khách) và hai, ba ưu tiên năm nay. Câu nào đã có câu trả lời trong lời bạn nói thì vibebiz không hỏi lại. Bạn bỏ qua câu nào thì luật đó giữ nguyên; bỏ qua cả vòng thì luật chung vẫn để sau.
+3. Nếu công ty đã có mục tiêu chiến lược theo bốn góc nhìn (tài chính, khách hàng, quy trình nội bộ, học hỏi và phát triển) hoặc OKR năm nay, bạn dán vào hoặc chỉ tài liệu; vibebiz ghi lại đúng như bạn đưa, không tự đặt thêm mục tiêu.
+4. Nếu bạn sửa luật đã ghi, vibebiz cho bạn xem phần thay đổi (trước và sau) và chỉ lưu khi bạn đồng ý.
+5. Lưu luật chung và cập nhật mục lục.
+
+**Sau đó**: khi phản biện và lập kế hoạch cho từng ý tưởng, vibebiz đối chiếu với luật chung. Ý tưởng cần khoản chi vượt mức bạn tự duyệt, bỏ qua một việc luôn cần người duyệt, hoặc đi ngược mục tiêu đã ghi sẽ được ghi rõ trong kế hoạch và trên bản trình bày cho ban lãnh đạo. Nếu luật chung còn để sau, vibebiz nhắc bạn một lần khi lập kế hoạch.

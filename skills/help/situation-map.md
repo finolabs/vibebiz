@@ -15,3 +15,5 @@ Help uses this map to route a situation the user describes to one entry skill, t
 | Ý tưởng đã rõ và cần tài liệu trình ban lãnh đạo hoặc gửi đội kỹ thuật ("làm slide", "viết PRD", "đóng gói ý tưởng") | /vibebiz:package |
 | Muốn lấy bản nháp của ý tưởng dù còn chỗ chưa rõ ("xuất bản nháp") | /vibebiz:package |
 | Muốn xem tất cả ý tưởng đang đến đâu ("các ý tưởng của tôi đến đâu rồi") | /vibebiz:status |
+| Muốn ghi luật chung cho mọi ý tưởng của công ty ("ghi luật chung", "ưu tiên năm nay của công ty là…") | /vibebiz:constitution |
+| Muốn sửa luật chung đã ghi, thêm mục tiêu chiến lược hoặc OKR ("đổi mức chi tôi tự duyệt", "thêm OKR năm nay") | /vibebiz:constitution |
