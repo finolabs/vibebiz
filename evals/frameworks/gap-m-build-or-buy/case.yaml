@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: frameworks-gap-m-build-or-buy
+context:
+  scaffold_script: scaffold.sh
