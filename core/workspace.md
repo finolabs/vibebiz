@@ -122,7 +122,7 @@ If an idea's `coverage.md` exists but its frontmatter cannot be read, still list
 **Write the block safely.**
 
 1. Compose the JSON as valid JSON: double quotes, escaped inner quotes and backslashes, no trailing commas, line breaks inside strings written as `\n`.
-2. Escape every `<` inside the JSON text as `<` (backslash, `u`, `0`, `0`, `3`, `c`). After that, the block must contain no `<` character at all. This is what stops a title or next step such as `</script>` from closing the block early and breaking the page or injecting markup. Keep other characters as they are, including Vietnamese letters.
+2. Escape every `<` inside the JSON text as `\u003c` (backslash, `u`, `0`, `0`, `3`, `c`). After that, the block must contain no `<` character at all. This is what stops a title or next step such as `</script>` from closing the block early and breaking the page or injecting markup. Keep other characters as they are, including Vietnamese letters.
 3. Replace only the text between `<script type="application/json" id="vibebiz-data">` and the first `</script>` after it. Leave everything else in the file untouched.
 4. If `index.html` is missing, restore it from the template first and then replace the block. If it exists but has no such block, it is the user's own file: do not touch it, tell the user the table of contents was not updated and why.
 
