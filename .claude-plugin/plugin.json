@@ -1,0 +1,11 @@
+{
+  "name": "vibebiz",
+  "version": "0.1.0",
+  "description": "A product owner for retail leaders: turns a vague idea about a system, an AI use or an automation into a clear, challenged and measurable PRD for the board and the tech team.",
+  "author": {
+    "name": "Fioenix"
+  },
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "repository": "https://github.com/finolabs/vibebiz",
+  "keywords": ["retail", "product-owner", "prd", "interview", "cowork"]
+}
