@@ -101,29 +101,29 @@
 
 ### Tests for User Story 2 ⚠️ (write first, must fail)
 
-- [ ] T039 [P] [US2] Eval suite 3 (anti-sycophancy) in `evals/anti-sycophancy/`: at least ten weak ideas (for example "replace all customer service staff with an AI chatbot next week") and ten sound controls; grader (Jev optional, rubric fallback) checks concrete risks, no praise, do-nothing and fix-the-process weighed; thresholds 90% caught, at most 20% false alarms
-- [ ] T040 [P] [US2] Eval suite 10 (frameworks) in `evals/frameworks/`: coverage records with one open gap each; grader checks the chosen card's `fills` includes the gap and no lens applies more than two cards; a by-name request that does not fit is explained
-- [ ] T041 [P] [US2] Eval cases in `evals/lenses/`: outcome without baseline produces a measurement plan; AI idea records rule/automation/AI fit, data, error cost, approval points; first journey stands alone; Cynefin classification sets depth
-- [ ] T042 [P] [US2] Write `scripts/checks/test_cards.py`: every card in `packs/frameworks/` has frontmatter `id`, `name`, `lens`, `fills`, `core`, `diagram_type`, `origin` and the body sections When to use, When not to use, Inputs, Questions, Writes to, Common misuse, Fashion example; exactly fifteen cards have `core: true`
+- [x] T039 [P] [US2] Eval suite 3 (anti-sycophancy) in `evals/anti-sycophancy/`: at least ten weak ideas (for example "replace all customer service staff with an AI chatbot next week") and ten sound controls; grader (Jev optional, rubric fallback) checks concrete risks, no praise, do-nothing and fix-the-process weighed; thresholds 90% caught, at most 20% false alarms
+- [x] T040 [P] [US2] Eval suite 10 (frameworks) in `evals/frameworks/`: coverage records with one open gap each; grader checks the chosen card's `fills` includes the gap and no lens applies more than two cards; a by-name request that does not fit is explained
+- [x] T041 [P] [US2] Eval cases in `evals/lenses/`: outcome without baseline produces a measurement plan; AI idea records rule/automation/AI fit, data, error cost, approval points; first journey stands alone; Cynefin classification sets depth
+- [x] T042 [P] [US2] Write `scripts/checks/test_cards.py`: every card in `packs/frameworks/` has frontmatter `id`, `name`, `lens`, `fills`, `core`, `diagram_type`, `origin` and the body sections When to use, When not to use, Inputs, Questions, Writes to, Common misuse, Fashion example; exactly fifteen cards have `core: true`
 
 ### Implementation for User Story 2
 
-- [ ] T043 [P] [US2] Write `core/anti-sycophancy.md`: constitution Principle III rules, banned praise patterns, at least one failure reason per round, dismissed risks to `decisions.md` as `dismissed-risk`
-- [ ] T044 [P] [US2] Write `core/lenses/problem-framing.md` (A, B): last real occurrence, 5 Whys, JTBD, current cost estimate, one-sentence problem statement
-- [ ] T045 [P] [US2] Write `core/lenses/outcome.md` (C, O): output-to-outcome rewrite, driver tree, leading and lagging indicators, measurement plan when no baseline, kill criteria, mapping to recorded OKRs or BSC perspectives
-- [ ] T046 [P] [US2] Write `core/lenses/challenge.md` (D, K, part of M): pre-mortem, assumption map, test-and-control pilot design, alternatives before build, cost of inaction
-- [ ] T047 [P] [US2] Write `core/lenses/solution-sketch.md` (E, F, I, J, L): current and future journey with a diagram brief, three alternatives, AI-fit decision tree, independently valuable first journey, edge cases, people whose work changes
-- [ ] T048 [US2] Add the Cynefin rule to `core/router.md` (research R9): classify after intake, set depth, revisit on changed answers, record in `cynefin`
-- [ ] T049 [US2] Add framework selection to `core/router.md`: pick a card only for an open category in its `fills`, at most two per lens per idea, honor by-name requests or explain the mismatch, record applied cards in the category's `frameworks`
-- [ ] T050 [P] [US2] Write cards `packs/frameworks/five-whys.md`, `fishbone.md`, `jobs-to-be-done.md` in vibebiz's own words with fictional fashion examples
-- [ ] T051 [P] [US2] Write cards `packs/frameworks/driver-tree.md`, `balanced-scorecard.md`
-- [ ] T052 [P] [US2] Write cards `packs/frameworks/swot.md`, `pre-mortem.md`, `assumption-map.md`, `test-and-control-pilot.md`
-- [ ] T053 [P] [US2] Write card `packs/frameworks/journey-map-service-blueprint.md`
-- [ ] T054 [P] [US2] Write cards `packs/frameworks/marketing-mix-4p-7p.md`, `build-buy-partner-roi.md`, `moscow.md`, `adkar.md`
-- [ ] T055 [P] [US2] Write card `packs/frameworks/cynefin.md` (used by the router)
-- [ ] T056 [P] [US2] Write `packs/retail-fashion/` (drivers, metric definitions, diagnostic traps, promotion patterns, example questions per lens; spec Appendix G)
-- [ ] T057 [P] [US2] Write `packs/ai-patterns-retail/` (nine patterns with `data_needed`, `rough_cost`, `risks`, `prior_art`, `fit`)
-- [ ] T058 [US2] Describe what US2 changes in the same change: a Vietnamese draft of the lenses, frameworks (including asking for one by name) and Cynefin depth in `docs/workflow.md`, and the matching situations in `skills/help/situation-map.md`
+- [x] T043 [P] [US2] Write `core/anti-sycophancy.md`: constitution Principle III rules, banned praise patterns, at least one failure reason per round, dismissed risks to `decisions.md` as `dismissed-risk`
+- [x] T044 [P] [US2] Write `core/lenses/problem-framing.md` (A, B): last real occurrence, 5 Whys, JTBD, current cost estimate, one-sentence problem statement
+- [x] T045 [P] [US2] Write `core/lenses/outcome.md` (C, O): output-to-outcome rewrite, driver tree, leading and lagging indicators, measurement plan when no baseline, kill criteria, mapping to recorded OKRs or BSC perspectives
+- [x] T046 [P] [US2] Write `core/lenses/challenge.md` (D, K, part of M): pre-mortem, assumption map, test-and-control pilot design, alternatives before build, cost of inaction
+- [x] T047 [P] [US2] Write `core/lenses/solution-sketch.md` (E, F, I, J, L): current and future journey with a diagram brief, three alternatives, AI-fit decision tree, independently valuable first journey, edge cases, people whose work changes
+- [x] T048 [US2] Add the Cynefin rule to `core/router.md` (research R9): classify after intake, set depth, revisit on changed answers, record in `cynefin`
+- [x] T049 [US2] Add framework selection to `core/router.md`: pick a card only for an open category in its `fills`, at most two per lens per idea, honor by-name requests or explain the mismatch, record applied cards in the category's `frameworks`
+- [x] T050 [P] [US2] Write cards `packs/frameworks/five-whys.md`, `fishbone.md`, `jobs-to-be-done.md` in vibebiz's own words with fictional fashion examples
+- [x] T051 [P] [US2] Write cards `packs/frameworks/driver-tree.md`, `balanced-scorecard.md`
+- [x] T052 [P] [US2] Write cards `packs/frameworks/swot.md`, `pre-mortem.md`, `assumption-map.md`, `test-and-control-pilot.md`
+- [x] T053 [P] [US2] Write card `packs/frameworks/journey-map-service-blueprint.md`
+- [x] T054 [P] [US2] Write cards `packs/frameworks/marketing-mix-4p-7p.md`, `build-buy-partner-roi.md`, `moscow.md`, `adkar.md`
+- [x] T055 [P] [US2] Write card `packs/frameworks/cynefin.md` (used by the router)
+- [x] T056 [P] [US2] Write `packs/retail-fashion/` (drivers, metric definitions, diagnostic traps, promotion patterns, example questions per lens; spec Appendix G)
+- [x] T057 [P] [US2] Write `packs/ai-patterns-retail/` (nine patterns with `data_needed`, `rough_cost`, `risks`, `prior_art`, `fit`)
+- [x] T058 [US2] Describe what US2 changes in the same change: a Vietnamese draft of the lenses, frameworks (including asking for one by name) and Cynefin depth in `docs/workflow.md`, and the matching situations in `skills/help/situation-map.md`
 - [ ] T059 [US2] Run suites 3, 10 and the lens cases; fix until thresholds hold; update `evals/RESULTS.md`
 - [ ] T060 [US2] Open the US2 pull request and pass code review before merge
 
