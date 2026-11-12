@@ -53,7 +53,7 @@ Kèm theo tài liệu là **một bản sao của tệp yêu cầu**. Đội k�
 |---|---|---|
 | **chưa làm rõ** | Điểm này chưa có thông tin trong các tệp của ý tưởng | Trả lời thêm bằng `/vibebiz:continue` rồi đóng gói lại |
 | **Bản nháp** | Ý tưởng được đóng gói khi còn thiếu điều kiện; mọi chỗ thiếu đều ghi "chưa làm rõ" | Dùng để trao đổi sớm, chưa nên dùng để xin duyệt |
-| **chưa qua kỹ thuật thẩm định** | Con số ước tính (chi phí, công sức, lợi ích) chưa được đội kỹ thuật xác nhận | Nhờ đội kỹ thuật xem lại; khi vibebiz đã ghi nhận kết quả thẩm định, lần đóng gói sau sẽ bỏ nhãn này |
+| **chưa qua kỹ thuật thẩm định** | Con số ước tính (chi phí, công sức, lợi ích) chưa được đội kỹ thuật xác nhận | Nhờ đội kỹ thuật xem lại, rồi báo kết quả cho vibebiz bằng `/vibebiz:continue` (xem mục "Sau buổi trình" bên dưới); lần đóng gói sau sẽ bỏ nhãn này |
 | **đo được** / **giả định** | Con số lấy từ số liệu thật, hay là con số bạn ước đoán | Thay số giả định bằng số đo được khi có |
 | **chưa có sơ đồ** | Chưa cài plugin vẽ sơ đồ diagram-design, nên chỗ sơ đồ hiện bảng | Nhờ quản trị viên cài thêm diagram-design nếu muốn có sơ đồ |
 
@@ -82,3 +82,23 @@ Dữ liệu kinh doanh của bạn nằm trong thư mục làm việc và Google
 ## Các phiên bản cũ
 
 Mỗi lần đóng gói lại, vibebiz chuyển bộ tài liệu trước vào thư mục lịch sử của ý tưởng, đặt tên theo ngày của phiên bản đó. Nếu trong một ngày bạn đóng gói nhiều lần, các bộ sau có thêm số thứ tự. Không phiên bản nào bị xóa, nên bạn luôn tìm lại được đúng bản đã trình cho ban lãnh đạo.
+
+## Sau buổi trình
+
+vibebiz không dự họp, nên bạn là người báo lại kết quả. Cứ nói bằng lời thường, ví dụ "ban lãnh đạo duyệt ý tưởng nhắc khách rồi" hoặc "sếp bảo giảm chi phí thử nghiệm", hoặc gõ `/vibebiz:continue`.
+
+- **Quyết định của ban lãnh đạo**: vibebiz ghi lại quyết định (duyệt, không duyệt hoặc cần sửa), ngày quyết định và góp ý, gắn với đúng phiên bản bạn đã trình, tức là bộ tài liệu mang ngày đóng gói của bản ấy trong thư mục lịch sử. Nhờ vậy, sau nhiều lần sửa và trình lại, bạn vẫn biết ban lãnh đạo đã nói gì về từng bản.
+- **Yêu cầu sửa**: vibebiz hỏi trước về đúng những điểm ban lãnh đạo nêu, rồi đóng gói lại thành phiên bản mới để bạn trình tiếp. Bản cũ và quyết định cũ vẫn được giữ.
+- **Kết quả thẩm định của đội kỹ thuật**: vibebiz ghi lại ngày, vai trò của người thẩm định và các con số đã sửa (kèm số cũ). Khi mọi con số ước tính đã qua thẩm định, lần đóng gói sau bỏ nhãn "chưa qua kỹ thuật thẩm định". Các tài liệu đã tạo trước đó vẫn giữ nhãn cũ, nên hãy đóng gói lại trước khi gửi tiếp.
+
+## Trang mục lục
+
+Thư mục làm việc có một trang mục lục (mở bằng trình duyệt) liệt kê mọi ý tưởng của bạn. Mỗi ý tưởng có:
+
+- **Trạng thái**: đang làm rõ, sẵn sàng đóng gói, đã đóng gói, đã trình ban lãnh đạo, cần chỉnh sửa, được duyệt hoặc không được duyệt. Ý nghĩa từng trạng thái có trong [Các lệnh của vibebiz](commands.md).
+- **Nhãn ước tính**: con số ước tính đã qua kỹ thuật thẩm định hay chưa.
+- **Thanh mức rõ**: bao nhiêu trong 15 điểm cần làm rõ đã rõ.
+- **Bước tiếp theo**: việc cần làm tiếp, kèm lệnh cần gõ và nút "Chép lệnh" để dán vào Cowork.
+- **Liên kết** tới bản trình bày, tài liệu kỹ thuật và các bản trên Google, nếu đã có.
+
+Ý tưởng mẫu nằm riêng ở mục "Ví dụ" và không tính vào danh sách ý tưởng của bạn. vibebiz tự cập nhật trang này sau mỗi lần làm việc; bạn cũng có thể gõ `/vibebiz:status` để xem cùng danh sách ngay trong cuộc trò chuyện.

@@ -19,14 +19,28 @@ Mỗi lệnh là một kỹ năng (skill) cùng tên trong plugin vibebiz. Bạn
 
 ## /vibebiz:continue
 
-**Dùng khi**: bạn muốn làm tiếp một ý tưởng đã bắt đầu trước đó. Ví dụ: "Làm tiếp ý tưởng nhắc khách quay lại."
+**Dùng khi**: bạn muốn làm tiếp một ý tưởng đã bắt đầu trước đó, hoặc báo cho vibebiz biết chuyện gì đã xảy ra sau khi trình: ban lãnh đạo duyệt, không duyệt hay yêu cầu sửa, hoặc đội kỹ thuật đã thẩm định chi phí. Ví dụ: "Làm tiếp ý tưởng nhắc khách quay lại", "Ban lãnh đạo duyệt ý tưởng nhắc khách rồi", "Đội kỹ thuật đã xem lại chi phí".
 
-**vibebiz sẽ làm gì**:
+**vibebiz sẽ làm gì khi bạn làm tiếp**:
 
 1. Chọn ý tưởng bạn nhắc tới. Nếu bạn có nhiều ý tưởng đang làm dở, vibebiz hỏi bạn chọn ý tưởng nào.
 2. Đọc lại các tệp của ý tưởng như hiện tại. Nếu bạn đã tự sửa tệp, vibebiz giữ nguyên phần bạn sửa.
 3. Tóm tắt trong ba dòng: điều gì đã rõ, lần trước dừng ở đâu và câu hỏi tiếp theo là gì.
 4. Tiếp tục hỏi từng vòng như lúc bắt đầu.
+
+**Khi bạn báo kết quả buổi trình ban lãnh đạo**:
+
+1. vibebiz ghi lại quyết định (duyệt, không duyệt hoặc cần sửa), ngày quyết định và góp ý của ban lãnh đạo, gắn với đúng phiên bản tài liệu bạn đã trình.
+2. vibebiz chỉ hỏi thêm những gì bạn chưa nói: bản nào đã trình (nếu bạn đã đóng gói nhiều lần), ngày nào, và ban lãnh đạo góp ý gì. Bạn có thể bỏ qua câu góp ý; vibebiz không tự viết thay.
+3. Trạng thái của ý tưởng đổi theo quyết định và hiện ngay trên mục lục.
+4. Nếu ban lãnh đạo yêu cầu sửa, vibebiz hỏi bạn muốn sửa ngay hay để sau. Khi sửa, vibebiz hỏi trước về đúng những điểm ban lãnh đạo nêu, rồi mời bạn đóng gói lại thành phiên bản mới.
+5. Nếu bạn muốn làm lại một ý tưởng đã được duyệt hoặc không được duyệt, vibebiz hỏi xác nhận rồi mở lại ý tưởng. Mọi quyết định và phiên bản cũ vẫn được giữ nguyên.
+
+**Khi bạn báo đội kỹ thuật đã thẩm định chi phí**:
+
+1. vibebiz ghi lại ngày thẩm định, ai thẩm định (theo vai trò, ví dụ "trưởng nhóm kỹ thuật") và các con số đội kỹ thuật đã sửa, kèm số cũ để đối chiếu.
+2. Khi mọi con số ước tính đã qua thẩm định, lần đóng gói sau sẽ bỏ nhãn "chưa qua kỹ thuật thẩm định". Nếu đội kỹ thuật mới xem một phần, nhãn vẫn giữ cho tới khi xem hết.
+3. Tài liệu đã tạo trước đó vẫn mang nhãn cũ, nên vibebiz đề nghị đóng gói lại để có bản mới không còn nhãn.
 
 ## /vibebiz:package
 
@@ -48,4 +62,22 @@ Cách đọc từng tài liệu: [Đọc các tài liệu vibebiz tạo ra](read
 
 **Dùng khi**: bạn muốn xem nhanh tất cả ý tưởng đang đến đâu. Ví dụ: "Các ý tưởng của tôi đến đâu rồi?"
 
-**vibebiz sẽ làm gì**: liệt kê mọi ý tưởng với trạng thái, số điểm đã rõ trên 15 điểm, bước tiếp theo và ngày cập nhật, rồi cập nhật lại mục lục. Lệnh này không hỏi bạn câu nào. Ý tưởng mẫu (nếu có) không nằm trong danh sách.
+**vibebiz sẽ làm gì**: liệt kê mọi ý tưởng với trạng thái, ước tính đã qua kỹ thuật thẩm định hay chưa, số điểm đã rõ trên 15 điểm, bước tiếp theo kèm lệnh cần gõ, liên kết tới tài liệu và ngày cập nhật, rồi cập nhật lại mục lục. Lệnh này không hỏi bạn câu nào. Ý tưởng mẫu (nếu có) không nằm trong danh sách.
+
+## Trạng thái của một ý tưởng
+
+Mỗi ý tưởng luôn ở một trong bảy trạng thái. Bạn thấy trạng thái này trong `/vibebiz:status` và trên trang mục lục của thư mục làm việc.
+
+| Trạng thái | Nghĩa là | Đi tiếp bằng |
+|---|---|---|
+| Đang làm rõ | vibebiz đang hỏi để làm rõ ý tưởng | `/vibebiz:continue` |
+| Sẵn sàng đóng gói | Đã đủ điều kiện để làm tài liệu trình ban lãnh đạo | `/vibebiz:package` |
+| Đã đóng gói | Đã có bản trình bày và tài liệu cho đội kỹ thuật, chưa trình | Trình ban lãnh đạo rồi báo lại bằng `/vibebiz:continue` |
+| Đã trình ban lãnh đạo | Bạn báo đã trình, đang chờ quyết định | Báo quyết định bằng `/vibebiz:continue` |
+| Cần chỉnh sửa | Ban lãnh đạo yêu cầu sửa | `/vibebiz:continue`; ý tưởng quay về "Đang làm rõ" khi bạn bắt đầu sửa |
+| Được duyệt | Ban lãnh đạo đã duyệt | Gửi tài liệu cho đội kỹ thuật; muốn làm lại thì mở lại bằng `/vibebiz:continue` |
+| Không được duyệt | Ban lãnh đạo không duyệt | Muốn làm lại thì mở lại bằng `/vibebiz:continue` |
+
+Xuất bản nháp không làm đổi trạng thái. Khi mở lại một ý tưởng đã được duyệt hoặc không được duyệt, ý tưởng quay về "Đang làm rõ" và mọi quyết định cũ vẫn còn trong hồ sơ.
+
+Bên cạnh trạng thái là nhãn ước tính: "Chưa qua kỹ thuật thẩm định" cho tới khi bạn báo đội kỹ thuật đã thẩm định, sau đó là "Đã qua kỹ thuật thẩm định".
