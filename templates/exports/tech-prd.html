@@ -12,219 +12,432 @@
   the same data as the board deck); layout, styles and the renderer never
   change between runs.
 
-  Layout: one section per tech.sections[] entry in a fixed order of section
-  ids: business-context, user-stories, requirements, key-entities,
+  Layout: a document, read rather than presented, with a sticky section nav
+  (a side column on wide screens, a scrolling strip on top of narrow ones).
+  One section per tech.sections[] entry in a fixed order of section ids:
+  business-context, user-stories, requirements, key-entities,
   success-criteria, assumptions (shown only when present), ai-fit,
   non-functional, glossary, open-questions. A required section missing from
-  the data, or with no content, still shows with a "not yet clarified" label.
+  the data, or with no content, still shows with a "not yet clarified" tag.
   Sections whose id is not in the list follow at the end. Each section shows
   its heading, its content blocks (section.content is a blocks array, the same
-  block types as the board deck; a plain string is shown as one paragraph), an
-  optional diagram slot (section.diagram, a brief id in diagrams[]), and every
-  figure it uses with source, period and the measured or assumed label.
-  Figures come only from numbers[] by id, written in text as {{N-01}}.
+  block types and chart components as the board deck; a plain string is shown
+  as one paragraph; a list whose items all carry an id, such as FR-001, shows
+  as a table), an optional diagram slot (section.diagram, a brief id in
+  diagrams[]), the frameworks applied, one line of figure sources (source,
+  period, measured or assumed) and the fields it is based on. After the
+  sections: the full figures table, the items not yet clarified, and the link
+  to the Spec Kit-compatible requirement file. Figures come only from
+  numbers[] by id, written in text as {{N-01}}.
 
-  Data shape beyond the export contract is documented in board-deck.html and
-  is the same here.
+  Data shape beyond the export contract, and the brand tokens, are documented
+  in board-deck.html and are the same here.
 
   Security: self-contained (no external scripts, fonts or images), strict CSP,
   data inserted only with textContent, createTextNode and setAttribute; links
-  pass safeHref. The single exception is inline SVG, sanitized as described at
-  sanitizeSvg below. Escape every "<" in the JSON block as < so the block
-  cannot close the script tag early; SVG markup inside it is escaped the same way.
+  pass safeHref. Charts and icons are SVG built by the renderer with
+  createElementNS and setAttribute. The single exception to text-only
+  insertion is diagram SVG, sanitized as described at sanitizeSvg below.
+  Escape every "<" in the JSON block as \u003c so the block cannot close the
+  script tag early; SVG markup inside it is escaped the same way.
 -->
 <style>
+  /* ---- Shared styles (identical in board-deck.html and tech-prd.html) ---- */
+
+  /* Tokens. The brand group is the only part a brand profile changes. To apply
+     a profile from the diagram-design plugin, copy its colors and font stacks
+     into data.json "theme": { "light": {accent, accent_soft, ink, quiet,
+     canvas, surface, rule, mark}, "dark": {same keys}, "fonts": {display,
+     text} }. The renderer accepts only #hex colors and plain font names and
+     sets them as --brand-<key>-light / --brand-<key>-dark / --brand-font-<key>
+     on the page, which the defaults below read first. Status colors (gaps,
+     estimates, errors) stay fixed so labels keep their meaning in any brand. */
   :root {
-    --bg: #f7f7f5;
-    --surface: #ffffff;
-    --text: #1d1d1f;
-    --muted: #5f6368;
-    --border: #e2e2de;
-    --accent: #2f5bd3;
-    --bar-track: #e8e8e4;
-    --bar-fill: #2f5bd3;
-    --warn-bg: #fff4d6;
-    --warn-text: #7a5300;
-    --ok-bg: #e3f4ea;
-    --ok-text: #1e6b40;
-    --bad-bg: #fde6e4;
-    --bad-text: #9c2b20;
-    --info-bg: #e7eefc;
-    --info-text: #2343a0;
-    --gap-bg: #fde6e4;
-    --gap-text: #9c2b20;
-    --radius: 12px;
-    --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    /* Brand: colors (light) */
+    --accent: var(--brand-accent-light, #0b6e66);
+    --accent-soft: var(--brand-accent-soft-light, #dcefec);
+    --ink: var(--brand-ink-light, #18202c);
+    --quiet: var(--brand-quiet-light, #5a6474);
+    --canvas: var(--brand-canvas-light, #e9ecf0);
+    --surface: var(--brand-surface-light, #ffffff);
+    --rule: var(--brand-rule-light, #d5dae1);
+    --mark: var(--brand-mark-light, #aeb6c2);
+    /* Brand: type */
+    --font-display: var(--brand-font-display, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
+    --font-text: var(--brand-font-text, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
+    /* Status (fixed) */
+    --gap-ink: #8a6416;
+    --gap-line: #d6bd85;
+    --est-ink: #5a6474;
+    --est-line: #c3cad4;
+    --bad-ink: #a3362a;
+    /* Type scale, document (rem); slides override with frame-relative sizes */
+    --fs-h1: 2rem;
+    --fs-h2: 1.375rem;
+    --fs-body: 1rem;
+    --fs-small: 0.8125rem;
+    --fs-badge: 0.72rem;
+    --big: 2.25rem;
+    /* Spacing */
+    --sp-1: 4px;
+    --sp-2: 8px;
+    --sp-3: 16px;
+    --sp-4: 24px;
+    --sp-5: 40px;
+    --sp-6: 64px;
+    --radius: 6px;
+    --tl-mark: 18px;
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #141416;
-      --surface: #1e1e21;
-      --text: #ececee;
-      --muted: #a2a2a8;
-      --border: #333338;
-      --accent: #8aa8ff;
-      --bar-track: #2e2e33;
-      --bar-fill: #8aa8ff;
-      --warn-bg: #3a2f12;
-      --warn-text: #f3cf7a;
-      --ok-bg: #173324;
-      --ok-text: #8fdcb0;
-      --bad-bg: #3d1c19;
-      --bad-text: #f2a39a;
-      --info-bg: #1c2747;
-      --info-text: #a9c0ff;
-      --gap-bg: #3d1c19;
-      --gap-text: #f2a39a;
+      --accent: var(--brand-accent-dark, #4cc3b2);
+      --accent-soft: var(--brand-accent-soft-dark, #143a36);
+      --ink: var(--brand-ink-dark, #e7eaef);
+      --quiet: var(--brand-quiet-dark, #98a2b2);
+      --canvas: var(--brand-canvas-dark, #0c0f14);
+      --surface: var(--brand-surface-dark, #151a21);
+      --rule: var(--brand-rule-dark, #2a313c);
+      --mark: var(--brand-mark-dark, #4a5363);
+      --gap-ink: #d9b25c;
+      --gap-line: #6e5a2c;
+      --est-ink: #a9b2c0;
+      --est-line: #3a4250;
+      --bad-ink: #f0a093;
     }
   }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font);
-    font-size: 16px;
-    line-height: 1.5;
-  }
-  a { color: var(--accent); }
-  .muted, .meta { color: var(--muted); }
-  .meta { margin: 4px 0 0; font-size: 0.9rem; }
-  .notice {
-    margin: 12px 0 0;
-    padding: 10px 14px;
-    border-radius: var(--radius);
-    background: var(--warn-bg);
-    color: var(--warn-text);
-    font-size: 0.9rem;
-  }
-  .notice.ok { background: var(--ok-bg); color: var(--ok-text); }
-  .notice.bad { background: var(--bad-bg); color: var(--bad-text); }
-  .badge {
-    display: inline-block;
-    padding: 1px 9px;
-    border-radius: 999px;
-    font-size: 0.78rem;
-    font-weight: 500;
-    line-height: 1.5;
-    background: var(--info-bg);
-    color: var(--info-text);
-    white-space: nowrap;
-  }
-  .badge.ok { background: var(--ok-bg); color: var(--ok-text); }
-  .badge.warn { background: var(--warn-bg); color: var(--warn-text); }
-  .badge.gap { background: var(--gap-bg); color: var(--gap-text); white-space: normal; }
-  .missing { color: var(--bad-text); font-style: italic; }
-  .fig-inline { font-weight: 600; font-variant-numeric: tabular-nums; }
-  .item-id, .fig-id { color: var(--muted); font-variant-numeric: tabular-nums; font-weight: 600; }
-  .text { margin: 0 0 10px; }
-  .list { margin: 0 0 10px; padding-left: 1.3em; }
-  .list li { margin: 4px 0; }
-  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 0 0 12px; }
-  .kpi { border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; }
-  .kpi-value { font-size: 1.6rem; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.2; }
-  .kpi-caption { color: var(--muted); font-size: 0.9rem; margin: 4px 0; }
-  .chart { margin: 0 0 12px; }
-  .chart-title { font-weight: 600; margin-bottom: 6px; }
-  .bar-row { display: grid; grid-template-columns: minmax(90px, 30%) 1fr auto; gap: 8px; align-items: center; margin: 4px 0; }
-  .bar-label { font-size: 0.9rem; }
-  .bar-track { height: 12px; border-radius: 999px; background: var(--bar-track); overflow: hidden; }
-  .bar-fill { display: block; height: 100%; background: var(--bar-fill); }
-  .bar-value { font-variant-numeric: tabular-nums; font-size: 0.9rem; text-align: right; }
-  .chart-source, .table-source { font-size: 0.8rem; color: var(--muted); margin-top: 6px; }
-  .chart-source.missing { color: var(--bad-text); }
-  .table-wrap { overflow-x: auto; margin: 0 0 12px; }
-  table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
-  th, td { text-align: left; vertical-align: top; padding: 6px 8px; border-bottom: 1px solid var(--border); }
-  th { font-weight: 600; color: var(--muted); }
-  .diagram { margin: 8px 0 12px; }
-  .diagram svg { display: block; max-width: 100%; height: auto; }
-  .diagram figcaption { font-size: 0.85rem; color: var(--muted); margin-top: 6px; }
-  .diagram.none { border: 1px dashed var(--border); border-radius: var(--radius); padding: 10px 12px; }
-  .no-diagram { margin: 0 0 6px; font-size: 0.85rem; color: var(--warn-text); }
-  .stories { display: grid; gap: 12px; margin: 0 0 12px; }
-  .story { border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; }
-  .story-title { font-size: 1rem; margin: 0 0 6px; }
-  .story-why { margin: 0 0 6px; color: var(--muted); }
-  .scenarios { margin: 0; padding-left: 1.3em; }
-  .scenarios li { margin: 4px 0; }
-  .defs { margin: 0 0 12px; }
-  .defs dt { font-weight: 600; margin-top: 8px; }
-  .defs dd { margin: 2px 0 0; }
-  .q-group { font-size: 0.95rem; margin: 12px 0 4px; }
-  .q-group.blocking { color: var(--bad-text); }
-  .gap-line { margin: 0 0 10px; }
-  .frameworks { font-size: 0.85rem; margin-top: 10px; }
-  .frameworks-title { color: var(--muted); }
-  .based-on { font-size: 0.75rem; color: var(--muted); margin-top: 6px; }
-  .fig-notes { margin-top: 12px; padding-top: 8px; border-top: 1px solid var(--border); font-size: 0.8rem; }
-  .fig-notes-title { color: var(--muted); font-weight: 600; margin-bottom: 2px; }
-  .fig-notes ul { margin: 0; padding: 0; list-style: none; }
-  .fig-notes li { margin: 3px 0; }
-  .links-box { margin-top: 10px; font-size: 0.9rem; }
-  .links-title { color: var(--muted); }
-  .links { display: inline; margin: 0; padding: 0; list-style: none; }
-  .links li { display: inline; margin-right: 12px; }
-  .gaps-list h3 { font-size: 1rem; margin: 16px 0 6px; }
-  footer { margin-top: 32px; font-size: 0.8rem; color: var(--muted); }
   @media print {
     :root {
-      --bg: #ffffff; --surface: #ffffff; --text: #000000; --muted: #444444; --border: #cccccc;
-      --accent: #1a3fa8; --bar-track: #e6e6e6; --bar-fill: #1a3fa8;
-      --warn-bg: #fff4d6; --warn-text: #5c3e00; --ok-bg: #e3f4ea; --ok-text: #14502f;
-      --bad-bg: #fde6e4; --bad-text: #7d1f16; --info-bg: #e7eefc; --info-text: #1a3080;
-      --gap-bg: #fde6e4; --gap-text: #7d1f16;
+      --accent: var(--brand-accent-light, #0b6e66);
+      --accent-soft: var(--brand-accent-soft-light, #dcefec);
+      --ink: var(--brand-ink-light, #18202c);
+      --quiet: var(--brand-quiet-light, #4a5262);
+      --canvas: #ffffff;
+      --surface: #ffffff;
+      --rule: var(--brand-rule-light, #c9ced6);
+      --mark: var(--brand-mark-light, #9aa3b0);
+      --gap-ink: #6f500f;
+      --gap-line: #c2a66a;
+      --est-ink: #4a5262;
+      --est-line: #aab2bd;
+      --bad-ink: #8a2a20;
     }
     body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     a { color: inherit; }
   }
-  main { max-width: 860px; margin: 0 auto; padding: 24px 16px 48px; }
-  .doc-head h1 { font-size: 1.6rem; margin: 0 0 4px; }
-  .doc-head .idea-title { margin: 0; font-size: 1.05rem; }
-  .toc { margin: 20px 0 0; padding: 12px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
-  .toc-title { font-weight: 600; font-size: 0.9rem; color: var(--muted); }
-  .toc ol { margin: 6px 0 0; padding-left: 1.3em; }
-  .doc-section {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px 22px;
-    margin-top: 16px;
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--canvas);
+    color: var(--ink);
+    font-family: var(--font-text);
+    font-size: var(--fs-body);
+    line-height: 1.5;
   }
-  .doc-section h2 { font-size: 1.2rem; margin: 0 0 10px; }
-  .section-gaps { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
-  .snapshot { margin-top: 16px; font-size: 0.9rem; }
-  @media (max-width: 600px) {
-    main { padding: 16px 10px 32px; }
-    .doc-section { padding: 16px 14px; }
-    .bar-row { grid-template-columns: 1fr auto; }
-    .bar-track { grid-column: 1 / -1; grid-row: 2; }
+  a { color: var(--accent); text-underline-offset: 0.15em; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .missing { color: var(--bad-ink); font-style: italic; }
+  .muted { color: var(--quiet); }
+
+  /* Icons: inline SVG paths drawn by the renderer */
+  .ico {
+    width: 1.15em; height: 1.15em; flex: none;
+    fill: none; stroke: currentColor; stroke-width: 1.75;
+    stroke-linecap: round; stroke-linejoin: round;
+    vertical-align: -0.2em;
+  }
+
+  /* Labels: present but quiet */
+  .tag-gap {
+    display: inline-flex; align-items: center; gap: 0.45em;
+    padding: 0.1em 0.7em;
+    border: 1px dashed var(--gap-line); border-radius: 999px;
+    color: var(--gap-ink); font-size: var(--fs-small); font-weight: 500;
+    line-height: 1.5;
+  }
+  .tag-gap::before {
+    content: ""; width: 0.5em; height: 0.5em; flex: none;
+    border: 1.5px solid currentColor; border-radius: 50%;
+  }
+  .badge-est {
+    display: inline-block; vertical-align: middle;
+    padding: 0 0.5em;
+    border: 1px solid var(--est-line); border-radius: 4px;
+    color: var(--est-ink); font-size: var(--fs-badge); font-weight: 500;
+    letter-spacing: 0; line-height: 1.6; white-space: nowrap;
+  }
+  .num-value + .badge-est, .num-body > .badge-est { margin-top: 0.4em; }
+  .fig-inline { font-weight: 650; font-variant-numeric: tabular-nums; }
+  .fig-inline + .badge-est { margin-left: 0.35em; }
+  .item-id { color: var(--quiet); font-weight: 600; font-variant-numeric: tabular-nums; margin-right: 0.4em; }
+
+  /* Text blocks */
+  .text { margin: 0; max-width: 62ch; }
+  .list { margin: 0; padding-left: 1.2em; display: grid; gap: 0.35em; }
+  .list-ico { list-style: none; padding-left: 0; gap: 0.7em; }
+  .list-ico li { display: grid; grid-template-columns: auto 1fr; gap: 0.65em; align-items: start; }
+  .list-ico .ico { color: var(--accent); width: 1.35em; height: 1.35em; margin-top: 0.05em; }
+
+  /* Numbers */
+  .nums { display: grid; gap: var(--sp-3); }
+  .nums-row { display: flex; flex-wrap: wrap; gap: var(--sp-3) var(--sp-5); }
+  .num { display: grid; grid-template-columns: auto 1fr; gap: 0.6em; align-items: start; }
+  .num-ico { color: var(--quiet); width: 1.3em; height: 1.3em; margin-top: 0.2em; }
+  .num-body { grid-column: 2; display: grid; justify-items: start; }
+  .num > .num-body:only-child { grid-column: 1 / -1; }
+  .num-value {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: calc(var(--big) * 0.5); line-height: 1.05;
+    letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
+  }
+  .num-caption { color: var(--quiet); }
+  .num-hero .num-value {
+    font-size: var(--big); font-weight: 750; letter-spacing: -0.04em;
+    line-height: 0.95; color: var(--accent);
+  }
+  .num-hero .num-value.is-long { font-size: calc(var(--big) * 0.6); letter-spacing: -0.03em; }
+  .num-hero .num-caption { margin-top: 0.45em; font-size: 1.15em; color: var(--ink); }
+
+  /* Charts */
+  .chart, .compare-wrap, .timeline-wrap, .meter, .diagram { margin: 0; min-width: 0; }
+  .chart-title { font-weight: 650; margin-bottom: 0.7em; }
+  .cap { margin-top: 0.75em; font-size: var(--fs-small); color: var(--quiet); line-height: 1.4; }
+  .bars { display: grid; gap: 0.7em; }
+  .bar-row {
+    display: grid; grid-template-columns: minmax(4.5em, 22%) minmax(0, 1fr) auto;
+    gap: 0.8em; align-items: center;
+  }
+  .bar-label { color: var(--quiet); }
+  .bar-svg { display: block; width: 100%; height: 1.6em; }
+  .bar-track { fill: transparent; }
+  .bar-fill { fill: var(--mark); }
+  .bar-row.is-hl .bar-fill { fill: var(--accent); }
+  .bar-row.is-hl .bar-label { color: var(--ink); font-weight: 600; }
+  .bar-value { font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+  .bar-value .badge-est { margin-left: 0.4em; }
+  .line-svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .line-svg text { font-family: var(--font-text); }
+  .line-base { stroke: var(--rule); stroke-width: 1; }
+  .line-path { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
+  .line-dot { fill: var(--surface); stroke: var(--accent); stroke-width: 2.5; }
+  .line-val { fill: var(--ink); font-weight: 650; }
+  .line-x { fill: var(--quiet); }
+  .chart-est { margin: 0.4em 0 0; }
+
+  /* Before and after, now and later */
+  .compare {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: var(--sp-4); align-items: start;
+  }
+  .side { border-top: 3px solid var(--rule); padding-top: 0.7em; display: grid; gap: 0.35em; align-content: start; justify-items: start; }
+  .side.is-emph { border-top-color: var(--accent); }
+  .side-label { color: var(--quiet); font-weight: 600; }
+  .side.is-emph .side-label { color: var(--ink); }
+  .side-value {
+    font-family: var(--font-display); font-weight: 750;
+    font-size: calc(var(--big) * 0.8); line-height: 1; letter-spacing: -0.035em;
+    font-variant-numeric: tabular-nums; color: var(--quiet);
+  }
+  .side.is-emph .side-value { color: var(--accent); }
+  .side-caption { color: var(--quiet); }
+  .side-list { list-style: none; margin: 0.2em 0 0; padding: 0; display: grid; gap: 0.45em; }
+  .side-list li { display: grid; grid-template-columns: auto 1fr; gap: 0.55em; align-items: start; }
+  .side-list .ico { color: var(--mark); margin-top: 0.1em; }
+  .side.is-emph .side-list .ico { color: var(--accent); }
+  .compare-arrow { align-self: center; color: var(--quiet); width: 1.8em; height: 1.8em; }
+
+  /* Options compared */
+  .options { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 10.5em), 1fr)); gap: var(--sp-4); }
+  .opt { border-top: 3px solid var(--rule); padding-top: 0.7em; display: grid; gap: 0.4em; align-content: start; }
+  .opt.is-chosen { border-top-color: var(--accent); }
+  .opt-name { font-weight: 700; font-size: 1.12em; line-height: 1.25; }
+  .opt.is-chosen .opt-name { color: var(--accent); }
+  .opt-chosen { display: inline-flex; align-items: center; gap: 0.3em; color: var(--accent); font-size: var(--fs-small); font-weight: 600; }
+  .opt-summary { color: var(--quiet); }
+  .opt-line { display: grid; grid-template-columns: auto 1fr; gap: 0.45em; align-items: start; }
+  .opt-line .ico { margin-top: 0.15em; color: var(--quiet); }
+  .opt-pro .ico { color: var(--accent); }
+
+  /* Timeline */
+  .tl {
+    list-style: none; margin: 0; padding: 0; position: relative;
+    display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: var(--sp-4);
+  }
+  .tl::before {
+    content: ""; position: absolute; left: 0; right: 0;
+    top: calc(var(--tl-mark) / 2 - 1px); height: 2px; background: var(--rule);
+  }
+  .tl-item { position: relative; display: grid; gap: 0.3em; align-content: start; }
+  .tl-mark { display: block; width: var(--tl-mark); height: var(--tl-mark); margin-bottom: 0.5em; }
+  .tl-dot { fill: var(--surface); stroke: var(--mark); stroke-width: 3; }
+  .tl-diamond { fill: var(--accent); stroke: var(--surface); stroke-width: 2; }
+  .tl-when { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .tl-what { color: var(--quiet); }
+  .tl-decision { display: grid; grid-template-columns: auto 1fr; gap: 0.4em; align-items: start; color: var(--accent); font-weight: 600; }
+  .tl-decision .ico { margin-top: 0.1em; }
+
+  /* Meter */
+  .meter { display: grid; gap: 0.5em; }
+  .meter-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3em 0.7em; }
+  .meter-value { font-family: var(--font-display); font-weight: 750; font-size: calc(var(--big) * 0.55); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .meter-label { color: var(--quiet); }
+  .meter-svg { display: block; width: 100%; height: 0.75em; }
+  .meter-track { fill: var(--rule); }
+  .meter-fill { fill: var(--accent); }
+
+  /* Diagram */
+  .diagram svg { display: block; width: 100%; height: auto; }
+  .diagram figcaption { margin-top: 0.6em; font-size: var(--fs-small); color: var(--quiet); }
+  .no-diagram { display: flex; gap: 0.45em; align-items: center; margin: 0 0 0.6em; color: var(--quiet); font-size: var(--fs-small); }
+  @media (prefers-color-scheme: dark) {
+    /* Rendered diagrams carry their own light palette; give them paper. */
+    .diagram-svg { background: #f4f6f8; border-radius: var(--radius); padding: 0.6em; }
+  }
+  @media print { .diagram-svg { background: none; padding: 0; } }
+
+  /* Tables */
+  .table-wrap { overflow-x: auto; min-width: 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.92em; }
+  th, td { text-align: left; vertical-align: top; padding: 0.45em 0.65em 0.45em 0; border-bottom: 1px solid var(--rule); }
+  th { color: var(--quiet); font-weight: 600; }
+  td.num-cell { white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: 600; }
+  td.num-cell .badge-est { margin-left: 0.4em; }
+
+  /* Stories, definitions, questions */
+  .stories { display: grid; gap: var(--sp-4); }
+  .story { border-left: 3px solid var(--rule); padding-left: var(--sp-3); }
+  .story-title { font-size: 1.05rem; margin: 0 0 0.3em; display: flex; flex-wrap: wrap; gap: 0.5em; align-items: baseline; }
+  .story-prio { color: var(--accent); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .story-why { margin: 0 0 0.5em; color: var(--quiet); }
+  .scenarios { margin: 0; padding-left: 1.2em; display: grid; gap: 0.4em; }
+  .scenarios strong { font-weight: 650; }
+  .defs { margin: 0; display: grid; grid-template-columns: minmax(8em, 30%) 1fr; gap: 0.5em var(--sp-3); }
+  .defs dt { font-weight: 650; }
+  .defs dd { margin: 0; }
+  .q-group { font-size: 1em; margin: var(--sp-3) 0 0.4em; }
+  .q-group:first-child { margin-top: 0; }
+  .q-group.blocking { color: var(--bad-ink); }
+  .q-owner { color: var(--quiet); }
+
+  /* Notices and links in the page header */
+  .notice { margin: 0; font-size: var(--fs-small); color: var(--quiet); }
+  .notice.bad { color: var(--bad-ink); font-weight: 600; }
+  .notice.draft { color: var(--gap-ink); }
+  .meta { margin: 0; font-size: var(--fs-small); color: var(--quiet); }
+  .links-box { font-size: var(--fs-small); display: flex; flex-wrap: wrap; gap: 0.2em 1em; }
+  .links-title { color: var(--quiet); }
+  .links { display: contents; }
+  .links li { list-style: none; }
+  .gaps-list h3 { font-size: 1em; margin: 0 0 0.5em; }
+  .gaps-list ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.4em; }
+  .gaps-list li { display: flex; flex-wrap: wrap; gap: 0.5em; align-items: center; }
+  .frameworks, .based-on, .sources, .notes { margin: 0; }
+  .line-label { color: var(--ink); font-weight: 600; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
+  /* ---- End of shared styles ---- */
+
+  /* ---- Tech document ---- */
+  body { background: var(--surface); }
+  .doc-wrap {
+    max-width: 1160px; margin: 0 auto;
+    padding: clamp(16px, 4vw, 48px) clamp(14px, 3vw, 32px) var(--sp-6);
+    display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sp-4);
+  }
+  .doc { min-width: 0; max-width: 46rem; }
+  .doc-head { padding-bottom: var(--sp-4); border-bottom: 1px solid var(--rule); display: grid; gap: 0.45em; }
+  .doc-head h1 {
+    margin: 0; font-family: var(--font-display); font-size: var(--fs-h1);
+    font-weight: 720; line-height: 1.15; letter-spacing: -0.02em; text-wrap: balance;
+  }
+  .doc-head .idea-title { margin: 0; font-size: 1.1rem; color: var(--quiet); }
+  .doc-nav-title { margin: 0 0 0.5em; font-size: var(--fs-small); color: var(--quiet); font-weight: 600; }
+  .doc-nav ol { list-style: none; margin: 0; padding: 0; }
+  .doc-nav a {
+    display: block; padding: 0.3em 0 0.3em 0.8em;
+    border-left: 2px solid var(--rule);
+    color: var(--quiet); text-decoration: none; font-size: 0.9rem; line-height: 1.35;
+  }
+  .doc-nav a:hover { color: var(--ink); }
+  .doc-nav a[aria-current="true"] { color: var(--ink); border-left-color: var(--accent); font-weight: 600; }
+  .doc-section { container: section / inline-size; padding-top: var(--sp-5); scroll-margin-top: 72px; }
+  .doc-section > h2 {
+    margin: 0 0 var(--sp-3); padding-bottom: 0.4em; border-bottom: 1px solid var(--rule);
+    font-family: var(--font-display); font-size: var(--fs-h2); font-weight: 700; letter-spacing: -0.01em;
+  }
+  .doc-section > * + * { margin-top: var(--sp-3); }
+  .doc-section > h2 + * { margin-top: 0; }
+  .section-gaps { display: flex; flex-wrap: wrap; gap: 0.4em; }
+  .section-meta { display: grid; gap: 0.25em; font-size: var(--fs-small); color: var(--quiet); padding-top: var(--sp-2); border-top: 1px dashed var(--rule); }
+  .doc .chart, .doc .compare-wrap, .doc .timeline-wrap, .doc .meter { max-width: 36rem; }
+  .doc .nums-row { --big: 2.75rem; }
+  .doc .figures-table td, .doc .figures-table th { font-size: 0.9rem; }
+  .snapshot { margin: 0; }
+  .doc-foot { margin-top: var(--sp-5); font-size: var(--fs-small); color: var(--quiet); }
+  @media (min-width: 960px) {
+    .doc-wrap { grid-template-columns: 210px minmax(0, 1fr); column-gap: var(--sp-6); }
+    .doc-nav { position: sticky; top: var(--sp-4); align-self: start; max-height: calc(100vh - 48px); overflow-y: auto; padding-top: 0.4em; }
+  }
+  @media (max-width: 959px) {
+    .doc-nav {
+      position: sticky; top: 0; z-index: 2;
+      margin: 0 calc(-1 * clamp(14px, 3vw, 32px));
+      padding: 10px clamp(14px, 3vw, 32px);
+      background: var(--surface); border-bottom: 1px solid var(--rule);
+      overflow-x: auto;
+    }
+    .doc-nav-title { display: none; }
+    .doc-nav ol { display: flex; gap: 0.25em 1em; white-space: nowrap; }
+    .doc-nav a { padding: 0.2em 0; border-left: 0; border-bottom: 2px solid transparent; }
+    .doc-nav a[aria-current="true"] { border-bottom-color: var(--accent); }
+  }
+  @container section (max-width: 560px) {
+    .compare { grid-template-columns: minmax(0, 1fr); }
+    .compare-arrow { transform: rotate(90deg); }
+    .tl { grid-auto-flow: row; gap: 14px; }
+    .tl::before { left: calc(var(--tl-mark) / 2 - 1px); right: auto; top: 0; bottom: 0; width: 2px; height: auto; }
+    .tl-item { grid-template-columns: var(--tl-mark) minmax(0, 1fr); column-gap: 0.8em; }
+    .tl-item > .tl-mark { grid-row: 1 / span 3; margin: 0; }
+    .tl-item > :not(.tl-mark) { grid-column: 2; }
+    .defs { grid-template-columns: minmax(0, 1fr); }
+    .defs dd { margin-bottom: 0.4em; }
   }
   @media print {
-    @page { size: A4; margin: 15mm; }
-    main { max-width: none; padding: 0; }
-    .toc { display: none; }
-    .doc-section { border: none; border-radius: 0; padding: 0; margin-top: 18px; }
-    .story, .kpi, .chart, .diagram, table, .fig-notes { break-inside: avoid; page-break-inside: avoid; }
-    .doc-section h2 { break-after: avoid; page-break-after: avoid; }
+    @page { size: A4; margin: 16mm; }
+    body { background: #ffffff; }
+    .doc-wrap { display: block; padding: 0; max-width: none; }
+    .doc-nav { display: none; }
+    .doc { max-width: none; }
+    .doc-section { padding-top: 18px; }
+    .story, .num, .chart, .compare-wrap, .timeline-wrap, .meter, .diagram, tr, .section-meta { break-inside: avoid; page-break-inside: avoid; }
+    .doc-section > h2 { break-after: avoid; page-break-after: avoid; }
   }
 </style>
 </head>
 <body>
-<main>
-  <header class="doc-head" id="doc-head">
-    <h1 data-label="prdTitle">Tài liệu yêu cầu cho đội kỹ thuật</h1>
-    <p class="idea-title" id="idea-title"></p>
-  </header>
-  <nav class="toc" aria-labelledby="toc-title">
-    <div class="toc-title" id="toc-title" data-label="contents">Mục lục</div>
+<div class="doc-wrap">
+  <nav class="doc-nav" aria-labelledby="toc-title">
+    <p class="doc-nav-title" id="toc-title" data-label="contents">Mục lục</p>
     <ol id="toc"></ol>
   </nav>
-  <div id="sections"></div>
-  <section class="doc-section" id="gaps"></section>
-  <p class="snapshot"><strong data-label="snapshot">Bản yêu cầu dùng được với Spec Kit</strong>: <span id="snapshot-link"></span></p>
-  <footer data-label="footer">Tài liệu do vibebiz dựng từ hồ sơ ý tưởng. Mọi số liệu lấy từ một bảng số liệu chung.</footer>
-</main>
+  <main class="doc">
+    <header class="doc-head" id="doc-head">
+      <h1 data-label="prdTitle">Tài liệu yêu cầu cho đội kỹ thuật</h1>
+      <p class="idea-title" id="idea-title"></p>
+    </header>
+    <div id="sections"></div>
+    <section class="doc-section" id="sec-figures"></section>
+    <section class="doc-section" id="gaps"></section>
+    <section class="doc-section" id="sec-snapshot">
+      <h2 data-label="snapshot">Bản yêu cầu dùng được với Spec Kit</h2>
+      <p class="snapshot" id="snapshot-link"></p>
+    </section>
+    <footer class="doc-foot" data-label="footer">Tài liệu do vibebiz dựng từ hồ sơ ý tưởng. Mọi số liệu lấy từ một bảng số liệu chung.</footer>
+  </main>
+</div>
 
 <script type="application/json" id="vibebiz-data">
 {
@@ -240,8 +453,9 @@
     "slides": [
       {
         "n": 1,
-        "title": "Đề nghị duyệt thí điểm 12 tuần tại 6 cửa hàng, ngân sách {{N-03}}",
-        "message": "Ban lãnh đạo quyết định trước 30/11/2026 để kịp mùa mua sắm Tết.",
+        "title": "Duyệt thí điểm 12 tuần tại 6 cửa hàng, ngân sách {{N-03}}",
+        "message": "Cần quyết định trước 30/11/2026 để kịp mùa mua sắm Tết.",
+        "layout": "number",
         "source_fields": [
           "plan.Decision requested",
           "plan.Size and scenarios"
@@ -252,21 +466,24 @@
             "items": [
               {
                 "ref": "N-03",
-                "caption": "Chi phí bản đầu tiên"
+                "caption": "Ngân sách thí điểm"
               },
               {
                 "ref": "N-07",
-                "caption": "Cửa hàng thí điểm"
+                "caption": "Cửa hàng thí điểm",
+                "icon": "store"
               },
               {
                 "ref": "N-08",
-                "caption": "Thời gian thí điểm"
+                "caption": "Thời gian thí điểm",
+                "icon": "calendar"
               }
-            ]
+            ],
+            "estimate_label": "not tech-reviewed"
           },
           {
             "type": "text",
-            "text": "Nếu được duyệt, đội kỹ thuật bắt đầu từ tháng 12/2026; điểm quyết định mở rộng nằm ở tuần thứ 12."
+            "text": "Đội kỹ thuật bắt đầu từ 12/2026; quyết định mở rộng ở tuần 12."
           }
         ],
         "diagram": null,
@@ -276,25 +493,71 @@
             "name": "Tự làm, mua hay hợp tác",
             "result": "chọn mua công cụ nhắn tin có sẵn"
           }
-        ]
+        ],
+        "estimate_label": "not tech-reviewed"
       },
       {
         "n": 2,
-        "title": "Bốn trên năm khách mua lần đầu không quay lại trong 90 ngày",
-        "message": "Cửa hàng không có cách nhắc khách cũ, nên doanh thu từ khách quay lại đứng yên.",
+        "title": "Bốn trên năm khách mua lần đầu không quay lại",
+        "message": "Không ai nhắc khách cũ, nên tỷ lệ quay lại đứng yên.",
+        "layout": "line",
         "source_fields": [
           "spec.Problem & Why"
         ],
         "blocks": [
           {
-            "type": "text",
-            "text": "Tỷ lệ khách quay lại trong 90 ngày chỉ đạt {{N-01}}. Mỗi lần khách cũ quay lại mua trung bình {{N-09}}."
+            "type": "chart",
+            "kind": "line",
+            "title": "Tỷ lệ khách quay lại trong 90 ngày, theo tháng",
+            "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+            "items": [
+              {
+                "ref": "N-11",
+                "caption": "T1"
+              },
+              {
+                "ref": "N-12",
+                "caption": "T2"
+              },
+              {
+                "ref": "N-13",
+                "caption": "T3"
+              },
+              {
+                "ref": "N-14",
+                "caption": "T4"
+              },
+              {
+                "ref": "N-15",
+                "caption": "T5"
+              },
+              {
+                "ref": "N-16",
+                "caption": "T6"
+              }
+            ]
+          },
+          {
+            "type": "figures",
+            "items": [
+              {
+                "ref": "N-09",
+                "caption": "Mỗi lần khách cũ quay lại mua",
+                "icon": "coin"
+              }
+            ]
           },
           {
             "type": "list",
             "items": [
-              "Nhân viên không có danh sách khách cần nhắc.",
-              "Tin nhắn khuyến mãi gửi đồng loạt, không theo lịch sử mua."
+              {
+                "text": "Nhân viên không có danh sách khách cần nhắc.",
+                "icon": "people"
+              },
+              {
+                "text": "Tin khuyến mãi gửi đồng loạt.",
+                "icon": "chat"
+              }
             ]
           }
         ],
@@ -302,81 +565,89 @@
         "frameworks": [
           {
             "id": "five-whys",
-            "name": "5 Whys"
+            "name": "5 Whys",
+            "result": "nguyên nhân gốc: cửa hàng không có lịch nhắc khách cũ"
           }
         ]
       },
       {
         "n": 3,
-        "title": "Mục tiêu: nâng tỷ lệ khách quay lại từ 18% lên 24% sau 12 tuần",
-        "message": "Chỉ một chỉ số chính, kèm một chỉ số bảo vệ trải nghiệm khách.",
+        "title": "Mục tiêu: tỷ lệ khách quay lại từ {{N-01}} lên {{N-02}}",
+        "message": "Một chỉ số chính và một ngưỡng bảo vệ trải nghiệm khách.",
+        "layout": "diagram",
         "source_fields": [
           "spec.Outcome",
-          "spec.Success Criteria"
+          "spec.Success Criteria",
+          "diagrams/03-driver-tree.brief.md"
         ],
         "blocks": [
           {
-            "type": "figures",
-            "items": [
+            "type": "compare",
+            "sides": [
               {
-                "ref": "N-01",
-                "caption": "Hiện nay"
+                "label": "Hiện nay",
+                "ref": "N-01"
               },
               {
-                "ref": "N-02",
-                "caption": "Mục tiêu"
+                "label": "Sau 12 tuần",
+                "ref": "N-02"
               }
-            ]
+            ],
+            "estimate_label": "not tech-reviewed"
           },
           {
             "type": "text",
-            "text": "Chỉ số bảo vệ: tỷ lệ khách hủy nhận tin \u003c {{N-10}} mỗi tháng; vượt ngưỡng này thì dừng gửi và xem lại nội dung."
+            "text": "Ngưỡng bảo vệ: khách hủy nhận tin dưới {{N-10}} mỗi tháng.",
+            "estimate_label": "not tech-reviewed"
           }
         ],
         "diagram": "03-driver-tree",
         "frameworks": [
           {
             "id": "driver-tree",
-            "name": "Cây chỉ số"
+            "name": "Cây chỉ số",
+            "result": "số khách quay lại là đòn bẩy chính"
           }
-        ]
+        ],
+        "estimate_label": "not tech-reviewed"
       },
       {
         "n": 4,
-        "title": "Mua công cụ nhắn tin có sẵn rẻ và nhanh hơn tự xây",
-        "message": "Bốn phương án đã được so sánh trên cùng tiêu chí.",
+        "title": "Mua công cụ có sẵn nhanh và rẻ hơn tự xây",
+        "message": "Bốn phương án, so trên cùng tiêu chí.",
+        "layout": "options",
         "source_fields": [
           "spec.Alternatives"
         ],
         "blocks": [
           {
-            "type": "table",
-            "columns": [
-              "Phương án",
-              "Ưu điểm",
-              "Nhược điểm"
-            ],
-            "rows": [
-              [
-                "Giữ nguyên",
-                "Không tốn chi phí",
-                "Tỷ lệ quay lại tiếp tục đứng yên"
-              ],
-              [
-                "Sửa quy trình: nhân viên tự gọi điện",
-                "Làm được ngay",
-                "Tốn giờ công, khó đo"
-              ],
-              [
-                "Mua công cụ có sẵn",
-                "Triển khai trong 4 tuần",
-                "Phí thuê hằng tháng"
-              ],
-              [
-                "Tự xây",
-                "Tùy biến hoàn toàn",
-                "Mất 4 đến 6 tháng"
-              ]
+            "type": "options",
+            "items": [
+              {
+                "name": "Giữ nguyên",
+                "summary": "Không làm gì thêm",
+                "pros": "Không tốn chi phí",
+                "cons": "Tỷ lệ quay lại đứng yên"
+              },
+              {
+                "name": "Sửa quy trình",
+                "summary": "Nhân viên tự gọi điện",
+                "pros": "Làm được ngay",
+                "cons": "Tốn giờ công, khó đo"
+              },
+              {
+                "name": "Mua công cụ có sẵn",
+                "summary": "Thuê công cụ nhắn tin",
+                "pros": "Chạy được sau 4 tuần",
+                "cons": "Phí thuê hằng tháng",
+                "chosen": true
+              },
+              {
+                "name": "Tự xây",
+                "summary": "Đội kỹ thuật tự làm",
+                "pros": "Tùy biến hoàn toàn",
+                "cons": "Mất 4 đến 6 tháng"
+              }
             ]
           }
         ],
@@ -385,8 +656,9 @@
       },
       {
         "n": 5,
-        "title": "Khách nhận lời nhắc đúng lúc, nhân viên biết ai cần chăm sóc",
+        "title": "Khách được nhắc đúng lúc, nhân viên biết ai cần chăm sóc",
         "message": "Hành trình của khách trước và sau khi có lời nhắc.",
+        "layout": "diagram",
         "source_fields": [
           "spec.User Scenarios & Testing",
           "diagrams/05-journey.brief.md"
@@ -394,30 +666,46 @@
         "blocks": [
           {
             "type": "text",
-            "text": "Sau 30 ngày kể từ lần mua đầu, khách nhận một tin nhắn gợi ý sản phẩm hợp với món đã mua."
+            "text": "Sau 30 ngày, khách nhận một tin gợi ý món hợp với món đã mua."
           }
         ],
         "diagram": "05-journey",
         "frameworks": [
           {
             "id": "journey-map",
-            "name": "Bản đồ hành trình khách hàng"
+            "name": "Bản đồ hành trình khách hàng",
+            "result": "điểm rơi là ngày thứ 30 sau lần mua đầu"
           }
         ]
       },
       {
         "n": 6,
-        "title": "Bản đầu tiên chỉ nhắc khách mua lần đầu",
+        "title": "Bản đầu chỉ nhắc khách mua lần đầu",
         "message": "Phần mở rộng làm sau khi thí điểm đạt mục tiêu.",
+        "layout": "compare",
         "source_fields": [
           "spec.Requirements"
         ],
         "blocks": [
           {
-            "type": "list",
-            "items": [
-              "Có trong bản đầu: nhắc sau 30 ngày, gợi ý theo món đã mua, nhân viên xem danh sách khách.",
-              "Làm sau: ưu đãi sinh nhật, nhắc theo mùa."
+            "type": "compare",
+            "emphasis": 0,
+            "sides": [
+              {
+                "label": "Có trong bản đầu",
+                "items": [
+                  "Nhắc sau 30 ngày",
+                  "Gợi ý theo món đã mua",
+                  "Danh sách khách cho nhân viên"
+                ]
+              },
+              {
+                "label": "Làm sau",
+                "items": [
+                  "Ưu đãi sinh nhật",
+                  "Nhắc theo mùa"
+                ]
+              }
             ]
           }
         ],
@@ -425,14 +713,16 @@
         "frameworks": [
           {
             "id": "moscow",
-            "name": "MoSCoW"
+            "name": "MoSCoW",
+            "result": "ba việc bắt buộc, hai việc để sau"
           }
         ]
       },
       {
         "n": 7,
-        "title": "Hoàn vốn trong năm đầu ở cả kịch bản thấp",
+        "title": "Kịch bản cơ sở hoàn vốn thí điểm trong năm đầu",
         "message": "Lợi nhuận gộp tăng thêm mỗi năm theo ba kịch bản.",
+        "layout": "bars",
         "source_fields": [
           "spec.Cost & Risk",
           "plan.Size and scenarios"
@@ -441,7 +731,7 @@
           {
             "type": "chart",
             "kind": "bar",
-            "title": "Lợi nhuận gộp tăng thêm mỗi năm",
+            "title": "Lợi nhuận gộp tăng thêm trong năm đầu",
             "source": "Ước tính sơ bộ trong kế hoạch",
             "items": [
               {
@@ -450,26 +740,41 @@
               },
               {
                 "ref": "N-05",
-                "caption": "Cơ sở"
+                "caption": "Cơ sở",
+                "highlight": true
               },
               {
                 "ref": "N-06",
                 "caption": "Cao"
               }
-            ]
+            ],
+            "estimate_label": "not tech-reviewed"
+          },
+          {
+            "type": "figures",
+            "items": [
+              {
+                "ref": "N-03",
+                "caption": "Chi phí thí điểm",
+                "icon": "coin"
+              }
+            ],
+            "estimate_label": "not tech-reviewed"
           },
           {
             "type": "text",
-            "text": "Chi phí bản đầu {{N-03}}; quy mô dự án: vừa (M)."
+            "text": "Quy mô dự án: vừa."
           }
         ],
         "diagram": null,
-        "frameworks": []
+        "frameworks": [],
+        "estimate_label": "not tech-reviewed"
       },
       {
         "n": 8,
-        "title": "Rủi ro lớn nhất là khách thấy phiền và hủy nhận tin",
-        "message": "Điều kiện dừng được đặt trước khi bắt đầu.",
+        "title": "Rủi ro lớn nhất: khách thấy phiền và hủy nhận tin",
+        "message": "Điều kiện dừng đã đặt trước.",
+        "layout": "list",
         "source_fields": [
           "spec.Cost & Risk",
           "decisions.md"
@@ -478,51 +783,59 @@
           {
             "type": "list",
             "items": [
-              "Khách thấy phiền: giới hạn một tin mỗi tháng.",
-              "Dữ liệu số điện thoại thiếu: kiểm tra trước khi thí điểm.",
-              "Dừng khi tỷ lệ hủy nhận tin vượt {{N-10}} hai tháng liền."
-            ]
+              {
+                "text": "Tối đa một tin mỗi tháng.",
+                "icon": "chat"
+              },
+              {
+                "text": "Kiểm tra số điện thoại trước thí điểm.",
+                "icon": "alert"
+              },
+              {
+                "text": "Dừng nếu hủy nhận tin vượt {{N-10}} hai tháng liền.",
+                "icon": "stop"
+              }
+            ],
+            "estimate_label": "not tech-reviewed"
           }
         ],
         "diagram": null,
         "frameworks": [
           {
             "id": "pre-mortem",
-            "name": "Pre-mortem"
+            "name": "Pre-mortem",
+            "result": "khách hủy nhận tin là cách thất bại dễ xảy ra nhất"
           }
-        ]
+        ],
+        "estimate_label": "not tech-reviewed"
       },
       {
         "n": 9,
         "title": "Thí điểm 12 tuần, so với 6 cửa hàng đối chứng",
         "message": "Hai điểm quyết định: tuần 6 và tuần 12.",
+        "layout": "timeline",
         "source_fields": [
           "plan.Pilot and rollout"
         ],
         "blocks": [
           {
-            "type": "table",
-            "columns": [
-              "Mốc",
-              "Việc",
-              "Quyết định"
-            ],
-            "rows": [
-              [
-                "Tuần 1 đến 4",
-                "Cài đặt công cụ, hướng dẫn nhân viên",
-                ""
-              ],
-              [
-                "Tuần 6",
-                "Xem tỷ lệ hủy nhận tin",
-                "Tiếp tục hoặc chỉnh nội dung"
-              ],
-              [
-                "Tuần 12",
-                "So tỷ lệ quay lại với cửa hàng đối chứng",
-                "Mở rộng hoặc dừng"
-              ]
+            "type": "timeline",
+            "source": "Kế hoạch thí điểm",
+            "items": [
+              {
+                "when": "Tuần 1 đến 4",
+                "what": "Cài công cụ, hướng dẫn nhân viên"
+              },
+              {
+                "when": "Tuần 6",
+                "what": "Xem tỷ lệ hủy nhận tin",
+                "decision": "Tiếp tục hoặc chỉnh nội dung"
+              },
+              {
+                "when": "Tuần 12",
+                "what": "So với cửa hàng đối chứng",
+                "decision": "Mở rộng hoặc dừng"
+              }
             ]
           }
         ],
@@ -530,7 +843,8 @@
         "frameworks": [
           {
             "id": "test-and-control",
-            "name": "Thí điểm có nhóm đối chứng"
+            "name": "Thí điểm có nhóm đối chứng",
+            "result": "6 cửa hàng thí điểm, 6 cửa hàng đối chứng"
           }
         ]
       },
@@ -540,7 +854,8 @@
         "message": "Những điều chưa chắc chắn được ghi rõ để theo dõi.",
         "source_fields": [
           "assumptions.md",
-          "open-questions.md"
+          "open-questions.md",
+          "coverage.md"
         ],
         "blocks": [
           {
@@ -572,13 +887,21 @@
                 "blocking": false
               }
             ]
+          },
+          {
+            "type": "meter",
+            "ref": "N-17",
+            "max_ref": "N-18",
+            "label": "nhóm câu hỏi đã làm rõ",
+            "source": "Hồ sơ làm rõ ý tưởng"
           }
         ],
         "diagram": null,
         "frameworks": [
           {
             "id": "assumption-map",
-            "name": "Bản đồ giả định"
+            "name": "Bản đồ giả định",
+            "result": "A-002 là giả định rủi ro nhất"
           }
         ]
       }
@@ -596,9 +919,43 @@
         "content": [
           {
             "type": "text",
-            "text": "Tỷ lệ khách quay lại trong 90 ngày là {{N-01}}; mục tiêu là {{N-02}} sau thí điểm 12 tuần tại {{N-07}}."
+            "text": "Tỷ lệ khách quay lại trong 90 ngày là {{N-01}}; mục tiêu là {{N-02}} sau thí điểm 12 tuần tại {{N-07}}.",
+            "estimate_label": "not tech-reviewed"
+          },
+          {
+            "type": "chart",
+            "kind": "line",
+            "title": "Tỷ lệ khách quay lại trong 90 ngày, theo tháng",
+            "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+            "items": [
+              {
+                "ref": "N-11",
+                "caption": "T1"
+              },
+              {
+                "ref": "N-12",
+                "caption": "T2"
+              },
+              {
+                "ref": "N-13",
+                "caption": "T3"
+              },
+              {
+                "ref": "N-14",
+                "caption": "T4"
+              },
+              {
+                "ref": "N-15",
+                "caption": "T5"
+              },
+              {
+                "ref": "N-16",
+                "caption": "T6"
+              }
+            ]
           }
-        ]
+        ],
+        "estimate_label": "not tech-reviewed"
       },
       {
         "id": "user-stories",
@@ -698,6 +1055,21 @@
         ],
         "content": [
           {
+            "type": "compare",
+            "title": "Tỷ lệ khách quay lại trong 90 ngày",
+            "sides": [
+              {
+                "label": "Hiện nay",
+                "ref": "N-01"
+              },
+              {
+                "label": "Mục tiêu sau 12 tuần",
+                "ref": "N-02"
+              }
+            ],
+            "estimate_label": "not tech-reviewed"
+          },
+          {
             "type": "list",
             "items": [
               {
@@ -708,9 +1080,11 @@
                 "id": "SC-002",
                 "text": "Tỷ lệ khách hủy nhận tin dưới {{N-10}} mỗi tháng."
               }
-            ]
+            ],
+            "estimate_label": "not tech-reviewed"
           }
-        ]
+        ],
+        "estimate_label": "not tech-reviewed"
       },
       {
         "id": "ai-fit",
@@ -875,6 +1249,70 @@
       "source": "Ngưỡng do giám đốc bán hàng đặt",
       "period": "mỗi tháng",
       "label": "assumed"
+    },
+    {
+      "id": "N-11",
+      "value": 17,
+      "unit": "%",
+      "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+      "period": "01/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-12",
+      "value": 19,
+      "unit": "%",
+      "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+      "period": "02/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-13",
+      "value": 18,
+      "unit": "%",
+      "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+      "period": "03/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-14",
+      "value": 17,
+      "unit": "%",
+      "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+      "period": "04/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-15",
+      "value": 18,
+      "unit": "%",
+      "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+      "period": "05/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-16",
+      "value": 19,
+      "unit": "%",
+      "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+      "period": "06/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-17",
+      "value": 13,
+      "unit": "nhóm",
+      "source": "Hồ sơ làm rõ ý tưởng",
+      "period": "tại ngày đóng gói 12/11/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-18",
+      "value": 15,
+      "unit": "nhóm",
+      "source": "Hồ sơ làm rõ ý tưởng",
+      "period": "tại ngày đóng gói 12/11/2026",
+      "label": "measured"
     }
   ],
   "diagrams": [
@@ -882,7 +1320,7 @@
       "id": "03-driver-tree",
       "message": "Doanh thu từ khách cũ tăng nhờ nhiều khách quay lại hơn",
       "type": "tree",
-      "svg": "\u003csvg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 220\" font-family=\"system-ui, sans-serif\" font-size=\"14\">\u003crect x=\"220\" y=\"10\" width=\"200\" height=\"50\" rx=\"8\" fill=\"#e7eefc\" stroke=\"#2f5bd3\"/>\u003ctext x=\"320\" y=\"40\" text-anchor=\"middle\" fill=\"#1d1d1f\">Doanh thu từ khách cũ\u003c/text>\u003cpath d=\"M320 60 V90 M110 90 H530 M110 90 V120 M320 90 V120 M530 90 V120\" stroke=\"#5f6368\" fill=\"none\"/>\u003crect x=\"20\" y=\"120\" width=\"180\" height=\"60\" rx=\"8\" fill=\"#ffffff\" stroke=\"#5f6368\"/>\u003ctext x=\"110\" y=\"148\" text-anchor=\"middle\" fill=\"#1d1d1f\">Số khách quay lại\u003c/text>\u003ctext x=\"110\" y=\"168\" text-anchor=\"middle\" fill=\"#5f6368\">18% lên 24%\u003c/text>\u003crect x=\"230\" y=\"120\" width=\"180\" height=\"60\" rx=\"8\" fill=\"#ffffff\" stroke=\"#5f6368\"/>\u003ctext x=\"320\" y=\"148\" text-anchor=\"middle\" fill=\"#1d1d1f\">Số lần mua mỗi khách\u003c/text>\u003ctext x=\"320\" y=\"168\" text-anchor=\"middle\" fill=\"#5f6368\">giữ nguyên\u003c/text>\u003crect x=\"440\" y=\"120\" width=\"180\" height=\"60\" rx=\"8\" fill=\"#ffffff\" stroke=\"#5f6368\"/>\u003ctext x=\"530\" y=\"148\" text-anchor=\"middle\" fill=\"#1d1d1f\">Giá trị mỗi lần mua\u003c/text>\u003ctext x=\"530\" y=\"168\" text-anchor=\"middle\" fill=\"#5f6368\">giữ nguyên\u003c/text>\u003c/svg>",
+      "svg": "\u003csvg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 220\" font-family=\"system-ui, sans-serif\" font-size=\"14\">\u003crect x=\"220\" y=\"10\" width=\"200\" height=\"50\" rx=\"8\" fill=\"#dcefec\" stroke=\"#0b6e66\"/>\u003ctext x=\"320\" y=\"40\" text-anchor=\"middle\" fill=\"#18202c\">Doanh thu từ khách cũ\u003c/text>\u003cpath d=\"M320 60 V90 M110 90 H530 M110 90 V120 M320 90 V120 M530 90 V120\" stroke=\"#5a6474\" fill=\"none\"/>\u003crect x=\"20\" y=\"120\" width=\"180\" height=\"60\" rx=\"8\" fill=\"#ffffff\" stroke=\"#5a6474\"/>\u003ctext x=\"110\" y=\"148\" text-anchor=\"middle\" fill=\"#18202c\">Số khách quay lại\u003c/text>\u003ctext x=\"110\" y=\"168\" text-anchor=\"middle\" fill=\"#5a6474\">18% lên 24%\u003c/text>\u003crect x=\"230\" y=\"120\" width=\"180\" height=\"60\" rx=\"8\" fill=\"#ffffff\" stroke=\"#5a6474\"/>\u003ctext x=\"320\" y=\"148\" text-anchor=\"middle\" fill=\"#18202c\">Số lần mua mỗi khách\u003c/text>\u003ctext x=\"320\" y=\"168\" text-anchor=\"middle\" fill=\"#5a6474\">giữ nguyên\u003c/text>\u003crect x=\"440\" y=\"120\" width=\"180\" height=\"60\" rx=\"8\" fill=\"#ffffff\" stroke=\"#5a6474\"/>\u003ctext x=\"530\" y=\"148\" text-anchor=\"middle\" fill=\"#18202c\">Giá trị mỗi lần mua\u003c/text>\u003ctext x=\"530\" y=\"168\" text-anchor=\"middle\" fill=\"#5a6474\">giữ nguyên\u003c/text>\u003c/svg>",
       "fallback": {
         "columns": [
           "Chỉ số",
@@ -973,17 +1411,27 @@
       notTechReviewed: "Chưa qua đội kỹ thuật",
       measured: "Số đo thực tế",
       assumed: "Giả định",
+      kindMeasured: "đo thực tế",
+      kindAssumed: "giả định",
       source: "Nguồn",
       period: "Kỳ",
+      periodLower: "kỳ",
       noSource: "chưa ghi nguồn",
       noPeriod: "chưa ghi kỳ",
       noLabel: "chưa ghi đo thực tế hay giả định",
       missingFigure: "thiếu số liệu {id}",
       figures: "Số liệu dùng ở đây",
+      figuresTable: "Bảng số liệu",
+      colId: "Mã",
+      colValue: "Giá trị",
+      colKind: "Loại",
+      colText: "Nội dung",
       chartNoSource: "Biểu đồ này chưa ghi nguồn.",
       noDiagram: "Không có sơ đồ. Nội dung được trình bày dạng bảng.",
       frameworks: "Khung phân tích đã dùng",
       basedOn: "Dựa trên",
+      notes: "Ghi chú",
+      chosen: "Phương án chọn",
       given: "Cho trước",
       when: "Khi",
       then: "Thì",
@@ -999,6 +1447,7 @@
       gapsTitle: "Các mục chưa làm rõ",
       noGaps: "Không còn mục nào chưa làm rõ.",
       page: "Trang {n}",
+      slideOf: "{n}/{total}",
       appendix: "Phụ lục",
       slide1: "Quyết định cần duyệt",
       slide2: "Vấn đề và chi phí hiện nay",
@@ -1010,6 +1459,9 @@
       slide8: "Rủi ro và điều kiện dừng",
       slide9: "Lộ trình thí điểm",
       slideAppendix: "Giả định và câu hỏi mở",
+      traceTitle: "Nguồn của từng trang",
+      traceHeadline: "Mọi trang và mọi con số đều truy được về hồ sơ ý tưởng",
+      traceSlide: "Trang",
       deckTitle: "Trình ban lãnh đạo",
       prdTitle: "Tài liệu yêu cầu cho đội kỹ thuật",
       contents: "Mục lục",
@@ -1039,17 +1491,27 @@
       notTechReviewed: "Not tech-reviewed",
       measured: "Measured",
       assumed: "Assumed",
+      kindMeasured: "measured",
+      kindAssumed: "assumed",
       source: "Source",
       period: "Period",
+      periodLower: "period",
       noSource: "no source recorded",
       noPeriod: "no period recorded",
       noLabel: "not marked measured or assumed",
       missingFigure: "missing figure {id}",
       figures: "Figures used here",
+      figuresTable: "Figures table",
+      colId: "ID",
+      colValue: "Value",
+      colKind: "Type",
+      colText: "Text",
       chartNoSource: "This chart has no source recorded.",
       noDiagram: "No diagram. The content is shown as a table.",
       frameworks: "Frameworks applied",
       basedOn: "Based on",
+      notes: "Notes",
+      chosen: "Chosen",
       given: "Given",
       when: "When",
       then: "Then",
@@ -1065,6 +1527,7 @@
       gapsTitle: "Items not yet clarified",
       noGaps: "Nothing is left unclarified.",
       page: "Slide {n}",
+      slideOf: "{n}/{total}",
       appendix: "Appendix",
       slide1: "Decision requested",
       slide2: "The problem and what it costs today",
@@ -1076,6 +1539,9 @@
       slide8: "Risks and kill criteria",
       slide9: "Pilot roadmap",
       slideAppendix: "Assumptions and open questions",
+      traceTitle: "Where each slide comes from",
+      traceHeadline: "Every slide and every figure traces back to the idea folder",
+      traceSlide: "Slide",
       deckTitle: "Board presentation",
       prdTitle: "Requirements for the tech team",
       contents: "Contents",
@@ -1105,14 +1571,21 @@
     return node;
   }
 
+  function svgEl(tag, attrs) {
+    var node = document.createElementNS(SVG_NS, tag);
+    for (var k in attrs) if (hasOwn.call(attrs, k)) node.setAttribute(k, String(attrs[k]));
+    return node;
+  }
+
   function arr(value) { return Array.isArray(value) ? value : []; }
   function str(value) { return typeof value === "string" ? value : (typeof value === "number" ? String(value) : ""); }
+  function isObj(value) { return !!value && typeof value === "object" && !Array.isArray(value); }
 
   // Only relative workspace paths and https links are rendered as links.
   function safeHref(href) {
     if (typeof href !== "string" || href === "") return null;
     // Reject whitespace and control characters, which browsers strip before reading the scheme.
-    if (/[\u0000-\u0020\u007f\\]/.test(href)) return null;
+    if (/[\u0000- \u007f\\]/.test(href)) return null;
     if (/^https:\/\/[^\/]/i.test(href)) return href;
     // Otherwise only a relative workspace path: no scheme, not protocol-relative, not absolute.
     if (/^[A-Za-z0-9._-][A-Za-z0-9._\/-]*$/.test(href) && !/^[a-z][a-z0-9+.-]*:/i.test(href)) return href;
@@ -1141,9 +1614,9 @@
   } catch (e) {
     readError = true;
   }
-  if (!data || typeof data !== "object") { data = {}; readError = true; }
+  if (!isObj(data)) { data = {}; readError = true; }
 
-  var idea = data.idea && typeof data.idea === "object" ? data.idea : {};
+  var idea = isObj(data.idea) ? data.idea : {};
   var lang = /^[A-Za-z]{2,3}(-[A-Za-z0-9]{1,8})*$/.test(str(idea.language)) ? idea.language : "vi";
   var isVi = lang.toLowerCase() === "vi" || lang.toLowerCase().indexOf("vi-") === 0;
   var L = {};
@@ -1151,7 +1624,7 @@
     var base = isVi ? LABELS.vi : LABELS.en;
     var k;
     for (k in base) if (hasOwn.call(base, k)) L[k] = base[k];
-    if (!isVi && data.labels && typeof data.labels === "object") {
+    if (!isVi && isObj(data.labels)) {
       for (k in data.labels) {
         if (hasOwn.call(data.labels, k) && hasOwn.call(base, k) && typeof data.labels[k] === "string") L[k] = data.labels[k];
       }
@@ -1159,7 +1632,7 @@
   })();
   document.documentElement.setAttribute("lang", lang);
   if (!isVi) {
-    arr(Array.prototype.slice.call(document.querySelectorAll("[data-label]"))).forEach(function (node) {
+    Array.prototype.slice.call(document.querySelectorAll("[data-label]")).forEach(function (node) {
       var key = node.getAttribute("data-label");
       if (hasOwn.call(L, key)) node.textContent = L[key];
     });
@@ -1172,49 +1645,112 @@
     });
   }
 
+  // ---- Theme: brand tokens from data.json "theme" (see the token comment) ----
+  var THEME_COLORS = ["accent", "accent_soft", "ink", "quiet", "canvas", "surface", "rule", "mark"];
+  (function applyTheme(theme) {
+    if (!isObj(theme)) return;
+    var root = document.documentElement.style;
+    ["light", "dark"].forEach(function (mode) {
+      var set = theme[mode];
+      if (!isObj(set)) return;
+      THEME_COLORS.forEach(function (key) {
+        var v = set[key];
+        if (typeof v === "string" && /^#(?:[0-9A-Fa-f]{3,4}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$/.test(v)) {
+          root.setProperty("--brand-" + key.replace(/_/g, "-") + "-" + mode, v);
+        }
+      });
+    });
+    var fonts = theme.fonts;
+    if (isObj(fonts)) {
+      ["display", "text"].forEach(function (key) {
+        var v = fonts[key];
+        if (typeof v === "string" && /^[A-Za-z0-9 ,"'-]{1,200}$/.test(v)) root.setProperty("--brand-font-" + key, v);
+      });
+    }
+  })(data.theme);
+
   var estimatePending = idea.estimate_status !== "tech-reviewed";
 
   var FIG = {};
+  var FIG_ORDER = [];
   arr(data.numbers).forEach(function (f) {
-    if (f && typeof f.id === "string") FIG[f.id] = f;
+    if (isObj(f) && typeof f.id === "string" && !hasOwn.call(FIG, f.id)) { FIG[f.id] = f; FIG_ORDER.push(f.id); }
   });
 
   var DIAG = {};
   arr(data.diagrams).forEach(function (d) {
-    if (d && typeof d.id === "string") DIAG[d.id] = d;
+    if (isObj(d) && typeof d.id === "string") DIAG[d.id] = d;
   });
 
   // gaps[]: strings (the field) or { field, slide, section }.
   var GAPS = arr(data.gaps).map(function (g) {
-    return typeof g === "string" ? { field: g } : (g && typeof g === "object" ? g : null);
+    return typeof g === "string" ? { field: g } : (isObj(g) ? g : null);
   }).filter(Boolean);
 
   function gapsFor(key, value) {
     return GAPS.filter(function (g) { return g[key] !== undefined && String(g[key]) === String(value); });
   }
 
+  // ---- Icons: 24x24 stroke paths ----
+  var ICONS = {
+    target: "M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M7 12a5 5 0 1 0 10 0a5 5 0 1 0-10 0M11 12a1 1 0 1 0 2 0a1 1 0 1 0-2 0",
+    coin: "M4 7c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zM4 7v5c0 1.7 3.6 3 8 3s8-1.3 8-3V7M4 12v5c0 1.7 3.6 3 8 3s8-1.3 8-3v-5",
+    clock: "M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M12 7v5l3.5 2",
+    store: "M3.5 9 5 4h14l1.5 5M3.5 9h17M3.5 9c0 1.7 1.3 3 2.8 3s2.9-1.3 2.9-3c0 1.7 1.3 3 2.8 3s2.8-1.3 2.8-3c0 1.7 1.3 3 2.9 3s2.8-1.3 2.8-3M5 12v8h14v-8M10 20v-5h4v5",
+    people: "M9 11a3.5 3.5 0 1 0 0-7a3.5 3.5 0 1 0 0 7M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.3a3.5 3.5 0 0 1 0 6.4M18 14.4c2 .8 3.5 2.8 3.5 5.6",
+    chat: "M4 5h16v11H10l-5 4v-4H4z",
+    alert: "M12 3.5 21.5 20h-19zM12 10v4.5M12 17.2v.1",
+    stop: "M8.3 3h7.4L21 8.3v7.4L15.7 21H8.3L3 15.7V8.3zM9.5 9.5l5 5M14.5 9.5l-5 5",
+    check: "M5 12.5 9.5 17 19 7.5",
+    plus: "M12 6v12M6 12h12",
+    minus: "M6 12h12",
+    flag: "M5.5 21V4M5.5 4H17l-2.2 4 2.2 4H5.5",
+    calendar: "M4 6h16v14H4zM4 10.5h16M8.5 3.5v4M15.5 3.5v4",
+    chart: "M4 4v16h16M8 16v-4M12 16V8M16 16v-6",
+    bulb: "M9.5 18h5M10.5 21h3M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0 0 12 3z",
+    box: "M3.5 7.5 12 3.5l8.5 4-8.5 4zM3.5 7.5v9l8.5 4 8.5-4v-9M12 11.5v9",
+    question: "M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M9.5 9.2a2.6 2.6 0 1 1 3.7 2.4c-.7.3-1.2 1-1.2 1.8v.4M12 17.2v.1",
+    arrow: "M4 12h15M14 7l5 5-5 5",
+    dot: "M10 12a2 2 0 1 0 4 0a2 2 0 1 0-4 0"
+  };
+
+  function icon(name, cls) {
+    var key = hasOwn.call(ICONS, name) ? name : "dot";
+    var s = svgEl("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", focusable: "false", "class": "ico" + (cls ? " " + cls : "") });
+    s.appendChild(svgEl("path", { d: ICONS[key] }));
+    return s;
+  }
+
   // ---- Figures: always looked up by id in numbers[] ----
-  function formatValue(f) {
+  function formatPlain(f) {
     var v = f.value;
-    var text;
     if (typeof v === "number" && isFinite(v)) {
-      try { text = v.toLocaleString(isVi ? "vi-VN" : lang); } catch (e) { text = String(v); }
-    } else {
-      text = str(v);
+      try { return v.toLocaleString(isVi ? "vi-VN" : lang); } catch (e) { return String(v); }
     }
+    return str(v);
+  }
+
+  function formatValue(f) {
+    var text = formatPlain(f);
     var unit = str(f.unit);
     if (!unit) return text;
     return unit === "%" ? text + unit : text + " " + unit;
   }
 
-  function isEstimate(f) { return f && f.estimate === true && estimatePending; }
+  function isEstimate(f) { return !!f && f.estimate === true && estimatePending; }
 
   function useFig(ctx, id) {
     if (ctx.refs.indexOf(id) < 0) ctx.refs.push(id);
-    return FIG[id] || null;
+    return hasOwn.call(FIG, id) ? FIG[id] : null;
   }
 
-  function estimateBadge() { return el("span", "badge warn est", t("notTechReviewed")); }
+  function estimateBadge() { return el("span", "badge-est", t("notTechReviewed")); }
+
+  function kindText(f) {
+    if (f.label === "measured") return el("span", null, t("kindMeasured"));
+    if (f.label === "assumed") return el("span", null, t("kindAssumed"));
+    return el("span", "missing", t("noLabel"));
+  }
 
   function inlineFigure(id, ctx) {
     var f = useFig(ctx, id);
@@ -1223,7 +1759,7 @@
     span.setAttribute("data-figure", id);
     var wrap = document.createDocumentFragment();
     wrap.appendChild(span);
-    if (isEstimate(f)) { wrap.appendChild(document.createTextNode(" ")); wrap.appendChild(estimateBadge()); }
+    if (isEstimate(f)) wrap.appendChild(estimateBadge());
     return wrap;
   }
 
@@ -1243,40 +1779,109 @@
     return frag;
   }
 
-  function gapBadge(field) {
-    var b = el("span", "badge gap", field ? t("gapField", { field: field }) : t("gap"));
-    return b;
+  // Visible words, a figure reference counting as one.
+  function words(text) {
+    var s = str(text).replace(/\{\{[^}]*\}\}/g, "x").trim();
+    return s ? s.split(/\s+/).length : 0;
   }
 
-  function figureNotes(ctx) {
+  function blockWords(b) {
+    if (b.type === "text") return words(b.text);
+    if (b.type === "list") {
+      return arr(b.items).reduce(function (n, it) { return n + words(isObj(it) ? it.text : it); }, 0);
+    }
+    return 0;
+  }
+
+  function blockText(b) {
+    if (b.type === "text") return str(b.text);
+    if (b.type === "list") return arr(b.items).map(function (it) { return str(isObj(it) ? it.text : it); }).join("; ");
+    return "";
+  }
+
+  function gapBadge(field) {
+    return el("span", "tag-gap", field ? t("gapField", { field: field }) : t("gap"));
+  }
+
+  // One compact line: every figure used, grouped by source, period and kind.
+  function sourcesLine(ctx) {
     if (!ctx.refs.length) return null;
-    var box = el("div", "fig-notes");
-    box.appendChild(el("div", "fig-notes-title", t("figures")));
-    var ul = el("ul");
+    var groups = [];
+    var byKey = {};
+    var missing = [];
     ctx.refs.forEach(function (id) {
-      var f = FIG[id];
-      var li = el("li");
-      li.appendChild(el("span", "fig-id", id));
-      li.appendChild(document.createTextNode(" "));
+      var f = hasOwn.call(FIG, id) ? FIG[id] : null;
+      if (!f) { missing.push(id); return; }
+      var key = str(f.source) + "\u0001" + str(f.period) + "\u0001" + str(f.label);
+      if (!hasOwn.call(byKey, key)) { byKey[key] = f; groups.push(f); }
+    });
+    var p = el("p", "sources");
+    p.appendChild(el("span", "line-label", t("source") + ": "));
+    groups.forEach(function (f, i) {
+      if (i) p.appendChild(document.createTextNode("; "));
+      p.appendChild(f.source ? document.createTextNode(str(f.source)) : el("span", "missing", t("noSource")));
+      p.appendChild(document.createTextNode(", "));
+      p.appendChild(f.period ? document.createTextNode(str(f.period)) : el("span", "missing", t("noPeriod")));
+      p.appendChild(document.createTextNode(", "));
+      p.appendChild(kindText(f));
+    });
+    missing.forEach(function (id, i) {
+      if (groups.length || i) p.appendChild(document.createTextNode("; "));
+      p.appendChild(el("span", "missing", t("missingFigure", { id: id })));
+    });
+    return p;
+  }
+
+  // Source and period under every chart.
+  function chartCaption(source, figs) {
+    var cap = el("figcaption", "cap");
+    var src = str(source);
+    if (!src) {
+      var seen = [];
+      figs.forEach(function (f) { if (f && f.source && seen.indexOf(str(f.source)) < 0) seen.push(str(f.source)); });
+      src = seen.join("; ");
+    }
+    if (src) cap.appendChild(document.createTextNode(t("source") + ": " + src));
+    else cap.appendChild(el("span", "missing", t("chartNoSource")));
+    var periods = [];
+    figs.forEach(function (f) { if (f && f.period && periods.indexOf(str(f.period)) < 0) periods.push(str(f.period)); });
+    if (periods.length) cap.appendChild(document.createTextNode("; " + t("periodLower") + ": " + periods.join(", ")));
+    return cap;
+  }
+
+  function figureTable(ids) {
+    var wrap = el("div", "table-wrap");
+    var tbl = el("table", "figures-table");
+    var head = el("tr");
+    [t("colId"), t("colValue"), t("source"), t("period"), t("colKind")].forEach(function (c) { head.appendChild(el("th", null, c)); });
+    var thead = el("thead");
+    thead.appendChild(head);
+    tbl.appendChild(thead);
+    var tbody = el("tbody");
+    ids.forEach(function (id) {
+      var f = hasOwn.call(FIG, id) ? FIG[id] : null;
+      var tr = el("tr");
+      tr.appendChild(el("td", "item-id", id));
       if (!f) {
-        li.appendChild(el("span", "missing", t("missingFigure", { id: id })));
-        ul.appendChild(li);
+        var miss = el("td", "missing", t("missingFigure", { id: id }));
+        miss.setAttribute("colspan", "4");
+        tr.appendChild(miss);
+        tbody.appendChild(tr);
         return;
       }
-      li.appendChild(el("strong", null, formatValue(f)));
-      li.appendChild(document.createTextNode(" · " + t("source") + ": "));
-      li.appendChild(f.source ? document.createTextNode(str(f.source)) : el("span", "missing", t("noSource")));
-      li.appendChild(document.createTextNode(" · " + t("period") + ": "));
-      li.appendChild(f.period ? document.createTextNode(str(f.period)) : el("span", "missing", t("noPeriod")));
-      li.appendChild(document.createTextNode(" · "));
-      if (f.label === "measured") li.appendChild(el("span", "badge ok", t("measured")));
-      else if (f.label === "assumed") li.appendChild(el("span", "badge", t("assumed")));
-      else li.appendChild(el("span", "missing", t("noLabel")));
-      if (isEstimate(f)) { li.appendChild(document.createTextNode(" ")); li.appendChild(estimateBadge()); }
-      ul.appendChild(li);
+      var v = el("td", "num-cell", formatValue(f));
+      if (isEstimate(f)) v.appendChild(estimateBadge());
+      tr.appendChild(v);
+      tr.appendChild(f.source ? el("td", null, str(f.source)) : el("td", "missing", t("noSource")));
+      tr.appendChild(f.period ? el("td", null, str(f.period)) : el("td", "missing", t("noPeriod")));
+      var k = el("td");
+      k.appendChild(kindText(f));
+      tr.appendChild(k);
+      tbody.appendChild(tr);
     });
-    box.appendChild(ul);
-    return box;
+    tbl.appendChild(tbody);
+    wrap.appendChild(tbl);
+    return wrap;
   }
 
   // ---- Inline SVG ----
@@ -1313,7 +1918,7 @@
       for (var j = node.attributes.length - 1; j >= 0; j--) {
         var attr = node.attributes[j];
         var local = String(attr.localName).toLowerCase();
-        var value = String(attr.value).replace(/[\u0000-\u0020]+/g, "");
+        var value = String(attr.value).replace(/[\u0000- ]+/g, "");
         var drop = local.indexOf("on") === 0 ||
           ((local === "href" || local === "src") && !/^#[A-Za-z0-9_.:-]*$/.test(value)) ||
           /javascript:|vbscript:/i.test(value);
@@ -1351,28 +1956,143 @@
 
   function diagramSlot(id, ctx) {
     if (!id) return null;
-    var d = DIAG[id] || null;
+    var d = hasOwn.call(DIAG, id) ? DIAG[id] : null;
     var fig = el("figure", "diagram");
     var svg = d ? sanitizeSvg(d.svg) : null;
     if (svg) {
       svg.setAttribute("role", "img");
       if (d.message) svg.setAttribute("aria-label", str(d.message));
-      fig.appendChild(svg);
+      var paper = el("div", "diagram-svg");
+      paper.appendChild(svg);
+      fig.appendChild(paper);
       if (d.message) fig.appendChild(el("figcaption", null, str(d.message)));
       return fig;
     }
     fig.className = "diagram none";
-    fig.appendChild(el("p", "no-diagram", t("noDiagram")));
+    var note = el("p", "no-diagram");
+    note.appendChild(icon("chart"));
+    note.appendChild(document.createTextNode(t("noDiagram")));
+    fig.appendChild(note);
+    if (d && d.fallback && isObj(d.fallback)) fig.appendChild(table(d.fallback.columns, d.fallback.rows, ctx));
     if (d && d.message) fig.appendChild(el("figcaption", null, str(d.message)));
-    if (d && d.fallback && typeof d.fallback === "object") fig.appendChild(table(d.fallback.columns, d.fallback.rows, ctx));
     return fig;
   }
 
   // ---- Blocks (board slides and tech sections share them) ----
+  // ctx.role: "hero" (the slide's main element), "aside" (supporting column),
+  // "doc" (tech document), "title" (headline text).
   function figItems(block) {
     return arr(block.items || block.refs).map(function (it) {
-      return typeof it === "string" ? { ref: it } : (it && typeof it === "object" ? it : null);
+      return typeof it === "string" ? { ref: it } : (isObj(it) ? it : null);
     }).filter(Boolean);
+  }
+
+  function numTile(it, ctx, size) {
+    var f = useFig(ctx, str(it.ref));
+    var tile = el("div", "num num-" + size);
+    if (it.icon && size !== "hero") tile.appendChild(icon(str(it.icon), "num-ico"));
+    var body = el("div", "num-body");
+    var v = el("div", "num-value");
+    if (f) {
+      var txt = formatValue(f);
+      v.textContent = txt;
+      if (txt.length > 9) v.className += " is-long";
+      v.setAttribute("data-figure", str(it.ref));
+    } else {
+      v.className += " missing";
+      v.textContent = t("missingFigure", { id: str(it.ref) });
+    }
+    body.appendChild(v);
+    if (it.caption) { var c = el("div", "num-caption"); c.appendChild(richText(it.caption, ctx)); body.appendChild(c); }
+    if (f && isEstimate(f)) body.appendChild(estimateBadge());
+    tile.appendChild(body);
+    return tile;
+  }
+
+  function barChart(b, ctx) {
+    var fig = el("figure", "chart");
+    if (b.title) fig.appendChild(el("div", "chart-title", str(b.title)));
+    var items = figItems(b);
+    var max = 0;
+    var anyHl = items.some(function (it) { return it.highlight === true; });
+    items.forEach(function (it) {
+      var f = FIG[str(it.ref)];
+      if (f && typeof f.value === "number" && f.value > max) max = f.value;
+    });
+    var box = el("div", "bars");
+    var figs = [];
+    items.forEach(function (it) {
+      var f = useFig(ctx, str(it.ref));
+      figs.push(f);
+      var row = el("div", "bar-row" + (!anyHl || it.highlight === true ? " is-hl" : ""));
+      row.appendChild(el("div", "bar-label", str(it.caption || it.ref)));
+      var pct = f && typeof f.value === "number" && max > 0 ? Math.max(0.5, (f.value / max) * 100) : 0;
+      var svg = svgEl("svg", { viewBox: "0 0 100 10", preserveAspectRatio: "none", "aria-hidden": "true", focusable: "false", "class": "bar-svg" });
+      svg.appendChild(svgEl("rect", { x: 0, y: 0, width: 100, height: 10, "class": "bar-track" }));
+      svg.appendChild(svgEl("rect", { x: 0, y: 0, width: pct.toFixed(2), height: 10, "class": "bar-fill" }));
+      row.appendChild(svg);
+      var val = el("div", "bar-value");
+      if (f) {
+        val.appendChild(document.createTextNode(formatValue(f)));
+        if (isEstimate(f)) val.appendChild(estimateBadge());
+      } else {
+        val.appendChild(el("span", "missing", t("missingFigure", { id: str(it.ref) })));
+      }
+      row.appendChild(val);
+      box.appendChild(row);
+    });
+    fig.appendChild(box);
+    fig.appendChild(chartCaption(b.source, figs));
+    return fig;
+  }
+
+  function lineChart(b, ctx) {
+    var fig = el("figure", "chart");
+    if (b.title) fig.appendChild(el("div", "chart-title", str(b.title)));
+    var items = figItems(b);
+    var pts = [];
+    var figs = [];
+    var missing = [];
+    items.forEach(function (it) {
+      var f = useFig(ctx, str(it.ref));
+      figs.push(f);
+      if (f && typeof f.value === "number" && isFinite(f.value)) pts.push({ f: f, label: str(it.caption || it.ref) });
+      else missing.push(str(it.ref));
+    });
+    var W = 480, H = 220, PADX = 30, TOP = 34, BOTTOM = 34;
+    var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, "class": "line-svg", role: "img" });
+    svg.setAttribute("aria-label", (b.title ? str(b.title) + ": " : "") + pts.map(function (p) { return p.label + " " + formatValue(p.f); }).join(", "));
+    if (pts.length) {
+      var vals = pts.map(function (p) { return p.f.value; });
+      var lo = Math.min.apply(null, vals);
+      var hi = Math.max.apply(null, vals);
+      if (hi === lo) { hi += 1; lo -= 1; }
+      var pad = (hi - lo) * 0.3;
+      lo -= pad; hi += pad;
+      var x = function (i) { return pts.length === 1 ? W / 2 : PADX + i * (W - 2 * PADX) / (pts.length - 1); };
+      var y = function (v) { return TOP + (1 - (v - lo) / (hi - lo)) * (H - TOP - BOTTOM); };
+      svg.appendChild(svgEl("line", { x1: 0, x2: W, y1: H - BOTTOM + 8, y2: H - BOTTOM + 8, "class": "line-base" }));
+      var d = pts.map(function (p, i) { return (i ? "L" : "M") + x(i).toFixed(1) + " " + y(p.f.value).toFixed(1); }).join(" ");
+      svg.appendChild(svgEl("path", { d: d, "class": "line-path" }));
+      pts.forEach(function (p, i) {
+        svg.appendChild(svgEl("circle", { cx: x(i).toFixed(1), cy: y(p.f.value).toFixed(1), r: 4.5, "class": "line-dot" }));
+        var val = svgEl("text", { x: x(i).toFixed(1), y: (y(p.f.value) - 12).toFixed(1), "text-anchor": "middle", "font-size": 15, "class": "line-val" });
+        val.textContent = formatValue(p.f);
+        svg.appendChild(val);
+        var lab = svgEl("text", { x: x(i).toFixed(1), y: H - 6, "text-anchor": "middle", "font-size": 13, "class": "line-x" });
+        lab.textContent = p.label;
+        svg.appendChild(lab);
+      });
+    }
+    fig.appendChild(svg);
+    if (pts.some(function (p) { return isEstimate(p.f); })) {
+      var est = el("p", "chart-est");
+      est.appendChild(estimateBadge());
+      fig.appendChild(est);
+    }
+    missing.forEach(function (id) { fig.appendChild(el("p", "missing", t("missingFigure", { id: id }))); });
+    fig.appendChild(chartCaption(b.source, figs));
+    return fig;
   }
 
   var BLOCKS = {
@@ -1382,84 +2102,200 @@
       return p;
     },
     list: function (b, ctx) {
-      var ul = el(b.ordered ? "ol" : "ul", "list");
-      arr(b.items).forEach(function (it) {
+      var items = arr(b.items);
+      // In the tech document a list of numbered items (FR-001, SC-001...) reads best as a table.
+      if (ctx.role === "doc" && items.length && items.every(function (it) { return isObj(it) && it.id; })) {
+        var rows = items.map(function (it) { return [str(it.id), str(it.text)]; });
+        var wrap = table([t("colId"), t("colText")], rows, ctx);
+        var cells = wrap.querySelectorAll("tbody tr td:first-child");
+        for (var i = 0; i < cells.length; i++) cells[i].className = "item-id";
+        return wrap;
+      }
+      var withIcons = items.some(function (it) { return isObj(it) && it.icon; });
+      var ul = el(b.ordered ? "ol" : "ul", "list" + (withIcons ? " list-ico" : ""));
+      items.forEach(function (it) {
         var li = el("li");
-        if (it && typeof it === "object") {
-          if (it.id) { li.appendChild(el("strong", "item-id", str(it.id))); li.appendChild(document.createTextNode(" ")); }
-          li.appendChild(richText(it.text, ctx));
+        var span = el("span");
+        if (isObj(it)) {
+          if (withIcons) li.appendChild(icon(str(it.icon)));
+          if (it.id) span.appendChild(el("span", "item-id", str(it.id)));
+          span.appendChild(richText(it.text, ctx));
         } else {
-          li.appendChild(richText(it, ctx));
+          if (withIcons) li.appendChild(icon("dot"));
+          span.appendChild(richText(it, ctx));
         }
+        li.appendChild(span);
         ul.appendChild(li);
       });
       return ul;
     },
     figures: function (b, ctx) {
-      var grid = el("div", "kpis");
-      figItems(b).forEach(function (it) {
-        var f = useFig(ctx, str(it.ref));
-        var tile = el("div", "kpi");
-        tile.appendChild(f ? el("div", "kpi-value", formatValue(f)) : el("div", "kpi-value missing", t("missingFigure", { id: it.ref })));
-        if (it.caption) tile.appendChild(el("div", "kpi-caption", str(it.caption)));
-        if (f && isEstimate(f)) tile.appendChild(estimateBadge());
-        grid.appendChild(tile);
-      });
-      return grid;
+      var items = figItems(b);
+      var box = el("div", "nums");
+      if (ctx.role === "hero" && items.length) {
+        box.appendChild(numTile(items[0], ctx, "hero"));
+        if (items.length > 1) {
+          var row = el("div", "nums-row");
+          items.slice(1).forEach(function (it) { row.appendChild(numTile(it, ctx, "sub")); });
+          box.appendChild(row);
+        }
+        return box;
+      }
+      if (ctx.role === "doc") box.className = "nums nums-row";
+      items.forEach(function (it) { box.appendChild(numTile(it, ctx, "sub")); });
+      return box;
     },
     chart: function (b, ctx) {
-      var fig = el("figure", "chart");
-      if (b.title) fig.appendChild(el("div", "chart-title", str(b.title)));
-      var items = figItems(b);
-      var max = 0;
-      items.forEach(function (it) {
-        var f = FIG[it.ref];
-        if (f && typeof f.value === "number" && f.value > max) max = f.value;
-      });
-      items.forEach(function (it) {
-        var f = useFig(ctx, str(it.ref));
-        var row = el("div", "bar-row");
-        row.appendChild(el("div", "bar-label", str(it.caption || it.ref)));
-        var track = el("div", "bar-track");
-        var fill = el("span", "bar-fill");
-        var pct = f && typeof f.value === "number" && max > 0 ? Math.max(2, Math.round((f.value / max) * 100)) : 0;
-        fill.style.width = pct + "%";
-        track.appendChild(fill);
-        row.appendChild(track);
-        var val = el("div", "bar-value");
-        if (f) {
-          val.appendChild(document.createTextNode(formatValue(f)));
-          if (isEstimate(f)) { val.appendChild(document.createTextNode(" ")); val.appendChild(estimateBadge()); }
-        } else {
-          val.appendChild(el("span", "missing", t("missingFigure", { id: it.ref })));
+      return b.kind === "line" ? lineChart(b, ctx) : barChart(b, ctx);
+    },
+    compare: function (b, ctx) {
+      var wrap = el("figure", "compare-wrap");
+      if (b.title) wrap.appendChild(el("div", "chart-title", str(b.title)));
+      var box = el("div", "compare");
+      var emph = b.emphasis === 0 ? 0 : 1;
+      var figs = [];
+      var sides = arr(b.sides).slice(0, 2);
+      while (sides.length < 2) sides.push(null);
+      sides.forEach(function (sd, i) {
+        if (i) box.appendChild(icon("arrow", "compare-arrow"));
+        var col = el("div", "side" + (i === emph ? " is-emph" : ""));
+        if (!isObj(sd)) { col.appendChild(gapBadge()); box.appendChild(col); return; }
+        if (sd.label) col.appendChild(el("div", "side-label", str(sd.label)));
+        if (sd.ref) {
+          var f = useFig(ctx, str(sd.ref));
+          figs.push(f);
+          var v = el("div", "side-value");
+          if (f) { v.textContent = formatValue(f); v.setAttribute("data-figure", str(sd.ref)); }
+          else { v.className += " missing"; v.textContent = t("missingFigure", { id: str(sd.ref) }); }
+          col.appendChild(v);
+          if (isEstimate(f)) col.appendChild(estimateBadge());
         }
-        row.appendChild(val);
-        fig.appendChild(row);
+        if (sd.caption) { var c = el("div", "side-caption"); c.appendChild(richText(sd.caption, ctx)); col.appendChild(c); }
+        var items = arr(sd.items);
+        if (items.length) {
+          var ul = el("ul", "side-list");
+          items.forEach(function (it) {
+            var li = el("li");
+            li.appendChild(icon(i === emph ? "check" : "dot"));
+            var span = el("span");
+            span.appendChild(richText(isObj(it) ? it.text : it, ctx));
+            li.appendChild(span);
+            ul.appendChild(li);
+          });
+          col.appendChild(ul);
+        }
+        if (!sd.ref && !items.length && !sd.caption) col.appendChild(gapBadge());
+        box.appendChild(col);
       });
-      var cap = el("figcaption", "chart-source");
-      if (b.source) cap.textContent = t("source") + ": " + str(b.source);
-      else { cap.className = "chart-source missing"; cap.textContent = t("chartNoSource"); }
-      fig.appendChild(cap);
+      wrap.appendChild(box);
+      if (figs.length || b.source) wrap.appendChild(chartCaption(b.source, figs));
+      return wrap;
+    },
+    options: function (b, ctx) {
+      var box = el("div", "options");
+      arr(b.items).forEach(function (o) {
+        if (!isObj(o)) return;
+        var chosen = o.chosen === true;
+        var col = el("div", "opt" + (chosen ? " is-chosen" : ""));
+        var name = el("div", "opt-name");
+        name.appendChild(richText(o.name, ctx));
+        col.appendChild(name);
+        if (chosen) {
+          var tag = el("div", "opt-chosen");
+          tag.appendChild(icon("check"));
+          tag.appendChild(document.createTextNode(t("chosen")));
+          col.appendChild(tag);
+        }
+        if (o.summary) { var s = el("div", "opt-summary"); s.appendChild(richText(o.summary, ctx)); col.appendChild(s); }
+        [["pros", "plus", "opt-pro"], ["cons", "minus", "opt-con"]].forEach(function (k) {
+          if (!o[k[0]]) return;
+          var line = el("div", "opt-line " + k[2]);
+          line.appendChild(icon(k[1]));
+          var span = el("span");
+          span.appendChild(richText(o[k[0]], ctx));
+          line.appendChild(span);
+          col.appendChild(line);
+        });
+        box.appendChild(col);
+      });
+      return box;
+    },
+    timeline: function (b, ctx) {
+      var fig = el("figure", "timeline-wrap");
+      if (b.title) fig.appendChild(el("div", "chart-title", str(b.title)));
+      var ol = el("ol", "tl");
+      arr(b.items).forEach(function (it) {
+        if (!isObj(it)) return;
+        var dec = !!it.decision;
+        var li = el("li", "tl-item" + (dec ? " is-decision" : ""));
+        var mark = svgEl("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", focusable: "false", "class": "tl-mark" });
+        mark.appendChild(dec ? svgEl("path", { d: "M12 2.5 21.5 12 12 21.5 2.5 12z", "class": "tl-diamond" }) : svgEl("circle", { cx: 12, cy: 12, r: 7.5, "class": "tl-dot" }));
+        li.appendChild(mark);
+        var when = el("div", "tl-when");
+        if (it.when) when.appendChild(richText(it.when, ctx)); else when.appendChild(gapBadge());
+        li.appendChild(when);
+        if (it.what) { var w = el("div", "tl-what"); w.appendChild(richText(it.what, ctx)); li.appendChild(w); }
+        if (dec) {
+          var d = el("div", "tl-decision");
+          d.appendChild(icon("flag"));
+          var span = el("span");
+          span.appendChild(richText(it.decision, ctx));
+          d.appendChild(span);
+          li.appendChild(d);
+        }
+        ol.appendChild(li);
+      });
+      fig.appendChild(ol);
+      if (b.source) fig.appendChild(chartCaption(b.source, []));
+      return fig;
+    },
+    meter: function (b, ctx) {
+      var fig = el("figure", "meter");
+      var f = useFig(ctx, str(b.ref));
+      var m = b.max_ref ? useFig(ctx, str(b.max_ref)) : null;
+      var head = el("div", "meter-head");
+      if (f) {
+        var text = formatValue(f);
+        if (m) text = (str(f.unit) === str(m.unit) ? formatPlain(f) : formatValue(f)) + " / " + formatValue(m);
+        head.appendChild(el("span", "meter-value", text));
+      } else {
+        head.appendChild(el("span", "missing", t("missingFigure", { id: str(b.ref) })));
+      }
+      if (b.max_ref && !m) head.appendChild(el("span", "missing", t("missingFigure", { id: str(b.max_ref) })));
+      if (b.label) head.appendChild(el("span", "meter-label", str(b.label)));
+      fig.appendChild(head);
+      var max = m && typeof m.value === "number" ? m.value : (f && str(f.unit) === "%" ? 100 : 0);
+      if (f && typeof f.value === "number" && max > 0) {
+        var pct = Math.min(100, Math.max(0, (f.value / max) * 100));
+        var svg = svgEl("svg", { viewBox: "0 0 100 6", preserveAspectRatio: "none", "aria-hidden": "true", focusable: "false", "class": "meter-svg" });
+        svg.appendChild(svgEl("rect", { x: 0, y: 0, width: 100, height: 6, "class": "meter-track" }));
+        svg.appendChild(svgEl("rect", { x: 0, y: 0, width: pct.toFixed(2), height: 6, "class": "meter-fill" }));
+        fig.appendChild(svg);
+      }
+      if (isEstimate(f) || isEstimate(m)) fig.appendChild(estimateBadge());
+      fig.appendChild(chartCaption(b.source, [f, m]));
       return fig;
     },
     table: function (b, ctx) {
       var wrap = table(b.columns, b.rows, ctx);
-      if (b.source) wrap.appendChild(el("div", "table-source", t("source") + ": " + str(b.source)));
+      if (b.source) wrap.appendChild(el("div", "cap", t("source") + ": " + str(b.source)));
       return wrap;
     },
     stories: function (b, ctx) {
       var box = el("div", "stories");
       arr(b.items).forEach(function (s) {
-        if (!s || typeof s !== "object") return;
+        if (!isObj(s)) return;
         var art = el("article", "story");
         var h = el("h3", "story-title");
-        if (s.priority) { h.appendChild(el("span", "badge", str(s.priority))); h.appendChild(document.createTextNode(" ")); }
-        h.appendChild(richText(s.title, ctx));
+        if (s.priority) h.appendChild(el("span", "story-prio", str(s.priority)));
+        var title = el("span");
+        title.appendChild(richText(s.title, ctx));
+        h.appendChild(title);
         art.appendChild(h);
         if (s.why) { var why = el("p", "story-why"); why.appendChild(richText(s.why, ctx)); art.appendChild(why); }
         var ol = el("ol", "scenarios");
         arr(s.scenarios).forEach(function (sc) {
-          if (!sc || typeof sc !== "object") return;
+          if (!isObj(sc)) return;
           var li = el("li");
           [["given", sc.given], ["when", sc.when], ["then", sc.then]].forEach(function (pair, i) {
             if (i) li.appendChild(document.createTextNode(" "));
@@ -1478,7 +2314,7 @@
     defs: function (b, ctx) {
       var dl = el("dl", "defs");
       arr(b.items).forEach(function (it) {
-        if (!it || typeof it !== "object") return;
+        if (!isObj(it)) return;
         dl.appendChild(el("dt", null, str(it.term)));
         var dd = el("dd");
         if (it.meaning) dd.appendChild(richText(it.meaning, ctx));
@@ -1490,15 +2326,15 @@
     questions: function (b, ctx) {
       var box = el("div", "questions");
       [[true, "blocking"], [false, "nonBlocking"]].forEach(function (group) {
-        var items = arr(b.items).filter(function (q) { return q && typeof q === "object" && (q.blocking === true) === group[0]; });
+        var items = arr(b.items).filter(function (q) { return isObj(q) && (q.blocking === true) === group[0]; });
         box.appendChild(el("h3", "q-group" + (group[0] ? " blocking" : ""), t(group[1])));
         if (!items.length) { box.appendChild(el("p", "muted", t("noneBlocking"))); return; }
         var ul = el("ul", "list");
         items.forEach(function (q) {
           var li = el("li");
-          if (q.id) { li.appendChild(el("strong", "item-id", str(q.id))); li.appendChild(document.createTextNode(" ")); }
+          if (q.id) li.appendChild(el("span", "item-id", str(q.id)));
           li.appendChild(richText(q.text, ctx));
-          if (q.owner) li.appendChild(el("span", "muted", " · " + t("owner") + ": " + str(q.owner)));
+          if (q.owner) li.appendChild(el("span", "q-owner", " (" + t("owner") + ": " + str(q.owner) + ")"));
           ul.appendChild(li);
         });
         box.appendChild(ul);
@@ -1512,43 +2348,52 @@
     }
   };
 
+  function validBlocks(blocks) {
+    return arr(blocks).filter(function (b) { return isObj(b) && hasOwn.call(BLOCKS, b.type); });
+  }
+
   function renderBlocks(blocks, ctx) {
     var frag = document.createDocumentFragment();
-    arr(blocks).forEach(function (b) {
-      if (!b || typeof b !== "object" || !hasOwn.call(BLOCKS, b.type)) return;
+    validBlocks(blocks).forEach(function (b) {
       var node = BLOCKS[b.type](b, ctx);
       if (node) frag.appendChild(node);
     });
     return frag;
   }
 
-  function frameworksBox(list) {
+  function frameworksLine(list) {
     var items = arr(list).map(function (fw) {
-      return typeof fw === "string" ? { name: fw } : (fw && typeof fw === "object" ? fw : null);
+      return typeof fw === "string" ? { name: fw } : (isObj(fw) ? fw : null);
     }).filter(function (fw) { return fw && (fw.name || fw.id); });
     if (!items.length) return null;
-    var box = el("div", "frameworks");
-    box.appendChild(el("span", "frameworks-title", t("frameworks") + ": "));
+    var p = el("p", "frameworks");
+    p.appendChild(el("span", "line-label", t("frameworks") + ": "));
     items.forEach(function (fw, i) {
-      if (i) box.appendChild(document.createTextNode(" · "));
-      box.appendChild(el("strong", null, str(fw.name || fw.id)));
-      if (fw.result) box.appendChild(document.createTextNode(" (" + str(fw.result) + ")"));
+      if (i) p.appendChild(document.createTextNode("; "));
+      p.appendChild(document.createTextNode(str(fw.name || fw.id)));
+      if (fw.result) p.appendChild(document.createTextNode(" (" + str(fw.result) + ")"));
     });
-    return box;
+    return p;
   }
 
   function basedOn(fields) {
     var list = arr(fields).map(str).filter(Boolean);
     if (!list.length) return null;
-    return el("div", "based-on", t("basedOn") + ": " + list.join(", "));
+    var p = el("p", "based-on");
+    p.appendChild(el("span", "line-label", t("basedOn") + ": "));
+    p.appendChild(document.createTextNode(list.join(", ")));
+    return p;
   }
 
   function headerMeta(target) {
     if (readError) { target.appendChild(el("p", "notice bad", t("readError"))); return; }
     if (idea.version) target.appendChild(el("p", "meta", t("version", { date: formatDate(str(idea.version)) })));
-    if (idea.draft === true) target.appendChild(el("p", "notice", t("draft")));
-    target.appendChild(el("p", estimatePending ? "notice" : "notice ok", estimatePending ? t("estimatePending") : t("estimateDone")));
-    var links = data.links && typeof data.links === "object" ? data.links : {};
+    if (idea.draft === true) target.appendChild(el("p", "notice draft", t("draft")));
+    var est = el("p", "notice");
+    if (estimatePending) { est.appendChild(estimateBadge()); est.appendChild(document.createTextNode(" ")); }
+    est.appendChild(document.createTextNode(estimatePending ? t("estimatePending") : t("estimateDone")));
+    target.appendChild(est);
+    var links = isObj(data.links) ? data.links : {};
     var ul = el("ul", "links");
     ["board_artifact", "tech_artifact", "slides", "docs"].forEach(function (key) {
       var href = links[key];
@@ -1560,7 +2405,7 @@
     });
     if (ul.childNodes.length) {
       var wrap = el("div", "links-box");
-      wrap.appendChild(el("span", "links-title", t("links") + ": "));
+      wrap.appendChild(el("span", "links-title", t("links") + ":"));
       wrap.appendChild(ul);
       target.appendChild(wrap);
     }
@@ -1570,11 +2415,11 @@
     var box = el("div", "gaps-list");
     box.appendChild(el("h3", null, t("gapsTitle")));
     if (!GAPS.length) { box.appendChild(el("p", "muted", t("noGaps"))); return box; }
-    var ul = el("ul", "list");
+    var ul = el("ul");
     GAPS.forEach(function (g) {
       var li = el("li");
       li.appendChild(gapBadge());
-      li.appendChild(document.createTextNode(" " + str(g.field)));
+      li.appendChild(el("span", null, str(g.field)));
       ul.appendChild(li);
     });
     box.appendChild(ul);
@@ -1596,17 +2441,17 @@
     { id: "open-questions", label: "sec_open_questions", required: true }
   ];
 
-  var tech = data.tech && typeof data.tech === "object" ? data.tech : {};
+  var tech = isObj(data.tech) ? data.tech : {};
   var byId = {};
   var extra = [];
   arr(tech.sections).forEach(function (s) {
-    if (!s || typeof s !== "object" || typeof s.id !== "string" || hasOwn.call(byId, s.id)) return;
+    if (!isObj(s) || typeof s.id !== "string" || hasOwn.call(byId, s.id)) return;
     byId[s.id] = s;
   });
   var known = {};
   SECTION_MAP.forEach(function (slot) { known[slot.id] = true; });
   arr(tech.sections).forEach(function (s) {
-    if (s && typeof s.id === "string" && !known[s.id] && byId[s.id] === s) extra.push({ id: s.id, label: null, required: false });
+    if (isObj(s) && typeof s.id === "string" && !known[s.id] && byId[s.id] === s) extra.push({ id: s.id, label: null, required: false });
   });
 
   document.getElementById("idea-title").textContent = str(idea.title);
@@ -1615,10 +2460,20 @@
 
   var toc = document.getElementById("toc");
   var box = document.getElementById("sections");
+
+  function addToc(label, anchor) {
+    var li = el("li");
+    // In-page anchor built from a sanitized id; not a data URL, so it skips safeHref.
+    var a = el("a", null, label);
+    a.setAttribute("href", "#" + anchor);
+    li.appendChild(a);
+    toc.appendChild(li);
+  }
+
   SECTION_MAP.concat(extra).forEach(function (slot) {
     var s = hasOwn.call(byId, slot.id) ? byId[slot.id] : null;
     if (!s && !slot.required) return;
-    var ctx = { refs: [] };
+    var ctx = { refs: [], role: "doc" };
     var heading = s && s.heading ? str(s.heading) : (slot.label ? t(slot.label) : slot.id);
     var anchor = "sec-" + slot.id.replace(/[^A-Za-z0-9_-]/g, "-");
 
@@ -1638,25 +2493,56 @@
     sec.appendChild(renderBlocks(blocks, ctx));
     var diagram = s ? diagramSlot(s.diagram, ctx) : null;
     if (diagram) sec.appendChild(diagram);
-    var fw = s ? frameworksBox(s.frameworks) : null;
-    if (fw) sec.appendChild(fw);
-    var notes = figureNotes(ctx);
-    if (notes) sec.appendChild(notes);
-    var based = s ? basedOn(s.source_fields) : null;
-    if (based) sec.appendChild(based);
-    box.appendChild(sec);
 
-    var li = el("li");
-    // In-page anchor built from the sanitized section id; not a data URL, so it skips safeHref.
-    var a = el("a", null, heading);
-    a.setAttribute("href", "#" + anchor);
-    li.appendChild(a);
-    toc.appendChild(li);
+    var meta = el("div", "section-meta");
+    var fw = s ? frameworksLine(s.frameworks) : null;
+    if (fw) meta.appendChild(fw);
+    var src = sourcesLine(ctx);
+    if (src) meta.appendChild(src);
+    var based = s ? basedOn(s.source_fields) : null;
+    if (based) meta.appendChild(based);
+    if (meta.childNodes.length) sec.appendChild(meta);
+    box.appendChild(sec);
+    addToc(heading, anchor);
   });
 
-  document.getElementById("gaps").appendChild(gapsList());
-  document.getElementById("snapshot-link").appendChild(link("spec.md", "spec.md"));
-  document.getElementById("snapshot-link").appendChild(el("span", "muted", " · " + t("snapshotNote")));
+  var figSec = document.getElementById("sec-figures");
+  figSec.appendChild(el("h2", null, t("figuresTable")));
+  if (FIG_ORDER.length) figSec.appendChild(figureTable(FIG_ORDER));
+  else figSec.appendChild(gapBadge());
+  addToc(t("figuresTable"), "sec-figures");
+
+  var gapSec = document.getElementById("gaps");
+  var gl = gapsList();
+  var gh = gl.querySelector("h3");
+  gapSec.appendChild(el("h2", null, gh ? gh.textContent : t("gapsTitle")));
+  if (gh) gl.removeChild(gh);
+  gapSec.appendChild(gl);
+  addToc(t("gapsTitle"), "gaps");
+
+  var snap = document.getElementById("snapshot-link");
+  snap.appendChild(link("spec.md", "spec.md"));
+  snap.appendChild(el("span", "muted", ". " + t("snapshotNote")));
+  addToc(t("snapshot"), "sec-snapshot");
+
+  // Mark the section in view in the nav.
+  if (typeof IntersectionObserver !== "undefined") {
+    var links = Array.prototype.slice.call(toc.querySelectorAll("a"));
+    var current = null;
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var id = entry.target.getAttribute("id");
+        if (id === current) return;
+        current = id;
+        links.forEach(function (a) {
+          if (a.getAttribute("href") === "#" + id) a.setAttribute("aria-current", "true");
+          else a.removeAttribute("aria-current");
+        });
+      });
+    }, { rootMargin: "-10% 0px -75% 0px" });
+    Array.prototype.slice.call(document.querySelectorAll(".doc-section[id]")).forEach(function (sec) { observer.observe(sec); });
+  }
 })();
 </script>
 </body>
