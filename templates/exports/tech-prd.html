@@ -2976,8 +2976,9 @@
       var t1 = pt(p, r - 34), t2 = pt(p, r + 30);
       svg.appendChild(svgEl("line", { x1: t1[0], y1: t1[1], x2: t2[0], y2: t2[1], "class": "gauge-tick" }));
       txt(p, r + 44, figText(th, true), "gauge-th", 16);
-      if (b.below) txt(p / 2, r - 70, str(b.below), "gauge-zone-ok", 15);
-      if (b.above) txt((1 + p) / 2, r - 70, str(b.above), "gauge-zone-stop", 15);
+      // Zone labels sit just outside the arc, clear of the big number in the middle.
+      if (b.below) txt(p / 2, r + 36, str(b.below), "gauge-zone-ok", 15);
+      if (b.above) txt((1 + p) / 2, r + 36, str(b.above), "gauge-zone-stop", 15);
       var zero = svgEl("text", { x: s[0], y: cy + 28, "text-anchor": "middle", "font-size": 14, "class": "gauge-end" });
       zero.textContent = "0";
       svg.appendChild(zero);

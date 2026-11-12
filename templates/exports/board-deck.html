@@ -479,6 +479,7 @@
     font-size: var(--fs-body); line-height: 1.38;
   }
   .kicker { display: flex; flex-wrap: wrap; gap: 0.4em 0.8em; align-items: center; font-size: max(1.1cqw, 12px); color: var(--quiet); margin-bottom: max(0.8cqw, 6px); }
+  .kicker .badge-est { margin-left: auto; }
   .kicker-n { color: var(--accent); font-weight: 700; font-variant-numeric: tabular-nums; }
   .slide-title {
     margin: 0; max-width: 40ch;
@@ -3395,8 +3396,9 @@
       var t1 = pt(p, r - 34), t2 = pt(p, r + 30);
       svg.appendChild(svgEl("line", { x1: t1[0], y1: t1[1], x2: t2[0], y2: t2[1], "class": "gauge-tick" }));
       txt(p, r + 44, figText(th, true), "gauge-th", 16);
-      if (b.below) txt(p / 2, r - 70, str(b.below), "gauge-zone-ok", 15);
-      if (b.above) txt((1 + p) / 2, r - 70, str(b.above), "gauge-zone-stop", 15);
+      // Zone labels sit just outside the arc, clear of the big number in the middle.
+      if (b.below) txt(p / 2, r + 36, str(b.below), "gauge-zone-ok", 15);
+      if (b.above) txt((1 + p) / 2, r + 36, str(b.above), "gauge-zone-stop", 15);
       var zero = svgEl("text", { x: s[0], y: cy + 28, "text-anchor": "middle", "font-size": 14, "class": "gauge-end" });
       zero.textContent = "0";
       svg.appendChild(zero);
@@ -4288,27 +4290,21 @@
       body.appendChild(legend);
     }
 
-    // The fields each slide came from.
-    var dl = el("dl", "trace-based");
-    SLIDE_MAP.forEach(function (slot) {
-      var s = byN[String(slot.n)] || null;
-      var fields = s ? arr(s.source_fields).map(str).filter(Boolean).join(", ") : "";
-      var row = el("div");
-      row.appendChild(el("dt", null, (slot.n === "appendix" ? t("appendixShort") : String(slot.n)) + "."));
-      var dd = el("dd");
-      if (fields) dd.appendChild(document.createTextNode(fields)); else dd.appendChild(el("span", "tag-gap", t("gap")));
-      row.appendChild(dd);
-      dl.appendChild(row);
-    });
-    var based = el("div", "trace-based-wrap");
-    based.appendChild(el("div", "block-label", t("basedOn")));
-    based.appendChild(dl);
-    body.appendChild(based);
 
     shell.sec.appendChild(body);
     shell.sec.appendChild(shell.foot);
     deck.appendChild(shell.frame);
   })();
+
+  // One "not tech-reviewed" badge per slide, in the kicker row, instead of one beside every estimate.
+  Array.prototype.forEach.call(deck.querySelectorAll(".frame"), function (frame) {
+    if (!/^slide-(\d+|appendix)$/.test(frame.id)) return;
+    var found = frame.querySelectorAll(".slide-head .badge-est, .slide-body .badge-est");
+    if (!found.length) return;
+    Array.prototype.forEach.call(found, function (b) { b.parentNode.removeChild(b); });
+    var kicker = frame.querySelector(".kicker");
+    if (kicker) kicker.appendChild(estimateBadge());
+  });
 
   // Arrow keys and Page Up / Page Down move one slide.
   document.addEventListener("keydown", function (e) {
