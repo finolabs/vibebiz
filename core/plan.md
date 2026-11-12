@@ -40,6 +40,7 @@ One short paragraph a board member can approve or reject:
 - **What**: the chosen approach from `## Alternatives` (do nothing, fix the process, buy, partner, or build) with the decision that chose it (D-###), and in one line each why the other routes lost, from their effect, cost and risk lines. When the recommendation is not to build, say so first: that is a valid plan.
 - **How much**: the amount the board is asked to release now, normally the cost of the first phase (the pilot when there is one), with its scenario figure, source and label. Name the full base-case cost beside it when it differs.
 - **By when**: the date the decision is needed, and why that date (a season, a contract, a budget cycle), from the files or the user.
+- **Ground-rule conflicts**: one line per current conflict from section 5, with its D-###: the amount above the approval ceiling and that someone above the user must approve it, or the step that lacks a required person's approval. The board view's decision slide is built from this paragraph, so a conflict missing here is missing from the deck.
 
 Example in Vietnamese: "Đề nghị duyệt 120 triệu đồng (phương án cơ sở, giả định, chưa qua kỹ thuật thẩm định) để mua công cụ nhắc khách và thử ở 3 cửa hàng trong 8 tuần, quyết trước 15/01/2027 để kịp chạy trước mùa hè. Không tự làm hệ thống vì tốn gấp ba và chậm hơn hai quý (D-004)."
 
@@ -50,6 +51,7 @@ Example in Vietnamese: "Đề nghị duyệt 120 triệu đồng (phương án c
 3. **Payback**, when the one-time cost and the yearly net return are both on file for a scenario: one-time cost divided by yearly net return, in months, one line under the table per scenario, naming the two figures it comes from and labelled as an estimate. Leave it as `chưa làm rõ` when the return is unknown or not positive.
 4. When the build-buy-partner card applies (section 6), the cost and return of each route the board could still choose go under the table as a short comparison in the same three scenarios; the chosen route's row is the table itself.
 5. Add the riskiest assumption from `## Cost & Risk` (its A-###) in one line: the return depends on it.
+6. When a budget-ceiling conflict is current (section 5), add one line under the table naming the scenario figure that exceeds the approval ceiling, the ceiling, and the conflict's D-###. The board view's cost slide is built from this section.
 
 ### 4.3 Pilot roadmap and decision points
 
@@ -73,25 +75,25 @@ From the organizational-change lines in `## Cost & Risk`: training (who, how lon
 
 ### 4.5 Ground rules check
 
-Section 5 decides what goes here: either that the plan fits the ground rules, or each conflict with its D-### and a plain sentence on the rule and the figure or step that breaks it.
+Section 5 decides what goes here: either that the plan fits the ground rules, or each conflict with its D-### and a plain sentence on the rule and the figure or step that breaks it. Add the strategy link when the ground rules record objectives: which priority, strategy-map objective (with its perspective) or OKR the idea serves, and whether directly or indirectly. When the ground rules are deferred, this section says so (section 5).
 
 ## 5. Ground-rule checks
 
-Read `constitution.md` frontmatter.
+Read `constitution.md` frontmatter. A missing file or a missing `status` counts as deferred.
 
-**Ground rules deferred.** Write in the section that the organization's ground rules are not set yet, so the plan was not checked against a budget ceiling, priorities or required approvals. Tell the user in one sentence and name the command that records them, `/vibebiz:constitution`. Record no conflict. Example: "Công ty chưa đặt nguyên tắc chung (ngân sách anh/chị tự duyệt, ưu tiên năm nay, các bước luôn cần người duyệt), nên kế hoạch chưa được đối chiếu. Anh/chị có thể đặt bằng lệnh /vibebiz:constitution trước khi trình."
+**Ground rules deferred.** Write in the section that the organization's ground rules are not set yet, so the plan was not checked against a budget ceiling, priorities, strategy objectives or required approvals. Remind the user once per packaging run, in one sentence, naming the command that records them, `/vibebiz:constitution`; do not repeat it in later messages of the same run, and do not stop or ask a question about it, because every other part of the plan works without them. Record no conflict. Example: "Công ty chưa đặt luật chung (mức chi anh/chị tự duyệt, ưu tiên năm nay, các việc luôn cần người duyệt), nên kế hoạch chưa được đối chiếu. Anh/chị có thể đặt bằng lệnh /vibebiz:constitution rồi đóng gói lại trước khi trình."
 
-**Ground rules set.** Run each check, from the files only:
+**Ground rules set.** Run each check whose rule is recorded, from the files only. A rule left empty (no amount, no priorities, no approvals, no objectives) is not checked: say in the section which rules were not set, and record no conflict for them.
 
-| Check | Conflict when |
-|---|---|
-| Budget ceiling | the amount in "Decision requested", or the high-scenario cost, exceeds `approval_ceiling` (same currency). Exceeding the ceiling is a conflict to show, not a reason to stop: the user needs someone above them to approve. When the currencies differ, do not convert: add an open question |
-| Priorities | the idea serves none of `priorities`, none of the `strategy_map` objectives and none of the `okrs`, judged from `## Problem & Why` and `## Outcome`. Name the closest one when the link is only indirect, and say it is indirect |
-| Required approvals | a step in the user stories, the AI-fit decision or the rollout acts without a person where `mandatory_approvals` requires one (for example an AI sends a refund that a rule says a manager approves) |
+| Check | Rule read | Conflict when |
+|---|---|---|
+| Budget ceiling | `approval_ceiling` | the amount in "Decision requested", or the high-scenario cost, exceeds the ceiling (same currency). Exceeding the ceiling is a conflict to show, not a reason to stop: the user needs someone above them to approve. When the currencies differ, do not convert: add an open question. When the cost is still `chưa làm rõ`, there is no conflict yet: say the ceiling could not be checked and report the gap |
+| Priorities and strategy | `priorities`, `strategy_map`, `okrs` | the idea serves none of the priorities, none of the strategy-map objectives and none of the OKRs, judged from `## Problem & Why` and `## Outcome` (including the strategy link the outcome lens wrote). Name the closest one when the link is only indirect, and say it is indirect; an indirect link is not a conflict. When the outcome's metric moves against an OKR key result or a strategy-map objective (for example more discounting against a margin objective), that is a conflict too |
+| Required approvals | `mandatory_approvals` | a step in the user stories, the AI-fit decision, the solution flow or the rollout acts without a person where a required approval names that kind of step (for example an AI sends a refund, changes a price or messages customers alone). Match by meaning, not by exact words; when it is unclear whether a step falls under a rule, add an open question instead of a conflict |
 
 For each conflict:
 
-1. Look in `decisions.md` for a `ground-rule-conflict` entry on the same rule. If one exists and still describes the conflict, cite it; do not add a duplicate.
+1. Look in `decisions.md` for a `ground-rule-conflict` entry on the same rule, including one the challenge lens recorded earlier. If one exists and still describes the conflict with the current figure or step, cite it; do not add a duplicate. If the figure or step changed but the rule is still broken, append a new entry and a `supersede` entry naming the old one.
 2. Otherwise append an entry (ids continue from the last D-###, never reused):
 
 ```markdown
@@ -104,7 +106,7 @@ For each conflict:
 ```
 
 3. When an earlier conflict no longer holds (the cost fell under the ceiling, a manager approval step was added), append a `supersede` entry naming it, with the reason, and drop it from the section. The old entry stays.
-4. Cite every current conflict's D-### in the section, and tell the user in one plain sentence per conflict. The board view shows each conflict on the decision and cost slides; never soften one.
+4. Cite every current conflict's D-### in the section, in "Decision requested" (section 4.1) and, for a budget-ceiling conflict, under the scenario table (section 4.2), and tell the user in one plain sentence per conflict. The board view shows each conflict on the decision and cost slides from those sections; never soften one, and never drop one because the user dislikes it: a conflict ends only when the plan changes or the ground rules change. Example: "Phương án cao cần 350 triệu đồng, vượt mức 200 triệu anh/chị tự duyệt (theo luật chung), nên cần cấp trên duyệt; em đã ghi điều này vào kế hoạch và bản trình bày."
 
 ## 6. Planning cards
 

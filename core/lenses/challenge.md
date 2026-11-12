@@ -4,7 +4,7 @@ Test the idea before anyone spends money on it: find how it could fail, weigh do
 
 - **Used by**: router.
 - **Reads**: `spec.md`, `coverage.md` (category statuses, `cynefin`, `language`, `vertical`), `decisions.md`, `assumptions.md`, `open-questions.md`, the workspace `constitution.md` (priorities, `approval_ceiling`, `mandatory_approvals`, `strategy_map`, `okrs`); when the idea's `vertical` is `fashion`, the fashion pack's `references/packs/retail-fashion/traps.md` and `promotions.md` (to test whether a claimed result survives seasonality, weather, channel shift or discount effects) and the challenge examples in `questions.md`, used by that pack's README rules; a framework card from `references/packs/frameworks/` only when the router hands one over (section 7).
-- **Writes**: `spec.md` (`## Alternatives`, `## Cost & Risk`, `## Assumptions`, Clarifications through the ask protocol), `decisions.md` (`answer` and `dismissed-risk` entries), `assumptions.md` (new A-### entries from the assumption map), `open-questions.md`, `coverage.md` (statuses of D, K and M).
+- **Writes**: `spec.md` (`## Alternatives`, `## Cost & Risk`, `## Assumptions`, Clarifications through the ask protocol), `decisions.md` (`answer`, `dismissed-risk` and `ground-rule-conflict` entries), `assumptions.md` (new A-### entries from the assumption map), `open-questions.md`, `coverage.md` (statuses of D, K and M).
 - **Fills**: D (alternatives), K (risk and compliance), and part of M (cost, resources and return): the size, the risks and the low, base and high scenarios. The plan module completes M at packaging.
 
 Follow `references/core/anti-sycophancy.md` in everything this lens says or writes, `references/core/ask-protocol.md` for every question, and `references/core/writing-rules.md` for every word the user reads.
@@ -48,7 +48,7 @@ M is never `clear` from this lens alone; it becomes `partial` once the size is r
 1. Re-read every file listed under **Reads**; the user's hand edits win over anything you remember.
 2. For each category you were handed, mark each item in section 2 as answered, partly answered or missing, from the files only.
 3. Look facts up before turning them into questions (ask protocol, section 1): the current cost from `## Problem & Why`, the target and time frame from `## Outcome`, the approval ceiling and priorities from `constitution.md`, earlier answers in `decisions.md`.
-4. Check the ground rules. If the idea serves none of the recorded priorities or strategy objectives, or its likely size exceeds `approval_ceiling`, that is a failure reason for this round; name it in a question. The plan module records the formal conflict; this lens raises it early.
+4. Check the ground rules (section 4.6).
 5. Read `cynefin` in `coverage.md` and set the depth:
    - `clear`: weigh the four alternatives and run a short pre-mortem (one failure reason); skip the assumption map unless an assumption is plainly untested.
    - `complicated`: the full lens.
@@ -89,6 +89,27 @@ When the riskiest assumption is untested, or `cynefin` is `complex`, design the 
 ### 4.5 Size and scenarios
 
 Size the chosen alternative small, medium or large, by what it needs: staff time, money, outside help, how many stores or systems change. Offer the size as a question with ranges built from the user's figures or the ground rules' approval ceiling, labelled as estimates. Write low, base and high scenarios for cost and return only from figures on file or the user's answers, each labelled "not tech-reviewed". When there are no figures, write the size alone and leave the scenarios as "not yet clarified" for the plan module.
+
+### 4.6 Ground rules
+
+Read `constitution.md` frontmatter. When `status` is `deferred` (or the file or field is missing), skip this section: say nothing about it in the round, because the plan reminds the user once at packaging. Otherwise check each rule that is recorded; an empty rule is not checked.
+
+- **Budget ceiling** (`approval_ceiling`): compare the size and the cost scenarios on file with the ceiling, in the same currency. A likely size above the ceiling with no figure yet is a failure reason for this round: name it in a question, for example in the size question's option descriptions ("Vượt mức 200 triệu anh/chị tự duyệt, cần cấp trên duyệt"). A cost figure on file above the ceiling is a conflict.
+- **Priorities and strategy** (`priorities`, `strategy_map`, `okrs`): judge from `## Problem & Why` and `## Outcome` which priority, strategy-map objective (with its perspective) or OKR the idea serves. When it serves none, that is a failure reason for this round: an idea outside this year's priorities loses the budget fight even when it works. When the alternatives question is asked, say in each option's description which of them serves a recorded objective; a cheaper route that serves the same objective is a strong case against build. An idea whose outcome moves against a recorded objective or key result (for example more discounts against a margin objective) is a conflict.
+- **Required approvals** (`mandatory_approvals`): check the idea's flow, its AI-fit and each alternative for a step that would act without a person where a required approval names that kind of step (matched by meaning). Raise it as a risk question whose handlings include adding the approval step ("Thêm bước quản lý duyệt"). A step on file that acts alone against the rule, and that the user keeps after the question, is a conflict; choosing to keep it is also a dismissal (section 6).
+
+**Record a conflict** only from what the files hold, never from a guess: a cost figure on file above the ceiling, an outcome on file against a recorded objective, or a step on file that skips a required approval. Look in `decisions.md` for a `ground-rule-conflict` entry on the same rule first and do not duplicate it; otherwise append:
+
+```markdown
+## D-### — <rule, in a few words>
+
+- date: YYYY-MM-DD
+- type: ground-rule-conflict
+- text: <what in the idea breaks which rule, with the figure and its source>
+- reason: <the rule as recorded in the ground rules, and today's date>
+```
+
+Point to it from the risk or cost line in `## Cost & Risk`, and repeat it in the summary after the round. The plan module re-checks every conflict at packaging, keeps the ones that still hold and supersedes the ones that no longer do; this lens never removes or supersedes one.
 
 ## 5. Write the round's questions for the router
 
