@@ -19,7 +19,9 @@
     another scheme, a file path or a public sharing link: every output stays
     private and the user shares it themselves.
   - Artifacts are updated at the same address on re-packaging, so their lines
-    normally stay the same; Slides and Docs keep their address too.
+    normally stay the same. Slides and Docs are new files for each version
+    (vibebiz never overwrites a Google file it did not create in this run);
+    the previous links stay in the history copy of links.md.
   - The version line is the export date, ISO YYYY-MM-DD, the same as
     data.json idea.version.
   - The table of contents copies every https:// line, using the label before
