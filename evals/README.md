@@ -123,3 +123,36 @@ Same layout and `--scaffold` rule as the US1 cases. Every seeded workspace is fi
 | Lenses | `lenses/cynefin-{clear-quick-path,complicated-full-lenses,complex-pilot,chaotic-stabilize-first}` | The classification is recorded and sets depth: quick path, full lenses, pilot with kill criteria, stabilize first. |
 
 The framework-card structure check is code, not an eval: `python3 scripts/checks/test_cards.py -v`.
+
+## US3 cases (T062, T063)
+
+Same layout and `--scaffold` rule as the US1 cases. Every seeded workspace is a fictional full idea ("Gợi ý size trên website" for Mộc Nhiên Denim, and an English twin for Larkspur Denim) with 14 of 15 categories clear and integrations deferred with a reason, so the readiness rule is met and the deferred category must appear as a gap. Formats are answered in each prompt (Artifact, kept as HTML files when Artifacts cannot be published headless).
+
+| Suite | Case | What it checks |
+|---|---|---|
+| 6 Package | `package/below-readiness-offers-draft` | Below readiness: missing categories listed, continue or labelled draft offered, no export written. |
+| 6 Package | `package/ready-data-json-passes-check` | Ready idea: the five export files exist, `data.json` has the contract keys, is not a draft, keeps the figures and lists the deferred category as a gap. |
+| 6 Package | `package/repackage-moves-previous-set-to-history` | A packaged idea packaged again: the previous set moves whole into `exports/history/<date>/`, the new set uses the fixed names. |
+| 6 Package | `package/connector-unavailable-offers-artifact` | Slides and Docs chosen, connectors unavailable: the Artifact format is offered, no Google link invented. |
+| 6 Package | `package/share-request-refused` | Asked to share with the board: refused, outputs stay private. |
+| 6 Package | `package/slides-image-no-public-url` | Asked to make a diagram public for Slides: refused, table plus Artifact link instead. |
+| 5 Spec Kit compatibility | `speckit-compat/snapshot-structure` | Snapshot keeps Spec Kit headings, subheadings, header lines and id formats, and is an unmodified copy of the idea's `spec.md`. |
+| 5 Spec Kit compatibility | `speckit-compat/vietnamese-headings-stay-english` | Vietnamese content: Spec Kit headings and subheadings are not translated. |
+| 5 Spec Kit compatibility | `speckit-compat/english-idea-snapshot` | English idea: the same structure rules hold. |
+
+Headless runs cannot start Artifacts or run the code checks, so the checks that need code run after the case on the workspace it produced (replace `<idea>` with the idea folder, for example `specs/001-goi-y-size-tren-website`):
+
+```bash
+# every `package/*` case that writes exports (ready, re-package, connector, share, public image)
+python3 scripts/checks/package_check.py <workspace>/<idea>
+
+# every `speckit-compat/*` case, and any package case: structure of the snapshot (reads the pinned template at run time)
+python3 -c "import sys; sys.path.insert(0, 'scripts/checks'); from test_snapshot import check_snapshot; p = check_snapshot('<workspace>/<idea>/exports/spec.md'); print('\n'.join(p) or 'ok'); sys.exit(1 if p else 0)"
+
+# suite 5 integration: builds a scratch Spec Kit 1.4.0 project in a temporary folder and prints the plan command (starts no model)
+python3 scripts/checks/speckit_integration.py <workspace>/<idea>/exports/spec.md
+```
+
+`package_check.py` exits 1 when it finds problems; the second command prints the snapshot problems and exits 1; `speckit_integration.py` exits 1 and creates nothing when the snapshot fails the structure check. Its own tests: `python3 -m unittest discover -s scripts/checks -p 'test_speckit_integration.py'`.
+
+Not covered headless (Cowork smoke test, `quickstart.md` section 6): updating an Artifact at the same link on re-packaging, and private image insertion in Slides and Docs.
