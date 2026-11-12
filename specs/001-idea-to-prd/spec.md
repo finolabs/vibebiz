@@ -289,14 +289,14 @@ Spec Kit 1.4.0's `clarify` categories (scope, data, UX flow, non-functional, int
 | D | Alternatives: do nothing, fix the process, buy, build | A, C | Alternatives | challenge |
 | E | Scope and behavior: journeys P1..Pn, out of scope | C, D | User Stories, Functional Requirements | solution-sketch |
 | F | AI fit: rule, automation or AI; data available; cost of an AI error; human approval points | E | AI-fit | solution-sketch |
-| G | Data and entities: sources, quality, ownership | E | Key Entities | biz-clarify |
-| H | Integrations: point of sale, ERP, marketplaces, chat apps, logistics | E, G | Requirements, Assumptions | biz-clarify |
+| G | Data and entities: sources, quality, ownership | E | Key Entities | clarify (module) |
+| H | Integrations: point of sale, ERP, marketplaces, chat apps, logistics | E, G | Requirements, Assumptions | clarify (module) |
 | I | Non-functional needs in plain words: number of users, peak hours, store connectivity, devices | E | Requirements | solution-sketch |
 | J | Edge cases and failures | E | Edge Cases | solution-sketch |
 | K | Risk and compliance: personal-data law, promotion registration, labor rules | E, G | Cost & Risk | challenge |
 | L | Organizational change: training, changed staff KPIs, who loses authority or work | B, E | Cost & Risk, Plan | solution-sketch |
-| M | Cost, resources and return: S/M/L size, three scenarios | C, D, E | Cost & Risk, Plan | challenge, biz-plan |
-| N | Terminology | none | glossary | biz-clarify |
+| M | Cost, resources and return: S/M/L size, three scenarios | C, D, E | Cost & Risk, Plan | challenge, plan (module) |
+| N | Terminology | none | glossary | clarify (module) |
 | O | Completion signals: testable acceptance criteria | C, E | Acceptance Scenarios | outcome |
 
 Readiness to package: A, C, D and E Clear; F Clear when AI is involved; M at least an S/M/L size; every other category Clear or Deferred with a reason.
@@ -328,7 +328,7 @@ Readiness to package: A, C, D and E Clear; F Clear when AI is involved; M at lea
 - **outcome** (C, O): turn outputs into outcomes ("have a chatbot" becomes "cut messages waiting over 15 minutes by 30%"); a driver tree with leading and lagging indicators; a measurement plan when no baseline exists; kill criteria.
 - **challenge** (D, K, part of M): pre-mortem ("six months from now this failed; what is the most likely reason?"); assumption map across desirability, viability, feasibility, usability and ethics, marking the riskiest untested assumption; defend doing nothing and fixing the process before build; cost of inaction. Never praise; at least one failure reason per round; dismissed risks recorded.
 - **solution-sketch** (E, F, I, J, L): current and future journey (the first diagram brief); three alternative approaches before choosing; AI fit decision tree (is a rule enough, is automation enough, is AI required, who carries the cost of an AI error); a first journey that stands alone; edge cases; people whose work changes.
-- **biz-clarify** fills G, H, N and any remaining Partial category.
+- **clarify (module)** fills G, H, N and any remaining Partial category.
 
 ## Appendix D - Outputs
 
@@ -383,8 +383,8 @@ Frameworks serve the coverage map: one is applied only when it fills an open cat
 | outcome | Driver / KPI tree (core), Balanced Scorecard (core), North Star metric, OKR, SMART, leading vs lagging | Measurable outcomes; which BSC perspective the idea moves (financial, customer, internal process, learning and growth) |
 | challenge | SWOT (core), pre-mortem (core), assumption map (core), test-and-control pilot (core), Porter Five Forces, PESTEL, cost of inaction, Six Thinking Hats, Theory of Constraints | Context, weaknesses, whether the bottleneck is really where the idea aims, how to prove it cheaply |
 | solution-sketch | Customer journey map and service blueprint (core, one card), Value Proposition Canvas, Kano, Lean / DMAIC | Journeys across store, online and back office; must-have versus delighters; the fix-the-process alternative |
-| biz-plan | 4P / 7P marketing mix (core), build-buy-partner with ROI and payback (core), MoSCoW (core), ADKAR (core), STP, Ansoff, BCG matrix, RICE / ICE, value-effort matrix, TCO, NPV, three scenarios, stage-gate, RACI, Kotter, McKinsey 7S | Market fit, the investment case, scope cut, rollout and staff adoption |
-| biz-router | Cynefin (core depth rule) | Interview depth: clear, complicated, complex, chaotic |
+| plan (module) | 4P / 7P marketing mix (core), build-buy-partner with ROI and payback (core), MoSCoW (core), ADKAR (core), STP, Ansoff, BCG matrix, RICE / ICE, value-effort matrix, TCO, NPV, three scenarios, stage-gate, RACI, Kotter, McKinsey 7S | Market fit, the investment case, scope cut, rollout and staff adoption |
+| router (module) | Cynefin (core depth rule) | Interview depth: clear, complicated, complex, chaotic |
 | board view | Pyramid principle / SCQA | Built into the export guidelines |
 
 **The fifteen core cards for fashion apparel retail**, and why each earns its place:
@@ -401,11 +401,11 @@ Frameworks serve the coverage map: one is applied only when it fills an open cat
 | 8 | Assumption map | challenge | Finds the riskiest untested belief, such as "customers will use size recommendations" |
 | 9 | Test-and-control pilot | challenge | Fashion ideas are proven in pilot stores against control stores, with a minimum duration and a season check |
 | 10 | Customer journey map and service blueprint | solution-sketch | Omnichannel journeys plus what staff and back office must do to support them |
-| 11 | 4P / 7P marketing mix | biz-plan | Product, price, place, promotion, plus people, process and physical evidence for a store-based service |
-| 12 | Build-buy-partner with ROI and payback | biz-plan | Many retail tools exist as products; the investment case the board decides on |
-| 13 | MoSCoW | biz-plan | Plain-language scope cut for the first release |
-| 14 | ADKAR | biz-plan | Store staff adoption is the most common failure of retail rollouts |
-| 15 | Cynefin | biz-router | Sets the interview depth and pushes complex ideas toward small pilots |
+| 11 | 4P / 7P marketing mix | plan (module) | Product, price, place, promotion, plus people, process and physical evidence for a store-based service |
+| 12 | Build-buy-partner with ROI and payback | plan (module) | Many retail tools exist as products; the investment case the board decides on |
+| 13 | MoSCoW | plan (module) | Plain-language scope cut for the first release |
+| 14 | ADKAR | plan (module) | Store staff adoption is the most common failure of retail rollouts |
+| 15 | Cynefin | router (module) | Sets the interview depth and pushes complex ideas toward small pilots |
 
 OKR has no card in the first release: when the organization uses OKRs, they are recorded in the ground rules and the outcome lens maps the idea to them.
 
