@@ -51,7 +51,7 @@ The slug comes from the user's idea title, without diacritics. Every other file 
 
 - Board view: Claude Artifact or Google Slides. Tech view: Claude Artifact or Google Docs. Both render from the idea folder only. Packaging adds no new facts; a missing field shows as "not yet clarified" and is never silently dropped. Every slide or section traces to a spec field, and numbers match across views with source, period and an assumed/measured label.
 - Estimates carry "not tech-reviewed" until `plan.md` records the tech review.
-- Diagrams by format: the Artifact is the primary path and embeds the SVG; the board view defaults to an Artifact. Google Slides and Docs accept only PNG, JPEG or GIF fetched from a public URL, so vibebiz never makes an image public to insert it. For Slides or Docs, first build a `.pptx` or `.docx` with the images embedded and import it into Drive as Slides or Docs; when the connector cannot do that, insert a table plus a link to the diagram in the Artifact. Rasterizing SVG inside the Cowork sandbox is experimental and never assumed: Cowork's network allowlist blocks the browser download that diagram-design's Playwright PNG export needs.
+- Diagrams by format: the Artifact is the primary path and embeds the SVG; the board view defaults to an Artifact. Google Slides and Docs accept only PNG, JPEG or GIF fetched from a public URL, so vibebiz never makes an image public to insert it. Cowork's Google Docs and Slides connectors write text, tables and layout directly into the file (Fio, 12/11/2026), so no file conversion is needed. For a diagram in Slides or Docs, insert the image only when the connector accepts it without a public URL; otherwise insert a table plus a link to the diagram in the Artifact. Rasterizing SVG inside the Cowork sandbox is experimental and never assumed: Cowork's network allowlist blocks the browser download that diagram-design's Playwright PNG export needs.
 - `package-check` gates every export: completeness, cross-view consistency, one message per slide with the takeaway as the title, a source on every chart, an index that matches the folder.
 
 ## Language and naming
@@ -90,4 +90,4 @@ Findings from documentation and web sources on 12/11/2026, not yet run in Cowork
 - Headless `claude -p` and `claude plugin eval` cannot answer `AskUserQuestion`; put answers in the eval prompt. The simulated-persona suite uses an Agent SDK harness that answers through `canUseTool`.
 - Spec Kit 1.4.0 templates match 1.0.5; `clarify` changed only its Deferred rule. 1.4.0 adds template presets, a later option for a vibebiz preset on the tech side.
 
-Verify at the first Cowork smoke test: the question tool's limits in Cowork, and whether the Drive connector imports `.pptx` and `.docx` as Slides and Docs.
+Verify at the first Cowork smoke test: the question tool's limits in Cowork, and whether the Google Docs and Slides connectors can insert an image without making it public.
