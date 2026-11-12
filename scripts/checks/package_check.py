@@ -15,7 +15,7 @@ Conventions this check relies on (the data contract leaves them open):
   must be listed in `gaps` as `slide:<n>` / `section:<id>` (an object with a
   `ref` key of that form also works).
 * A figure is referenced by id from any slide, section or block through
-  `figure_id`, `figure_ids`, or a `{{fig:<id>}}` token in text. A reference
+  `figure_id`, `figure_ids`, or a `{{<id>}}` (or `{{fig:<id>}}`) token in text. A reference
   may repeat a `value`; it must equal the figures table entry.
 * An estimate is a figure labelled `assumed` (or with `estimate: true`).
   While `idea.estimate_status` is `not-tech-reviewed`, every slide, section
@@ -42,8 +42,7 @@ TECH_SECTIONS = [
     "ai-fit",
     "non-functional",
     "glossary",
-    "open-questions-blocking",
-    "open-questions-non-blocking",
+    "open-questions",  # one section holding blocking and non-blocking questions
 ]
 TOP_KEYS = ["idea", "board", "tech", "numbers", "gaps", "links"]
 IDEA_KEYS = ["id", "title", "language", "version", "draft", "estimate_status"]
@@ -52,7 +51,7 @@ LABELS = ("measured", "assumed")
 ESTIMATE_LABEL = "not tech-reviewed"
 LINK_KEYS = ["artifact", "slides", "docs"]
 
-_FIG_TOKEN = re.compile(r"\{\{\s*fig:([^}\s]+)\s*\}\}")
+_FIG_TOKEN = re.compile(r"\{\{\s*(?:fig:)?([A-Za-z0-9._-]+)\s*\}\}")
 _SPEC_ID = re.compile(r"\b(?:FR|SC)-[A-Za-z0-9]+\b")
 _URL = re.compile(r"https?://[^\s)>\]\"']+")
 _PUBLIC_FLAGS = {"public", "is_public", "shared", "publicly_shared", "share_public", "public_url"}
@@ -73,6 +72,11 @@ def _gap_refs(data):
             ref = gap.get("ref") or gap.get("id")
             if isinstance(ref, str):
                 refs.add(ref.strip())
+            # The export templates write {field, slide} or {field, section}.
+            if gap.get("slide") is not None:
+                refs.add(f"slide:{gap['slide']}")
+            if isinstance(gap.get("section"), str):
+                refs.add(f"section:{gap['section']}")
     return refs
 
 
@@ -212,7 +216,8 @@ def check_data(data, spec_text=None, links_md=None):
         if is_slide:
             frameworks = element.get("frameworks")
             if frameworks is not None and (
-                not isinstance(frameworks, list) or any(_blank(f) for f in frameworks)
+                not isinstance(frameworks, list)
+                or any(_blank(f.get("name") if isinstance(f, dict) else f) for f in frameworks)
             ):
                 add(f"unnamed-framework: {where} lists a framework without a name")
         blocks = element.get("blocks") if isinstance(element.get("blocks"), list) else []
