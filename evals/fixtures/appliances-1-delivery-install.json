@@ -1,0 +1,29 @@
+{
+  "id": "appliances-1-delivery-install",
+  "sector": "home appliances",
+  "fictional_company": "Gia Dụng Cẩm Tú (điện gia dụng lớn, 15 siêu thị, giao lắp máy lạnh và máy giặt)",
+  "persona": "Giám đốc kinh doanh, nghĩ theo doanh thu từng cửa hàng, hay đổi ý giữa chừng, thiếu kiên nhẫn với câu hỏi dài",
+  "intake_vi": "Giao hàng với lắp đặt bên tao loạn lắm, khách hẹn mà trễ, tao muốn xếp lịch tự động.",
+  "key_facts": [
+    {"id": "problem", "category": "problem", "fact": "27% lịch giao lắp bị trễ hoặc phải hẹn lại; mỗi lần hẹn lại sinh thêm 1 chuyến xe."},
+    {"id": "users", "category": "users", "fact": "5 nhân viên điều phối, 40 thợ lắp và tài xế; khách mua máy lạnh và máy giặt."},
+    {"id": "cost-today", "category": "baseline", "fact": "Xếp lịch bằng bảng tính và điện thoại; mỗi chuyến thừa tốn khoảng 180.000 đồng, mỗi tháng khoảng 350 chuyến thừa."},
+    {"id": "goal", "category": "outcome", "fact": "Giảm tỉ lệ trễ hoặc hẹn lại từ 27% xuống 12% sau 4 tháng."},
+    {"id": "constraint", "category": "constraint", "fact": "Máy lạnh cần thợ có chứng chỉ điện lạnh, chỉ 16 trong 40 thợ làm được."},
+    {"id": "data", "category": "data", "fact": "Có địa chỉ và giờ giao trong 18 tháng, nhưng thời gian lắp thực tế không ghi lại."},
+    {"id": "error-cost", "category": "risk", "fact": "Xếp sai thợ cho máy lạnh là mất một chuyến và khách phàn nàn; chấp nhận điều phối viên sửa tay."},
+    {"id": "budget", "category": "constraint", "fact": "Tối đa 350 triệu đồng, chạy thử ở 3 siêu thị trước."}
+  ],
+  "answers": [
+    {"topic": "problem", "answer_vi": "27% lịch giao lắp trễ hoặc phải hẹn lại. Hẹn lại là thêm một chuyến xe."},
+    {"topic": "users", "answer_vi": "Năm bạn điều phối, bốn chục thợ với tài xế. Khách mua máy lạnh với máy giặt là chính."},
+    {"topic": "baseline", "answer_vi": "Giờ xếp bằng bảng tính với điện thoại. Chuyến thừa tốn khoảng 180 nghìn, mỗi tháng cỡ 350 chuyến."},
+    {"topic": "outcome", "answer_vi": "Từ 27% xuống 12% trong bốn tháng."},
+    {"topic": "constraint", "answer_vi": "Máy lạnh cần thợ có chứng chỉ điện lạnh, trong bốn chục thợ chỉ 16 người làm được."},
+    {"topic": "data", "answer_vi": "Có địa chỉ với giờ giao 18 tháng. Lắp mất bao lâu thì không ai ghi."},
+    {"topic": "error-cost", "answer_vi": "Xếp nhầm thợ máy lạnh là mất chuyến. Điều phối viên được sửa tay."},
+    {"topic": "budget", "answer_vi": "Tối đa 350 triệu, chạy thử ba siêu thị."},
+    {"topic": "vague-term:tự động", "answer_vi": "Tự động là hệ thống đề xuất lịch, điều phối viên bấm duyệt, không tự xếp hẳn."},
+    {"topic": "default", "answer_vi": "Để tao hỏi lại bên điều phối rồi trả lời mày."}
+  ]
+}

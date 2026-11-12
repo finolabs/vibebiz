@@ -1,0 +1,29 @@
+{
+  "id": "electronics-1-warranty",
+  "sector": "consumer electronics",
+  "fictional_company": "Điện Tử Bãi Cát (chuỗi bán điện thoại và phụ kiện, 48 cửa hàng)",
+  "persona": "Giám đốc bán lẻ, quen số liệu doanh thu nhưng không rành quy trình hậu mãi, nói cộc",
+  "intake_vi": "Khách mang máy đi bảo hành là than ầm lên, tao muốn tự động hóa khâu bảo hành cho nhanh.",
+  "key_facts": [
+    {"id": "problem", "category": "problem", "fact": "Bảo hành trung bình 11 ngày; 26% khiếu nại về thời gian chờ và không biết máy đang ở đâu."},
+    {"id": "users", "category": "users", "fact": "Khách mang máy tới cửa hàng; 48 cửa hàng gửi máy về 2 trung tâm bảo hành; 14 kỹ thuật viên."},
+    {"id": "cost-today", "category": "baseline", "fact": "Khoảng 7 nhân viên gọi điện báo tình trạng, mỗi người 5 giờ mỗi ngày; 1.400 máy tiếp nhận mỗi tháng."},
+    {"id": "goal", "category": "outcome", "fact": "Giảm thời gian bảo hành trung bình từ 11 xuống 7 ngày và khiếu nại từ 26% xuống 12% trong 6 tháng."},
+    {"id": "constraint", "category": "constraint", "fact": "Phụ thuộc hãng gửi linh kiện, chiếm khoảng 4 ngày chờ, mình không kiểm soát được."},
+    {"id": "data", "category": "data", "fact": "Tình trạng máy ghi bằng phần mềm cũ, nhập tay; không có mã theo dõi chung giữa cửa hàng và trung tâm."},
+    {"id": "approach", "category": "approach", "fact": "Phần lớn là thông báo trạng thái và mã theo dõi, quy tắc đơn giản, không cần AI."},
+    {"id": "budget", "category": "constraint", "fact": "Tối đa 600 triệu đồng, cần thấy số liệu trong 1 năm."}
+  ],
+  "answers": [
+    {"topic": "problem", "answer_vi": "Bảo hành trung bình 11 ngày. 26% khiếu nại là chờ lâu với không biết máy tới đâu."},
+    {"topic": "users", "answer_vi": "Khách đưa máy ở cửa hàng, 48 cửa hàng gửi về hai trung tâm. Có 14 kỹ thuật viên."},
+    {"topic": "baseline", "answer_vi": "Bảy bạn ngồi gọi báo tình trạng, mỗi bạn năm tiếng một ngày. Mỗi tháng nhận khoảng 1.400 máy."},
+    {"topic": "outcome", "answer_vi": "Từ 11 xuống 7 ngày, khiếu nại từ 26% xuống 12%, trong sáu tháng."},
+    {"topic": "constraint", "answer_vi": "Chờ linh kiện từ hãng mất cỡ bốn ngày, cái đó mình không làm gì được."},
+    {"topic": "data", "answer_vi": "Phần mềm cũ, nhập tay. Cửa hàng với trung tâm không có chung mã theo dõi."},
+    {"topic": "approach", "answer_vi": "Chắc chủ yếu là báo trạng thái cho khách với có mã theo dõi. Không nhất thiết AI."},
+    {"topic": "budget", "answer_vi": "Tối đa 600 triệu, một năm phải thấy số."},
+    {"topic": "vague-term:nhanh", "answer_vi": "Nhanh là bảy ngày trung bình."},
+    {"topic": "default", "answer_vi": "Cái này tao không rành, hỏi bên hậu mãi thì được."}
+  ]
+}

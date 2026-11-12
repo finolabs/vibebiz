@@ -1,0 +1,29 @@
+{
+  "id": "fashion-3-seasonal-stock",
+  "sector": "fashion apparel",
+  "fictional_company": "Tơ Sáng Kids (thời trang trẻ em, 21 cửa hàng, một kho tổng)",
+  "persona": "Giám đốc vận hành kiêm bán hàng, nói nhanh, không thích họp, hay gộp nhiều ý vào một câu",
+  "intake_vi": "Cuối mùa nào tao cũng ôm hàng tồn với hết size ở cửa hàng, muốn một hệ thống chia hàng thông minh hơn.",
+  "key_facts": [
+    {"id": "problem", "category": "problem", "fact": "Cuối mùa tồn 22% số lượng nhập, trong khi 30% cửa hàng hết size bán chạy sau tuần thứ 3."},
+    {"id": "users", "category": "users", "fact": "3 nhân viên điều phối hàng ở kho tổng và 21 cửa hàng trưởng."},
+    {"id": "cost-today", "category": "baseline", "fact": "Chia hàng bằng Excel, mỗi đợt mất 2 ngày công của cả 3 người; xả hàng tồn giảm giá trung bình 45%."},
+    {"id": "goal", "category": "outcome", "fact": "Giảm tồn cuối mùa từ 22% xuống 15% sau 2 mùa."},
+    {"id": "constraint", "category": "constraint", "fact": "Lô hàng đặt trước mùa 4 tháng, nên chỉ chỉnh được phần chia và chuyển kho, không chỉnh số nhập."},
+    {"id": "data", "category": "data", "fact": "Có bán hàng theo ngày, cửa hàng, size trong 3 mùa; dữ liệu thời tiết và lịch khai giảng chưa thu thập."},
+    {"id": "rule-or-ai", "category": "approach", "fact": "Quy tắc chia theo tỉ lệ bán 2 tuần gần nhất có thể đã giải quyết một nửa; chưa ai thử."},
+    {"id": "budget", "category": "constraint", "fact": "Dưới 300 triệu đồng, thử trước ở 6 cửa hàng."}
+  ],
+  "answers": [
+    {"topic": "problem", "answer_vi": "Cuối mùa tồn 22% hàng nhập. Cùng lúc 30% cửa hàng hết size chạy sau tuần ba."},
+    {"topic": "users", "answer_vi": "Ba bạn điều phối ở kho tổng, với 21 cửa hàng trưởng nhận hàng."},
+    {"topic": "baseline", "answer_vi": "Chia bằng Excel, mỗi đợt hai ngày của cả ba bạn. Hàng tồn phải xả giảm trung bình 45%."},
+    {"topic": "outcome", "answer_vi": "Tồn cuối mùa từ 22% xuống 15% sau hai mùa."},
+    {"topic": "constraint", "answer_vi": "Hàng đặt trước bốn tháng nên số nhập không đổi được, chỉ chia với chuyển kho thôi."},
+    {"topic": "data", "answer_vi": "Có bán theo ngày, cửa hàng, size ba mùa. Thời tiết với lịch khai giảng thì chưa."},
+    {"topic": "rule-or-ai", "answer_vi": "Chia theo tỉ lệ bán hai tuần gần nhất thì chưa ai thử. Có khi cái đó đã đỡ một nửa."},
+    {"topic": "budget", "answer_vi": "Dưới 300 triệu, thử sáu cửa hàng trước."},
+    {"topic": "vague-term:thông minh", "answer_vi": "Thông minh là chia xong thì ít cửa hàng hết size hơn, từ 30% xuống dưới 20%."},
+    {"topic": "default", "answer_vi": "Chưa rõ, mày hỏi cái khác dễ hơn đi."}
+  ]
+}
