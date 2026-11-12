@@ -27,6 +27,7 @@ EXPECTED = {
     "invalid_figure_mismatch": ["figure-mismatch: slide 3 shows N-return-rate as 0.2"],
     "invalid_figure_duplicate": ["figure-mismatch: N-return-rate is defined twice"],
     "invalid_unsourced_chart": ["unsourced-chart: slide 2 block 1"],
+    "invalid_chart_no_period": ["chart-no-period: slide 2 block 1"],
     "invalid_estimate_unlabelled": ["missing-estimate-label: slide 7", "N-payback"],
     "invalid_estimate_unlabelled_section": ["missing-estimate-label: section success-criteria"],
     "invalid_stale_label": ["stale-estimate-label"],
@@ -68,6 +69,40 @@ class ValidFixtures(unittest.TestCase):
         self.assertTrue(any(p.startswith("missing-slide: slide 6") for p in package_check.check_data(data)))
 
 
+class TemplateForms(unittest.TestCase):
+    def _data(self):
+        return json.loads((FIX / "valid" / "exports" / "data.json").read_text())
+
+    def test_assumed_label_alone_is_not_an_estimate(self):
+        data = self._data()
+        for fig in data["numbers"]:
+            fig.pop("estimate", None)
+        for slide in data["board"]["slides"]:
+            slide.pop("estimate_label", None)
+        for sec in data["tech"]["sections"]:
+            sec.pop("estimate_label", None)
+        self.assertEqual(package_check.check_data(data), [])
+
+    def test_field_gap_does_not_switch_off_checks_on_present_slide(self):
+        data = self._data()
+        data["gaps"] = [{"field": "scope", "slide": 5}]
+        data["board"]["slides"][4]["title"] = ""
+        self.assertTrue(any(p.startswith("empty-title: slide 5") for p in package_check.check_data(data)))
+
+    def test_section_content_blocks_are_checked(self):
+        data = self._data()
+        sec = data["tech"]["sections"][1]
+        sec["content"] = [{"type": "chart", "source": "", "period": "", "items": []}]
+        codes = [p.split(":")[0] for p in package_check.check_data(data)]
+        self.assertIn("unsourced-chart", codes)
+        self.assertIn("chart-no-period", codes)
+
+    def test_framework_object_needs_a_name(self):
+        data = self._data()
+        data["board"]["slides"][2]["frameworks"] = [{"id": "x", "name": ""}]
+        self.assertTrue(any(p.startswith("unnamed-framework: slide 3") for p in package_check.check_data(data)))
+
+
 class InvalidFixtures(unittest.TestCase):
     def test_every_invalid_fixture_has_an_expectation(self):
         on_disk = {p.stem if p.suffix == ".json" else p.name
@@ -87,6 +122,8 @@ class InvalidFixtures(unittest.TestCase):
         # A fixture seeds one fault, so unrelated rules must stay quiet.
         problems = package_check.check_path(_fixture("invalid_unsourced_chart"))
         self.assertEqual([p.split(":")[0] for p in problems], ["unsourced-chart"])
+        problems = package_check.check_path(_fixture("invalid_chart_no_period"))
+        self.assertEqual([p.split(":")[0] for p in problems], ["chart-no-period"])
         problems = package_check.check_path(_fixture("invalid_estimate_unlabelled"))
         self.assertEqual([p.split(":")[0] for p in problems], ["missing-estimate-label"])
 
