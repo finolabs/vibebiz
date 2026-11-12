@@ -30,6 +30,7 @@ This section lists each skill when the story that delivers it ships. Each comman
 
 - `/vibebiz:new`: start a new idea. Sets up the workspace in your folder if needed, asks about a real recent case, drafts a first requirement with every gap marked, then interviews you in short rounds (at most four multiple-choice questions, recommended answer first) and saves every answer.
 - `/vibebiz:continue`: pick an idea back up. Re-reads its files (your own edits win), summarizes in three lines what is settled, where it stopped and the next question, then continues the rounds.
+- `/vibebiz:package`: package a clarified idea for the board and the tech team. Checks readiness (or offers a labelled draft), builds the plan, checks for gaps and contradictions, then makes a board deck and a requirements document as private Claude Artifacts or your own Google Slides and Docs, plus a Spec Kit-compatible requirement file. The same figures appear in every view with their source; earlier versions are kept. Nothing is shared or made public.
 - `/vibebiz:status`: list every idea with its status, how many of the 15 points are clear and the next step. Asks nothing.
 
 Commands in Vietnamese: [docs/commands.md](docs/commands.md).
