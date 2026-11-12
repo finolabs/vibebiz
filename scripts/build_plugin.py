@@ -67,6 +67,10 @@ def build(out: Path, root: Path = ROOT) -> Path:
 
     for name in CONTENT_DIRS:
         _copy_tree(root / name, plugin / name)
+    # The README pair and the license ship with the plugin so an installed copy says what it is and its terms.
+    for name in ("README.md", "README.vi.md", "LICENSE", "COMMERCIAL-LICENSE.md", "PRIVACY.md", "TERMS.md", "THIRD_PARTY_LICENSES.md"):
+        if (root / name).is_file():
+            shutil.copy2(root / name, plugin / name)
 
     archive = out / "vibebiz.plugin"
     with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as zf:
