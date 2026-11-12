@@ -1,50 +1,138 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# vibebiz Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Non-Technical User First
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+vibebiz serves retail business leaders who do not write code and never open a terminal.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+- Everything a user reads (questions, outputs, docs, `README.vi.md`) MUST be plain Vietnamese.
+  A technical term MUST be explained the first time it appears.
+- Every decision put to the user MUST go through Cowork's native question tool: at most four
+  questions per round, two to four mutually exclusive options, the recommended option first,
+  and each question understandable without the surrounding text. Only open-ended questions use
+  plain text.
+- The agent MUST look up facts itself; only decisions go to the user.
+- Answers MUST be written to the idea's files after every round, so an abandoned session loses
+  nothing. A session MUST respect its question budget and then offer to continue, pause or
+  export a draft.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+Rationale: an impatient, non-technical user abandons a long or jargon-heavy interview; the
+product fails the moment that happens.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### II. Spec Kit Compatibility by Contract
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+The tech-team handoff is a file format, not a tool dependency.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+- An exported `spec.md` MUST keep Spec Kit's mandatory sections (User Scenarios & Testing,
+  Requirements, Success Criteria, Assumptions) identical in name and structure, so `speckit-plan`
+  runs on it without edits. Business sections MUST be added before them, never in their place.
+- Ported content (templates, the `clarify` coverage taxonomy, specification writing rules) MUST
+  come from the pinned upstream version, currently Spec Kit 1.4.0. `UPSTREAM.md` MUST list which
+  sections are upstream and which are vibebiz's own.
+- Spec Kit's mechanics (scripts, git branches, hooks, extensions) MUST NOT be ported.
+- vibebiz MUST describe itself as compatible with Spec Kit and MUST NOT use Spec Kit as branding.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+Rationale: the tech team's process stays untouched, and an upstream upgrade stays a diff.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### III. Evidence Over Agreement
+
+vibebiz exists to sharpen an idea, not to flatter it.
+
+- The `challenge` lens MUST NOT praise an idea, MUST give at least one reason the idea could be
+  wrong per round, and MUST weigh "do nothing" and "fix the process" before build is allowed.
+- A risk the user dismisses MUST be recorded in `decisions.md`, never deleted.
+- Every number in a spec or export MUST carry its source, period and a measured or assumed label.
+  A missing baseline MUST become a measurement plan, never an invented figure.
+- Packaging MUST NOT add facts. A missing field MUST appear as "not yet clarified". Every slide
+  or section MUST trace to a field in the idea folder, and numbers MUST match across views.
+- Estimates MUST carry "not tech-reviewed" until the tech review is recorded.
+
+Rationale: the board decides on these documents; an unsupported claim costs real money.
+
+### IV. Self-Contained Runtime
+
+The plugin runs in Claude Cowork with nothing but its own files and the user's connectors.
+
+- Runtime behavior MUST be instructions and file operations; skills MUST NOT require scripts,
+  hooks or a shell on the user's machine.
+- The plugin MUST NOT depend on, import or reference `finolabs-vibecode` or any of its skills.
+- `diagram-design` is a companion plugin and MUST NOT be copied into this repository. When it is
+  absent, exports MUST show a table with a "no diagram" note instead of a substitute drawing.
+- `/vibebiz:new` MUST NOT overwrite an existing user file; it repairs only missing pieces of the
+  workspace contract.
+
+Rationale: a non-technical user cannot debug a missing interpreter or a clobbered file.
+
+### V. Eval-Proven Behavior
+
+Skill behavior is code and is tested like code.
+
+- A change to skill behavior MUST start from an eval case or fixture that fails for the reason
+  the change addresses, and MUST end with that case passing.
+- Structural properties (question counts, sections, cross-view numbers, index integrity, docs
+  coverage) MUST be checked in code. Semantic judgments (claim support, meaning preservation,
+  sycophancy) MAY use an approved evaluator such as Jev, never at plugin runtime.
+- Each release MUST pass the agreed eval suites and a manual Cowork smoke test.
+
+Rationale: prompt behavior drifts silently; only a failing case proves a fix and guards it.
+
+### VI. Clean Source-Available Repository
+
+- The repository MUST NOT contain internal data: no real people, companies, customers or figures,
+  and no organization's constitution or brand. Examples, vertical packs and eval fixtures MUST be
+  fictional or built from public knowledge.
+- vibebiz is source-available under PolyForm Noncommercial 1.0.0 with a separate commercial
+  license; it MUST NOT be called open source. Contributions MUST be covered by the CLA.
+  Third-party MIT notices (Spec Kit, `grilling`) MUST be kept in `THIRD_PARTY_LICENSES.md`.
+- Repository structure, file and folder names, and instruction prompts MUST be in English.
+- Secrets, env files and incidental build outputs MUST NOT be committed.
+
+Rationale: the repository is a product Finolabs will sell; one leaked record or licence slip is
+not reversible.
+
+### VII. Docs Ship With Behavior
+
+- A change to a command, skill, template or output MUST update, in the same change, every
+  description of it: `README.md` and `README.vi.md`, `docs/`, the affected diagram briefs and
+  renders, `help`'s situation map and the fictional example.
+- `help` MUST answer only from the shipped docs and MUST say when the docs do not cover a question.
+- Every command and skill MUST appear in `help`'s map and `docs/commands.md`, and those two
+  places MUST NOT list anything that does not ship.
+
+Rationale: users learn vibebiz from its docs and `help`; stale docs teach the wrong product.
+
+## Runtime and Distribution Constraints
+
+- Target runtime is Claude Cowork with its native question tool, Claude Artifacts, and the Google
+  Workspace connectors for Docs and Slides.
+- Board view exports to an Artifact or Google Slides; tech view exports to an Artifact or Google
+  Docs, always with the `spec.md` snapshot.
+- The user workspace layout and file names defined in `CLAUDE.md` are a public contract. A change
+  to them is a breaking change for existing users and MUST bump the plugin's MAJOR version.
+- Business data stays in the user's workspace and Google Drive; the plugin sends it nowhere else.
+
+## Development Workflow and Quality Gates
+
+- Features are specified, planned and tasked with Spec Kit 1.4.0 in this repository. That tooling
+  (`.specify/`, `.claude/skills/speckit-*`) is development-only and MUST NOT ship in the plugin.
+- Every plan MUST pass the Constitution Check against this file before tasks are generated.
+- Commits are atomic and verb-led; versions follow SemVer with a changelog entry per release.
+- Every pull request needs a code review before merge; a change touching licensing, privacy or
+  user data handling also needs a security and privacy review.
+- Before a version is cut, everything that describes the product is reviewed against what ships
+  (Principle VII), and the eval suites and smoke test pass (Principle V).
+- The repository stays private, and the license, commercial terms and CLA get a lawyer's review,
+  before any public release; going public needs Fio's explicit approval.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+- This constitution governs development of vibebiz. `CLAUDE.md` holds the detailed design and
+  MUST NOT contradict it; a conflict is raised and resolved by amendment, not by picking one.
+- An amendment needs Fio's approval, a version bump and an updated `Last Amended` date:
+  MAJOR for removing or redefining a principle, MINOR for a new principle or materially expanded
+  guidance, PATCH for clarifications.
+- Reviews and plans check compliance; a justified exception is recorded in the plan's Complexity
+  Tracking with its reason.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-11-12 | **Last Amended**: 2026-11-12
