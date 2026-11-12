@@ -18,8 +18,18 @@ conventions" lists them.
   must be listed in `gaps` as `{field, slide}` or `{field, section}`. A gap
   entry never switches off the other checks on an element that is present.
 * A figure is referenced by id through a `{{<id>}}` token in any text, or
-  through `items[].ref` of a `figures` or `chart` block. An `items` entry may
-  also repeat a `value`; it must equal the figures table entry.
+  through a `ref` field or a field ending in `_ref` (`to_ref`, `max_ref`,
+  `threshold_ref`, `span_ref`, `ref_high` is read as well) anywhere inside a
+  block (items, sides, lanes, children, target), or a `figure_id`, or the
+  strings of a `refs` or `figure_ids` list. An entry with a `ref` may also
+  repeat a `value`; it must equal the figures table entry.
+* The infographic block types and forms carry required fields: `ratio`
+  (ref; total 2 to 10), `tree` (root, children with labels), `journey`
+  (steps, lanes with labels and one cell per step), a `gantt` timeline
+  (lanes with labels and bars from <= to, positions from 1), a `gauge` meter
+  (threshold_ref), a `donut` meter (ref), `controls` (items with text),
+  `callout` (text), `deadline` (a valid YYYY-MM-DD date and a label), a chart
+  `target` (ref). A missing one is `bad-block`.
 * An estimate is a figure with `estimate: true` (the label `assumed` alone
   is not an estimate). While `idea.estimate_status` is `not-tech-reviewed`,
   every slide, section or block that references one carries
@@ -34,6 +44,7 @@ conventions" lists them.
 * `links` keys: board_artifact, tech_artifact, slides, docs.
 """
 
+import datetime
 import json
 import re
 import sys
@@ -91,12 +102,23 @@ def _blocks_of(element):
     return []
 
 
+_REF_KEY = re.compile(r"^(?:ref|figure_id|ref_high|[a-z]+(?:_[a-z]+)*_ref)$")
+_REF_LIST_KEYS = ("refs", "figure_ids")
+
+
 def _item_refs(node):
-    """(figure_id, value_or_MISSING) from items[].ref of a figures/chart block."""
-    if isinstance(node, dict) and node.get("type") in ("figures", "chart"):
-        for item in node.get("items") or []:
-            if isinstance(item, dict) and isinstance(item.get("ref"), str):
-                yield item["ref"], item.get("value", _MISSING)
+    """(figure_id, value_or_MISSING) named by the fields of one dict: `ref`,
+    `*_ref`, `ref_high`, `figure_id`, and the strings of `refs` / `figure_ids`.
+    Only an entry's own `ref` can carry a repeated `value`."""
+    if not isinstance(node, dict):
+        return
+    for key, value in node.items():
+        if isinstance(value, str) and _REF_KEY.match(key):
+            yield value, (node.get("value", _MISSING) if key == "ref" else _MISSING)
+        elif key in _REF_LIST_KEYS and isinstance(value, list):
+            for fid in value:
+                if isinstance(fid, str):
+                    yield fid, _MISSING
 
 
 _MISSING = object()
@@ -120,6 +142,87 @@ def _own_refs(element):
     """Figure ids an element references directly, not through its blocks."""
     shallow = {k: v for k, v in element.items() if k not in ("blocks", "content") or not isinstance(v, list)}
     return {fig for fig, _ in _refs_in(shallow)}
+
+
+def _pos(value):
+    """A position on a Gantt axis: a whole number from 1."""
+    return isinstance(value, int) and not isinstance(value, bool) and value >= 1
+
+
+def _valid_date(value):
+    if not (isinstance(value, str) and re.fullmatch(r"\d{4}-\d{2}-\d{2}", value)):
+        return False
+    try:
+        datetime.date.fromisoformat(value)
+    except ValueError:
+        return False
+    return True
+
+
+def _labelled(entries):
+    return isinstance(entries, list) and entries and all(
+        isinstance(e, dict) and not _blank(e.get("label")) for e in entries)
+
+
+def _block_problems(block):
+    """Missing required fields of the infographic block types and forms."""
+    btype, form = block.get("type"), block.get("form")
+    out = []
+    if btype == "ratio":
+        if _blank(block.get("ref")):
+            out.append("ratio needs ref")
+        total = block.get("total")
+        if total is not None and not (isinstance(total, int) and not isinstance(total, bool) and 2 <= total <= 10):
+            out.append("ratio total must be a whole number from 2 to 10")
+    elif btype == "tree":
+        if _blank(block.get("root")):
+            out.append("tree needs root")
+        if not _labelled(block.get("children")):
+            out.append("tree needs children, each with a label")
+    elif btype == "journey":
+        steps, lanes = block.get("steps"), block.get("lanes")
+        if not (isinstance(steps, list) and steps and all(not _blank(s) for s in steps)):
+            out.append("journey needs steps, each named")
+        if not _labelled(lanes):
+            out.append("journey needs lanes, each with a label")
+        elif isinstance(steps, list) and any(
+                not isinstance(lane.get("cells"), list) or len(lane["cells"]) != len(steps) for lane in lanes):
+            out.append("journey needs one cell per step in every lane")
+    elif btype == "timeline" and form == "gantt":
+        lanes = block.get("lanes")
+        if not _labelled(lanes):
+            out.append("gantt timeline needs lanes, each with a label")
+        else:
+            bars = [b for lane in lanes for b in (lane.get("bars") if isinstance(lane.get("bars"), list) else [None])]
+            if not bars or any(not isinstance(b, dict) or not _pos(b.get("from")) or not _pos(b.get("to"))
+                               or b["from"] > b["to"] for b in bars):
+                out.append("gantt timeline needs bars with from <= to, positions from 1")
+        if any(isinstance(i, dict) and "at" in i and not _pos(i.get("at")) for i in block.get("items") or []):
+            out.append("gantt decision point needs at, a position from 1")
+    elif btype == "meter" and form == "gauge":
+        if _blank(block.get("threshold_ref")):
+            out.append("gauge meter needs threshold_ref")
+    elif btype == "meter" and form == "donut":
+        if _blank(block.get("ref")):
+            out.append("donut meter needs ref")
+    elif btype == "controls":
+        items = block.get("items")
+        if not (isinstance(items, list) and items and all(
+                not _blank(i.get("text") if isinstance(i, dict) else i) for i in items)):
+            out.append("controls needs items, each with text")
+    elif btype == "callout":
+        if _blank(block.get("text")):
+            out.append("callout needs text")
+    elif btype == "deadline":
+        if not _valid_date(block.get("date")):
+            out.append("deadline needs date as YYYY-MM-DD")
+        if _blank(block.get("label")):
+            out.append("deadline needs a label")
+    elif btype == "chart" and "target" in block:
+        target = block.get("target")
+        if not isinstance(target, dict) or _blank(target.get("ref")):
+            out.append("chart target needs ref")
+    return out
 
 
 def _walk(node, path=""):
@@ -240,6 +343,8 @@ def check_data(data, spec_text=None, links_md=None):
                 add(f"unsourced-chart: {bwhere} is a chart without a source")
             if btype == "chart" and _blank(block.get("period")):
                 add(f"chart-no-period: {bwhere} is a chart without a period")
+            for problem in _block_problems(block):
+                add(f"bad-block: {bwhere} {problem}")
             if (btype == "framework" or "framework" in block) and _blank(
                 block.get("name") if btype == "framework" else block.get("framework")
             ):
