@@ -1,0 +1,83 @@
+# vibebiz — project instructions
+
+vibebiz is a Claude Cowork plugin that works as a product owner for non-technical retail leaders. A sales director (online or offline; fashion, electronics, home appliances and similar retail) starts from a vague idea about a system, an AI use or an automation; vibebiz interviews them until the idea is clear, challenged and measurable, and packages it as a PRD for the board and for the internal tech team.
+
+These rules record the design decisions Fio settled on 12/11/2026. A rule here changes only with Fio's yes; when a spec or plan conflicts with this file, raise the conflict instead of picking one.
+
+## Two roles of Spec Kit
+
+- **Development tool.** This repository is developed with Spec Kit 1.4.0 (`.specify/`, `.claude/skills/speckit-*`). Write specs, plans and tasks with it. These files are development tooling and never ship in the plugin.
+- **Upstream for the port.** The plugin ports Spec Kit 1.4.0 *content* to Cowork: the spec, plan, checklist and constitution templates, the `clarify` coverage taxonomy, and the specification writing rules. It does not port the mechanics: bash scripts, git branches, hooks, `feature.json`, extensions. Cowork users have no terminal, so runtime behavior is instructions and file operations only.
+- Pin the port to 1.4.0. `UPSTREAM.md` lists every section taken from upstream and every section that is vibebiz's own, so a later upgrade can be diffed. Upgrade only with Fio's yes.
+- Keep the mandatory sections of `spec.md` (User Scenarios & Testing, Requirements, Success Criteria, Assumptions) identical to upstream, so the tech team can run `speckit-plan` on an exported `spec.md` without edits. Business sections (Problem & Why, Outcome, Alternatives, AI-fit, Cost & Risk) are added before them, never in place of them.
+- Say "compatible with Spec Kit"; never use Spec Kit as vibebiz branding.
+
+## Independence
+
+- vibebiz depends on nothing from `finolabs-vibecode`. vibecode is for development teams. Do not reference, import or reuse its skills (for example `shape`, `fnl-ask`) inside the plugin. The only link to a tech team is the Spec Kit-compatible file format.
+- `diagram-design` (cathrynlavery/diagram-design, MIT) is a companion plugin. Never copy it into this repository. vibebiz writes diagram briefs; diagram-design renders them. Its brand profile is the single brand source for diagrams and exports. Without it installed, exports show a table with a "no diagram" note; do not draw a substitute.
+
+## Plugin shape (agreed)
+
+- Plugin name `vibebiz`. Commands: `/vibebiz:new`, `/vibebiz:continue`, `/vibebiz:status`, `/vibebiz:package`, `/vibebiz:constitution`, `/vibebiz:help`.
+- Skills: `biz-router`, `biz-constitution`, `biz-specify`, `biz-clarify`, the four lenses `problem-framing`, `outcome`, `challenge`, `solution-sketch`, then `biz-plan`, `biz-checklist`, `biz-analyze`, `biz-package`, `help`.
+- The router's backlog is the coverage map: Spec Kit's `clarify` taxonomy extended with business categories A–O, each with its prerequisites (no ROI before Outcome, no model non-functionals before AI-fit). Readiness to package: A, C, D, E Clear; F Clear when AI is involved; M at least S/M/L; the rest Clear or Deferred with a reason.
+- Interview protocol (`core/references/ask-protocol.md`, owned by `biz-clarify`, used by every skill that asks): frontier rounds adapted from mattpocock's `grilling` (MIT), asked through Cowork's native question tool. At most 4 questions per round, 2–4 mutually exclusive options, the recommended option first, no manufactured options, each question understandable on its own, open questions in plain text, answers written to the files after every round, a question budget per session (about 3 rounds) followed by an offer to continue, pause or export a draft. Facts are found by the agent; only decisions go to the user.
+- The `challenge` lens never praises an idea, gives at least one reason the idea could be wrong per round, defends "do nothing" and "fix the process" before build is allowed, and records a dismissed risk in `decisions.md` instead of deleting it.
+- `help` routes by situation and answers only from the shipped `docs/`; when the docs do not say, it says so. It reads a skill's current `SKILL.md` before describing it.
+
+## User workspace contract
+
+`/vibebiz:new` scaffolds this on first run, never overwrites an existing file, and repairs only missing pieces:
+
+```
+index.html                  table of contents for every idea, rebuilt after every write
+constitution.md
+specs/NNN-<slug>/
+  spec.md coverage.md plan.md decisions.md assumptions.md open-questions.md glossary.md
+  checklists/  diagrams/
+  exports/  board-deck.html  tech-prd.html  spec.md (snapshot)  links.md
+examples/000-<slug>/        optional fictional example
+```
+
+The slug comes from the user's idea title, without diacritics. Every other file and folder name is fixed and in English.
+
+## Outputs
+
+- Board view: Claude Artifact or Google Slides. Tech view: Claude Artifact or Google Docs. Both render from the idea folder only. Packaging adds no new facts; a missing field shows as "not yet clarified" and is never silently dropped. Every slide or section traces to a spec field, and numbers match across views with source, period and an assumed/measured label.
+- Estimates carry "not tech-reviewed" until `plan.md` records the tech review.
+- `package-check` gates every export: completeness, cross-view consistency, one message per slide with the takeaway as the title, a source on every chart, an index that matches the folder.
+
+## Language and naming
+
+- Repository structure, file and folder names, and the instruction prompts in `SKILL.md`, references and templates are in English.
+- Text for users (questions, outputs, `docs/` content, `README.vi.md`) is in Vietnamese, written for people who are not technical. Edit Vietnamese prose for natural wording before release.
+- `README.md` is in English; `README.vi.md` is in Vietnamese with the same sections and the same license and install tables.
+
+## Licensing and content hygiene
+
+- Source-available, not open source: PolyForm Noncommercial 1.0.0 for the public code plus a commercial license. Never call vibebiz "open source". Businesses, including those given vibebiz for free, need a written commercial license (a free grant states the business, term, scope and update rights).
+- Copyright holder is Fioenix for now. Before Finolabs sells a license, Fioenix needs a written assignment or license to Finolabs.
+- Contributions require the CLA (`CLA.md`).
+- Keep the MIT notices of Spec Kit and `grilling` in `THIRD_PARTY_LICENSES.md`.
+- The license, the commercial terms and the CLA need a lawyer's review before the repository goes public. The repository stays private until Fio says otherwise.
+- No internal data in the repository: no real people, companies, customers or figures, and no organization's constitution or brand. Example workspaces, vertical packs and eval fixtures are fictional or built from public knowledge. Organization-specific material lives only in a user's workspace.
+- `PRIVACY.md` states that business data stays in the user's workspace and Google Drive and that the plugin sends it nowhere else. TypeSafe/Jev is used only in developer evals, never at runtime.
+
+## Docs, diagrams and the example
+
+- `docs/` (Vietnamese content, English file names): `quick-start.md`, `commands.md`, `workflow.md`, `reading-outputs.md`, `faq.md`, `glossary.md`, with diagrams in `docs/diagrams/NN-<name>.brief.md` plus `.svg` and `.png`, rendered with diagram-design.
+- Each diagram brief names the skills, commands or templates it illustrates and the plugin version it was rendered at; a brief whose subject changed since its render is redrawn before release.
+- The fictional example in `examples/` must pass `package-check` and the Spec Kit compatibility check; rebuild it whenever a template changes.
+- Before cutting a version, review everything that describes the product (README pair, docs, diagrams, `help`'s situation map, the example) against what ships, and check that every command and skill appears in `help`'s map and in `docs/commands.md` and that nothing else does.
+
+## Evals
+
+The suites agreed in the design: routing respects prerequisites; Ask-protocol conformance; anti-sycophancy (a bad-idea set with a good-idea control); vague-term quantification; Spec Kit compatibility (run `speckit-plan` on an exported `spec.md`); package-check catches seeded omissions; index integrity; simulated end-to-end sessions with a hidden-truth persona across three verticals; `help` routing and no-invention. Structure checks run in code; semantic support and meaning-preservation judgments may use Jev. A Cowork smoke test runs by hand before each release.
+
+## Open before the spec is final
+
+- Spike: Cowork's native question tool limits (questions per call, options, previews) match the protocol above.
+- Spike: whether diagram-design needs its scripts to export PNG inside Cowork.
+- Spike: whether the native question tool works in headless eval runs, or answers must be simulated from a file.
+- Read the 1.4.0 `clarify`, `checklist` and `analyze` skills in full before writing the taxonomy and checklists; the 1.4.0 `spec-template.md` matches 1.0.5.

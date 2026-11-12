@@ -1,0 +1,27 @@
+# OS and editors
+.DS_Store
+.idea/
+.vscode/
+
+# Local agent state
+CLAUDE.local.md
+.claude/settings.local.json
+.finolabs/
+.orchestration/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Eval runs
+evals/results/
+evals/*/plugins/
+
+# Manual test workspaces created by /vibebiz:new during development
+sandbox/
+
+# Tooling caches
+__pycache__/
+*.pyc
+node_modules/
