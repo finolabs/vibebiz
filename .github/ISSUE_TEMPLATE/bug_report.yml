@@ -1,0 +1,40 @@
+name: Bug report
+description: vibebiz did something wrong or unexpected.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. Do not paste real business data, customer data or secrets; describe them or use made-up values.
+        For a security problem, use "Report a vulnerability" in the Security tab instead (see SECURITY.md).
+  - type: input
+    id: version
+    attributes:
+      label: vibebiz version
+      description: The version in the plugin's manifest, for example 0.1.0.
+    validations:
+      required: true
+  - type: dropdown
+    id: skill
+    attributes:
+      label: Which skill were you using?
+      options: [new, continue, status, package, constitution, help, not sure]
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you asked, what vibebiz did, and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The prompts you used, in order. Made-up data only.
+  - type: textarea
+    id: files
+    attributes:
+      label: Workspace files involved
+      description: File names from your workspace (for example 02-clarify.md), not their contents.

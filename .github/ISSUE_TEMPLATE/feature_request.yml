@@ -1,0 +1,20 @@
+name: Idea or improvement
+description: Suggest a change to how vibebiz helps you shape a project.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: The situation
+      description: What you were trying to do, and where vibebiz fell short. Made-up data only.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would help
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options: [clarifying an idea, plan and challenge, packaging for the board or tech team, frameworks and lenses, industry packs, help and docs, other]
