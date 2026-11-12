@@ -2,8 +2,8 @@
 
 Run the interview loop for one idea: decide what to ask next, hand each category to the module that fills it, keep the session within its question budget, and tell the user what comes next. Used by the `new` and `continue` entry skills.
 
-- **Reads**: the idea's `coverage.md`, `spec.md`, `decisions.md`, `assumptions.md`, `open-questions.md`, `glossary.md`; the workspace `constitution.md`.
-- **Writes**: `coverage.md` (`budget_rounds_used`, `next_step`, `status` between `clarifying` and `ready`, `updated`, the body table); `decisions.md` for `supersede` and split decisions.
+- **Reads**: the idea's `coverage.md`, `spec.md`, `decisions.md`, `assumptions.md`, `open-questions.md`, `glossary.md`; the workspace `constitution.md`; the framework cards in `references/packs/frameworks/`.
+- **Writes**: `coverage.md` (`cynefin`, `budget_rounds_used`, `next_step`, `status` between `clarifying` and `ready`, each category's `frameworks`, `updated`, the body table); `decisions.md` for `supersede` and split decisions.
 - **Asks through**: `references/core/ask-protocol.md`, which owns the question rules, the default budget of three rounds, Skip, the all-skipped round, no-answer runs and the per-round write-back of answers, decisions and open questions.
 
 Follow `references/core/writing-rules.md` for everything the user reads. Speak to the user in the idea's `language`.
@@ -13,15 +13,37 @@ Follow `references/core/writing-rules.md` for everything the user reads. Speak t
 At the start of a session (the first round for this idea in this conversation), set `budget_rounds_used` to `0`. Then repeat:
 
 1. **Re-read** every idea file listed above. The user may have edited them by hand; their edits are authoritative, so work from the current files and never restore an older version.
-2. **Check readiness** (see "Readiness"). If ready, offer to package and stop the loop unless the user chooses to keep going.
-3. **Resolve conflicts first**: if the last answers contradict an earlier decision, handle it (see "Contradictions") before anything else.
-4. **Check for two ideas** (see "Two ideas in one") when the intake or the latest answers suggest it.
-5. **Compute the frontier** and **rank** it (below).
-6. **Look facts up** for every candidate question before asking it (see "Facts before questions").
-7. **Choose the module** for each category in the round and let it write the round's questions (see "Who fills what"). One round holds at most four questions in total, taken from the highest-ranked categories first.
-8. **Ask the round** through the ask protocol, which writes the answers back.
-9. **Close the round**: increment `budget_rounds_used` by one (an all-skipped round counts too), make sure each category the round touched has its new status, rebuild the `coverage.md` body table from the frontmatter, write `next_step` (see "Next step"), set `updated` to today, and rebuild the table of contents by the workspace module's rules (`references/core/workspace.md`). Do this after every round, so an abandoned session loses nothing.
-10. **Check the budget** (see "Budget"). If budget remains, go back to step 1.
+2. **Set the depth** (see "Depth"): classify the idea right after intake, before the first round, and revisit the classification whenever the files or the latest answers change what it rests on.
+3. **Check readiness** (see "Readiness"). If ready, offer to package and stop the loop unless the user chooses to keep going.
+4. **Resolve conflicts first**: if the last answers contradict an earlier decision, handle it (see "Contradictions") before anything else.
+5. **Check for two ideas** (see "Two ideas in one") when the intake or the latest answers suggest it.
+6. **Compute the frontier** and **rank** it (below).
+7. **Look facts up** for every candidate question before asking it (see "Facts before questions").
+8. **Choose the module** for each category in the round, choose its framework card if one fits (see "Frameworks"), and let the module write the round's questions (see "Who fills what"). One round holds at most four questions in total, taken from the highest-ranked categories first.
+9. **Ask the round** through the ask protocol, which writes the answers back.
+10. **Close the round**: increment `budget_rounds_used` by one (an all-skipped round counts too), make sure each category the round touched has its new status and its applied cards in `frameworks`, rebuild the `coverage.md` body table from the frontmatter, write `next_step` (see "Next step"), set `updated` to today, and rebuild the table of contents by the workspace module's rules (`references/core/workspace.md`). Do this after every round, so an abandoned session loses nothing.
+11. **Check the budget** (see "Budget"). If budget remains, go back to step 1.
+
+## Depth
+
+How deep the interview goes depends on what kind of situation the idea is in. Classify it with the Cynefin card (`references/packs/frameworks/cynefin.md`) into one of four kinds and write the value to `cynefin` in `coverage.md`. The value specify wrote at intake is only a placeholder; replace it with your classification before the first round.
+
+Classify from what is on file (the intake answer, the spec, the ground rules), not by asking the user: the classification is a judgment vibebiz makes, and asking a sales director to name a Cynefin domain makes them learn a framework. Use these signals:
+
+| Value | Signals | Depth |
+|---|---|---|
+| `clear` | Cause and fix are already known; the same fix exists elsewhere in the business or as a common product; small, cheap and easy to undo (for example adding a column to a daily sales report) | Shortest path: each lens asks only the elements still missing, one question per category where one is enough, and applies no framework card unless the user asks for one by name |
+| `complicated` | The answer can be found by analysis or by asking someone who knows: data, an expert, a supplier, a comparison of options (for example choosing a tool to reconcile cash-on-delivery payments) | Full lenses, with framework cards chosen by "Frameworks" |
+| `complex` | Nobody can know the result in advance because it depends on how customers or staff will react; cause and effect show only after trying (for example a new AI size advisor on the website, or a new loyalty mechanic) | Full lenses, steered toward a small test: when filling the outcome, kill criteria are required before C is `clear`; when filling alternatives and scope, recommend a pilot in a few stores or one channel against comparable stores or a control group, with a minimum duration and a season check, ahead of a full rollout; prefer the `test-and-control-pilot` card when its `fills` includes the open category |
+| `chaotic` | An active crisis is hurting the business now and the user is reacting to it (for example the stores cannot take payments, or a data leak is under way) | Stabilize first: say in one sentence that the crisis needs handling before this idea, record the idea as it stands, ask at most one round on the problem (A) only if the user wants to keep going, and do not offer packaging (see "Readiness") |
+
+- When the signals sit between two values, choose the deeper one (`complicated` over `clear`, `complex` over `complicated`): treating an uncertain idea as simple costs far more than one extra round. Choose `chaotic` only when the user describes a crisis happening now, never because an idea feels urgent.
+- With nobody to answer, classify the same way and record the value; do not invent facts to settle it.
+- **Revisit** at step 2 of every round: when the latest answers or the user's hand edits change a signal (for example the user says the same fix already works in another region, or that customer reaction is unknown, or that the crisis is over), write the new value and apply the new depth from this round on. Categories already `clear` stay `clear`, with one exception: a move to `complex` sets C back to `partial` when it has no kill criteria.
+- Tell the user the depth in one plain sentence in the idea's language when you first set it and whenever it changes, without the word Cynefin or the value name. Examples:
+  - `clear`: "Việc này đã rõ cách làm và dễ quay lại nếu không hiệu quả, nên tôi chỉ hỏi những điểm còn thiếu để bạn trình duyệt nhanh."
+  - `complex`: "Chưa ai biết chắc khách sẽ phản ứng thế nào với ý tưởng này, nên tôi sẽ đề xuất thử nhỏ ở vài cửa hàng và đặt trước ngưỡng dừng."
+  - `chaotic`: "Sự cố hiện tại cần được xử lý trước; tôi đã ghi lại ý tưởng để bạn quay lại sau."
 
 ## Frontier
 
@@ -79,9 +101,28 @@ Each category goes to the module that fills it. Load a module from this skill's 
 | G, H, N | clarify | `references/core/clarify.md` |
 | any category still `partial` after its module has run | clarify | `references/core/clarify.md` |
 
-**Fallback while a lens module is absent**: if the lens file for a category does not exist in this skill's `references/core/lenses/` folder, the clarify module handles the category, using the category's elements in the frontier table as its checklist. Do not invent lens techniques the module would normally bring. For M, clarify asks only for a size (small, medium or large) and records it as `not tech-reviewed`.
+Use the lens file at `references/core/lenses/<name>.md` whenever it is present. **Fallback when a lens file is missing** (a damaged or partial install): the clarify module handles that lens's categories, using the category's elements in the frontier table as its checklist. Do not invent lens techniques the module would normally bring, and apply no framework card for that lens. For M, clarify asks only for a size (small, medium or large) and records it as `not tech-reviewed`.
 
 The filling module writes the content into `spec.md` and sets the category's status: `clear` when every element of the category is answered, `partial` when some are, unchanged when every question on it was skipped. A category becomes `deferred` only when the user says so, with their reason in `reason`.
+
+## Frameworks
+
+Framework cards (`references/packs/frameworks/<id>.md`) give a lens a proven way to fill a gap. Each card's frontmatter names its `lens` and the category codes it `fills`. Choose cards here and hand the chosen card to the lens with the category; the lens asks the card's questions.
+
+1. **Only for an open gap**: pick a card for a category only when the category is on the frontier with status `missing` or `partial`, the card's `fills` includes that category, and the card's `lens` is the module that fills the category (table above). Read the card's "When to use" and "When not to use" against the idea's files and skip a card whose "When not to use" matches.
+2. **At most two per lens per idea**: count the distinct card ids already listed in the `frameworks` of every category that lens fills. When the count is two, add no new card for that lens; it keeps using the two it has, or none.
+3. **One new card per category per round**: when several cards fit, choose the one whose "When to use" best matches the idea's situation and the depth (none at `clear` unless asked by name; `test-and-control-pilot` first at `complex` when it fits).
+4. **Plain words**: the lens asks the card's questions in everyday words. Do not name the framework in questions or make the user learn it; the outputs name it later.
+5. **Record**: when a round asked at least one question from a card and that question was answered, add the card's id to the `frameworks` list of the category it filled. A card whose questions were all skipped is not recorded.
+6. **Not chosen here**: cards with `lens: plan` are applied by the plan module at packaging, and the Cynefin card serves "Depth" only; neither counts toward a lens's two.
+7. **No card, no framework**: if the pack folder or a card is missing, the lens works without it. Never apply a framework from memory without its card.
+
+**When the user asks for a framework by name** (for example "dùng Balanced Scorecard", "phân tích SWOT giúp tôi"), match the name, in any language or common short form, to a card's `name` or `id`:
+
+- **It fits**: the card's `fills` includes a category that is `missing` or `partial` and the lens has room under the two-card limit. Apply it in the next round for that category (or as soon as the category reaches the frontier, and say so), even at `clear` depth.
+- **It does not fit**: every category in its `fills` is already `clear` or `deferred`, or its lens already has two cards. Say why in one or two plain sentences (what the framework is for, and that this part is already settled or that two methods are already in use for it), then name the card that fits the open gap closest to what the user seems to want, and offer it through the question tool: use the fitting card (recommended), or continue without it. Example: "Balanced Scorecard dùng để gắn ý tưởng với mục tiêu chiến lược, mà phần mục tiêu và cách đo của ý tưởng này đã rõ. Phần còn mở là vì sao doanh số giảm; cách hỏi 5 lần “vì sao” hợp với phần đó hơn."
+- **It is a planning card** (`lens: plan`): say it is used when the plan is built at packaging, and note the request in the spec's Clarifications so packaging sees it.
+- **There is no card for it**: say this version does not include that method, name the card that fits the open gap instead, and offer it the same way. Organization OKRs are not a card: when the ground rules record them, the outcome lens maps the idea to them.
 
 ## Contradictions
 
@@ -109,6 +150,8 @@ The idea is ready to package when all of these hold:
 - F is `clear` when the idea involves AI;
 - M has at least a small, medium or large size recorded;
 - every other category is `clear` or `deferred` with a reason.
+
+When `cynefin` is `chaotic`, do not set `ready` and do not offer to package, even when the conditions hold: the crisis comes first (see "Depth"). Offer pause instead, and write a `next_step` that names returning to the idea once the situation is stable.
 
 When ready and `status` is `clarifying`, set `status` to `ready`. When a later answer reopens a gap in a `ready` idea, set it back to `clarifying`. Do not change any other status; those transitions belong to packaging and board outcomes.
 
