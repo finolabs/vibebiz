@@ -20,13 +20,9 @@ Why: an entry skill that runs without a folder would lose every answer when the 
 
 **Workspace root**: the opened folder, or its `vibebiz/` subfolder when the user chose a subfolder earlier. Check the opened folder first, then `vibebiz/`. Everything below is relative to the root, and nothing is ever written outside it.
 
-**Templates**: the plugin ships `templates/` at the plugin root, which is two levels above a skill's own folder.
+**Templates**: the build copies the plugin's templates into your own skill folder, at `references/templates/` (beside `references/core/`). Read them from there: `references/templates/workspace/` and `references/templates/idea/`. When this document or another module says `templates/...`, it means that folder.
 
-1. From the folder that holds your `SKILL.md`, read `../../templates/workspace/index.html`. If that file opens, `../../templates/` is the templates folder.
-2. If it does not open, look at the nearest parent folders of your skill folder (up to four levels) for a folder named `templates` that holds `workspace/index.html` and `idea/coverage.md`.
-3. If you still cannot read the templates, stop the scaffold. Tell the user in plain words that the plugin looks incomplete and ask them to reinstall it. Write no workspace file: do not recreate a template from memory, because fixed templates keep every workspace identical and checkable. Work that needs no new file (reading an idea, answering `status` from existing files) may continue.
-
-Why: resolving a path outside the skill folder is not yet confirmed in Cowork (the first smoke test checks it), so the lookup has a fallback and a safe stop.
+If you cannot read `references/templates/workspace/index.html`, stop the scaffold. Tell the user in plain words that the plugin looks incomplete and ask them to reinstall it. Write no workspace file: do not recreate a template from memory, because fixed templates keep every workspace identical and checkable. Work that needs no new file (reading an idea, answering `status` from existing files) may continue.
 
 ## 3. Folder state
 
