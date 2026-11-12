@@ -1,6 +1,6 @@
 # Bắt đầu nhanh với vibebiz
 
-Hướng dẫn này giúp bạn làm quen với vibebiz trong vài phút: từ ý tưởng ban đầu đến khi nhận bộ tài liệu hoàn chỉnh để trình ban lãnh đạo và bàn giao cho đội kỹ thuật.
+Hướng dẫn này giúp bạn làm quen với vibebiz trong vài phút: từ một câu ý tưởng ban đầu đến khi nhận bộ tài liệu hoàn chỉnh để trình ban lãnh đạo và bàn giao cho đội kỹ thuật.
 
 Quy trình tổng quan: từ ý tưởng ban đầu của giám đốc kinh doanh, vibebiz phỏng vấn qua các vòng ngắn có chọn lọc rồi tạo bản trình bày cho ban lãnh đạo và tài liệu yêu cầu cho đội kỹ thuật, giúp duyệt ngân sách và triển khai hệ thống.
 
@@ -27,7 +27,7 @@ hoặc chỉ cần nói bằng lời thường: *"Tôi có ý tưởng dùng AI 
 
 **Lần đầu sử dụng**:
 - vibebiz tạo sẵn cấu trúc thư mục làm việc gồm trang mục lục `index.html` và tệp luật chung `constitution.md`.
-- vibebiz mời bạn ghi vài luật chung (ngành hàng, hạn mức bạn tự duyệt, việc luôn cần người duyệt). Bạn có thể chọn "Để sau" để đi thẳng vào ý tưởng; luật chung có thể bổ sung bất cứ lúc nào bằng lệnh `/vibebiz:constitution`.
+- vibebiz mời bạn ghi vài luật chung (ngành hàng, mức chi bạn tự duyệt, việc luôn cần người duyệt). Bạn có thể chọn "Để sau" để đi thẳng vào ý tưởng; luật chung có thể bổ sung bất cứ lúc nào bằng lệnh `/vibebiz:constitution`.
 - vibebiz hỏi bạn một câu mở: tình huống thực tế gần nhất khiến bạn nảy ra ý tưởng này là gì.
 
 Sau khi bạn trả lời, vibebiz tạo thư mục riêng cho ý tưởng (ví dụ `specs/001-nhac-khach-cu/`), lập bản nháp yêu cầu đầu tiên và bắt đầu các vòng phỏng vấn ngắn.
