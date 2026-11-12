@@ -40,7 +40,6 @@ COMMAND_RE = re.compile(r"/vibebiz:([a-z][a-z0-9-]*)")
 HEADING_RE = re.compile(r"^(#{1,6})\s+(.*?)\s*#*\s*$")
 MD_IMAGE_RE = re.compile(r"!\[[^\]]*\]\(\s*<?([^)\s>]+)>?(?:\s+[\"'][^)]*[\"'])?\s*\)")
 HTML_IMAGE_RE = re.compile(r"<img\b[^>]*?\bsrc\s*=\s*[\"']([^\"']+)[\"']", re.I)
-VERSION_RE = re.compile(r"\d+\.\d+(?:\.\d+)?")
 
 
 def _lines_outside_fences(text):
