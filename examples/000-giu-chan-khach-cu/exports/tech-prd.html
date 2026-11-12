@@ -1,0 +1,3703 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>vibebiz · Tài liệu yêu cầu cho đội kỹ thuật</title>
+<!--
+  vibebiz tech requirements document. Fixed template: vibebiz writes only the
+  JSON block with id "vibebiz-data" (the idea's exports/data.json, unchanged,
+  the same data as the board deck); layout, styles and the renderer never
+  change between runs.
+
+  Layout: a document, read rather than presented, with a sticky section nav
+  (a side column on wide screens, a scrolling strip on top of narrow ones).
+  One section per tech.sections[] entry in a fixed order of section ids:
+  business-context, user-stories, requirements, key-entities,
+  success-criteria, assumptions (shown only when present), ai-fit,
+  non-functional, glossary, open-questions. A required section missing from
+  the data, or with no content, still shows with a "not yet clarified" tag.
+  Sections whose id is not in the list follow at the end. Each section shows
+  its heading, its content blocks (section.content is a blocks array, the same
+  block types and chart components as the board deck; a plain string is shown
+  as one paragraph; a list whose items all carry an id, such as FR-001, shows
+  as a table; the slide infographics read as text here: a Gantt timeline, a
+  journey and a gauge as tables, a KPI tree and control cards as lists, a
+  callout and a deadline as a sentence, options as cards, compare forms as
+  two columns, a donut as a plain meter), an optional diagram slot (section.diagram, a brief id in
+  diagrams[]), the frameworks applied, one line of figure sources (source,
+  period, measured or assumed) and the fields it is based on. After the
+  sections: the full figures table, the items not yet clarified, and the link
+  to the Spec Kit-compatible requirement file. Figures come only from
+  numbers[] by id, written in text as {{N-01}}.
+
+  Data shape beyond the export contract, and the brand tokens, are documented
+  in board-deck.html and are the same here.
+
+  Security: self-contained (no external scripts, fonts or images), strict CSP,
+  data inserted only with textContent, createTextNode and setAttribute; links
+  pass safeHref. Charts and icons are SVG built by the renderer with
+  createElementNS and setAttribute. The single exception to text-only
+  insertion is diagram SVG, sanitized as described at sanitizeSvg below.
+  Escape every "<" in the JSON block as \u003c so the block cannot close the
+  script tag early; SVG markup inside it is escaped the same way.
+-->
+<style>
+  /* ---- Shared styles (identical in board-deck.html and tech-prd.html) ---- */
+
+  /* Tokens. The brand group is the only part a brand profile changes. To apply
+     a profile from the diagram-design plugin, copy its colors and font stacks
+     into data.json "theme": { "light": {accent, accent_soft, ink, quiet,
+     canvas, surface, rule, mark}, "dark": {same keys}, "fonts": {display,
+     text} }. The renderer accepts only #hex colors and plain font names and
+     sets them as --brand-<key>-light / --brand-<key>-dark / --brand-font-<key>
+     on the page, which the defaults below read first. Status colors (gaps,
+     estimates, errors) stay fixed so labels keep their meaning in any brand. */
+  :root {
+    /* Brand: colors (light) */
+    --accent: var(--brand-accent-light, #0b6e66);
+    --accent-soft: var(--brand-accent-soft-light, #dcefec);
+    --ink: var(--brand-ink-light, #18202c);
+    --quiet: var(--brand-quiet-light, #5a6474);
+    --canvas: var(--brand-canvas-light, #e9ecf0);
+    --surface: var(--brand-surface-light, #ffffff);
+    --rule: var(--brand-rule-light, #d5dae1);
+    --mark: var(--brand-mark-light, #aeb6c2);
+    /* Brand: type */
+    --font-display: var(--brand-font-display, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
+    --font-text: var(--brand-font-text, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
+    /* Status (fixed) */
+    --gap-ink: #8a6416;
+    --gap-line: #d6bd85;
+    --est-ink: #5a6474;
+    --est-line: #c3cad4;
+    --bad-ink: #a3362a;
+    --risk-ink: #9a4a08;
+    --risk-soft: #fff4e5;
+    --risk-line: #f1c9a0;
+    /* Derived neutrals (fixed): card tint, secondary ink, text on the accent */
+    --tint: #f3f5f7;
+    --ink-2: #3d4654;
+    --on-accent: #ffffff;
+    /* Type scale, document (rem); slides override with frame-relative sizes */
+    --fs-h1: 2rem;
+    --fs-h2: 1.375rem;
+    --fs-body: 1rem;
+    --fs-small: 0.8125rem;
+    --fs-badge: 0.72rem;
+    --big: 2.25rem;
+    /* Spacing */
+    --sp-1: 4px;
+    --sp-2: 8px;
+    --sp-3: 16px;
+    --sp-4: 24px;
+    --sp-5: 40px;
+    --sp-6: 64px;
+    --radius: 6px;
+    --tl-mark: 18px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --accent: var(--brand-accent-dark, #4cc3b2);
+      --accent-soft: var(--brand-accent-soft-dark, #143a36);
+      --ink: var(--brand-ink-dark, #e7eaef);
+      --quiet: var(--brand-quiet-dark, #98a2b2);
+      --canvas: var(--brand-canvas-dark, #0c0f14);
+      --surface: var(--brand-surface-dark, #151a21);
+      --rule: var(--brand-rule-dark, #2a313c);
+      --mark: var(--brand-mark-dark, #4a5363);
+      --gap-ink: #d9b25c;
+      --gap-line: #6e5a2c;
+      --est-ink: #a9b2c0;
+      --est-line: #3a4250;
+      --bad-ink: #f0a093;
+      --risk-ink: #f0b27a;
+      --risk-soft: #2e2216;
+      --risk-line: #7a4a1f;
+      --tint: #1d232c;
+      --ink-2: #c3cad4;
+      --on-accent: #0c0f14;
+    }
+  }
+  @media print {
+    :root {
+      --accent: var(--brand-accent-light, #0b6e66);
+      --accent-soft: var(--brand-accent-soft-light, #dcefec);
+      --ink: var(--brand-ink-light, #18202c);
+      --quiet: var(--brand-quiet-light, #4a5262);
+      --canvas: #ffffff;
+      --surface: #ffffff;
+      --rule: var(--brand-rule-light, #c9ced6);
+      --mark: var(--brand-mark-light, #9aa3b0);
+      --gap-ink: #6f500f;
+      --gap-line: #c2a66a;
+      --est-ink: #4a5262;
+      --est-line: #aab2bd;
+      --bad-ink: #8a2a20;
+      --risk-ink: #8a3f05;
+      --risk-soft: #fff4e5;
+      --risk-line: #f1c9a0;
+      --tint: #f3f5f7;
+      --ink-2: #3d4654;
+      --on-accent: #ffffff;
+    }
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    a { color: inherit; }
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--canvas);
+    color: var(--ink);
+    font-family: var(--font-text);
+    font-size: var(--fs-body);
+    line-height: 1.5;
+  }
+  a { color: var(--accent); text-underline-offset: 0.15em; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .missing { color: var(--bad-ink); font-style: italic; }
+  .muted { color: var(--quiet); }
+
+  /* Icons: inline SVG paths drawn by the renderer */
+  .ico {
+    width: 1.15em; height: 1.15em; flex: none;
+    fill: none; stroke: currentColor; stroke-width: 1.75;
+    stroke-linecap: round; stroke-linejoin: round;
+    vertical-align: -0.2em;
+  }
+
+  /* Labels: present but quiet */
+  .tag-gap {
+    display: inline-flex; align-items: center; gap: 0.45em;
+    padding: 0.1em 0.7em;
+    border: 1px dashed var(--gap-line); border-radius: 999px;
+    color: var(--gap-ink); font-size: var(--fs-small); font-weight: 500;
+    line-height: 1.5;
+  }
+  .tag-gap::before {
+    content: ""; width: 0.5em; height: 0.5em; flex: none;
+    border: 1.5px solid currentColor; border-radius: 50%;
+  }
+  .badge-est {
+    display: inline-block; vertical-align: middle;
+    padding: 0 0.5em;
+    border: 1px solid var(--est-line); border-radius: 4px;
+    color: var(--est-ink); font-size: var(--fs-badge); font-weight: 500;
+    letter-spacing: 0; line-height: 1.6; white-space: nowrap;
+  }
+  .num-value + .badge-est, .num-body > .badge-est { margin-top: 0.4em; }
+  .fig-inline { font-weight: 650; font-variant-numeric: tabular-nums; }
+  .fig-inline + .badge-est { margin-left: 0.35em; }
+  .item-id { color: var(--quiet); font-weight: 600; font-variant-numeric: tabular-nums; margin-right: 0.4em; }
+
+  /* Text blocks */
+  .text { margin: 0; max-width: 62ch; }
+  .list { margin: 0; padding-left: 1.2em; display: grid; gap: 0.35em; }
+  .list-ico { list-style: none; padding-left: 0; gap: 0.7em; }
+  .list-ico li { display: grid; grid-template-columns: auto 1fr; gap: 0.65em; align-items: start; }
+  .list-ico .ico { color: var(--accent); width: 1.35em; height: 1.35em; margin-top: 0.05em; }
+
+  /* Numbers */
+  .nums { display: grid; gap: var(--sp-3); }
+  .nums-row { display: flex; flex-wrap: wrap; gap: var(--sp-3) var(--sp-5); }
+  .num { display: grid; grid-template-columns: auto 1fr; gap: 0.6em; align-items: start; }
+  .num-ico { color: var(--quiet); width: 1.3em; height: 1.3em; margin-top: 0.2em; }
+  .num-body { grid-column: 2; display: grid; justify-items: start; }
+  .num > .num-body:only-child { grid-column: 1 / -1; }
+  .num-value {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: calc(var(--big) * 0.5); line-height: 1.05;
+    letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
+  }
+  .num-caption { color: var(--quiet); }
+  .num-hero .num-value {
+    font-size: var(--big); font-weight: 750; letter-spacing: -0.04em;
+    line-height: 0.95; color: var(--accent);
+  }
+  .num-hero .num-value.is-long { font-size: calc(var(--big) * 0.6); letter-spacing: -0.03em; }
+  .num-hero .num-caption { margin-top: 0.45em; font-size: 1.15em; color: var(--ink); }
+
+  /* Charts */
+  .chart, .compare-wrap, .timeline-wrap, .meter, .diagram { margin: 0; min-width: 0; }
+  .chart-title { font-weight: 650; margin-bottom: 0.7em; }
+  .cap { margin-top: 0.75em; font-size: var(--fs-small); color: var(--quiet); line-height: 1.4; }
+  /* Bars: label column and track column; rows are placed by the renderer so
+     a target line can span them. */
+  .bars {
+    position: relative; display: grid; grid-template-columns: minmax(4.5em, 16%) minmax(0, 1fr);
+    gap: 0.7em 0.9em; align-items: center;
+  }
+  .bars.has-target { padding-top: 2.2em; }
+  .bar-label { color: var(--quiet); }
+  .bar-track { display: flex; align-items: center; gap: 0.6em; min-width: 0; }
+  .bar-fill { display: block; flex: none; height: 1.6em; background: var(--mark); border-radius: 0 4px 4px 0; }
+  .bar-row-above .bar-fill { background: #8fcfc6; background: color-mix(in srgb, var(--accent) 45%, var(--surface)); }
+  .bar-row-hl .bar-fill { background: var(--accent); }
+  .bar-row-below .bar-fill { background: var(--mark); }
+  .bar-label.bar-row-hl { color: var(--ink); font-weight: 600; }
+  .bar-value { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .bar-value .badge-est { margin-left: 0.4em; }
+  .bar-target { grid-column: 2; position: relative; align-self: stretch; pointer-events: none; }
+  .bar-target-line { position: absolute; top: -2.2em; bottom: 0; border-left: 2px dashed var(--risk-ink); }
+  .bar-target-label { position: absolute; top: 0; left: 0.5em; white-space: nowrap; color: var(--risk-ink); font-weight: 700; font-size: var(--fs-small); }
+  .bar-target.is-missing .bar-target-line { border-left: 0; }
+  .line-target { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 6 6; }
+  .line-target-label { fill: var(--accent); font-weight: 700; }
+  .line-path.is-ink { stroke: var(--ink); }
+  .line-dot.is-ink { stroke: var(--ink); }
+  .block-title { font-weight: 650; margin-bottom: 0.6em; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .line-svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .line-svg text { font-family: var(--font-text); }
+  .line-base { stroke: var(--rule); stroke-width: 1; }
+  .line-path { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
+  .line-dot { fill: var(--surface); stroke: var(--accent); stroke-width: 2.5; }
+  .line-val { fill: var(--ink); font-weight: 650; }
+  .line-x { fill: var(--quiet); }
+  .chart-est { margin: 0.4em 0 0; }
+
+  /* Before and after, now and later */
+  .compare {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: var(--sp-4); align-items: start;
+  }
+  .side { border-top: 3px solid var(--rule); padding-top: 0.7em; display: grid; gap: 0.35em; align-content: start; justify-items: start; }
+  .side.is-emph { border-top-color: var(--accent); }
+  .side-label { color: var(--quiet); font-weight: 600; }
+  .side.is-emph .side-label { color: var(--ink); }
+  .side-value {
+    font-family: var(--font-display); font-weight: 750;
+    font-size: calc(var(--big) * 0.8); line-height: 1; letter-spacing: -0.035em;
+    font-variant-numeric: tabular-nums; color: var(--quiet);
+  }
+  .side.is-emph .side-value { color: var(--accent); }
+  .side-caption { color: var(--quiet); }
+  .side-list { list-style: none; margin: 0.2em 0 0; padding: 0; display: grid; gap: 0.45em; }
+  .side-list li { display: grid; grid-template-columns: auto 1fr; gap: 0.55em; align-items: start; }
+  .side-list .ico { color: var(--mark); margin-top: 0.1em; }
+  .side.is-emph .side-list .ico { color: var(--accent); }
+  .compare-arrow { align-self: center; color: var(--quiet); width: 1.8em; height: 1.8em; }
+
+  /* Options compared */
+  .options { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 10.5em), 1fr)); gap: var(--sp-4); }
+  .opt { border-top: 3px solid var(--rule); padding-top: 0.7em; display: grid; gap: 0.4em; align-content: start; }
+  .opt.is-chosen { border-top-color: var(--accent); }
+  .opt-name { font-weight: 700; font-size: 1.12em; line-height: 1.25; }
+  .opt.is-chosen .opt-name { color: var(--accent); }
+  .opt-chosen { display: inline-flex; align-items: center; gap: 0.3em; color: var(--accent); font-size: var(--fs-small); font-weight: 600; }
+  .opt-summary { color: var(--quiet); }
+  .opt-line { display: grid; grid-template-columns: auto 1fr; gap: 0.45em; align-items: start; }
+  .opt-line .ico { margin-top: 0.15em; color: var(--quiet); }
+  .opt-pro .ico { color: var(--accent); }
+
+  /* Timeline */
+  .tl {
+    list-style: none; margin: 0; padding: 0; position: relative;
+    display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: var(--sp-4);
+  }
+  .tl::before {
+    content: ""; position: absolute; left: 0; right: 0;
+    top: calc(var(--tl-mark) / 2 - 1px); height: 2px; background: var(--rule);
+  }
+  .tl-item { position: relative; display: grid; gap: 0.3em; align-content: start; }
+  .tl-mark { display: block; width: var(--tl-mark); height: var(--tl-mark); margin-bottom: 0.5em; }
+  .tl-dot { fill: var(--surface); stroke: var(--mark); stroke-width: 3; }
+  .tl-diamond { fill: var(--accent); stroke: var(--surface); stroke-width: 2; }
+  .tl-when { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .tl-what { color: var(--quiet); }
+  .tl-decision { display: grid; grid-template-columns: auto 1fr; gap: 0.4em; align-items: start; color: var(--accent); font-weight: 600; }
+  .tl-decision .ico { margin-top: 0.1em; }
+
+  /* Meter */
+  .meter { display: grid; gap: 0.5em; }
+  .meter-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3em 0.7em; }
+  .meter-value { font-family: var(--font-display); font-weight: 750; font-size: calc(var(--big) * 0.55); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .meter-label { color: var(--quiet); }
+  .meter-svg { display: block; width: 100%; height: 0.75em; }
+  .meter-track { fill: var(--rule); }
+  .meter-fill { fill: var(--accent); }
+
+  /* Diagram */
+  .diagram-svg svg { display: block; width: 100%; height: auto; }
+  .diagram figcaption { margin-top: 0.6em; font-size: var(--fs-small); color: var(--quiet); }
+  .no-diagram { display: flex; gap: 0.45em; align-items: center; margin: 0 0 0.6em; color: var(--quiet); font-size: var(--fs-small); }
+  @media (prefers-color-scheme: dark) {
+    /* Rendered diagrams carry their own light palette; give them paper. */
+    .diagram-svg { background: #f4f6f8; border-radius: var(--radius); padding: 0.6em; }
+  }
+  @media print { .diagram-svg { background: none; padding: 0; } }
+
+  /* Tables */
+  .table-wrap { overflow-x: auto; min-width: 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.92em; }
+  th, td { text-align: left; vertical-align: top; padding: 0.45em 0.65em 0.45em 0; border-bottom: 1px solid var(--rule); }
+  th { color: var(--quiet); font-weight: 600; }
+  td.num-cell { white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: 600; }
+  td.num-cell .badge-est { margin-left: 0.4em; }
+
+  /* Stories, definitions, questions */
+  .stories { display: grid; gap: var(--sp-4); }
+  .story { border-left: 3px solid var(--rule); padding-left: var(--sp-3); }
+  .story-title { font-size: 1.05rem; margin: 0 0 0.3em; display: flex; flex-wrap: wrap; gap: 0.5em; align-items: baseline; }
+  .story-prio { color: var(--accent); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .story-why { margin: 0 0 0.5em; color: var(--quiet); }
+  .scenarios { margin: 0; padding-left: 1.2em; display: grid; gap: 0.4em; }
+  .scenarios strong { font-weight: 650; }
+  .defs { margin: 0; display: grid; grid-template-columns: minmax(8em, 30%) 1fr; gap: 0.5em var(--sp-3); }
+  .defs dt { font-weight: 650; }
+  .defs dd { margin: 0; }
+  .q-group { font-size: 1em; margin: var(--sp-3) 0 0.4em; }
+  .q-group:first-child { margin-top: 0; }
+  .q-group.blocking { color: var(--bad-ink); }
+  .q-owner { color: var(--quiet); }
+
+  /* Notices and links in the page header */
+  .notice { margin: 0; font-size: var(--fs-small); color: var(--quiet); }
+  .notice.bad { color: var(--bad-ink); font-weight: 600; }
+  .notice.draft { color: var(--gap-ink); }
+  .meta { margin: 0; font-size: var(--fs-small); color: var(--quiet); }
+  .links-box { font-size: var(--fs-small); display: flex; flex-wrap: wrap; gap: 0.2em 1em; }
+  .links-title { color: var(--quiet); }
+  .links { display: contents; }
+  .links li { list-style: none; }
+  .gaps-list h3 { font-size: 1em; margin: 0 0 0.5em; }
+  .gaps-list ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.4em; }
+  .gaps-list li { display: flex; flex-wrap: wrap; gap: 0.5em; align-items: center; }
+  .frameworks, .based-on, .sources, .notes { margin: 0; }
+  .line-label { color: var(--ink); font-weight: 600; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
+  /* ---- End of shared styles ---- */
+
+  /* ---- Tech document ---- */
+  body { background: var(--surface); }
+  .doc-wrap {
+    max-width: 1160px; margin: 0 auto;
+    padding: clamp(16px, 4vw, 48px) clamp(14px, 3vw, 32px) var(--sp-6);
+    display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sp-4);
+  }
+  .doc { min-width: 0; max-width: 46rem; }
+  .doc-head { padding-bottom: var(--sp-4); border-bottom: 1px solid var(--rule); display: grid; gap: 0.45em; }
+  .doc-head h1 {
+    margin: 0; font-family: var(--font-display); font-size: var(--fs-h1);
+    font-weight: 720; line-height: 1.15; letter-spacing: -0.02em; text-wrap: balance;
+  }
+  .doc-head .idea-title { margin: 0; font-size: 1.1rem; color: var(--quiet); }
+  .doc-nav-title { margin: 0 0 0.5em; font-size: var(--fs-small); color: var(--quiet); font-weight: 600; }
+  .doc-nav ol { list-style: none; margin: 0; padding: 0; }
+  .doc-nav a {
+    display: block; padding: 0.3em 0 0.3em 0.8em;
+    border-left: 2px solid var(--rule);
+    color: var(--quiet); text-decoration: none; font-size: 0.9rem; line-height: 1.35;
+  }
+  .doc-nav a:hover { color: var(--ink); }
+  .doc-nav a[aria-current="true"] { color: var(--ink); border-left-color: var(--accent); font-weight: 600; }
+  .doc-section { container: section / inline-size; padding-top: var(--sp-5); scroll-margin-top: 72px; }
+  .doc-section > h2 {
+    margin: 0 0 var(--sp-3); padding-bottom: 0.4em; border-bottom: 1px solid var(--rule);
+    font-family: var(--font-display); font-size: var(--fs-h2); font-weight: 700; letter-spacing: -0.01em;
+  }
+  .doc-section > * + * { margin-top: var(--sp-3); }
+  .doc-section > h2 + * { margin-top: 0; }
+  .section-gaps { display: flex; flex-wrap: wrap; gap: 0.4em; }
+  .section-meta { display: grid; gap: 0.25em; font-size: var(--fs-small); color: var(--quiet); padding-top: var(--sp-2); border-top: 1px dashed var(--rule); }
+  .doc .chart, .doc .compare-wrap, .doc .timeline-wrap, .doc .meter { max-width: 36rem; }
+  .doc .nums-row { --big: 2.75rem; }
+  .doc .figures-table td, .doc .figures-table th { font-size: 0.9rem; }
+  .snapshot { margin: 0; }
+  .doc-foot { margin-top: var(--sp-5); font-size: var(--fs-small); color: var(--quiet); }
+  @media (min-width: 960px) {
+    .doc-wrap { grid-template-columns: 210px minmax(0, 1fr); column-gap: var(--sp-6); }
+    .doc-nav { position: sticky; top: var(--sp-4); align-self: start; max-height: calc(100vh - 48px); overflow-y: auto; padding-top: 0.4em; }
+  }
+  @media (max-width: 959px) {
+    .doc-nav {
+      position: sticky; top: 0; z-index: 2;
+      margin: 0 calc(-1 * clamp(14px, 3vw, 32px));
+      padding: 10px clamp(14px, 3vw, 32px);
+      background: var(--surface); border-bottom: 1px solid var(--rule);
+      overflow-x: auto;
+    }
+    .doc-nav-title { display: none; }
+    .doc-nav ol { display: flex; gap: 0.25em 1em; white-space: nowrap; }
+    .doc-nav a { padding: 0.2em 0; border-left: 0; border-bottom: 2px solid transparent; }
+    .doc-nav a[aria-current="true"] { border-bottom-color: var(--accent); }
+  }
+  @container section (max-width: 560px) {
+    .compare { grid-template-columns: minmax(0, 1fr); }
+    .compare-arrow { transform: rotate(90deg); }
+    .tl { grid-auto-flow: row; gap: 14px; }
+    .tl::before { left: calc(var(--tl-mark) / 2 - 1px); right: auto; top: 0; bottom: 0; width: 2px; height: auto; }
+    .tl-item { grid-template-columns: var(--tl-mark) minmax(0, 1fr); column-gap: 0.8em; }
+    .tl-item > .tl-mark { grid-row: 1 / span 3; margin: 0; }
+    .tl-item > :not(.tl-mark) { grid-column: 2; }
+    .defs { grid-template-columns: minmax(0, 1fr); }
+    .defs dd { margin-bottom: 0.4em; }
+  }
+  @media print {
+    @page { size: A4; margin: 16mm; }
+    body { background: #ffffff; }
+    .doc-wrap { display: block; padding: 0; max-width: none; }
+    .doc-nav { display: none; }
+    .doc { max-width: none; }
+    .doc-section { padding-top: 18px; }
+    .story, .num, .chart, .compare-wrap, .timeline-wrap, .meter, .diagram, tr, .section-meta { break-inside: avoid; page-break-inside: avoid; }
+    .doc-section > h2 { break-after: avoid; page-break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="doc-wrap">
+  <nav class="doc-nav" aria-labelledby="toc-title">
+    <p class="doc-nav-title" id="toc-title" data-label="contents">Mục lục</p>
+    <ol id="toc"></ol>
+  </nav>
+  <main class="doc">
+    <header class="doc-head" id="doc-head">
+      <h1 data-label="prdTitle">Tài liệu yêu cầu cho đội kỹ thuật</h1>
+      <p class="idea-title" id="idea-title"></p>
+    </header>
+    <div id="sections"></div>
+    <section class="doc-section" id="sec-figures"></section>
+    <section class="doc-section" id="gaps"></section>
+    <section class="doc-section" id="sec-snapshot">
+      <h2 data-label="snapshot">Bản yêu cầu dùng được với Spec Kit</h2>
+      <p class="snapshot" id="snapshot-link"></p>
+    </section>
+    <footer class="doc-foot" data-label="footer">Tài liệu do vibebiz dựng từ hồ sơ ý tưởng. Mọi số liệu lấy từ một bảng số liệu chung.</footer>
+  </main>
+</div>
+
+<script type="application/json" id="vibebiz-data">
+{
+  "idea": {
+    "id": "000",
+    "title": "Nhắc khách quay lại cửa hàng qua ứng dụng chat",
+    "language": "vi",
+    "version": "2026-11-12",
+    "draft": false,
+    "estimate_status": "not-tech-reviewed"
+  },
+  "board": {
+    "slides": [
+      {
+        "n": 1,
+        "title": "Duyệt thí điểm {{N-08}} tại {{N-07}}",
+        "message": "Cần quyết định trước 30/11/2026 để kịp mùa mua sắm Tết.",
+        "layout": "number",
+        "source_fields": [
+          "plan.Decision requested",
+          "plan.Size and scenarios"
+        ],
+        "blocks": [
+          {
+            "type": "figures",
+            "items": [
+              {
+                "ref": "N-03",
+                "caption": "Ngân sách thí điểm"
+              },
+              {
+                "ref": "N-07",
+                "caption": "Thí điểm",
+                "icon": "store"
+              },
+              {
+                "ref": "N-08",
+                "caption": "Thời gian chạy",
+                "icon": "clock"
+              },
+              {
+                "ref": "N-01",
+                "to_ref": "N-02",
+                "caption": "Khách quay lại",
+                "icon": "trend",
+                "highlight": true
+              }
+            ],
+            "estimate_label": "not tech-reviewed"
+          },
+          {
+            "type": "deadline",
+            "date": "2026-11-30",
+            "label": "Hạn quyết định"
+          },
+          {
+            "type": "timeline",
+            "form": "steps",
+            "source": "Kế hoạch thí điểm",
+            "items": [
+              {
+                "when": "30/11/2026",
+                "what": "Duyệt ngân sách"
+              },
+              {
+                "when": "12/2026",
+                "what": "Đội kỹ thuật bắt đầu"
+              },
+              {
+                "when": "Tuần 12",
+                "what": "Quyết định mở rộng",
+                "decision": "Mở rộng hoặc dừng"
+              }
+            ]
+          }
+        ],
+        "diagram": null,
+        "frameworks": [
+          {
+            "id": "build-buy-partner",
+            "name": "Tự làm, mua hay hợp tác",
+            "result": "chọn mua công cụ nhắn tin có sẵn"
+          }
+        ],
+        "estimate_label": "not tech-reviewed"
+      },
+      {
+        "n": 2,
+        "title": "Bốn trên năm khách mua lần đầu không quay lại",
+        "message": "Không ai nhắc khách cũ, nên tỷ lệ quay lại đứng yên.",
+        "layout": "ratio",
+        "source_fields": [
+          "spec.Problem & Why"
+        ],
+        "blocks": [
+          {
+            "type": "ratio",
+            "ref": "N-01",
+            "total": 5,
+            "label": "khách quay lại trong 90 ngày"
+          },
+          {
+            "type": "figures",
+            "place": "hero",
+            "items": [
+              {
+                "ref": "N-09",
+                "caption": "Mỗi lần khách cũ quay lại mua",
+                "icon": "coin"
+              }
+            ]
+          },
+          {
+            "type": "callout",
+            "place": "hero",
+            "tone": "risk",
+            "label": "Nguyên nhân gốc",
+            "text": "Không có lịch nhắc khách cũ"
+          },
+          {
+            "type": "chart",
+            "kind": "line",
+            "title": "Tỷ lệ quay lại trong 90 ngày, theo tháng",
+            "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+            "period": "01/2026 đến 06/2026",
+            "items": [
+              {
+                "ref": "N-11",
+                "caption": "T1"
+              },
+              {
+                "ref": "N-12",
+                "caption": "T2"
+              },
+              {
+                "ref": "N-13",
+                "caption": "T3"
+              },
+              {
+                "ref": "N-14",
+                "caption": "T4"
+              },
+              {
+                "ref": "N-15",
+                "caption": "T5"
+              },
+              {
+                "ref": "N-16",
+                "caption": "T6"
+              }
+            ],
+            "target": {
+              "ref": "N-02",
+              "label": "Mục tiêu"
+            }
+          },
+          {
+            "type": "list",
+            "form": "chips",
+            "items": [
+              {
+                "text": "Nhân viên không có danh sách khách",
+                "icon": "people"
+              },
+              {
+                "text": "Khuyến mãi gửi đồng loạt",
+                "icon": "chat"
+              }
+            ]
+          }
+        ],
+        "diagram": null,
+        "frameworks": [
+          {
+            "id": "five-whys",
+            "name": "5 Whys",
+            "result": "nguyên nhân gốc: cửa hàng không có lịch nhắc khách cũ"
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "title": "Đưa tỷ lệ khách quay lại từ {{N-01}} lên {{N-02}}",
+        "message": "Một chỉ số chính và một ngưỡng bảo vệ trải nghiệm khách.",
+        "layout": "compare",
+        "source_fields": [
+          "spec.Outcome",
+          "spec.Success Criteria"
+        ],
+        "blocks": [
+          {
+            "type": "compare",
+            "form": "bars",
+            "sides": [
+              {
+                "label": "Hiện nay",
+                "ref": "N-01"
+              },
+              {
+                "label": "Sau 12 tuần",
+                "ref": "N-02"
+              }
+            ]
+          },
+          {
+            "type": "tree",
+            "title": "Chỉ số chính kéo doanh thu từ khách cũ",
+            "root": "Doanh thu từ khách cũ",
+            "children": [
+              {
+                "label": "Số khách quay lại",
+                "ref": "N-01",
+                "to_ref": "N-02",
+                "highlight": true
+              },
+              {
+                "label": "Số lần mua mỗi khách",
+                "text": "giữ nguyên"
+              },
+              {
+                "label": "Giá trị mỗi lần mua",
+                "text": "giữ nguyên"
+              }
+            ]
+          },
+          {
+            "type": "callout",
+            "tone": "risk",
+            "icon": "shield",
+            "label": "Ngưỡng bảo vệ",
+            "text": "Khách hủy nhận tin dưới {{N-10}} mỗi tháng."
+          }
+        ],
+        "diagram": null,
+        "frameworks": [
+          {
+            "id": "driver-tree",
+            "name": "Cây chỉ số",
+            "result": "số khách quay lại là đòn bẩy chính"
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "title": "Mua công cụ có sẵn: chạy được sau {{N-19}}, thay vì {{N-20}} trở lên",
+        "message": "Bốn phương án, so trên cùng tiêu chí.",
+        "layout": "options",
+        "source_fields": [
+          "spec.Alternatives"
+        ],
+        "blocks": [
+          {
+            "type": "options",
+            "measure": "Thời gian đến khi chạy được",
+            "items": [
+              {
+                "name": "Giữ nguyên",
+                "pros": "Không tốn chi phí",
+                "cons": "Tỷ lệ quay lại đứng yên"
+              },
+              {
+                "name": "Sửa quy trình",
+                "pros": "Làm được ngay",
+                "cons": "Tốn giờ công, khó đo"
+              },
+              {
+                "name": "Mua công cụ có sẵn",
+                "ref": "N-19",
+                "pros": "Chạy được sau {{N-19}}",
+                "cons": "Phí thuê hằng tháng",
+                "chosen": true
+              },
+              {
+                "name": "Tự xây",
+                "ref": "N-20",
+                "ref_high": "N-21",
+                "pros": "Tùy biến hoàn toàn",
+                "cons": "Mất {{N-20}} đến {{N-21}}"
+              }
+            ],
+            "estimate_label": "not tech-reviewed"
+          }
+        ],
+        "diagram": null,
+        "frameworks": [],
+        "estimate_label": "not tech-reviewed"
+      },
+      {
+        "n": 5,
+        "title": "Sau {{N-24}}, khách nhận một lời nhắc đúng món",
+        "message": "Hành trình của khách trước và sau khi có lời nhắc.",
+        "layout": "journey",
+        "source_fields": [
+          "spec.User Scenarios & Testing",
+          "spec.AI-fit"
+        ],
+        "blocks": [
+          {
+            "type": "journey",
+            "steps": [
+              "Ngày 0",
+              "Ngày 30",
+              "Lần mua sau"
+            ],
+            "highlight": 1,
+            "lanes": [
+              {
+                "label": "Trước",
+                "cells": [
+                  {
+                    "text": "Khách mua và về",
+                    "icon": "bag"
+                  },
+                  {
+                    "text": "Không có gì xảy ra",
+                    "icon": "close",
+                    "empty": true
+                  },
+                  {
+                    "text": "Quay lại hay không: tùy khách",
+                    "icon": "question"
+                  }
+                ]
+              },
+              {
+                "label": "Sau",
+                "emphasis": true,
+                "cells": [
+                  {
+                    "text": "Khách mua, đồng ý nhận tin",
+                    "icon": "bagcheck"
+                  },
+                  {
+                    "text": "Tin gợi ý món hợp với món đã mua",
+                    "icon": "chat"
+                  },
+                  {
+                    "text": "Nhân viên biết khách đến vì lời nhắc",
+                    "icon": "peoplecheck"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "diagram": null,
+        "frameworks": [
+          {
+            "id": "journey-map",
+            "name": "Bản đồ hành trình khách hàng",
+            "result": "điểm rơi là ngày thứ 30 sau lần mua đầu"
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "title": "Bản đầu chỉ làm ba việc, hai việc để sau",
+        "message": "Phần mở rộng làm sau khi thí điểm đạt mục tiêu.",
+        "layout": "compare",
+        "source_fields": [
+          "spec.Requirements"
+        ],
+        "blocks": [
+          {
+            "type": "compare",
+            "form": "cards",
+            "emphasis": 0,
+            "sides": [
+              {
+                "label": "Có trong bản đầu",
+                "items": [
+                  {
+                    "text": "Nhắc sau lần mua đầu",
+                    "ref": "N-24",
+                    "icon": "calendar"
+                  },
+                  {
+                    "text": "Gợi ý theo món đã mua",
+                    "icon": "tag"
+                  },
+                  {
+                    "text": "Danh sách khách cho nhân viên",
+                    "icon": "list"
+                  }
+                ]
+              },
+              {
+                "label": "Làm sau khi đạt mục tiêu",
+                "items": [
+                  {
+                    "text": "Ưu đãi sinh nhật",
+                    "icon": "gift"
+                  },
+                  {
+                    "text": "Nhắc theo mùa",
+                    "icon": "sun"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "diagram": null,
+        "frameworks": [
+          {
+            "id": "moscow",
+            "name": "MoSCoW",
+            "result": "ba việc bắt buộc, hai việc để sau"
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "title": "Kịch bản cơ sở hoàn vốn thí điểm trong năm đầu",
+        "message": "Lợi nhuận gộp tăng thêm mỗi năm theo ba kịch bản.",
+        "layout": "bars",
+        "source_fields": [
+          "spec.Cost & Risk",
+          "plan.Size and scenarios"
+        ],
+        "blocks": [
+          {
+            "type": "chart",
+            "kind": "bar",
+            "title": "Lợi nhuận gộp tăng thêm trong năm đầu, so với chi phí thí điểm",
+            "source": "Ước tính sơ bộ trong kế hoạch",
+            "items": [
+              {
+                "ref": "N-04",
+                "caption": "Thấp"
+              },
+              {
+                "ref": "N-05",
+                "caption": "Cơ sở",
+                "highlight": true
+              },
+              {
+                "ref": "N-06",
+                "caption": "Cao"
+              }
+            ],
+            "estimate_label": "not tech-reviewed",
+            "period": "năm đầu sau thí điểm",
+            "target": {
+              "ref": "N-03",
+              "label": "Chi phí thí điểm"
+            }
+          },
+          {
+            "type": "list",
+            "form": "chips",
+            "items": [
+              {
+                "text": "Quy mô dự án: vừa",
+                "icon": "box"
+              }
+            ]
+          }
+        ],
+        "diagram": null,
+        "frameworks": [],
+        "estimate_label": "not tech-reviewed"
+      },
+      {
+        "n": 8,
+        "title": "Rủi ro lớn nhất: khách thấy phiền và hủy nhận tin",
+        "message": "Điều kiện dừng đã đặt trước.",
+        "layout": "meter",
+        "source_fields": [
+          "spec.Cost & Risk",
+          "decisions.md"
+        ],
+        "blocks": [
+          {
+            "type": "meter",
+            "form": "gauge",
+            "threshold_ref": "N-10",
+            "label": "Tỷ lệ khách hủy nhận tin mỗi tháng",
+            "below": "Tiếp tục",
+            "above": "Dừng",
+            "note": "hủy nhận tin, hai tháng liền",
+            "source": "Ngưỡng do giám đốc bán hàng đặt"
+          },
+          {
+            "type": "controls",
+            "title": "Ba lớp kiểm soát",
+            "items": [
+              {
+                "text": "Tối đa một tin mỗi tháng",
+                "note": "Giới hạn tần suất"
+              },
+              {
+                "text": "Kiểm tra số điện thoại",
+                "note": "Trước khi thí điểm",
+                "icon": "phone"
+              },
+              {
+                "text": "Dừng nếu vượt {{N-10}}",
+                "note": "Hai tháng liền",
+                "stop": true
+              }
+            ]
+          }
+        ],
+        "diagram": null,
+        "frameworks": [
+          {
+            "id": "pre-mortem",
+            "name": "Pre-mortem",
+            "result": "khách hủy nhận tin là cách thất bại dễ xảy ra nhất"
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "title": "{{N-08}}, hai điểm quyết định, so với {{N-23}} đối chứng",
+        "message": "Hai điểm quyết định: tuần 6 và tuần 12.",
+        "layout": "timeline",
+        "source_fields": [
+          "plan.Pilot and rollout"
+        ],
+        "blocks": [
+          {
+            "type": "timeline",
+            "form": "gantt",
+            "axis_label": "Tuần",
+            "span_ref": "N-08",
+            "source": "Kế hoạch thí điểm",
+            "lanes": [
+              {
+                "ref": "N-07",
+                "label": "cửa hàng thí điểm",
+                "emphasis": true,
+                "bars": [
+                  {
+                    "from": 1,
+                    "to": 4,
+                    "text": "Cài công cụ, hướng dẫn nhân viên"
+                  },
+                  {
+                    "from": 5,
+                    "to": 12,
+                    "text": "Nhắc khách ngày 30, đo tỷ lệ quay lại",
+                    "emphasis": true
+                  }
+                ]
+              },
+              {
+                "ref": "N-23",
+                "label": "cửa hàng đối chứng",
+                "bars": [
+                  {
+                    "from": 1,
+                    "to": 12,
+                    "text": "Giữ nguyên cách làm hiện nay",
+                    "gap": "plan.Pilot and rollout: cách chọn cửa hàng đối chứng"
+                  }
+                ]
+              }
+            ],
+            "items": [
+              {
+                "when": "Tuần 6",
+                "at": 6,
+                "what": "Xem tỷ lệ hủy nhận tin",
+                "decision": "Tiếp tục hoặc chỉnh nội dung"
+              },
+              {
+                "when": "Tuần 12",
+                "at": 12,
+                "what": "So với cửa hàng đối chứng",
+                "decision": "Mở rộng hoặc dừng"
+              }
+            ]
+          }
+        ],
+        "diagram": null,
+        "frameworks": [
+          {
+            "id": "test-and-control",
+            "name": "Thí điểm có nhóm đối chứng",
+            "result": "6 cửa hàng thí điểm, 6 cửa hàng đối chứng"
+          }
+        ]
+      },
+      {
+        "n": "appendix",
+        "title": "Còn hai giả định cần kiểm chứng, một câu hỏi chặn tiến độ",
+        "message": "Những điều chưa chắc chắn được ghi rõ để theo dõi.",
+        "source_fields": [
+          "assumptions.md",
+          "open-questions.md",
+          "coverage.md"
+        ],
+        "blocks": [
+          {
+            "type": "list",
+            "title": "Giả định cần kiểm chứng",
+            "items": [
+              {
+                "id": "A-001",
+                "text": "Khách đồng ý nhận tin nhắn qua ứng dụng chat.",
+                "icon": "chat"
+              },
+              {
+                "id": "A-002",
+                "text": "Ít nhất {{N-25}} khách có số điện thoại đúng trong hệ thống.",
+                "icon": "phone"
+              }
+            ]
+          },
+          {
+            "type": "questions",
+            "items": [
+              {
+                "id": "Q-001",
+                "text": "Công cụ nhắn tin có nối được với phần mềm bán hàng hiện tại không?",
+                "owner": "Trưởng nhóm kỹ thuật",
+                "blocking": true
+              },
+              {
+                "id": "Q-002",
+                "text": "Nội dung tin nhắn do ai duyệt?",
+                "owner": "Trưởng phòng marketing",
+                "blocking": false
+              }
+            ]
+          },
+          {
+            "type": "meter",
+            "ref": "N-17",
+            "max_ref": "N-18",
+            "label": "nhóm đã làm rõ",
+            "source": "Hồ sơ làm rõ ý tưởng",
+            "form": "donut"
+          }
+        ],
+        "diagram": null,
+        "frameworks": [
+          {
+            "id": "assumption-map",
+            "name": "Bản đồ giả định",
+            "result": "A-002 là giả định rủi ro nhất"
+          }
+        ]
+      }
+    ]
+  },
+  "tech": {
+    "sections": [
+      {
+        "id": "business-context",
+        "heading": "Bối cảnh kinh doanh",
+        "source_fields": [
+          "spec.Problem & Why",
+          "spec.Outcome"
+        ],
+        "content": [
+          {
+            "type": "text",
+            "text": "Tỷ lệ khách quay lại trong 90 ngày là {{N-01}}; mục tiêu là {{N-02}} sau thí điểm 12 tuần tại {{N-07}}.",
+            "estimate_label": "not tech-reviewed"
+          },
+          {
+            "type": "chart",
+            "kind": "line",
+            "title": "Tỷ lệ khách quay lại trong 90 ngày, theo tháng",
+            "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+            "items": [
+              {
+                "ref": "N-11",
+                "caption": "T1"
+              },
+              {
+                "ref": "N-12",
+                "caption": "T2"
+              },
+              {
+                "ref": "N-13",
+                "caption": "T3"
+              },
+              {
+                "ref": "N-14",
+                "caption": "T4"
+              },
+              {
+                "ref": "N-15",
+                "caption": "T5"
+              },
+              {
+                "ref": "N-16",
+                "caption": "T6"
+              }
+            ],
+            "period": "01/2026 đến 06/2026"
+          }
+        ],
+        "estimate_label": "not tech-reviewed"
+      },
+      {
+        "id": "user-stories",
+        "heading": "Câu chuyện người dùng",
+        "source_fields": [
+          "spec.User Scenarios & Testing"
+        ],
+        "content": [
+          {
+            "type": "stories",
+            "items": [
+              {
+                "priority": "P1",
+                "title": "Khách mua lần đầu nhận lời nhắc sau 30 ngày",
+                "why": "Đây là nhóm khách dễ mất nhất.",
+                "scenarios": [
+                  {
+                    "given": "khách mua lần đầu và đồng ý nhận tin",
+                    "when": "đủ 30 ngày chưa quay lại",
+                    "then": "khách nhận một tin gợi ý sản phẩm hợp với món đã mua"
+                  },
+                  {
+                    "given": "khách đã hủy nhận tin",
+                    "when": "đủ 30 ngày",
+                    "then": "không gửi tin nào"
+                  }
+                ]
+              },
+              {
+                "priority": "P2",
+                "title": "Nhân viên xem danh sách khách cần chăm sóc",
+                "scenarios": [
+                  {
+                    "given": "nhân viên mở danh sách đầu ca",
+                    "when": "có khách sắp đủ 30 ngày",
+                    "then": null
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "requirements",
+        "heading": "Yêu cầu",
+        "source_fields": [
+          "spec.Requirements"
+        ],
+        "content": [
+          {
+            "type": "list",
+            "items": [
+              {
+                "id": "FR-001",
+                "text": "Hệ thống phải gửi tối đa một tin nhắc mỗi tháng cho mỗi khách."
+              },
+              {
+                "id": "FR-002",
+                "text": "Hệ thống phải bỏ qua khách đã hủy nhận tin."
+              },
+              {
+                "id": "FR-003",
+                "text": "Nhân viên phải xem được danh sách khách cần chăm sóc của cửa hàng mình."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "key-entities",
+        "heading": "Dữ liệu chính",
+        "source_fields": [
+          "spec.Key Entities"
+        ],
+        "content": [
+          {
+            "type": "defs",
+            "items": [
+              {
+                "term": "Khách hàng",
+                "meaning": "người đã mua ít nhất một lần, có số điện thoại và trạng thái đồng ý nhận tin"
+              },
+              {
+                "term": "Lần mua",
+                "meaning": "ngày mua, cửa hàng, các món đã mua"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "success-criteria",
+        "heading": "Tiêu chí thành công",
+        "source_fields": [
+          "spec.Success Criteria"
+        ],
+        "content": [
+          {
+            "type": "compare",
+            "title": "Tỷ lệ khách quay lại trong 90 ngày",
+            "sides": [
+              {
+                "label": "Hiện nay",
+                "ref": "N-01"
+              },
+              {
+                "label": "Mục tiêu sau 12 tuần",
+                "ref": "N-02"
+              }
+            ],
+            "estimate_label": "not tech-reviewed"
+          },
+          {
+            "type": "list",
+            "items": [
+              {
+                "id": "SC-001",
+                "text": "Tỷ lệ khách quay lại trong 90 ngày tại cửa hàng thí điểm đạt {{N-02}}, so với cửa hàng đối chứng."
+              },
+              {
+                "id": "SC-002",
+                "text": "Tỷ lệ khách hủy nhận tin dưới {{N-10}} mỗi tháng."
+              }
+            ],
+            "estimate_label": "not tech-reviewed"
+          }
+        ],
+        "estimate_label": "not tech-reviewed"
+      },
+      {
+        "id": "ai-fit",
+        "heading": "Mức phù hợp của AI",
+        "source_fields": [
+          "spec.AI-fit"
+        ],
+        "content": [
+          {
+            "type": "text",
+            "text": "Lời nhắc theo lịch là tự động hóa, không cần AI. Gợi ý sản phẩm dùng quy tắc theo nhóm hàng trong bản đầu tiên."
+          }
+        ],
+        "diagram": null
+      },
+      {
+        "id": "non-functional",
+        "heading": "Yêu cầu vận hành",
+        "source_fields": [
+          "spec.Requirements"
+        ],
+        "content": [
+          {
+            "type": "list",
+            "items": [
+              "Khoảng 40 nhân viên dùng trên điện thoại tại 6 cửa hàng."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "glossary",
+        "heading": "Thuật ngữ",
+        "source_fields": [
+          "glossary.md"
+        ],
+        "content": [
+          {
+            "type": "defs",
+            "items": [
+              {
+                "term": "Khách quay lại",
+                "meaning": "khách mua thêm ít nhất một lần trong 90 ngày sau lần mua trước"
+              },
+              {
+                "term": "Cửa hàng đối chứng",
+                "meaning": "cửa hàng không dùng lời nhắc, dùng để so sánh kết quả"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "open-questions",
+        "heading": "Câu hỏi mở",
+        "source_fields": [
+          "open-questions.md"
+        ],
+        "content": [
+          {
+            "type": "questions",
+            "items": [
+              {
+                "id": "Q-001",
+                "text": "Công cụ nhắn tin có nối được với phần mềm bán hàng hiện tại không?",
+                "owner": "Trưởng nhóm kỹ thuật",
+                "blocking": true
+              },
+              {
+                "id": "Q-002",
+                "text": "Nội dung tin nhắn do ai duyệt?",
+                "owner": "Trưởng phòng marketing",
+                "blocking": false
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "numbers": [
+    {
+      "id": "N-01",
+      "value": 18,
+      "unit": "%",
+      "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+      "period": "01/2026 đến 06/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-02",
+      "value": 24,
+      "unit": "%",
+      "source": "Mục tiêu do giám đốc bán hàng đặt",
+      "period": "12 tuần thí điểm",
+      "label": "assumed"
+    },
+    {
+      "id": "N-03",
+      "value": 180000000,
+      "unit": "đ",
+      "source": "Ước tính sơ bộ trong kế hoạch",
+      "period": "12 tuần thí điểm",
+      "label": "assumed",
+      "estimate": true
+    },
+    {
+      "id": "N-04",
+      "value": 120000000,
+      "unit": "đ",
+      "source": "Ước tính sơ bộ trong kế hoạch",
+      "period": "năm đầu sau thí điểm",
+      "label": "assumed",
+      "estimate": true
+    },
+    {
+      "id": "N-05",
+      "value": 350000000,
+      "unit": "đ",
+      "source": "Ước tính sơ bộ trong kế hoạch",
+      "period": "năm đầu sau thí điểm",
+      "label": "assumed",
+      "estimate": true
+    },
+    {
+      "id": "N-06",
+      "value": 600000000,
+      "unit": "đ",
+      "source": "Ước tính sơ bộ trong kế hoạch",
+      "period": "năm đầu sau thí điểm",
+      "label": "assumed",
+      "estimate": true
+    },
+    {
+      "id": "N-07",
+      "value": 6,
+      "unit": "cửa hàng",
+      "source": "Kế hoạch thí điểm",
+      "period": "12 tuần thí điểm",
+      "label": "assumed"
+    },
+    {
+      "id": "N-08",
+      "value": 12,
+      "unit": "tuần",
+      "source": "Kế hoạch thí điểm",
+      "period": "12/2026 đến 02/2027",
+      "label": "assumed"
+    },
+    {
+      "id": "N-09",
+      "value": 650000,
+      "unit": "đ",
+      "source": "Báo cáo bán hàng nội bộ (dữ liệu hư cấu)",
+      "period": "01/2026 đến 06/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-10",
+      "value": 2,
+      "unit": "%",
+      "source": "Ngưỡng do giám đốc bán hàng đặt",
+      "period": "mỗi tháng",
+      "label": "assumed"
+    },
+    {
+      "id": "N-11",
+      "value": 17,
+      "unit": "%",
+      "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+      "period": "01/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-12",
+      "value": 19,
+      "unit": "%",
+      "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+      "period": "02/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-13",
+      "value": 18,
+      "unit": "%",
+      "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+      "period": "03/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-14",
+      "value": 17,
+      "unit": "%",
+      "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+      "period": "04/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-15",
+      "value": 18,
+      "unit": "%",
+      "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+      "period": "05/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-16",
+      "value": 19,
+      "unit": "%",
+      "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+      "period": "06/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-17",
+      "value": 13,
+      "unit": "nhóm",
+      "source": "Hồ sơ làm rõ ý tưởng",
+      "period": "tại ngày đóng gói 12/11/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-18",
+      "value": 15,
+      "unit": "nhóm",
+      "source": "Hồ sơ làm rõ ý tưởng",
+      "period": "tại ngày đóng gói 12/11/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-19",
+      "value": 4,
+      "unit": "tuần",
+      "source": "Ước tính sơ bộ trong kế hoạch",
+      "period": "tại ngày đóng gói 12/11/2026",
+      "label": "assumed",
+      "estimate": true
+    },
+    {
+      "id": "N-20",
+      "value": 16,
+      "unit": "tuần",
+      "source": "Ước tính sơ bộ trong kế hoạch",
+      "period": "tại ngày đóng gói 12/11/2026",
+      "label": "assumed",
+      "estimate": true
+    },
+    {
+      "id": "N-21",
+      "value": 26,
+      "unit": "tuần",
+      "source": "Ước tính sơ bộ trong kế hoạch",
+      "period": "tại ngày đóng gói 12/11/2026",
+      "label": "assumed",
+      "estimate": true
+    },
+    {
+      "id": "N-23",
+      "value": 6,
+      "unit": "cửa hàng",
+      "source": "Kế hoạch thí điểm",
+      "period": "12 tuần thí điểm",
+      "label": "assumed"
+    },
+    {
+      "id": "N-24",
+      "value": 30,
+      "unit": "ngày",
+      "source": "Yêu cầu của bản đầu tiên",
+      "period": "bản đầu tiên",
+      "label": "assumed"
+    },
+    {
+      "id": "N-25",
+      "value": 70,
+      "unit": "%",
+      "source": "Giả định A-002 trong hồ sơ ý tưởng",
+      "period": "tại ngày đóng gói 12/11/2026",
+      "label": "assumed"
+    }
+  ],
+  "diagrams": [],
+  "gaps": [
+    {
+      "field": "spec.Requirements: giờ cao điểm dùng hệ thống",
+      "section": "non-functional"
+    },
+    {
+      "field": "plan.Pilot and rollout: cách chọn cửa hàng đối chứng",
+      "slide": 9
+    }
+  ],
+  "links": {
+    "board_artifact": null,
+    "tech_artifact": null,
+    "slides": null,
+    "docs": null
+  }
+}
+</script>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---- Shared renderer (identical in board-deck.html and tech-prd.html) ----
+
+  // Labels. Vietnamese is the default and matches the static text in the page.
+  // When the idea's language is not Vietnamese, the renderer starts from the
+  // built-in English labels and overrides any key that data.json supplies in an
+  // optional top-level "labels" object ({ "<key>": "<text>" }, same keys as
+  // below), then rewrites every static element marked data-label="<key>".
+  // For Vietnamese ideas "labels" is ignored, so the static text never drifts.
+  var LABELS = {
+    vi: {
+      readError: "Không đọc được dữ liệu của tài liệu này. Gõ /vibebiz:package để vibebiz đóng gói lại.",
+      version: "Phiên bản {date}",
+      draft: "Bản nháp: một số mục chưa làm rõ và được đánh dấu ngay tại chỗ.",
+      draftShort: "Bản nháp",
+      estimatePending: "Các con số ước tính chưa qua đội kỹ thuật xem lại.",
+      estimateDone: "Các con số ước tính đã qua đội kỹ thuật xem lại.",
+      gap: "Chưa làm rõ",
+      gapField: "Chưa làm rõ: {field}",
+      notTechReviewed: "Chưa qua đội kỹ thuật",
+      measured: "Số đo thực tế",
+      assumed: "Giả định",
+      kindMeasured: "đo thực tế",
+      kindAssumed: "giả định",
+      source: "Nguồn",
+      period: "Kỳ",
+      periodLower: "kỳ",
+      noSource: "chưa ghi nguồn",
+      noPeriod: "chưa ghi kỳ",
+      noLabel: "chưa ghi đo thực tế hay giả định",
+      missingFigure: "thiếu số liệu {id}",
+      figures: "Số liệu dùng ở đây",
+      figuresTable: "Bảng số liệu",
+      colId: "Mã",
+      colValue: "Giá trị",
+      colKind: "Loại",
+      colText: "Nội dung",
+      chartNoSource: "Biểu đồ này chưa ghi nguồn.",
+      noDiagram: "Không có sơ đồ. Nội dung được trình bày dạng bảng.",
+      frameworks: "Khung phân tích đã dùng",
+      basedOn: "Dựa trên",
+      notes: "Ghi chú",
+      chosen: "Phương án chọn",
+      given: "Cho trước",
+      when: "Khi",
+      then: "Thì",
+      blocking: "Câu hỏi chặn tiến độ",
+      nonBlocking: "Câu hỏi không chặn tiến độ",
+      owner: "Người trả lời",
+      noneBlocking: "Không có.",
+      links: "Liên kết",
+      link_board_artifact: "Bản trình bày cho ban lãnh đạo (Artifact)",
+      link_tech_artifact: "Tài liệu cho đội kỹ thuật (Artifact)",
+      link_slides: "Bản trình bày trên Google Slides",
+      link_docs: "Tài liệu trên Google Docs",
+      gapsTitle: "Các mục chưa làm rõ",
+      noGaps: "Không còn mục nào chưa làm rõ.",
+      page: "Trang {n}",
+      slideOf: "{n}/{total}",
+      appendix: "Phụ lục",
+      slide1: "Quyết định cần duyệt",
+      slide2: "Vấn đề và chi phí hiện nay",
+      slide3: "Kết quả mong đợi",
+      slide4: "Các phương án đã cân nhắc",
+      slide5: "Giải pháp đề xuất",
+      slide6: "Phạm vi bản đầu tiên",
+      slide7: "Chi phí, nguồn lực và lợi ích",
+      slide8: "Rủi ro và điều kiện dừng",
+      slide9: "Lộ trình thí điểm",
+      slideAppendix: "Giả định và câu hỏi mở",
+      traceTitle: "Nguồn của từng trang",
+      traceHeadline: "Mọi trang và mọi con số đều truy được về hồ sơ ý tưởng",
+      traceSlide: "Trang",
+      deckTitle: "Trình ban lãnh đạo",
+      prdTitle: "Tài liệu yêu cầu cho đội kỹ thuật",
+      contents: "Mục lục",
+      snapshot: "Bản yêu cầu dùng được với Spec Kit",
+      snapshotNote: "Tệp spec.md nằm cùng thư mục với tài liệu này.",
+      sec_business_context: "Bối cảnh kinh doanh",
+      sec_user_stories: "Câu chuyện người dùng",
+      sec_requirements: "Yêu cầu",
+      sec_key_entities: "Dữ liệu chính",
+      sec_success_criteria: "Tiêu chí thành công",
+      sec_ai_fit: "Mức phù hợp của AI",
+      sec_non_functional: "Yêu cầu vận hành",
+      sec_glossary: "Thuật ngữ",
+      sec_open_questions: "Câu hỏi mở",
+      sec_assumptions: "Giả định",
+      million: "triệu",
+      billion: "tỷ",
+      kindEstimate: "ước tính",
+      estimatesPending: "{n} ước tính chưa qua đội kỹ thuật",
+      frameworksShort: "Khung",
+      target: "Mục tiêu",
+      aboveTarget: "Vượt {label}",
+      belowTarget: "Chưa tới {label}",
+      threshold: "Ngưỡng",
+      ratioOf: "{n} trên {total}",
+      optName: "Phương án",
+      optPros: "Được",
+      optCons: "Mất",
+      assumptionsTitle: "Giả định cần kiểm chứng",
+      openQuestions: "Câu hỏi còn mở",
+      blockingShort: "Chặn tiến độ",
+      colGroup: "Nhóm",
+      colWork: "Việc",
+      colWhen: "Thời gian",
+      traceHeadlineCount: "{n} con số, mỗi số truy được về một nguồn",
+      traceCorner: "Nguồn \\ Trang",
+      appendixShort: "PL",
+      traceNote: "Bảng số liệu đầy đủ nằm trong tài liệu cho đội kỹ thuật.",
+      footer: "Tài liệu do vibebiz dựng từ hồ sơ ý tưởng. Mọi số liệu lấy từ một bảng số liệu chung."
+    },
+    en: {
+      readError: "This document's data could not be read. Type /vibebiz:package to package it again.",
+      version: "Version {date}",
+      draft: "Draft: some items are not yet clarified and are marked where they belong.",
+      draftShort: "Draft",
+      estimatePending: "Estimates have not been reviewed by the tech team.",
+      estimateDone: "Estimates have been reviewed by the tech team.",
+      gap: "Not yet clarified",
+      gapField: "Not yet clarified: {field}",
+      notTechReviewed: "Not tech-reviewed",
+      measured: "Measured",
+      assumed: "Assumed",
+      kindMeasured: "measured",
+      kindAssumed: "assumed",
+      source: "Source",
+      period: "Period",
+      periodLower: "period",
+      noSource: "no source recorded",
+      noPeriod: "no period recorded",
+      noLabel: "not marked measured or assumed",
+      missingFigure: "missing figure {id}",
+      figures: "Figures used here",
+      figuresTable: "Figures table",
+      colId: "ID",
+      colValue: "Value",
+      colKind: "Type",
+      colText: "Text",
+      chartNoSource: "This chart has no source recorded.",
+      noDiagram: "No diagram. The content is shown as a table.",
+      frameworks: "Frameworks applied",
+      basedOn: "Based on",
+      notes: "Notes",
+      chosen: "Chosen",
+      given: "Given",
+      when: "When",
+      then: "Then",
+      blocking: "Blocking questions",
+      nonBlocking: "Non-blocking questions",
+      owner: "Owner",
+      noneBlocking: "None.",
+      links: "Links",
+      link_board_artifact: "Board deck (Artifact)",
+      link_tech_artifact: "Tech document (Artifact)",
+      link_slides: "Google Slides deck",
+      link_docs: "Google Docs document",
+      gapsTitle: "Items not yet clarified",
+      noGaps: "Nothing is left unclarified.",
+      page: "Slide {n}",
+      slideOf: "{n}/{total}",
+      appendix: "Appendix",
+      slide1: "Decision requested",
+      slide2: "The problem and what it costs today",
+      slide3: "Expected outcome",
+      slide4: "Alternatives considered",
+      slide5: "Proposed solution",
+      slide6: "First-release scope",
+      slide7: "Cost, resources and return",
+      slide8: "Risks and kill criteria",
+      slide9: "Pilot roadmap",
+      slideAppendix: "Assumptions and open questions",
+      traceTitle: "Where each slide comes from",
+      traceHeadline: "Every slide and every figure traces back to the idea folder",
+      traceSlide: "Slide",
+      deckTitle: "Board presentation",
+      prdTitle: "Requirements for the tech team",
+      contents: "Contents",
+      snapshot: "Spec Kit-compatible requirement file",
+      snapshotNote: "The file spec.md sits in the same folder as this document.",
+      sec_business_context: "Business context",
+      sec_user_stories: "User stories",
+      sec_requirements: "Requirements",
+      sec_key_entities: "Key entities",
+      sec_success_criteria: "Success criteria",
+      sec_ai_fit: "AI fit",
+      sec_non_functional: "Non-functional needs",
+      sec_glossary: "Glossary",
+      sec_open_questions: "Open questions",
+      sec_assumptions: "Assumptions",
+      million: "million",
+      billion: "billion",
+      kindEstimate: "estimate",
+      estimatesPending: "{n} estimates not tech-reviewed",
+      frameworksShort: "Frameworks",
+      target: "Target",
+      aboveTarget: "Above {label}",
+      belowTarget: "Below {label}",
+      threshold: "Threshold",
+      ratioOf: "{n} of {total}",
+      optName: "Option",
+      optPros: "Gains",
+      optCons: "Costs",
+      assumptionsTitle: "Assumptions to test",
+      openQuestions: "Open questions",
+      blockingShort: "Blocking",
+      colGroup: "Group",
+      colWork: "Work",
+      colWhen: "When",
+      traceHeadlineCount: "{n} figures, each traced to a source",
+      traceCorner: "Source \\ Slide",
+      appendixShort: "App.",
+      traceNote: "The full figures table is in the tech document.",
+      footer: "Built by vibebiz from the idea folder. Every figure comes from one shared figures table."
+    }
+  };
+
+  var SVG_NS = "http://www.w3.org/2000/svg";
+  var hasOwn = Object.prototype.hasOwnProperty;
+
+  function el(tag, cls, text) {
+    var node = document.createElement(tag);
+    if (cls) node.className = cls;
+    if (text !== undefined && text !== null) node.textContent = String(text);
+    return node;
+  }
+
+  function svgEl(tag, attrs) {
+    var node = document.createElementNS(SVG_NS, tag);
+    for (var k in attrs) if (hasOwn.call(attrs, k)) node.setAttribute(k, String(attrs[k]));
+    return node;
+  }
+
+  function arr(value) { return Array.isArray(value) ? value : []; }
+  function str(value) { return typeof value === "string" ? value : (typeof value === "number" ? String(value) : ""); }
+  function isObj(value) { return !!value && typeof value === "object" && !Array.isArray(value); }
+
+  // Only relative workspace paths and https links are rendered as links.
+  function safeHref(href) {
+    if (typeof href !== "string" || href === "") return null;
+    // Reject whitespace and control characters, which browsers strip before reading the scheme.
+    if (/[\u0000- \u007f\\]/.test(href)) return null;
+    if (/^https:\/\/[^\/]/i.test(href)) return href;
+    // Otherwise only a relative workspace path: no scheme, not protocol-relative, not absolute.
+    if (/^[A-Za-z0-9._-][A-Za-z0-9._\/-]*$/.test(href) && !/^[a-z][a-z0-9+.-]*:/i.test(href)) return href;
+    return null;
+  }
+
+  function link(label, href) {
+    var safe = safeHref(href);
+    if (!safe) return el("span", null, label);
+    var a = el("a", null, label);
+    a.setAttribute("href", safe);
+    if (/^https:/i.test(safe)) { a.setAttribute("target", "_blank"); a.setAttribute("rel", "noopener noreferrer"); }
+    return a;
+  }
+
+  function formatDate(iso) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})(-\d+)?$/.exec(iso || "");
+    return m ? m[3] + "/" + m[2] + "/" + m[1] + (m[4] || "") : (iso || "");
+  }
+
+  // ---- Data ----
+  var data = null;
+  var readError = false;
+  try {
+    data = JSON.parse(document.getElementById("vibebiz-data").textContent);
+  } catch (e) {
+    readError = true;
+  }
+  if (!isObj(data)) { data = {}; readError = true; }
+
+  var idea = isObj(data.idea) ? data.idea : {};
+  var lang = /^[A-Za-z]{2,3}(-[A-Za-z0-9]{1,8})*$/.test(str(idea.language)) ? idea.language : "vi";
+  var isVi = lang.toLowerCase() === "vi" || lang.toLowerCase().indexOf("vi-") === 0;
+  var L = {};
+  (function () {
+    var base = isVi ? LABELS.vi : LABELS.en;
+    var k;
+    for (k in base) if (hasOwn.call(base, k)) L[k] = base[k];
+    if (!isVi && isObj(data.labels)) {
+      for (k in data.labels) {
+        if (hasOwn.call(data.labels, k) && hasOwn.call(base, k) && typeof data.labels[k] === "string") L[k] = data.labels[k];
+      }
+    }
+  })();
+  document.documentElement.setAttribute("lang", lang);
+  if (!isVi) {
+    Array.prototype.slice.call(document.querySelectorAll("[data-label]")).forEach(function (node) {
+      var key = node.getAttribute("data-label");
+      if (hasOwn.call(L, key)) node.textContent = L[key];
+    });
+  }
+
+  function t(key, vars) {
+    var s = hasOwn.call(L, key) ? L[key] : key;
+    return s.replace(/\{(\w+)\}/g, function (m, k) {
+      return vars && vars[k] !== undefined && vars[k] !== null ? String(vars[k]) : m;
+    });
+  }
+
+  // ---- Theme: brand tokens from data.json "theme" (see the token comment) ----
+  var THEME_COLORS = ["accent", "accent_soft", "ink", "quiet", "canvas", "surface", "rule", "mark"];
+  (function applyTheme(theme) {
+    if (!isObj(theme)) return;
+    var root = document.documentElement.style;
+    ["light", "dark"].forEach(function (mode) {
+      var set = theme[mode];
+      if (!isObj(set)) return;
+      THEME_COLORS.forEach(function (key) {
+        var v = set[key];
+        if (typeof v === "string" && /^#(?:[0-9A-Fa-f]{3,4}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$/.test(v)) {
+          root.setProperty("--brand-" + key.replace(/_/g, "-") + "-" + mode, v);
+        }
+      });
+    });
+    var fonts = theme.fonts;
+    if (isObj(fonts)) {
+      ["display", "text"].forEach(function (key) {
+        var v = fonts[key];
+        if (typeof v === "string" && /^[A-Za-z0-9 ,"'-]{1,200}$/.test(v)) root.setProperty("--brand-font-" + key, v);
+      });
+    }
+  })(data.theme);
+
+  var estimatePending = idea.estimate_status !== "tech-reviewed";
+
+  var FIG = {};
+  var FIG_ORDER = [];
+  arr(data.numbers).forEach(function (f) {
+    if (isObj(f) && typeof f.id === "string" && !hasOwn.call(FIG, f.id)) { FIG[f.id] = f; FIG_ORDER.push(f.id); }
+  });
+
+  var DIAG = {};
+  arr(data.diagrams).forEach(function (d) {
+    if (isObj(d) && typeof d.id === "string") DIAG[d.id] = d;
+  });
+
+  // gaps[]: strings (the field) or { field, slide, section }.
+  var GAPS = arr(data.gaps).map(function (g) {
+    return typeof g === "string" ? { field: g } : (isObj(g) ? g : null);
+  }).filter(Boolean);
+
+  function gapsFor(key, value) {
+    return GAPS.filter(function (g) { return g[key] !== undefined && String(g[key]) === String(value); });
+  }
+
+  // ---- Icons: 24x24 stroke paths ----
+  var ICONS = {
+    target: "M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M7 12a5 5 0 1 0 10 0a5 5 0 1 0-10 0M11 12a1 1 0 1 0 2 0a1 1 0 1 0-2 0",
+    coin: "M4 7c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zM4 7v5c0 1.7 3.6 3 8 3s8-1.3 8-3V7M4 12v5c0 1.7 3.6 3 8 3s8-1.3 8-3v-5",
+    clock: "M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M12 7v5l3.5 2",
+    store: "M3.5 9 5 4h14l1.5 5M3.5 9h17M3.5 9c0 1.7 1.3 3 2.8 3s2.9-1.3 2.9-3c0 1.7 1.3 3 2.8 3s2.8-1.3 2.8-3c0 1.7 1.3 3 2.9 3s2.8-1.3 2.8-3M5 12v8h14v-8M10 20v-5h4v5",
+    people: "M9 11a3.5 3.5 0 1 0 0-7a3.5 3.5 0 1 0 0 7M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.3a3.5 3.5 0 0 1 0 6.4M18 14.4c2 .8 3.5 2.8 3.5 5.6",
+    chat: "M4 5h16v11H10l-5 4v-4H4z",
+    alert: "M12 3.5 21.5 20h-19zM12 10v4.5M12 17.2v.1",
+    stop: "M8.3 3h7.4L21 8.3v7.4L15.7 21H8.3L3 15.7V8.3zM9.5 9.5l5 5M14.5 9.5l-5 5",
+    check: "M5 12.5 9.5 17 19 7.5",
+    plus: "M12 6v12M6 12h12",
+    minus: "M6 12h12",
+    flag: "M5.5 21V4M5.5 4H17l-2.2 4 2.2 4H5.5",
+    calendar: "M4 6h16v14H4zM4 10.5h16M8.5 3.5v4M15.5 3.5v4",
+    chart: "M4 4v16h16M8 16v-4M12 16V8M16 16v-6",
+    bulb: "M9.5 18h5M10.5 21h3M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0 0 12 3z",
+    box: "M3.5 7.5 12 3.5l8.5 4-8.5 4zM3.5 7.5v9l8.5 4 8.5-4v-9M12 11.5v9",
+    question: "M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M9.5 9.2a2.6 2.6 0 1 1 3.7 2.4c-.7.3-1.2 1-1.2 1.8v.4M12 17.2v.1",
+    arrow: "M4 12h15M14 7l5 5-5 5",
+    dot: "M10 12a2 2 0 1 0 4 0a2 2 0 1 0-4 0",
+    trend: "M4 17l6-6 4 4 6-7M15 8h5v5",
+    bag: "M5 8h14l-1 13H6zM9 8V6a3 3 0 0 1 6 0v2",
+    bagcheck: "M5 8h14l-1 13H6zM9 8V6a3 3 0 0 1 6 0v2M9 13.5l2.5 2.5L16 11.5",
+    peoplecheck: "M9 11a3.5 3.5 0 1 0 0-7a3.5 3.5 0 1 0 0 7M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 11l2 2 4-4",
+    tag: "M20 12l-8 8-9-9V3h8zM7.5 6a1.5 1.5 0 1 0 0 3a1.5 1.5 0 1 0 0-3",
+    list: "M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01",
+    gift: "M3 10h18v11H3zM12 10v11M3 14h18M12 10c-2-4-6-4-6-1s6 1 6 1M12 10c2-4 6-4 6-1s-6 1-6 1",
+    sun: "M8 12a4 4 0 1 0 8 0a4 4 0 1 0-8 0M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4",
+    phone: "M8 2h8a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zM11 18h2",
+    shield: "M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6zM9 12l2 2 4-4",
+    close: "M6 6l12 12M18 6L6 18"
+  };
+
+  function icon(name, cls) {
+    var key = hasOwn.call(ICONS, name) ? name : "dot";
+    var s = svgEl("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", focusable: "false", "class": "ico" + (cls ? " " + cls : "") });
+    s.appendChild(svgEl("path", { d: ICONS[key] }));
+    return s;
+  }
+
+  // ---- Figures: always looked up by id in numbers[] ----
+  function formatPlain(f) {
+    var v = f.value;
+    if (typeof v === "number" && isFinite(v)) {
+      try { return v.toLocaleString(isVi ? "vi-VN" : lang); } catch (e) { return String(v); }
+    }
+    return str(v);
+  }
+
+  function formatValue(f) {
+    var text = formatPlain(f);
+    var unit = str(f.unit);
+    if (!unit) return text;
+    return unit === "%" ? text + unit : text + " " + unit;
+  }
+
+  function isEstimate(f) { return !!f && f.estimate === true && estimatePending; }
+
+  function figOf(id) { return hasOwn.call(FIG, id) ? FIG[id] : null; }
+  function isNum(f) { return !!f && typeof f.value === "number" && isFinite(f.value); }
+
+  function useFig(ctx, id) {
+    if (ctx.refs.indexOf(id) < 0) ctx.refs.push(id);
+    return figOf(id);
+  }
+
+  // A figure split for display: the number (with "%" attached) and the rest
+  // (scale word and unit). The short form scales a large non-% value
+  // ("180 triệu đ"); the value itself never changes.
+  function figParts(f, short) {
+    var v = f.value;
+    var unit = str(f.unit);
+    var num = formatPlain(f);
+    var scale = "";
+    if (short && isNum(f) && Math.abs(v) >= 1e6 && unit !== "%") {
+      var big = Math.abs(v) >= 1e9;
+      var n = v / (big ? 1e9 : 1e6);
+      try { num = n.toLocaleString(isVi ? "vi-VN" : lang, { maximumFractionDigits: 1 }); } catch (e) { num = String(Math.round(n * 10) / 10); }
+      scale = t(big ? "billion" : "million");
+    }
+    if (unit === "%") return { num: num + "%", rest: scale };
+    return { num: num, rest: [scale, unit].filter(Boolean).join(" ") };
+  }
+  function figText(f, short) { var p = figParts(f, short); return p.rest ? p.num + " " + p.rest : p.num; }
+
+  // "18→24%" when both figures share a unit, otherwise "a → b".
+  function rangeText(a, b, short) {
+    if (str(a.unit) === str(b.unit)) {
+      var pa = figParts(a, short);
+      var pb = figParts(b, short);
+      if (str(a.unit) === "%") return formatPlain(a) + "→" + figText(b, short);
+      if (pa.rest === pb.rest) return pa.num + "→" + figText(b, short);
+    }
+    return figText(a, short) + " → " + figText(b, short);
+  }
+
+  // A figure as a display value: the number, then the unit in a smaller span.
+  function figNode(ctx, id, cls, short) {
+    var f = useFig(ctx, id);
+    if (!f) return el("span", (cls ? cls + " " : "") + "missing", t("missingFigure", { id: id }));
+    var p = figParts(f, short);
+    var node = el("span", cls, p.num);
+    if (p.rest) node.appendChild(el("span", "unit", " " + p.rest));
+    node.setAttribute("data-figure", id);
+    return node;
+  }
+
+  // Two figures as one range ("18→24%").
+  function rangeNode(ctx, id, toId, cls, short) {
+    var a = useFig(ctx, id);
+    var b = useFig(ctx, toId);
+    if (!a || !b) return el("span", (cls ? cls + " " : "") + "missing", t("missingFigure", { id: a ? toId : id }));
+    var node = el("span", cls, rangeText(a, b, short));
+    node.setAttribute("data-figure", id + " " + toId);
+    return node;
+  }
+
+  // The value of an item that may name a range: { ref, to_ref }.
+  function itemValue(it, ctx, cls, short) {
+    var id = str(it.ref);
+    return it.to_ref ? rangeNode(ctx, id, str(it.to_ref), cls, short) : figNode(ctx, id, cls, short);
+  }
+  function itemEstimate(it) { return isEstimate(figOf(str(it.ref))) || (!!it.to_ref && isEstimate(figOf(str(it.to_ref)))); }
+
+  // Where a block's own source goes: under it in the tech document; on a
+  // slide, into the footer source line (the slide footer already lists the
+  // source, period and kind of every figure shown).
+  function sourceNote(source, figs, ctx) {
+    if (ctx.role === "doc") return chartCaption(source, figs);
+    if (ctx.sources && str(source) && ctx.sources.indexOf(str(source)) < 0) ctx.sources.push(str(source));
+    return null;
+  }
+  function addNote(parent, node) { if (node) parent.appendChild(node); }
+
+  function lowerFirst(s) {
+    if (!s) return s;
+    try { return s.charAt(0).toLocaleLowerCase(lang) + s.slice(1); } catch (e) { return s.charAt(0).toLowerCase() + s.slice(1); }
+  }
+
+  function estimateBadge() { return el("span", "badge-est", t("notTechReviewed")); }
+
+  function kindText(f) {
+    if (f.label === "measured") return el("span", null, t("kindMeasured"));
+    if (f.label === "assumed") return el("span", null, t("kindAssumed"));
+    return el("span", "missing", t("noLabel"));
+  }
+
+  function inlineFigure(id, ctx) {
+    var f = useFig(ctx, id);
+    if (!f) return el("span", "missing", t("missingFigure", { id: id }));
+    var span = el("span", "fig-inline", formatValue(f));
+    span.setAttribute("data-figure", id);
+    var wrap = document.createDocumentFragment();
+    wrap.appendChild(span);
+    if (isEstimate(f)) wrap.appendChild(estimateBadge());
+    return wrap;
+  }
+
+  // Text with figure references written as {{N-01}}; everything else stays plain text.
+  function richText(text, ctx) {
+    var frag = document.createDocumentFragment();
+    var s = str(text);
+    var re = /\{\{([A-Za-z0-9._-]+)\}\}/g;
+    var last = 0;
+    var m;
+    while ((m = re.exec(s)) !== null) {
+      if (m.index > last) frag.appendChild(document.createTextNode(s.slice(last, m.index)));
+      frag.appendChild(inlineFigure(m[1], ctx));
+      last = re.lastIndex;
+    }
+    if (last < s.length) frag.appendChild(document.createTextNode(s.slice(last)));
+    return frag;
+  }
+
+  // Visible words, a figure reference counting as one.
+  function words(text) {
+    var s = str(text).replace(/\{\{[^}]*\}\}/g, "x").trim();
+    return s ? s.split(/\s+/).length : 0;
+  }
+
+  function blockWords(b) {
+    if (b.type === "text") return words(b.text);
+    if (b.type === "list") {
+      return arr(b.items).reduce(function (n, it) { return n + words(isObj(it) ? it.text : it); }, 0);
+    }
+    if (b.type === "callout") return words(b.text);
+    return 0;
+  }
+
+  function blockText(b) {
+    if (b.type === "text") return str(b.text);
+    if (b.type === "callout") return (b.label ? str(b.label) + ": " : "") + str(b.text);
+    if (b.type === "list") return arr(b.items).map(function (it) { return str(isObj(it) ? it.text : it); }).join("; ");
+    return "";
+  }
+
+  // The board reads plain words: drop a "file.Section: " prefix from a gap field.
+  function gapText(field) {
+    var s = str(field);
+    return PLAIN_GAPS ? s.replace(/^[A-Za-z_-]+\.[^:]{1,80}:\s+/, "") : s;
+  }
+  function gapBadge(field) {
+    return el("span", "tag-gap", field ? t("gapField", { field: gapText(field) }) : t("gap"));
+  }
+
+  // One compact line: every figure used, grouped by source, period and kind.
+  function sourcesLine(ctx) {
+    var extra = arr(ctx.sources).filter(function (src) {
+      return !ctx.refs.some(function (id) { var f = figOf(id); return f && str(f.source) === src; });
+    });
+    if (!ctx.refs.length && !extra.length) return null;
+    var groups = [];
+    var byKey = {};
+    var missing = [];
+    ctx.refs.forEach(function (id) {
+      var f = hasOwn.call(FIG, id) ? FIG[id] : null;
+      if (!f) { missing.push(id); return; }
+      // One entry per source and kind; the periods of its figures are listed together.
+      var key = str(f.source) + "\u0001" + str(f.label);
+      if (!hasOwn.call(byKey, key)) { byKey[key] = { f: f, periods: [] }; groups.push(byKey[key]); }
+      var per = str(f.period);
+      if (byKey[key].periods.indexOf(per) < 0) byKey[key].periods.push(per);
+    });
+    var p = el("p", "sources");
+    p.appendChild(el("span", "line-label", t("source") + ": "));
+    groups.forEach(function (g, i) {
+      var f = g.f;
+      if (i) p.appendChild(document.createTextNode("; "));
+      p.appendChild(f.source ? document.createTextNode(str(f.source)) : el("span", "missing", t("noSource")));
+      p.appendChild(document.createTextNode(", "));
+      g.periods.forEach(function (per, j) {
+        if (j) p.appendChild(document.createTextNode(", "));
+        p.appendChild(per ? document.createTextNode(per) : el("span", "missing", t("noPeriod")));
+      });
+      p.appendChild(document.createTextNode(", "));
+      p.appendChild(kindText(f));
+    });
+    missing.forEach(function (id, i) {
+      if (groups.length || i) p.appendChild(document.createTextNode("; "));
+      p.appendChild(el("span", "missing", t("missingFigure", { id: id })));
+    });
+    extra.forEach(function (src, i) {
+      if (groups.length || missing.length || i) p.appendChild(document.createTextNode("; "));
+      p.appendChild(document.createTextNode(src));
+    });
+    return p;
+  }
+
+  // Source and period under every chart.
+  function chartCaption(source, figs) {
+    var cap = el("figcaption", "cap");
+    var src = str(source);
+    if (!src) {
+      var seen = [];
+      figs.forEach(function (f) { if (f && f.source && seen.indexOf(str(f.source)) < 0) seen.push(str(f.source)); });
+      src = seen.join("; ");
+    }
+    if (src) cap.appendChild(document.createTextNode(t("source") + ": " + src));
+    else cap.appendChild(el("span", "missing", t("chartNoSource")));
+    var periods = [];
+    figs.forEach(function (f) { if (f && f.period && periods.indexOf(str(f.period)) < 0) periods.push(str(f.period)); });
+    if (periods.length) cap.appendChild(document.createTextNode("; " + t("periodLower") + ": " + periods.join(", ")));
+    return cap;
+  }
+
+  function figureTable(ids) {
+    var wrap = el("div", "table-wrap");
+    var tbl = el("table", "figures-table");
+    var head = el("tr");
+    [t("colId"), t("colValue"), t("source"), t("period"), t("colKind")].forEach(function (c) { head.appendChild(el("th", null, c)); });
+    var thead = el("thead");
+    thead.appendChild(head);
+    tbl.appendChild(thead);
+    var tbody = el("tbody");
+    ids.forEach(function (id) {
+      var f = hasOwn.call(FIG, id) ? FIG[id] : null;
+      var tr = el("tr");
+      tr.appendChild(el("td", "item-id", id));
+      if (!f) {
+        var miss = el("td", "missing", t("missingFigure", { id: id }));
+        miss.setAttribute("colspan", "4");
+        tr.appendChild(miss);
+        tbody.appendChild(tr);
+        return;
+      }
+      var v = el("td", "num-cell", formatValue(f));
+      if (isEstimate(f)) v.appendChild(estimateBadge());
+      tr.appendChild(v);
+      tr.appendChild(f.source ? el("td", null, str(f.source)) : el("td", "missing", t("noSource")));
+      tr.appendChild(f.period ? el("td", null, str(f.period)) : el("td", "missing", t("noPeriod")));
+      var k = el("td");
+      k.appendChild(kindText(f));
+      tr.appendChild(k);
+      tbody.appendChild(tr);
+    });
+    tbl.appendChild(tbody);
+    wrap.appendChild(tbl);
+    return wrap;
+  }
+
+  // ---- Inline SVG ----
+  // Inline SVG is the one exception to text-only insertion. It is taken only
+  // from the dedicated field diagrams[].svg, parsed with DOMParser as
+  // image/svg+xml (never as HTML), and before insertion loses: <script>,
+  // <foreignObject>, animation elements (they can rewrite attributes later),
+  // embedding elements, any element outside the SVG namespace, every event
+  // handler attribute (on*), and every href / xlink:href / src that does not
+  // point inside the same SVG ("#id"). Markup that fails to parse, or whose
+  // root is not <svg>, is dropped and the "no diagram" table shows instead.
+  // The Content Security Policy above blocks any load regardless.
+  var SVG_DROP = {
+    script: 1, foreignobject: 1, animate: 1, animatemotion: 1, animatetransform: 1,
+    set: 1, discard: 1, handler: 1, listener: 1, iframe: 1, embed: 1, object: 1,
+    audio: 1, video: 1
+  };
+
+  function sanitizeSvg(markup) {
+    if (typeof markup !== "string" || markup === "" || typeof DOMParser === "undefined") return null;
+    var doc;
+    try { doc = new DOMParser().parseFromString(markup, "image/svg+xml"); } catch (e) { return null; }
+    var root = doc && doc.documentElement;
+    if (!root || root.namespaceURI !== SVG_NS || String(root.localName).toLowerCase() !== "svg") return null;
+    if (doc.getElementsByTagName("parsererror").length) return null;
+    var nodes = [root].concat(Array.prototype.slice.call(root.getElementsByTagName("*")));
+    for (var i = 0; i < nodes.length; i++) {
+      var node = nodes[i];
+      var name = String(node.localName).toLowerCase();
+      if (node !== root && (node.namespaceURI !== SVG_NS || SVG_DROP[name])) {
+        if (node.parentNode) node.parentNode.removeChild(node);
+        continue;
+      }
+      for (var j = node.attributes.length - 1; j >= 0; j--) {
+        var attr = node.attributes[j];
+        var local = String(attr.localName).toLowerCase();
+        var value = String(attr.value).replace(/[\u0000- ]+/g, "");
+        var drop = local.indexOf("on") === 0 ||
+          ((local === "href" || local === "src") && !/^#[A-Za-z0-9_.:-]*$/.test(value)) ||
+          /javascript:|vbscript:/i.test(value);
+        if (drop) node.removeAttributeNode(attr);
+      }
+    }
+    return document.importNode(root, true);
+  }
+
+  function table(columns, rows, ctx) {
+    var wrap = el("div", "table-wrap");
+    var tbl = el("table");
+    var cols = arr(columns);
+    if (cols.length) {
+      var thead = el("thead");
+      var tr = el("tr");
+      cols.forEach(function (c) { tr.appendChild(el("th", null, str(c))); });
+      thead.appendChild(tr);
+      tbl.appendChild(thead);
+    }
+    var tbody = el("tbody");
+    arr(rows).forEach(function (row) {
+      var r = el("tr");
+      arr(row).forEach(function (cell) {
+        var td = el("td");
+        td.appendChild(richText(cell, ctx));
+        r.appendChild(td);
+      });
+      tbody.appendChild(r);
+    });
+    tbl.appendChild(tbody);
+    wrap.appendChild(tbl);
+    return wrap;
+  }
+
+  function diagramSlot(id, ctx) {
+    if (!id) return null;
+    var d = hasOwn.call(DIAG, id) ? DIAG[id] : null;
+    var fig = el("figure", "diagram");
+    var svg = d ? sanitizeSvg(d.svg) : null;
+    if (svg) {
+      svg.setAttribute("role", "img");
+      if (d.message) svg.setAttribute("aria-label", str(d.message));
+      var paper = el("div", "diagram-svg");
+      paper.appendChild(svg);
+      fig.appendChild(paper);
+      if (d.message) fig.appendChild(el("figcaption", null, str(d.message)));
+      return fig;
+    }
+    fig.className = "diagram none";
+    var note = el("p", "no-diagram");
+    note.appendChild(icon("chart"));
+    note.appendChild(document.createTextNode(t("noDiagram")));
+    fig.appendChild(note);
+    if (d && d.fallback && isObj(d.fallback)) fig.appendChild(table(d.fallback.columns, d.fallback.rows, ctx));
+    if (d && d.message) fig.appendChild(el("figcaption", null, str(d.message)));
+    return fig;
+  }
+
+  // ---- Blocks (board slides and tech sections share them) ----
+  // ctx.role: "hero" (the slide's main element), "aside" (supporting blocks
+  // on a slide), "cards" (appendix lists and questions as cards), "doc" (tech
+  // document: new graphic blocks render as tables or lists there), "title"
+  // (headline text). ctx.sources collects block sources for the slide
+  // footer; ctx.shownGaps lists gap fields a block already shows in place.
+  function figItems(block) {
+    return arr(block.items || block.refs).map(function (it) {
+      return typeof it === "string" ? { ref: it } : (isObj(it) ? it : null);
+    }).filter(Boolean);
+  }
+
+  function blockTitle(b, cls) { return b.title ? el("div", cls || "chart-title", str(b.title)) : null; }
+
+  // Tech document: a figure tile (value, caption).
+  function numTile(it, ctx, size) {
+    var f = useFig(ctx, str(it.ref));
+    var tile = el("div", "num num-" + size);
+    if (it.icon && size !== "hero") tile.appendChild(icon(str(it.icon), "num-ico"));
+    var body = el("div", "num-body");
+    var v = el("div", "num-value");
+    if (f) {
+      var to = it.to_ref ? useFig(ctx, str(it.to_ref)) : null;
+      var txt = to ? rangeText(f, to, false) : formatValue(f);
+      v.textContent = txt;
+      if (txt.length > 9) v.className += " is-long";
+      v.setAttribute("data-figure", str(it.ref));
+      if (it.to_ref && !to) body.appendChild(el("span", "missing", t("missingFigure", { id: str(it.to_ref) })));
+    } else {
+      v.className += " missing";
+      v.textContent = t("missingFigure", { id: str(it.ref) });
+    }
+    body.insertBefore(v, body.firstChild);
+    if (it.caption) { var c = el("div", "num-caption"); c.appendChild(richText(it.caption, ctx)); body.appendChild(c); }
+    if (itemEstimate(it)) body.appendChild(estimateBadge());
+    tile.appendChild(body);
+    return tile;
+  }
+
+  // Slides: the hero number, label above, unit smaller.
+  function heroNumber(it, ctx) {
+    var box = el("div", "num-hero");
+    if (it.caption) { var c = el("div", "num-label"); c.appendChild(richText(it.caption, ctx)); box.appendChild(c); }
+    box.appendChild(itemValue(it, ctx, "num-value", true));
+    if (itemEstimate(it)) box.appendChild(estimateBadge());
+    return box;
+  }
+
+  // Slides: a metric tile with an optional icon.
+  function metricTile(it, ctx) {
+    var box = el("div", "tile" + (it.highlight === true ? " is-hl" : ""));
+    if (it.icon) box.appendChild(icon(str(it.icon), "tile-ico"));
+    box.appendChild(itemValue(it, ctx, "tile-value", true));
+    if (it.caption) { var c = el("div", "tile-caption"); c.appendChild(richText(it.caption, ctx)); box.appendChild(c); }
+    if (itemEstimate(it)) box.appendChild(estimateBadge());
+    return box;
+  }
+
+  // target: { ref, label } on a chart: a reference line (a goal, a cost).
+  function targetOf(b, ctx) {
+    if (!isObj(b.target) || !b.target.ref) return null;
+    var id = str(b.target.ref);
+    return { id: id, f: useFig(ctx, id), label: str(b.target.label) };
+  }
+  function targetText(tg) {
+    var lead = tg.label ? tg.label + " " : "";
+    return tg.f ? lead + figText(tg.f, true) : lead + t("missingFigure", { id: tg.id });
+  }
+
+  function barChart(b, ctx) {
+    var fig = el("figure", "chart");
+    addNote(fig, blockTitle(b));
+    var items = figItems(b);
+    var tg = targetOf(b, ctx);
+    var tv = tg && isNum(tg.f) ? tg.f.value : null;
+    var max = tv !== null && tv > 0 ? tv : 0;
+    items.forEach(function (it) {
+      var f = figOf(str(it.ref));
+      if (isNum(f) && f.value > max) max = f.value;
+    });
+    var scale = max > 0 ? max * 1.25 : 0; // room for the value after the longest bar
+    var anyHl = items.some(function (it) { return it.highlight === true; });
+    var box = el("div", "bars" + (tg ? " has-target" : ""));
+    var figs = [];
+    var above = 0;
+    var below = 0;
+    items.forEach(function (it, i) {
+      var f = useFig(ctx, str(it.ref));
+      figs.push(f);
+      var v = isNum(f) ? f.value : null;
+      var cls = "";
+      if (!anyHl || it.highlight === true) cls += " bar-row-hl";
+      if (tv !== null && v !== null) {
+        if (v >= tv) { cls += " bar-row-above"; above++; } else { cls += " bar-row-below"; below++; }
+      }
+      var label = el("div", "bar-label" + cls, str(it.caption || it.ref));
+      label.style.gridRow = String(i + 1);
+      label.style.gridColumn = "1";
+      var track = el("div", "bar-track" + cls);
+      track.style.gridRow = String(i + 1);
+      track.style.gridColumn = "2";
+      var bar = el("span", "bar-fill");
+      var pct = v !== null && scale > 0 ? Math.max(0.6, (Math.max(0, v) / scale) * 100) : 0;
+      bar.style.width = pct.toFixed(2) + "%";
+      track.appendChild(bar);
+      var val = el("span", "bar-value");
+      if (f) {
+        val.appendChild(document.createTextNode(figText(f, true)));
+        if (isEstimate(f)) val.appendChild(estimateBadge());
+      } else {
+        val.appendChild(el("span", "missing", t("missingFigure", { id: str(it.ref) })));
+      }
+      track.appendChild(val);
+      box.appendChild(label);
+      box.appendChild(track);
+    });
+    if (tg) {
+      figs.push(tg.f);
+      var zone = el("div", "bar-target" + (tv !== null && scale > 0 ? "" : " is-missing"));
+      zone.style.gridRow = "1 / span " + Math.max(1, items.length);
+      var line = el("div", "bar-target-line");
+      if (tv !== null && scale > 0) line.style.left = ((tv / scale) * 100).toFixed(2) + "%";
+      var lab = el("span", "bar-target-label", targetText(tg));
+      if (isEstimate(tg.f)) lab.appendChild(estimateBadge());
+      line.appendChild(lab);
+      zone.appendChild(line);
+      box.appendChild(zone);
+    }
+    fig.appendChild(box);
+    if (tg && tv !== null && (above || below)) {
+      var legend = el("div", "chips");
+      var name = lowerFirst(tg.label) || lowerFirst(t("target"));
+      [[above, "is-above", "aboveTarget"], [below, "", "belowTarget"]].forEach(function (k) {
+        if (!k[0]) return;
+        var chip = el("span", "chip");
+        chip.appendChild(el("span", "chip-dot" + (k[1] ? " " + k[1] : "")));
+        chip.appendChild(document.createTextNode(t(k[2], { label: name })));
+        legend.appendChild(chip);
+      });
+      fig.appendChild(legend);
+    }
+    addNote(fig, sourceNote(b.source, figs, ctx));
+    return fig;
+  }
+
+  function lineChart(b, ctx) {
+    var fig = el("figure", "chart");
+    addNote(fig, blockTitle(b));
+    var items = figItems(b);
+    var tg = targetOf(b, ctx);
+    var tv = tg && isNum(tg.f) ? tg.f.value : null;
+    var pts = [];
+    var figs = [];
+    var missing = [];
+    items.forEach(function (it) {
+      var f = useFig(ctx, str(it.ref));
+      figs.push(f);
+      if (isNum(f)) pts.push({ f: f, label: str(it.caption || it.ref) });
+      else missing.push(str(it.ref));
+    });
+    var W = 480, H = 220, PADX = 30, TOP = 34, BOTTOM = 34;
+    var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, "class": "line-svg", role: "img" });
+    svg.setAttribute("aria-label", (b.title ? str(b.title) + ": " : "") + pts.map(function (p) { return p.label + " " + formatValue(p.f); }).join(", ") + (tg ? "; " + targetText(tg) : ""));
+    var ink = tg ? " is-ink" : "";
+    if (pts.length) {
+      var vals = pts.map(function (p) { return p.f.value; });
+      if (tv !== null) vals.push(tv);
+      var lo = Math.min.apply(null, vals);
+      var hi = Math.max.apply(null, vals);
+      if (hi === lo) { hi += 1; lo -= 1; }
+      var pad = (hi - lo) * 0.3;
+      lo -= pad; hi += pad;
+      var x = function (i) { return pts.length === 1 ? W / 2 : PADX + i * (W - 2 * PADX) / (pts.length - 1); };
+      var y = function (v) { return TOP + (1 - (v - lo) / (hi - lo)) * (H - TOP - BOTTOM); };
+      svg.appendChild(svgEl("line", { x1: 0, x2: W, y1: H - BOTTOM + 8, y2: H - BOTTOM + 8, "class": "line-base" }));
+      if (tv !== null) {
+        svg.appendChild(svgEl("line", { x1: 0, x2: W, y1: y(tv).toFixed(1), y2: y(tv).toFixed(1), "class": "line-target" }));
+        var tl = svgEl("text", { x: W, y: (y(tv) - 8).toFixed(1), "text-anchor": "end", "font-size": 14, "class": "line-target-label" });
+        tl.textContent = targetText(tg);
+        svg.appendChild(tl);
+      }
+      var d = pts.map(function (p, i) { return (i ? "L" : "M") + x(i).toFixed(1) + " " + y(p.f.value).toFixed(1); }).join(" ");
+      svg.appendChild(svgEl("path", { d: d, "class": "line-path" + ink }));
+      pts.forEach(function (p, i) {
+        svg.appendChild(svgEl("circle", { cx: x(i).toFixed(1), cy: y(p.f.value).toFixed(1), r: 4.5, "class": "line-dot" + ink }));
+        var val = svgEl("text", { x: x(i).toFixed(1), y: (y(p.f.value) - 12).toFixed(1), "text-anchor": "middle", "font-size": 15, "class": "line-val" });
+        val.textContent = formatValue(p.f);
+        svg.appendChild(val);
+        var lab = svgEl("text", { x: x(i).toFixed(1), y: H - 6, "text-anchor": "middle", "font-size": 13, "class": "line-x" });
+        lab.textContent = p.label;
+        svg.appendChild(lab);
+      });
+    }
+    fig.appendChild(svg);
+    if (pts.some(function (p) { return isEstimate(p.f); }) || (tg && isEstimate(tg.f))) {
+      var est = el("p", "chart-est");
+      est.appendChild(estimateBadge());
+      fig.appendChild(est);
+    }
+    missing.forEach(function (id) { fig.appendChild(el("p", "missing", t("missingFigure", { id: id }))); });
+    if (tg && !tg.f) fig.appendChild(el("p", "missing", t("missingFigure", { id: tg.id })));
+    if (tg) figs.push(tg.f);
+    addNote(fig, sourceNote(b.source, figs, ctx));
+    return fig;
+  }
+
+  // Compare, plain: two columns with an arrow (also the tech document form).
+  function comparePlain(b, ctx, sides, emph) {
+    var wrap = el("figure", "compare-wrap");
+    addNote(wrap, blockTitle(b));
+    var box = el("div", "compare");
+    var figs = [];
+    sides.forEach(function (sd, i) {
+      if (i) box.appendChild(icon("arrow", "compare-arrow"));
+      var col = el("div", "side" + (i === emph ? " is-emph" : ""));
+      if (!isObj(sd)) { col.appendChild(gapBadge()); box.appendChild(col); return; }
+      if (sd.label) col.appendChild(el("div", "side-label", str(sd.label)));
+      if (sd.ref) {
+        var f = useFig(ctx, str(sd.ref));
+        figs.push(f);
+        var v = el("div", "side-value");
+        if (f) { v.textContent = formatValue(f); v.setAttribute("data-figure", str(sd.ref)); }
+        else { v.className += " missing"; v.textContent = t("missingFigure", { id: str(sd.ref) }); }
+        col.appendChild(v);
+        if (isEstimate(f)) col.appendChild(estimateBadge());
+      }
+      if (sd.caption) { var c = el("div", "side-caption"); c.appendChild(richText(sd.caption, ctx)); col.appendChild(c); }
+      var items = arr(sd.items);
+      if (items.length) {
+        var ul = el("ul", "side-list");
+        items.forEach(function (it) {
+          var o = isObj(it) ? it : { text: it };
+          var li = el("li");
+          li.appendChild(icon(i === emph ? "check" : "dot"));
+          var span = el("span");
+          if (o.ref) {
+            span.appendChild(figNode(ctx, str(o.ref), "fig-inline", false));
+            if (isEstimate(figOf(str(o.ref)))) span.appendChild(estimateBadge());
+            span.appendChild(document.createTextNode(" · "));
+          }
+          span.appendChild(richText(o.text, ctx));
+          li.appendChild(span);
+          ul.appendChild(li);
+        });
+        col.appendChild(ul);
+      }
+      if (!sd.ref && !items.length && !sd.caption) col.appendChild(gapBadge());
+      box.appendChild(col);
+    });
+    wrap.appendChild(box);
+    if (figs.length || b.source) addNote(wrap, sourceNote(b.source, figs, ctx));
+    return wrap;
+  }
+
+  // Compare as two vertical bars from zero (baseline to target).
+  function compareBars(b, ctx, sides, emph) {
+    var wrap = el("figure", "compare-wrap");
+    addNote(wrap, blockTitle(b));
+    var figs = sides.map(function (sd) { return isObj(sd) && sd.ref ? useFig(ctx, str(sd.ref)) : null; });
+    var max = 0;
+    figs.forEach(function (f) { if (isNum(f) && f.value > max) max = f.value; });
+    var box = el("div", "cbars");
+    var labels = el("div", "cbar-labels");
+    sides.forEach(function (sd, i) {
+      var col = el("div", "cbar" + (i === emph ? " is-emph" : ""));
+      var f = figs[i];
+      if (!isObj(sd) || !sd.ref) {
+        col.appendChild(gapBadge());
+      } else {
+        col.appendChild(figNode(ctx, str(sd.ref), "cbar-value", true));
+        if (isEstimate(f)) col.appendChild(estimateBadge());
+        var bar = el("div", "cbar-bar");
+        var pct = isNum(f) && max > 0 ? Math.max(2, (Math.max(0, f.value) / max) * 75) : 0;
+        bar.style.height = pct.toFixed(1) + "%";
+        col.appendChild(bar);
+      }
+      box.appendChild(col);
+      var lab = el("div", i === emph ? "is-emph" : null);
+      if (isObj(sd) && sd.label) lab.appendChild(richText(sd.label, ctx));
+      labels.appendChild(lab);
+    });
+    wrap.appendChild(box);
+    wrap.appendChild(labels);
+    addNote(wrap, sourceNote(b.source, figs, ctx));
+    return wrap;
+  }
+
+  // Compare as two groups of cards under a count (now and later).
+  function compareCards(b, ctx, sides, emph) {
+    var wrap = el("figure", "compare-wrap");
+    addNote(wrap, blockTitle(b));
+    var box = el("div", "ccards");
+    sides.forEach(function (sd, i) {
+      if (i) box.appendChild(icon("arrow", "compare-arrow"));
+      var col = el("div", "cgroup" + (i === emph ? " is-emph" : ""));
+      var items = isObj(sd) ? arr(sd.items) : [];
+      col.style.flexGrow = String(Math.max(1, items.length));
+      var head = el("div", "cgroup-head");
+      if (items.length) head.appendChild(el("span", "cgroup-count", String(items.length)));
+      if (isObj(sd) && sd.label) head.appendChild(el("span", "cgroup-label", str(sd.label)));
+      col.appendChild(head);
+      if (!items.length) { col.appendChild(gapBadge()); box.appendChild(col); return; }
+      var grid = el("div", "ccard-grid");
+      items.forEach(function (it) {
+        var o = isObj(it) ? it : { text: it };
+        var card = el("div", "ccard");
+        card.appendChild(icon(str(o.icon || "dot"), "ccard-ico"));
+        var body = el("div", "ccard-body");
+        if (o.ref) {
+          body.appendChild(figNode(ctx, str(o.ref), "ccard-value", true));
+          if (isEstimate(figOf(str(o.ref)))) body.appendChild(estimateBadge());
+        }
+        var tx = el("div", "ccard-text");
+        tx.appendChild(richText(o.text, ctx));
+        body.appendChild(tx);
+        card.appendChild(body);
+        grid.appendChild(card);
+      });
+      col.appendChild(grid);
+      box.appendChild(col);
+    });
+    wrap.appendChild(box);
+    if (b.source) addNote(wrap, sourceNote(b.source, [], ctx));
+    return wrap;
+  }
+
+  // Options as rows: name, the measure bar, gains, costs.
+  function optionRows(b, ctx) {
+    var items = arr(b.items).filter(isObj);
+    var withMeasure = items.some(function (o) { return !!o.ref; });
+    var max = 0;
+    items.forEach(function (o) {
+      [o.ref, o.ref_high].forEach(function (id) { var f = id ? figOf(str(id)) : null; if (isNum(f) && f.value > max) max = f.value; });
+    });
+    var box = el("div", "opt-rows" + (withMeasure ? " has-measure" : ""));
+    var head = el("div", "opt-row opt-head");
+    head.appendChild(el("div", null, t("optName")));
+    if (withMeasure) head.appendChild(el("div", null, str(b.measure)));
+    head.appendChild(el("div", null, t("optPros")));
+    head.appendChild(el("div", null, t("optCons")));
+    box.appendChild(head);
+    items.forEach(function (o) {
+      var chosen = o.chosen === true;
+      var row = el("div", "opt-row" + (chosen ? " is-chosen" : ""));
+      var nameCell = el("div", "opt-namecell");
+      var name = el("div", "opt-name");
+      name.appendChild(richText(o.name, ctx));
+      nameCell.appendChild(name);
+      if (chosen) {
+        var tag = el("div", "opt-chosen");
+        tag.appendChild(icon("check"));
+        tag.appendChild(document.createTextNode(t("chosen")));
+        nameCell.appendChild(tag);
+      }
+      if (o.summary) { var s = el("div", "opt-summary"); s.appendChild(richText(o.summary, ctx)); nameCell.appendChild(s); }
+      row.appendChild(nameCell);
+      if (withMeasure) row.appendChild(optionMeasure(o, ctx, max));
+      [["pros", "plus", "opt-pro"], ["cons", "minus", "opt-con"]].forEach(function (k) {
+        var cell = el("div", "opt-line " + k[2]);
+        if (o[k[0]]) {
+          cell.appendChild(icon(k[1]));
+          var span = el("span");
+          span.appendChild(richText(o[k[0]], ctx));
+          cell.appendChild(span);
+        }
+        row.appendChild(cell);
+      });
+      box.appendChild(row);
+    });
+    return box;
+  }
+
+  function optionMeasure(o, ctx, max) {
+    var cell = el("div", "opt-measure");
+    var track = el("div", "opt-track");
+    cell.appendChild(track);
+    if (!o.ref) return cell;
+    var lo = useFig(ctx, str(o.ref));
+    var hi = o.ref_high ? useFig(ctx, str(o.ref_high)) : null;
+    var a = isNum(lo) && max > 0 ? Math.max(0, lo.value) / max * 100 : 0;
+    var fill = el("span", "opt-fill");
+    fill.style.width = a.toFixed(2) + "%";
+    track.appendChild(fill);
+    if (isNum(hi) && max > 0 && hi.value > (isNum(lo) ? lo.value : 0)) {
+      var seg = el("span", "opt-fill-hi");
+      seg.style.left = a.toFixed(2) + "%";
+      seg.style.width = ((hi.value / max) * 100 - a).toFixed(2) + "%";
+      track.appendChild(seg);
+    }
+    if (!lo) cell.appendChild(el("span", "missing", t("missingFigure", { id: str(o.ref) })));
+    else if (o.ref_high && !hi) cell.appendChild(el("span", "missing", t("missingFigure", { id: str(o.ref_high) })));
+    else cell.appendChild(el("span", "opt-measure-label", hi ? rangeText(lo, hi, true) : figText(lo, true)));
+    if (isEstimate(lo) || isEstimate(hi)) cell.appendChild(estimateBadge());
+    return cell;
+  }
+
+  // Options as cards (tech document), with the measure as a line.
+  function optionCards(b, ctx) {
+    var box = el("div", "options");
+    arr(b.items).forEach(function (o) {
+      if (!isObj(o)) return;
+      var chosen = o.chosen === true;
+      var col = el("div", "opt" + (chosen ? " is-chosen" : ""));
+      var name = el("div", "opt-name");
+      name.appendChild(richText(o.name, ctx));
+      col.appendChild(name);
+      if (chosen) {
+        var tag = el("div", "opt-chosen");
+        tag.appendChild(icon("check"));
+        tag.appendChild(document.createTextNode(t("chosen")));
+        col.appendChild(tag);
+      }
+      if (o.summary) { var s = el("div", "opt-summary"); s.appendChild(richText(o.summary, ctx)); col.appendChild(s); }
+      [["pros", "plus", "opt-pro"], ["cons", "minus", "opt-con"]].forEach(function (k) {
+        if (!o[k[0]]) return;
+        var line = el("div", "opt-line " + k[2]);
+        line.appendChild(icon(k[1]));
+        var span = el("span");
+        span.appendChild(richText(o[k[0]], ctx));
+        line.appendChild(span);
+        col.appendChild(line);
+      });
+      if (o.ref) {
+        var m = el("div", "opt-line");
+        m.appendChild(icon("clock"));
+        var ms = el("span");
+        if (b.measure) ms.appendChild(document.createTextNode(str(b.measure) + ": "));
+        ms.appendChild(richText("{{" + str(o.ref) + "}}" + (o.ref_high ? " → {{" + str(o.ref_high) + "}}" : ""), ctx));
+        m.appendChild(ms);
+        col.appendChild(m);
+      }
+      box.appendChild(col);
+    });
+    return box;
+  }
+
+  function tlMark(kind) {
+    var mark = svgEl("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", focusable: "false", "class": "tl-mark" });
+    if (kind === "decision") mark.appendChild(svgEl("path", { d: "M12 2.5 21.5 12 12 21.5 2.5 12z", "class": "tl-diamond" }));
+    else mark.appendChild(svgEl("circle", { cx: 12, cy: 12, r: 7.5, "class": "tl-dot" + (kind === "first" ? " is-first" : "") }));
+    return mark;
+  }
+
+  // Timeline, plain: horizontal points (also the tech document form).
+  function timelinePlain(b, ctx) {
+    var fig = el("figure", "timeline-wrap");
+    addNote(fig, blockTitle(b));
+    var ol = el("ol", "tl");
+    arr(b.items).forEach(function (it) {
+      if (!isObj(it)) return;
+      var dec = !!it.decision;
+      var li = el("li", "tl-item" + (dec ? " is-decision" : ""));
+      li.appendChild(tlMark(dec ? "decision" : "dot"));
+      var when = el("div", "tl-when");
+      if (it.when) when.appendChild(richText(it.when, ctx)); else when.appendChild(gapBadge());
+      li.appendChild(when);
+      if (it.what) { var w = el("div", "tl-what"); w.appendChild(richText(it.what, ctx)); li.appendChild(w); }
+      if (dec) {
+        var d = el("div", "tl-decision");
+        d.appendChild(icon("flag"));
+        var span = el("span");
+        span.appendChild(richText(it.decision, ctx));
+        d.appendChild(span);
+        li.appendChild(d);
+      }
+      ol.appendChild(li);
+    });
+    fig.appendChild(ol);
+    if (b.source) addNote(fig, sourceNote(b.source, [], ctx));
+    return fig;
+  }
+
+  // Timeline as vertical steps (a slide's side column).
+  function timelineSteps(b, ctx) {
+    var fig = el("figure", "steps-wrap");
+    addNote(fig, blockTitle(b));
+    var ol = el("ol", "steps");
+    arr(b.items).filter(isObj).forEach(function (it, i) {
+      var dec = !!it.decision;
+      var li = el("li", "step" + (dec ? " is-decision" : ""));
+      li.appendChild(tlMark(dec ? "decision" : (i === 0 ? "first" : "dot")));
+      var when = el("div", "step-when");
+      if (it.when) when.appendChild(richText(it.when, ctx)); else when.appendChild(gapBadge());
+      li.appendChild(when);
+      if (it.what) { var w = el("div", "step-what"); w.appendChild(richText(it.what, ctx)); li.appendChild(w); }
+      if (dec) { var d = el("div", "tl-decision"); d.appendChild(richText(it.decision, ctx)); li.appendChild(d); }
+      ol.appendChild(li);
+    });
+    fig.appendChild(ol);
+    if (b.source) addNote(fig, sourceNote(b.source, [], ctx));
+    return fig;
+  }
+
+  function position(v) { var n = Number(v); return v !== null && v !== "" && isFinite(n) ? Math.round(n) : null; }
+  function clamp(v, lo, hi) { return Math.min(hi, Math.max(lo, v)); }
+
+  function ganttSpan(b, ctx) {
+    var span = 0;
+    if (b.span_ref) { var f = useFig(ctx, str(b.span_ref)); if (isNum(f)) span = Math.round(f.value); }
+    if (!(span > 0)) {
+      arr(b.lanes).forEach(function (ln) {
+        if (isObj(ln)) arr(ln.bars).forEach(function (br) { if (isObj(br)) span = Math.max(span, position(br.to) || 0, position(br.from) || 0); });
+      });
+      arr(b.items).forEach(function (it) { if (isObj(it)) span = Math.max(span, position(it.at) || 0); });
+    }
+    return clamp(span || 1, 1, 60);
+  }
+
+  // Grid placement through custom properties, so the narrow layout can override it.
+  function place(node, c1, c2, r1, r2) {
+    node.style.setProperty("--c1", String(c1));
+    node.style.setProperty("--c2", String(c2));
+    node.style.setProperty("--r1", String(r1));
+    node.style.setProperty("--r2", String(r2 || r1 + 1));
+    return node;
+  }
+
+  function rangeLabel(axis, from, to) { return (axis ? axis + " " : "") + from + (to > from ? "–" + to : ""); }
+
+  // Timeline as a Gantt chart: lanes of bars on an axis, decision diamonds.
+  function timelineGantt(b, ctx) {
+    var fig = el("figure", "gantt-wrap");
+    addNote(fig, blockTitle(b));
+    var lanes = arr(b.lanes).filter(isObj);
+    var span = ganttSpan(b, ctx);
+    var axis = str(b.axis_label);
+    var grid = el("div", "gantt");
+    grid.style.setProperty("--span", String(span));
+    grid.appendChild(place(el("div", "g-axis-label", axis), 1, 2, 1));
+    for (var i = 1; i <= span; i++) grid.appendChild(place(el("div", "g-tick", String(i)), i + 1, i + 2, 1));
+    lanes.forEach(function (ln, li) {
+      var row = li + 2;
+      var emph = ln.emphasis === true;
+      var lab = el("div", "g-lane" + (emph ? " is-emph" : ""));
+      if (ln.ref) {
+        var f = useFig(ctx, str(ln.ref));
+        var n = f ? el("span", "g-lane-n", formatPlain(f)) : el("span", "g-lane-n missing", t("missingFigure", { id: str(ln.ref) }));
+        if (f) n.setAttribute("data-figure", str(ln.ref));
+        lab.appendChild(n);
+        if (isEstimate(f)) lab.appendChild(estimateBadge());
+      }
+      if (ln.label) lab.appendChild(el("span", "g-lane-label", str(ln.label)));
+      grid.appendChild(place(lab, 1, 2, row));
+      arr(ln.bars).forEach(function (br) {
+        if (!isObj(br)) return;
+        var from = clamp(position(br.from) || 1, 1, span);
+        var to = clamp(position(br.to) || from, from, span);
+        var bar = el("div", "g-bar" + (br.emphasis === true ? " is-emph" : "") + (emph ? " in-emph" : ""));
+        bar.appendChild(el("span", "g-range", rangeLabel(axis, from, to)));
+        var tx = el("span", "g-text");
+        if (br.text) tx.appendChild(richText(br.text, ctx)); else tx.appendChild(gapBadge());
+        bar.appendChild(tx);
+        if (br.gap) {
+          bar.appendChild(gapBadge(str(br.gap)));
+          if (ctx.shownGaps) ctx.shownGaps.push(str(br.gap));
+        }
+        grid.appendChild(place(bar, from + 1, to + 2, row));
+      });
+    });
+    var decRow = lanes.length + 2;
+    var marks = arr(b.items).filter(function (it) { return isObj(it) && position(it.at) !== null; });
+    marks.forEach(function (it, k) {
+      var at = clamp(position(it.at), 1, span);
+      var last = k === marks.length - 1;
+      grid.appendChild(place(el("div", "g-mark"), at + 1, at + 2, 2, decRow));
+      var line = at + 2; // the grid line at the end of position "at"
+      var c1 = Math.max(2, line - 3);
+      var c2 = Math.min(span + 2, line + 3);
+      var dec = el("div", "g-dec" + (last ? " is-last" : "") + (c2 === line ? " at-end" : (line - 3 < 2 ? " at-start" : "")));
+      var diamond = el("span", "g-diamond");
+      diamond.style.left = (((line - c1) / (c2 - c1)) * 100).toFixed(2) + "%";
+      dec.appendChild(diamond);
+      var when = el("div", "g-when");
+      if (it.when) when.appendChild(richText(it.when, ctx)); else when.appendChild(document.createTextNode(rangeLabel(axis, at, at)));
+      dec.appendChild(when);
+      if (it.what) { var w = el("div", "g-what"); w.appendChild(richText(it.what, ctx)); dec.appendChild(w); }
+      if (it.decision) { var d = el("div", "g-decision"); d.appendChild(richText(it.decision, ctx)); dec.appendChild(d); }
+      grid.appendChild(place(dec, c1, c2, decRow));
+    });
+    fig.appendChild(grid);
+    addNote(fig, sourceNote(b.source, [], ctx));
+    return fig;
+  }
+
+  // Gantt in the tech document: a table of lanes and periods, then the decision points.
+  function timelineGanttDoc(b, ctx) {
+    var box = el("div", "gantt-doc");
+    var axis = str(b.axis_label);
+    var span = ganttSpan(b, ctx);
+    var rows = [];
+    arr(b.lanes).filter(isObj).forEach(function (ln) {
+      var who = str(ln.label) + (ln.ref ? " ({{" + str(ln.ref) + "}})" : "");
+      arr(ln.bars).filter(isObj).forEach(function (br) {
+        var from = clamp(position(br.from) || 1, 1, span);
+        var to = clamp(position(br.to) || from, from, span);
+        rows.push([who, rangeLabel("", from, to), str(br.text) + (br.gap ? " (" + t("gapField", { field: gapText(br.gap) }) + ")" : "")]);
+      });
+    });
+    box.appendChild(table([t("colGroup"), axis || t("colWhen"), t("colWork")], rows, ctx));
+    if (arr(b.items).length) box.appendChild(timelinePlain({ items: b.items, source: b.source }, ctx));
+    return box;
+  }
+
+  // Gauge: a half dial split at a threshold (continue / stop).
+  function meterGauge(b, ctx) {
+    var fig = el("figure", "gauge");
+    var th = useFig(ctx, str(b.threshold_ref));
+    var mx = b.max_ref ? useFig(ctx, str(b.max_ref)) : null;
+    var cur = b.ref ? useFig(ctx, str(b.ref)) : null;
+    var tv = isNum(th) ? th.value : null;
+    var max = isNum(mx) && mx.value > 0 ? mx.value : (tv !== null && tv > 0 ? tv * 2 : 0);
+    var cx = 230, cy = 250, r = 180;
+    var svg = svgEl("svg", { viewBox: "0 0 460 300", "class": "gauge-svg", role: "img" });
+    svg.setAttribute("aria-label", [str(b.label), th ? t("threshold") + " " + figText(th, true) : "", str(b.note)].filter(Boolean).join(": "));
+    var pt = function (p, rad) { var a = Math.PI * (1 - p); return [(cx + rad * Math.cos(a)).toFixed(1), (cy - rad * Math.sin(a)).toFixed(1)]; };
+    var txt = function (p, rad, text, cls, size, anchor) {
+      var q = pt(p, rad);
+      var node = svgEl("text", { x: q[0], y: q[1], "text-anchor": anchor || "middle", "font-size": size, "class": cls });
+      node.textContent = text;
+      svg.appendChild(node);
+    };
+    if (tv !== null && max > 0) {
+      var p = clamp(tv / max, 0, 1);
+      var s = pt(0, r), m = pt(p, r), e = pt(1, r);
+      svg.appendChild(svgEl("path", { d: "M" + s[0] + " " + s[1] + " A" + r + " " + r + " 0 0 1 " + m[0] + " " + m[1], "class": "gauge-ok" }));
+      svg.appendChild(svgEl("path", { d: "M" + m[0] + " " + m[1] + " A" + r + " " + r + " 0 0 1 " + e[0] + " " + e[1], "class": "gauge-stop" }));
+      var t1 = pt(p, r - 34), t2 = pt(p, r + 30);
+      svg.appendChild(svgEl("line", { x1: t1[0], y1: t1[1], x2: t2[0], y2: t2[1], "class": "gauge-tick" }));
+      txt(p, r + 44, figText(th, true), "gauge-th", 16);
+      // Zone labels sit just outside the arc, clear of the big number in the middle.
+      if (b.below) txt(p / 2, r + 36, str(b.below), "gauge-zone-ok", 15);
+      if (b.above) txt((1 + p) / 2, r + 36, str(b.above), "gauge-zone-stop", 15);
+      var zero = svgEl("text", { x: s[0], y: cy + 28, "text-anchor": "middle", "font-size": 14, "class": "gauge-end" });
+      zero.textContent = "0";
+      svg.appendChild(zero);
+      if (mx) {
+        var end = svgEl("text", { x: e[0], y: cy + 28, "text-anchor": "middle", "font-size": 14, "class": "gauge-end" });
+        end.textContent = figText(mx, true);
+        svg.appendChild(end);
+      }
+      if (isNum(cur)) {
+        var nd = pt(clamp(cur.value / max, 0, 1), r - 48);
+        svg.appendChild(svgEl("line", { x1: cx, y1: cy, x2: nd[0], y2: nd[1], "class": "gauge-needle" }));
+      }
+      var big = svgEl("text", { x: cx, y: cy - 50, "text-anchor": "middle", "font-size": 56, "class": "gauge-big" });
+      big.textContent = "> " + figText(th, true);
+      svg.appendChild(big);
+      if (b.note) {
+        var note = svgEl("text", { x: cx, y: cy - 16, "text-anchor": "middle", "font-size": 16, "class": "gauge-note" });
+        note.textContent = str(b.note);
+        svg.appendChild(note);
+      }
+      fig.appendChild(svg);
+    } else {
+      fig.appendChild(el("p", "missing", t("missingFigure", { id: str(b.threshold_ref) })));
+    }
+    if (b.max_ref && !mx) fig.appendChild(el("p", "missing", t("missingFigure", { id: str(b.max_ref) })));
+    if (b.ref && !cur) fig.appendChild(el("p", "missing", t("missingFigure", { id: str(b.ref) })));
+    if (b.label) fig.appendChild(el("figcaption", "gauge-label", str(b.label)));
+    if (isEstimate(th) || isEstimate(mx) || isEstimate(cur)) fig.appendChild(estimateBadge());
+    addNote(fig, sourceNote(b.source, [th, mx, cur], ctx));
+    return fig;
+  }
+
+  // Gauge in the tech document: the threshold and the zones as a table.
+  function meterGaugeDoc(b, ctx) {
+    var id = "{{" + str(b.threshold_ref) + "}}";
+    var rows = [[t("threshold"), id]];
+    if (b.below) rows.push([str(b.below), "≤ " + id]);
+    if (b.above) rows.push([str(b.above), "> " + id + (b.note ? " (" + str(b.note) + ")" : "")]);
+    if (b.ref) rows.push([str(b.label) || t("colValue"), "{{" + str(b.ref) + "}}"]);
+    var wrap = el("div", "gauge-doc");
+    if (b.label) wrap.appendChild(el("div", "block-title", str(b.label)));
+    wrap.appendChild(table([], rows, ctx));
+    addNote(wrap, sourceNote(b.source, [figOf(str(b.threshold_ref))], ctx));
+    return wrap;
+  }
+
+  // Donut: the share of ref in max_ref (or in 100 for a % figure).
+  function meterDonut(b, ctx) {
+    var fig = el("figure", "donut");
+    var f = useFig(ctx, str(b.ref));
+    var m = b.max_ref ? useFig(ctx, str(b.max_ref)) : null;
+    var max = isNum(m) ? m.value : (f && str(f.unit) === "%" ? 100 : 0);
+    var C = 2 * Math.PI * 84;
+    var svg = svgEl("svg", { viewBox: "0 0 220 220", "class": "donut-svg", role: "img" });
+    svg.appendChild(svgEl("circle", { cx: 110, cy: 110, r: 84, "class": "donut-track" }));
+    var text = f ? (m && str(f.unit) === str(m.unit) ? formatPlain(f) + "/" + formatPlain(m) : figText(f, true)) : t("missingFigure", { id: str(b.ref) });
+    if (isNum(f) && max > 0) {
+      var pct = clamp(f.value / max, 0, 1);
+      svg.appendChild(svgEl("circle", { cx: 110, cy: 110, r: 84, "class": "donut-arc", transform: "rotate(-90 110 110)", "stroke-dasharray": (pct * C).toFixed(1) + " " + C.toFixed(1) }));
+    }
+    var v = svgEl("text", { x: 110, y: 118, "text-anchor": "middle", "font-size": text.length > 6 ? 34 : 44, "class": "donut-value" });
+    v.textContent = text;
+    svg.appendChild(v);
+    var short = str(b.label).length <= 18;
+    if (b.label && short) {
+      var lab = svgEl("text", { x: 110, y: 146, "text-anchor": "middle", "font-size": 14, "class": "donut-label" });
+      lab.textContent = str(b.label);
+      svg.appendChild(lab);
+    }
+    svg.setAttribute("aria-label", text + (b.label ? " " + str(b.label) : ""));
+    fig.appendChild(svg);
+    if (b.label && !short) fig.appendChild(el("figcaption", "gauge-label", str(b.label)));
+    if (b.max_ref && !m) fig.appendChild(el("p", "missing", t("missingFigure", { id: str(b.max_ref) })));
+    if (isEstimate(f) || isEstimate(m)) fig.appendChild(estimateBadge());
+    addNote(fig, sourceNote(b.source, [f, m], ctx));
+    return fig;
+  }
+
+  // Lists as cards (appendix assumptions).
+  function listCards(b, ctx) {
+    var box = el("div", "cards");
+    box.appendChild(el("div", "block-label", str(b.title) || t("assumptionsTitle")));
+    arr(b.items).forEach(function (it) {
+      var o = isObj(it) ? it : { text: it };
+      var card = el("div", "card");
+      if (o.id || o.icon) {
+        var head = el("div", "card-head");
+        if (o.id) head.appendChild(el("span", "card-id", str(o.id)));
+        if (o.icon) head.appendChild(icon(str(o.icon)));
+        card.appendChild(head);
+      }
+      var tx = el("div", "card-text");
+      tx.appendChild(richText(o.text, ctx));
+      card.appendChild(tx);
+      box.appendChild(card);
+    });
+    return box;
+  }
+
+  function questionCards(b, ctx) {
+    var box = el("div", "cards");
+    box.appendChild(el("div", "block-label", str(b.title) || t("openQuestions")));
+    var items = arr(b.items).filter(isObj);
+    items.filter(function (q) { return q.blocking === true; }).concat(items.filter(function (q) { return q.blocking !== true; })).forEach(function (q) {
+      var card = el("div", "card is-q" + (q.blocking === true ? " is-blocking" : ""));
+      var head = el("div", "card-head");
+      head.appendChild(el("span", "card-id", str(q.id)));
+      if (q.blocking === true) head.appendChild(el("span", "pill-block", t("blockingShort")));
+      card.appendChild(head);
+      var tx = el("div", "card-text");
+      tx.appendChild(richText(q.text, ctx));
+      card.appendChild(tx);
+      var owner = el("div", "card-owner");
+      owner.appendChild(icon("people"));
+      if (q.owner) owner.appendChild(el("span", null, t("owner") + ": " + str(q.owner)));
+      else owner.appendChild(gapBadge());
+      card.appendChild(owner);
+      box.appendChild(card);
+    });
+    return box;
+  }
+
+  function chips(b, ctx) {
+    var ul = el("ul", "chips");
+    arr(b.items).forEach(function (it) {
+      var o = isObj(it) ? it : { text: it };
+      var li = el("li", "chip");
+      if (o.icon) li.appendChild(icon(str(o.icon)));
+      var span = el("span");
+      span.appendChild(richText(o.text, ctx));
+      li.appendChild(span);
+      ul.appendChild(li);
+    });
+    return ul;
+  }
+
+  function treeValue(k, ctx) {
+    var box = el("span", "tree-value" + (k.ref ? " is-fig" : ""));
+    if (k.ref) {
+      box.appendChild(itemValue(k, ctx, null, true));
+      if (itemEstimate(k)) box.appendChild(estimateBadge());
+    } else if (k.text) {
+      box.appendChild(richText(k.text, ctx));
+    } else {
+      box.appendChild(gapBadge());
+    }
+    return box;
+  }
+
+  var BLOCKS = {
+    text: function (b, ctx) {
+      var p = el("p", "text");
+      p.appendChild(richText(b.text, ctx));
+      return p;
+    },
+    list: function (b, ctx) {
+      var items = arr(b.items);
+      if (ctx.role === "cards") return listCards(b, ctx);
+      if (b.form === "chips" && ctx.role !== "doc") return chips(b, ctx);
+      // In the tech document a list of numbered items (FR-001, SC-001...) reads best as a table.
+      var node;
+      if (ctx.role === "doc" && items.length && items.every(function (it) { return isObj(it) && it.id; })) {
+        var rows = items.map(function (it) { return [str(it.id), str(it.text)]; });
+        node = table([t("colId"), t("colText")], rows, ctx);
+        var cells = node.querySelectorAll("tbody tr td:first-child");
+        for (var i = 0; i < cells.length; i++) cells[i].className = "item-id";
+      } else {
+        var withIcons = items.some(function (it) { return isObj(it) && it.icon; });
+        node = el(b.ordered ? "ol" : "ul", "list" + (withIcons ? " list-ico" : ""));
+        items.forEach(function (it) {
+          var li = el("li");
+          var span = el("span");
+          if (isObj(it)) {
+            if (withIcons) li.appendChild(icon(str(it.icon)));
+            if (it.id) span.appendChild(el("span", "item-id", str(it.id)));
+            span.appendChild(richText(it.text, ctx));
+          } else {
+            if (withIcons) li.appendChild(icon("dot"));
+            span.appendChild(richText(it, ctx));
+          }
+          li.appendChild(span);
+          node.appendChild(li);
+        });
+      }
+      if (!b.title) return node;
+      var wrap = el("div", "list-block");
+      wrap.appendChild(el("div", "block-title", str(b.title)));
+      wrap.appendChild(node);
+      return wrap;
+    },
+    figures: function (b, ctx) {
+      var items = figItems(b);
+      if (ctx.role === "doc") {
+        var row = el("div", "nums nums-row");
+        items.forEach(function (it) { row.appendChild(numTile(it, ctx, "sub")); });
+        return row;
+      }
+      var box = el("div", "nums");
+      var rest = items;
+      if (ctx.role === "hero" && items.length) {
+        box.appendChild(heroNumber(items[0], ctx));
+        rest = items.slice(1);
+      }
+      if (rest.length) {
+        var tiles = el("div", "tiles");
+        rest.forEach(function (it) { tiles.appendChild(metricTile(it, ctx)); });
+        box.appendChild(tiles);
+      }
+      return box;
+    },
+    chart: function (b, ctx) {
+      return b.kind === "line" ? lineChart(b, ctx) : barChart(b, ctx);
+    },
+    ratio: function (b, ctx) {
+      var f = useFig(ctx, str(b.ref));
+      var m = b.max_ref ? useFig(ctx, str(b.max_ref)) : null;
+      var total = Math.round(Number(b.total));
+      if (!(total >= 2 && total <= 10)) total = 5;
+      var max = isNum(m) && m.value > 0 ? m.value : (f && str(f.unit) === "%" ? 100 : 0);
+      var on = isNum(f) && max > 0 ? Math.round(clamp(f.value / max, 0, 1) * total) : -1;
+      var fig = el("figure", "ratio");
+      if (ctx.role !== "doc" && on >= 0) {
+        var svg = svgEl("svg", { viewBox: "0 0 " + (total * 76 - 4) + " 120", "class": "ratio-svg", role: "img" });
+        svg.setAttribute("aria-label", t("ratioOf", { n: on, total: total }) + (b.label ? ", " + str(b.label) : ""));
+        for (var i = 0; i < total; i++) {
+          var g = svgEl("g", { "class": i >= total - on ? "ratio-on" : "ratio-off", transform: "translate(" + (i * 76) + " 0)" });
+          g.appendChild(svgEl("circle", { cx: 36, cy: 26, r: 20 }));
+          g.appendChild(svgEl("path", { d: "M4 116c0-30 14-52 32-52s32 22 32 52z" }));
+          svg.appendChild(g);
+        }
+        fig.appendChild(svg);
+      }
+      var head = el("div", "ratio-head");
+      head.appendChild(figNode(ctx, str(b.ref), ctx.role === "doc" ? "fig-inline" : "ratio-value", true));
+      if (b.label) { var lab = el("div", "ratio-label"); lab.appendChild(richText(b.label, ctx)); head.appendChild(lab); }
+      fig.appendChild(head);
+      if (b.max_ref && !m) fig.appendChild(el("p", "missing", t("missingFigure", { id: str(b.max_ref) })));
+      if (isEstimate(f) || isEstimate(m)) fig.appendChild(estimateBadge());
+      return fig;
+    },
+    compare: function (b, ctx) {
+      var emph = b.emphasis === 0 ? 0 : 1;
+      var sides = arr(b.sides).slice(0, 2);
+      while (sides.length < 2) sides.push(null);
+      if (ctx.role !== "doc" && b.form === "bars") return compareBars(b, ctx, sides, emph);
+      if (ctx.role !== "doc" && b.form === "cards") return compareCards(b, ctx, sides, emph);
+      return comparePlain(b, ctx, sides, emph);
+    },
+    options: function (b, ctx) {
+      return ctx.role === "doc" ? optionCards(b, ctx) : optionRows(b, ctx);
+    },
+    timeline: function (b, ctx) {
+      if (b.form === "gantt" && arr(b.lanes).length) return ctx.role === "doc" ? timelineGanttDoc(b, ctx) : timelineGantt(b, ctx);
+      if (ctx.role !== "doc" && (b.form === "steps" || ctx.role === "aside")) return timelineSteps(b, ctx);
+      return timelinePlain(b, ctx);
+    },
+    meter: function (b, ctx) {
+      if (b.form === "gauge" && b.threshold_ref) return ctx.role === "doc" ? meterGaugeDoc(b, ctx) : meterGauge(b, ctx);
+      if (b.form === "donut" && ctx.role !== "doc") return meterDonut(b, ctx);
+      var fig = el("figure", "meter");
+      var f = useFig(ctx, str(b.ref));
+      var m = b.max_ref ? useFig(ctx, str(b.max_ref)) : null;
+      var head = el("div", "meter-head");
+      if (f) {
+        var text = formatValue(f);
+        if (m) text = (str(f.unit) === str(m.unit) ? formatPlain(f) : formatValue(f)) + " / " + formatValue(m);
+        head.appendChild(el("span", "meter-value", text));
+      } else {
+        head.appendChild(el("span", "missing", t("missingFigure", { id: str(b.ref) })));
+      }
+      if (b.max_ref && !m) head.appendChild(el("span", "missing", t("missingFigure", { id: str(b.max_ref) })));
+      if (b.label) head.appendChild(el("span", "meter-label", str(b.label)));
+      fig.appendChild(head);
+      var max = isNum(m) ? m.value : (f && str(f.unit) === "%" ? 100 : 0);
+      if (isNum(f) && max > 0) {
+        var pct = clamp((f.value / max) * 100, 0, 100);
+        var svg = svgEl("svg", { viewBox: "0 0 100 6", preserveAspectRatio: "none", "aria-hidden": "true", focusable: "false", "class": "meter-svg" });
+        svg.appendChild(svgEl("rect", { x: 0, y: 0, width: 100, height: 6, "class": "meter-track" }));
+        svg.appendChild(svgEl("rect", { x: 0, y: 0, width: pct.toFixed(2), height: 6, "class": "meter-fill" }));
+        fig.appendChild(svg);
+      }
+      if (isEstimate(f) || isEstimate(m)) fig.appendChild(estimateBadge());
+      addNote(fig, sourceNote(b.source, [f, m], ctx));
+      return fig;
+    },
+    tree: function (b, ctx) {
+      var kids = arr(b.children).filter(isObj);
+      if (ctx.role === "doc") {
+        var wrap = el("div", "tree-doc");
+        addNote(wrap, blockTitle(b, "block-title"));
+        var ul = el("ul", "list");
+        var li = el("li");
+        li.appendChild(b.root ? el("strong", null, str(b.root)) : gapBadge());
+        var sub = el("ul", "list");
+        kids.forEach(function (k) {
+          var item = el("li");
+          item.appendChild(document.createTextNode(str(k.label) + ": "));
+          item.appendChild(treeValue(k, ctx));
+          sub.appendChild(item);
+        });
+        li.appendChild(sub);
+        ul.appendChild(li);
+        wrap.appendChild(ul);
+        return wrap;
+      }
+      var fig = el("figure", "tree");
+      addNote(fig, blockTitle(b));
+      var root = el("div", "tree-root");
+      if (b.root) root.appendChild(richText(b.root, ctx)); else root.appendChild(gapBadge());
+      fig.appendChild(root);
+      var row = el("div", "tree-kids");
+      kids.forEach(function (k) {
+        var node = el("div", "tree-node" + (k.highlight === true ? " is-hl" : ""));
+        node.appendChild(el("div", "tree-label", str(k.label)));
+        node.appendChild(treeValue(k, ctx));
+        row.appendChild(node);
+      });
+      fig.appendChild(row);
+      return fig;
+    },
+    journey: function (b, ctx) {
+      var steps = arr(b.steps).map(str);
+      var lanes = arr(b.lanes).filter(isObj);
+      var cellOf = function (ln, i) {
+        var c = arr(ln.cells)[i];
+        return isObj(c) ? c : (typeof c === "string" ? { text: c } : null);
+      };
+      if (ctx.role === "doc") {
+        var rows = lanes.map(function (ln) {
+          return [str(ln.label)].concat(steps.map(function (s, i) { var c = cellOf(ln, i); return c && c.text ? str(c.text) : t("gap"); }));
+        });
+        return table([""].concat(steps), rows, ctx);
+      }
+      var hl = typeof b.highlight === "number" ? b.highlight : -1;
+      var n = Math.max(steps.length, 1);
+      var fig = el("figure", "journey");
+      var cols = ["var(--j-label)"];
+      for (var i = 0; i < n; i++) { if (i) cols.push("var(--j-arrow)"); cols.push("minmax(0, 1fr)"); }
+      fig.style.setProperty("--j-cols", cols.join(" "));
+      fig.appendChild(el("div", "j-corner"));
+      steps.forEach(function (s, k) {
+        if (k) fig.appendChild(el("div", "j-gap"));
+        fig.appendChild(el("div", "j-step" + (k === hl ? " is-hl" : ""), s));
+      });
+      lanes.forEach(function (ln) {
+        var emph = ln.emphasis === true;
+        fig.appendChild(el("div", "j-lane" + (emph ? " is-emph" : ""), str(ln.label)));
+        for (var k = 0; k < n; k++) {
+          if (k) {
+            var ar = el("div", "j-arrow" + (emph ? " is-emph" : ""));
+            ar.appendChild(icon("arrow"));
+            fig.appendChild(ar);
+          }
+          var o = cellOf(ln, k);
+          var cell = el("div", "j-cell" + (emph ? " is-emph" : "") + (emph && k === hl ? " is-hl" : "") + (o && o.empty === true ? " is-empty" : ""));
+          cell.appendChild(el("span", "j-cell-step", steps[k] || ""));
+          if (!o || !o.text) {
+            cell.appendChild(gapBadge());
+          } else {
+            var ic = el("span", "j-ico");
+            ic.appendChild(icon(str(o.icon || "dot")));
+            cell.appendChild(ic);
+            var tx = el("span", "j-text");
+            tx.appendChild(richText(o.text, ctx));
+            cell.appendChild(tx);
+          }
+          fig.appendChild(cell);
+        }
+      });
+      return fig;
+    },
+    callout: function (b, ctx) {
+      if (ctx.role === "doc") {
+        var p = el("p", "text");
+        if (b.label) p.appendChild(el("strong", null, str(b.label) + ": "));
+        if (b.text) p.appendChild(richText(b.text, ctx)); else p.appendChild(gapBadge());
+        return p;
+      }
+      var box = el("div", "callout is-" + (b.tone === "risk" ? "risk" : "note") + (b.icon ? " has-ico" : ""));
+      if (b.icon) box.appendChild(icon(str(b.icon), "callout-ico"));
+      var body = el("div", "callout-body");
+      if (b.label) body.appendChild(el("div", "callout-label", str(b.label)));
+      var tx = el("div", "callout-text");
+      if (b.text) tx.appendChild(richText(b.text, ctx)); else tx.appendChild(gapBadge());
+      body.appendChild(tx);
+      box.appendChild(body);
+      return box;
+    },
+    controls: function (b, ctx) {
+      var items = arr(b.items).map(function (it) { return isObj(it) ? it : (typeof it === "string" ? { text: it } : null); }).filter(Boolean);
+      if (ctx.role === "doc") {
+        var wrap = el("div", "controls-doc");
+        addNote(wrap, blockTitle(b, "block-title"));
+        var ol = el("ol", "list");
+        items.forEach(function (it) {
+          var li = el("li");
+          li.appendChild(richText(it.text, ctx));
+          if (it.note) { li.appendChild(document.createTextNode(" (")); li.appendChild(richText(it.note, ctx)); li.appendChild(document.createTextNode(")")); }
+          ol.appendChild(li);
+        });
+        wrap.appendChild(ol);
+        return wrap;
+      }
+      var box = el("div", "controls");
+      if (b.title) box.appendChild(el("div", "block-label", str(b.title)));
+      items.forEach(function (it, i) {
+        var stop = it.stop === true;
+        var card = el("div", "control" + (stop ? " is-stop" : ""));
+        var mark = el("span", "control-mark");
+        if (stop) mark.appendChild(icon("stop"));
+        else if (it.icon) mark.appendChild(icon(str(it.icon)));
+        else mark.appendChild(document.createTextNode(String(i + 1)));
+        card.appendChild(mark);
+        var body = el("div", "control-body");
+        var tx = el("div", "control-text");
+        tx.appendChild(richText(it.text, ctx));
+        body.appendChild(tx);
+        if (it.note) { var nt = el("div", "control-note"); nt.appendChild(richText(it.note, ctx)); body.appendChild(nt); }
+        card.appendChild(body);
+        box.appendChild(card);
+      });
+      return box;
+    },
+    deadline: function (b, ctx) {
+      var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(str(b.date));
+      if (ctx.role === "doc") {
+        var p = el("p", "text");
+        p.appendChild(el("strong", null, (str(b.label) || t("colWhen")) + ": "));
+        if (m) p.appendChild(document.createTextNode(formatDate(str(b.date)))); else p.appendChild(gapBadge());
+        if (b.note) { p.appendChild(document.createTextNode(" (")); p.appendChild(richText(b.note, ctx)); p.appendChild(document.createTextNode(")")); }
+        return p;
+      }
+      var box = el("div", "deadline");
+      if (m) {
+        var cal = el("div", "cal");
+        cal.setAttribute("role", "img");
+        cal.setAttribute("aria-label", formatDate(str(b.date)));
+        cal.appendChild(el("div", "cal-head", m[2] + "/" + m[1]));
+        cal.appendChild(el("div", "cal-day", String(Number(m[3]))));
+        box.appendChild(cal);
+      } else {
+        box.appendChild(gapBadge());
+      }
+      var body = el("div", "deadline-body");
+      if (b.label) body.appendChild(el("div", "deadline-label", str(b.label)));
+      if (b.note) { var nt = el("div", "deadline-note"); nt.appendChild(richText(b.note, ctx)); body.appendChild(nt); }
+      box.appendChild(body);
+      return box;
+    },
+    table: function (b, ctx) {
+      var wrap = table(b.columns, b.rows, ctx);
+      if (b.source) wrap.appendChild(el("div", "cap", t("source") + ": " + str(b.source)));
+      return wrap;
+    },
+    stories: function (b, ctx) {
+      var box = el("div", "stories");
+      arr(b.items).forEach(function (s) {
+        if (!isObj(s)) return;
+        var art = el("article", "story");
+        var h = el("h3", "story-title");
+        if (s.priority) h.appendChild(el("span", "story-prio", str(s.priority)));
+        var title = el("span");
+        title.appendChild(richText(s.title, ctx));
+        h.appendChild(title);
+        art.appendChild(h);
+        if (s.why) { var why = el("p", "story-why"); why.appendChild(richText(s.why, ctx)); art.appendChild(why); }
+        var ol = el("ol", "scenarios");
+        arr(s.scenarios).forEach(function (sc) {
+          if (!isObj(sc)) return;
+          var li = el("li");
+          [["given", sc.given], ["when", sc.when], ["then", sc.then]].forEach(function (pair, i) {
+            if (i) li.appendChild(document.createTextNode(" "));
+            li.appendChild(el("strong", null, t(pair[0])));
+            li.appendChild(document.createTextNode(" "));
+            if (pair[1]) li.appendChild(richText(pair[1], ctx));
+            else li.appendChild(gapBadge());
+          });
+          ol.appendChild(li);
+        });
+        if (ol.childNodes.length) art.appendChild(ol);
+        box.appendChild(art);
+      });
+      return box;
+    },
+    defs: function (b, ctx) {
+      var dl = el("dl", "defs");
+      arr(b.items).forEach(function (it) {
+        if (!isObj(it)) return;
+        dl.appendChild(el("dt", null, str(it.term)));
+        var dd = el("dd");
+        if (it.meaning) dd.appendChild(richText(it.meaning, ctx));
+        else dd.appendChild(gapBadge());
+        dl.appendChild(dd);
+      });
+      return dl;
+    },
+    questions: function (b, ctx) {
+      if (ctx.role === "cards") return questionCards(b, ctx);
+      var box = el("div", "questions");
+      [[true, "blocking"], [false, "nonBlocking"]].forEach(function (group) {
+        var items = arr(b.items).filter(function (q) { return isObj(q) && (q.blocking === true) === group[0]; });
+        box.appendChild(el("h3", "q-group" + (group[0] ? " blocking" : ""), t(group[1])));
+        if (!items.length) { box.appendChild(el("p", "muted", t("noneBlocking"))); return; }
+        var ul = el("ul", "list");
+        items.forEach(function (q) {
+          var li = el("li");
+          if (q.id) li.appendChild(el("span", "item-id", str(q.id)));
+          li.appendChild(richText(q.text, ctx));
+          if (q.owner) li.appendChild(el("span", "q-owner", " (" + t("owner") + ": " + str(q.owner) + ")"));
+          ul.appendChild(li);
+        });
+        box.appendChild(ul);
+      });
+      return box;
+    },
+    gap: function (b) {
+      var p = el("p", "gap-line");
+      p.appendChild(gapBadge(str(b.field)));
+      return p;
+    }
+  };
+
+  function validBlocks(blocks) {
+    return arr(blocks).filter(function (b) { return isObj(b) && hasOwn.call(BLOCKS, b.type); });
+  }
+
+  function renderBlocks(blocks, ctx) {
+    var frag = document.createDocumentFragment();
+    validBlocks(blocks).forEach(function (b) {
+      var node = BLOCKS[b.type](b, ctx);
+      if (node) frag.appendChild(node);
+    });
+    return frag;
+  }
+
+  function frameworksLine(list, short) {
+    var items = arr(list).map(function (fw) {
+      return typeof fw === "string" ? { name: fw } : (isObj(fw) ? fw : null);
+    }).filter(function (fw) { return fw && (fw.name || fw.id); });
+    if (!items.length) return null;
+    var p = el("p", "frameworks");
+    p.appendChild(el("span", "line-label", t(short ? "frameworksShort" : "frameworks") + ": "));
+    items.forEach(function (fw, i) {
+      if (i) p.appendChild(document.createTextNode("; "));
+      p.appendChild(document.createTextNode(str(fw.name || fw.id)));
+      if (fw.result) p.appendChild(document.createTextNode(" (" + str(fw.result) + ")"));
+    });
+    return p;
+  }
+
+  function basedOn(fields) {
+    var list = arr(fields).map(str).filter(Boolean);
+    if (!list.length) return null;
+    var p = el("p", "based-on");
+    p.appendChild(el("span", "line-label", t("basedOn") + ": "));
+    p.appendChild(document.createTextNode(list.join(", ")));
+    return p;
+  }
+
+  function headerMeta(target) {
+    if (readError) { target.appendChild(el("p", "notice bad", t("readError"))); return; }
+    if (idea.version) target.appendChild(el("p", "meta", t("version", { date: formatDate(str(idea.version)) })));
+    if (idea.draft === true) target.appendChild(el("p", "notice draft", t("draft")));
+    var est = el("p", "notice");
+    if (estimatePending) { est.appendChild(estimateBadge()); est.appendChild(document.createTextNode(" ")); }
+    est.appendChild(document.createTextNode(estimatePending ? t("estimatePending") : t("estimateDone")));
+    target.appendChild(est);
+    var links = isObj(data.links) ? data.links : {};
+    var ul = el("ul", "links");
+    ["board_artifact", "tech_artifact", "slides", "docs"].forEach(function (key) {
+      var href = links[key];
+      if (typeof href === "string" && /^https:/i.test(href) && safeHref(href)) {
+        var li = el("li");
+        li.appendChild(link(t("link_" + key), href));
+        ul.appendChild(li);
+      }
+    });
+    if (ul.childNodes.length) {
+      var wrap = el("div", "links-box");
+      wrap.appendChild(el("span", "links-title", t("links") + ":"));
+      wrap.appendChild(ul);
+      target.appendChild(wrap);
+    }
+  }
+
+  function gapsList() {
+    var box = el("div", "gaps-list");
+    box.appendChild(el("h3", null, t("gapsTitle")));
+    if (!GAPS.length) { box.appendChild(el("p", "muted", t("noGaps"))); return box; }
+    var ul = el("ul");
+    GAPS.forEach(function (g) {
+      var li = el("li");
+      li.appendChild(gapBadge());
+      li.appendChild(el("span", null, gapText(g.field)));
+      ul.appendChild(li);
+    });
+    box.appendChild(ul);
+    return box;
+  }
+  // ---- End of shared renderer ----
+
+  // ---- Tech document ----
+  var PLAIN_GAPS = false;
+  var SECTION_MAP = [
+    { id: "business-context", label: "sec_business_context", required: true },
+    { id: "user-stories", label: "sec_user_stories", required: true },
+    { id: "requirements", label: "sec_requirements", required: true },
+    { id: "key-entities", label: "sec_key_entities", required: true },
+    { id: "success-criteria", label: "sec_success_criteria", required: true },
+    { id: "assumptions", label: "sec_assumptions", required: false },
+    { id: "ai-fit", label: "sec_ai_fit", required: true },
+    { id: "non-functional", label: "sec_non_functional", required: true },
+    { id: "glossary", label: "sec_glossary", required: true },
+    { id: "open-questions", label: "sec_open_questions", required: true }
+  ];
+
+  var tech = isObj(data.tech) ? data.tech : {};
+  var byId = {};
+  var extra = [];
+  arr(tech.sections).forEach(function (s) {
+    if (!isObj(s) || typeof s.id !== "string" || hasOwn.call(byId, s.id)) return;
+    byId[s.id] = s;
+  });
+  var known = {};
+  SECTION_MAP.forEach(function (slot) { known[slot.id] = true; });
+  arr(tech.sections).forEach(function (s) {
+    if (isObj(s) && typeof s.id === "string" && !known[s.id] && byId[s.id] === s) extra.push({ id: s.id, label: null, required: false });
+  });
+
+  document.getElementById("idea-title").textContent = str(idea.title);
+  if (idea.title) document.title = "vibebiz · " + str(idea.title);
+  headerMeta(document.getElementById("doc-head"));
+
+  var toc = document.getElementById("toc");
+  var box = document.getElementById("sections");
+
+  function addToc(label, anchor) {
+    var li = el("li");
+    // In-page anchor built from a sanitized id; not a data URL, so it skips safeHref.
+    var a = el("a", null, label);
+    a.setAttribute("href", "#" + anchor);
+    li.appendChild(a);
+    toc.appendChild(li);
+  }
+
+  SECTION_MAP.concat(extra).forEach(function (slot) {
+    var s = hasOwn.call(byId, slot.id) ? byId[slot.id] : null;
+    if (!s && !slot.required) return;
+    var ctx = { refs: [], role: "doc" };
+    var heading = s && s.heading ? str(s.heading) : (slot.label ? t(slot.label) : slot.id);
+    var anchor = "sec-" + slot.id.replace(/[^A-Za-z0-9_-]/g, "-");
+
+    var sec = el("section", "doc-section");
+    sec.setAttribute("id", anchor);
+    sec.appendChild(el("h2", null, heading));
+
+    var content = s ? s.content : null;
+    var blocks = typeof content === "string" ? (content ? [{ type: "text", text: content }] : []) : arr(content);
+    var gaps = gapsFor("section", slot.id);
+    if (!blocks.length || gaps.length) {
+      var gbox = el("div", "section-gaps");
+      if (!blocks.length && !gaps.length) gbox.appendChild(gapBadge());
+      gaps.forEach(function (g) { gbox.appendChild(gapBadge(str(g.field))); });
+      sec.appendChild(gbox);
+    }
+    sec.appendChild(renderBlocks(blocks, ctx));
+    var diagram = s ? diagramSlot(s.diagram, ctx) : null;
+    if (diagram) sec.appendChild(diagram);
+
+    var meta = el("div", "section-meta");
+    var fw = s ? frameworksLine(s.frameworks) : null;
+    if (fw) meta.appendChild(fw);
+    var src = sourcesLine(ctx);
+    if (src) meta.appendChild(src);
+    var based = s ? basedOn(s.source_fields) : null;
+    if (based) meta.appendChild(based);
+    if (meta.childNodes.length) sec.appendChild(meta);
+    box.appendChild(sec);
+    addToc(heading, anchor);
+  });
+
+  var figSec = document.getElementById("sec-figures");
+  figSec.appendChild(el("h2", null, t("figuresTable")));
+  if (FIG_ORDER.length) figSec.appendChild(figureTable(FIG_ORDER));
+  else figSec.appendChild(gapBadge());
+  addToc(t("figuresTable"), "sec-figures");
+
+  var gapSec = document.getElementById("gaps");
+  var gl = gapsList();
+  var gh = gl.querySelector("h3");
+  gapSec.appendChild(el("h2", null, gh ? gh.textContent : t("gapsTitle")));
+  if (gh) gl.removeChild(gh);
+  gapSec.appendChild(gl);
+  addToc(t("gapsTitle"), "gaps");
+
+  var snap = document.getElementById("snapshot-link");
+  snap.appendChild(link("spec.md", "spec.md"));
+  snap.appendChild(el("span", "muted", ". " + t("snapshotNote")));
+  addToc(t("snapshot"), "sec-snapshot");
+
+  // Mark the section in view in the nav.
+  if (typeof IntersectionObserver !== "undefined") {
+    var links = Array.prototype.slice.call(toc.querySelectorAll("a"));
+    var current = null;
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var id = entry.target.getAttribute("id");
+        if (id === current) return;
+        current = id;
+        links.forEach(function (a) {
+          if (a.getAttribute("href") === "#" + id) a.setAttribute("aria-current", "true");
+          else a.removeAttribute("aria-current");
+        });
+      });
+    }, { rootMargin: "-10% 0px -75% 0px" });
+    Array.prototype.slice.call(document.querySelectorAll(".doc-section[id]")).forEach(function (sec) { observer.observe(sec); });
+  }
+})();
+</script>
+</body>
+</html>
