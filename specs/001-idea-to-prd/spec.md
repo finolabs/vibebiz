@@ -19,6 +19,15 @@ Decided by Fio on 2026-11-12 during the design session (full detail in `CLAUDE.m
 - No dependency on `finolabs-vibecode`; `diagram-design` is a companion plugin.
 - The first release ships the fashion vertical pack only; electronics and home appliances come later (Fio, 2026-11-12, during specification).
 
+## Clarifications
+
+### Session 2026-11-12
+
+- Q: May vibebiz share an exported Artifact link with other people? → A: No. vibebiz publishes Artifacts as private only and never shares them; the user shares them with the board or tech team themselves.
+- Q: Which language do the board view, tech view and requirement snapshot use? → A: The language the user is communicating in; Spec Kit's mandatory section headings stay as upstream so the snapshot remains compatible.
+- Q: What happens to earlier exports when an idea is packaged again? → A: Keep history. `exports/` always holds the latest outputs under their fixed names; the previous set moves to `exports/history/YYYY-MM-DD/`; each Artifact is updated at the same link.
+- Q: Does vibebiz record the board's decision for each presented version? → A: Yes. The user reports the outcome through continue; vibebiz records approved, rejected or needs changes, with date and notes, in the decisions record, tied to the presented version in history, and shows it as the idea's status.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Turn a vague idea into a clarified requirement (Priority: P1)
@@ -85,7 +94,7 @@ When the coverage record shows the idea is ready, the user asks vibebiz to packa
 
 ### User Story 4 - Resume work and see the state of every idea (Priority: P4)
 
-A sales director comes back days later and opens the workspace's table of contents, which lists every idea with its status (clarifying, ready to package, presented to the board, tech-reviewed), its coverage (for example 9 of 15 clear), the next step and links to its outputs. They resume an idea; vibebiz summarizes in three lines what was settled, where it stopped and what comes next, and continues.
+A sales director comes back days later and opens the workspace's table of contents, which lists every idea with its status (clarifying, ready to package, packaged, presented to the board, approved, rejected, needs changes) and whether its estimates are tech-reviewed, its coverage (for example 9 of 15 clear), the next step and links to its outputs. They resume an idea; vibebiz summarizes in three lines what was settled, where it stopped and what comes next, and continues.
 
 **Why this priority**: Ideas take several sessions; without resume and a clear overview, users lose their place and abandon ideas. It is valuable only once Stories 1–3 exist.
 
@@ -97,6 +106,7 @@ A sales director comes back days later and opens the workspace's table of conten
 2. **Given** a paused idea, **When** the user resumes it, **Then** vibebiz states what was settled, where it stopped and the next question before asking anything.
 3. **Given** the user asks for status, **When** vibebiz answers, **Then** it lists every idea with its coverage and next step, excluding the fictional example.
 4. **Given** the user edited an idea's files by hand, **When** vibebiz resumes, **Then** it reads the current files and does not overwrite the edits.
+5. **Given** a packaged idea, **When** the user reports that it was presented and the board approved, rejected or asked for changes, **Then** vibebiz records the outcome with date and notes against the presented version and the table of contents shows the new status.
 
 ---
 
@@ -144,7 +154,7 @@ Before or after the first idea, the user records their organization's ground rul
 - The challenge concludes the right answer is not to build (fix the process or buy): packaging still works and the board view presents that recommendation.
 - Two ideas produce the same folder name: the number prefix keeps them distinct.
 - The Google connector is unavailable: vibebiz offers the Artifact format instead.
-- The user answers in English: vibebiz keeps the user-facing text in the user's language for that session.
+- The user communicates in English: questions and all outputs for that idea are in English; Vietnamese stays the default otherwise.
 - The user deletes the table of contents or the example: the next vibebiz action restores the table of contents; the example returns only on request.
 
 ## Requirements *(mandatory)*
@@ -188,12 +198,14 @@ Before or after the first idea, the user records their organization's ground rul
 - **FR-024**: Outputs MUST add no facts beyond the idea folder; empty fields MUST show "not yet clarified"; numbers MUST match across views with source, period and label; estimates MUST show "not tech-reviewed" until the review is recorded.
 - **FR-025**: A packaging check MUST verify completeness, cross-view consistency, slide rules, chart sources and table-of-contents integrity before outputs are delivered.
 - **FR-026**: vibebiz MUST write a diagram brief (message, type, source fields, placement) for each diagram and hand it to the companion diagram plugin; without that plugin, a table with a "no diagram" note MUST appear instead.
-- **FR-027**: vibebiz MUST NOT make any image or document publicly accessible to insert it into Slides or Docs.
-- **FR-028**: Outputs MUST be saved under the idea's exports folder with their fixed names, and online links recorded in its links file.
+- **FR-027**: vibebiz MUST NOT make any image or document publicly accessible to insert it into Slides or Docs, MUST publish Artifacts as private, and MUST NOT share any output with anyone; sharing is the user's own action.
+- **FR-027a**: Questions and outputs MUST use the language the user is communicating in (Vietnamese by default); the requirement snapshot MUST keep Spec Kit's mandatory section headings unchanged in any language.
+- **FR-028**: Outputs MUST be saved under the idea's exports folder with their fixed names, and online links recorded in its links file. Packaging again MUST first move the previous set into a dated history folder, so every earlier version stays retrievable, and MUST update each Artifact at its existing link.
 
 **Resume, help, ground rules**
 
 - **FR-029**: Continuing an idea MUST start with a three-line summary of what was settled, where work stopped and the next question.
+- **FR-029a**: vibebiz MUST record each board outcome (approved, rejected, needs changes) with date, notes and the presented version, and MUST derive the idea's status from its latest outcome.
 - **FR-030**: Help MUST route a described situation to an entry point and stop, MUST answer questions about vibebiz only from the shipped docs, and MUST say when the docs do not cover a question.
 - **FR-031**: The plugin MUST ship Vietnamese user docs (quick start, entry points, workflow, reading outputs, FAQ, glossary) with diagrams of the workflow and its thinking, and a fictional example idea that passes the packaging check.
 - **FR-032**: Recording ground rules MUST take at most one round of four questions, MUST be skippable, and the plan MUST flag conflicts with recorded rules.
@@ -216,6 +228,8 @@ Before or after the first idea, the user records their organization's ground rul
 - **Open question**: an unsettled point with its owner and what unblocks it, marked blocking or non-blocking.
 - **Board view / Tech view**: the two outputs rendered from one idea folder.
 - **Requirement snapshot**: the Spec Kit-compatible copy of the requirement taken at packaging time.
+- **Export version**: one packaged set of outputs with its date; earlier versions live in the dated history folder.
+- **Board outcome**: approved, rejected or needs changes, with date, notes and the export version it refers to.
 - **Diagram brief**: what a diagram must say, its type, source fields and placement.
 - **Vertical pack**: retail-vertical examples and questions (fashion in the first release) plus a retail AI and automation pattern catalog.
 - **Example idea**: a fictional idea taken through the full process.

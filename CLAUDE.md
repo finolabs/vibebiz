@@ -43,10 +43,15 @@ specs/NNN-<slug>/
   spec.md coverage.md plan.md decisions.md assumptions.md open-questions.md glossary.md
   checklists/  diagrams/
   exports/  board-deck.html  tech-prd.html  spec.md (snapshot)  links.md
+    history/YYYY-MM-DD/     previous export sets, moved here before each re-package
 examples/000-<slug>/        optional fictional example
 ```
 
 The slug comes from the user's idea title, without diacritics. Every other file and folder name is fixed and in English.
+
+- Outputs and questions use the language the user communicates in (Vietnamese by default); Spec Kit's mandatory headings in the snapshot never change.
+- Artifacts are published private; vibebiz never shares any output. Sharing is the user's own action.
+- Board outcomes (approved, rejected, needs changes) are recorded in `decisions.md` against the presented export version and drive the idea's status.
 
 ## Outputs
 
