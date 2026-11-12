@@ -1637,8 +1637,10 @@
     if (idea.draft === true) kicker.appendChild(el("span", "badge warn", t("draftShort")));
     sec.appendChild(kicker);
 
-    sec.appendChild(el("h2", "slide-title", s && s.title ? str(s.title) : t(slot.label)));
-    if (s && s.message) sec.appendChild(el("p", "slide-message", str(s.message)));
+    var h2 = el("h2", "slide-title");
+    h2.appendChild(s && s.title ? richText(s.title, ctx) : document.createTextNode(t(slot.label)));
+    sec.appendChild(h2);
+    if (s && s.message) { var msg = el("p", "slide-message"); msg.appendChild(richText(s.message, ctx)); sec.appendChild(msg); }
 
     var gaps = gapsFor("slide", slot.n);
     var empty = !s || !arr(s.blocks).length;
