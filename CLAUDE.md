@@ -21,10 +21,13 @@ These rules record the design decisions Fio settled on 12/11/2026. A rule here c
 
 ## Plugin shape (agreed)
 
-- Plugin name `vibebiz`. Commands: `/vibebiz:new`, `/vibebiz:continue`, `/vibebiz:status`, `/vibebiz:package`, `/vibebiz:constitution`, `/vibebiz:help`.
+- Plugin name `vibebiz`. Entry points are user-invocable skills, written as `skills/*/SKILL.md` and never as legacy `commands/` (Cowork shows both as skills): `/vibebiz:new`, `/vibebiz:continue`, `/vibebiz:status`, `/vibebiz:package`, `/vibebiz:constitution`, `/vibebiz:help`.
+- Installed plugins also load in claude.ai chat, which has no working folder. A skill that needs the workspace checks for it first and, without one, tells the user to open the idea in Cowork instead of running partway.
 - Skills: `biz-router`, `biz-constitution`, `biz-specify`, `biz-clarify`, the four lenses `problem-framing`, `outcome`, `challenge`, `solution-sketch`, then `biz-plan`, `biz-checklist`, `biz-analyze`, `biz-package`, `help`.
 - The router's backlog is the coverage map: Spec Kit's `clarify` taxonomy extended with business categories A–O, each with its prerequisites (no ROI before Outcome, no model non-functionals before AI-fit). Readiness to package: A, C, D, E Clear; F Clear when AI is involved; M at least S/M/L; the rest Clear or Deferred with a reason.
 - Interview protocol (`core/references/ask-protocol.md`, owned by `biz-clarify`, used by every skill that asks): frontier rounds adapted from mattpocock's `grilling` (MIT), asked through Cowork's native question tool. At most 4 questions per round, 2–4 mutually exclusive options, the recommended option first, no manufactured options, each question understandable on its own, open questions in plain text, answers written to the files after every round, a question budget per session (about 3 rounds) followed by an offer to continue, pause or export a draft. Facts are found by the agent; only decisions go to the user.
+- The question tool always shows a Skip button and a free-text box, so options never include "None" or "Other". A skipped question stays unanswered (the category keeps its Partial or Missing status); it is never read as accepting the recommendation.
+- With nobody to answer (a headless or eval run, or the tool unavailable), proceed on stated assumptions, record each as open in `open-questions.md` and the coverage map, and never invent an answer.
 - The `challenge` lens never praises an idea, gives at least one reason the idea could be wrong per round, defends "do nothing" and "fix the process" before build is allowed, and records a dismissed risk in `decisions.md` instead of deleting it.
 - `help` routes by situation and answers only from the shipped `docs/`; when the docs do not say, it says so. It reads a skill's current `SKILL.md` before describing it.
 
@@ -48,6 +51,7 @@ The slug comes from the user's idea title, without diacritics. Every other file 
 
 - Board view: Claude Artifact or Google Slides. Tech view: Claude Artifact or Google Docs. Both render from the idea folder only. Packaging adds no new facts; a missing field shows as "not yet clarified" and is never silently dropped. Every slide or section traces to a spec field, and numbers match across views with source, period and an assumed/measured label.
 - Estimates carry "not tech-reviewed" until `plan.md` records the tech review.
+- Diagrams by format: the Artifact is the primary path and embeds the SVG; the board view defaults to an Artifact. Google Slides and Docs accept only PNG, JPEG or GIF fetched from a public URL, so vibebiz never makes an image public to insert it. For Slides or Docs, first build a `.pptx` or `.docx` with the images embedded and import it into Drive as Slides or Docs; when the connector cannot do that, insert a table plus a link to the diagram in the Artifact. Rasterizing SVG inside the Cowork sandbox is experimental and never assumed: Cowork's network allowlist blocks the browser download that diagram-design's Playwright PNG export needs.
 - `package-check` gates every export: completeness, cross-view consistency, one message per slide with the takeaway as the title, a source on every chart, an index that matches the folder.
 
 ## Language and naming
@@ -77,9 +81,13 @@ The slug comes from the user's idea title, without diacritics. Every other file 
 
 The suites agreed in the design: routing respects prerequisites; Ask-protocol conformance; anti-sycophancy (a bad-idea set with a good-idea control); vague-term quantification; Spec Kit compatibility (run `speckit-plan` on an exported `spec.md`); package-check catches seeded omissions; index integrity; simulated end-to-end sessions with a hidden-truth persona across three verticals; `help` routing and no-invention. Structure checks run in code; semantic support and meaning-preservation judgments may use Jev. A Cowork smoke test runs by hand before each release.
 
-## Open before the spec is final
+## Platform findings and open checks
 
-- Spike: Cowork's native question tool limits (questions per call, options, previews) match the protocol above.
-- Spike: whether diagram-design needs its scripts to export PNG inside Cowork.
-- Spike: whether the native question tool works in headless eval runs, or answers must be simulated from a file.
-- Read the 1.4.0 `clarify`, `checklist` and `analyze` skills in full before writing the taxonomy and checklists; the 1.4.0 `spec-template.md` matches 1.0.5.
+Findings from documentation and web sources on 12/11/2026, not yet run in Cowork:
+
+- Cowork runs a Linux VM with Bash, Python 3.10 and pip behind a network allowlist that admins can turn off; scripts stay optional (constitution Principle IV).
+- Cowork's question tool is `AskUserQuestion` with a Skip button; the 1–4 questions and 2–4 options limits are documented for Claude Code only.
+- Headless `claude -p` and `claude plugin eval` cannot answer `AskUserQuestion`; put answers in the eval prompt. The simulated-persona suite uses an Agent SDK harness that answers through `canUseTool`.
+- Spec Kit 1.4.0 templates match 1.0.5; `clarify` changed only its Deferred rule. 1.4.0 adds template presets, a later option for a vibebiz preset on the tech side.
+
+Verify at the first Cowork smoke test: the question tool's limits in Cowork, and whether the Drive connector imports `.pptx` and `.docx` as Slides and Docs.
