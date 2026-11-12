@@ -139,21 +139,21 @@
 
 ### Tests for User Story 3 ⚠️ (write first, must fail)
 
-- [ ] T061 [P] [US3] Write `scripts/checks/package_check.py` and `test_package_check.py` per contracts/exports.md "Package check"; seeded fixtures with omissions, mismatched figures, unsourced charts, missing "not tech-reviewed" labels must all be caught (SC-007)
-- [ ] T062 [P] [US3] Eval suite 6 (package) in `evals/package/`: below-readiness request offers draft; ready idea yields `data.json` that passes `package_check.py`; re-package moves the previous set to `exports/history/YYYY-MM-DD/`; Google connector unavailable offers the Artifact format; no output is shared or made public
-- [ ] T063 [P] [US3] Eval suite 5 (Spec Kit compatibility) in `evals/speckit-compat/`: snapshot passes `test_snapshot.py`; an integration script copies it into a scratch Spec Kit 1.4.0 project and runs `speckit-plan` (quickstart §5)
+- [x] T061 [P] [US3] Write `scripts/checks/package_check.py` and `test_package_check.py` per contracts/exports.md "Package check"; seeded fixtures with omissions, mismatched figures, unsourced charts, missing "not tech-reviewed" labels must all be caught (SC-007)
+- [x] T062 [P] [US3] Eval suite 6 (package) in `evals/package/`: below-readiness request offers draft; ready idea yields `data.json` that passes `package_check.py`; re-package moves the previous set to `exports/history/YYYY-MM-DD/`; Google connector unavailable offers the Artifact format; no output is shared or made public
+- [x] T063 [P] [US3] Eval suite 5 (Spec Kit compatibility) in `evals/speckit-compat/`: snapshot passes `test_snapshot.py`; an integration script copies it into a scratch Spec Kit 1.4.0 project and runs `speckit-plan` (quickstart §5)
 
 ### Implementation for User Story 3
 
-- [ ] T064 [P] [US3] Write `core/plan.md`: business plan (approach, build/buy/fix, pilot and rollout, S/M/L cost, change management), ground-rule checks, `estimate_status` handling
-- [ ] T065 [P] [US3] Write `core/checklist.md`: Definition of Ready checklists `checklists/board.md` and `checklists/tech.md`, adapted from Spec Kit `checklist` ("unit tests for English")
-- [ ] T066 [P] [US3] Write `core/analyze.md`: consistency passes across spec, plan, outcome and numbers adapted from Spec Kit `analyze`; findings return to the router
-- [ ] T067 [P] [US3] Write `core/export-guidelines.md`: spec Appendix D (answer-first, one message per slide, slide map 1–9 plus appendix, tech sections, aesthetics, chart rules, word limits)
-- [ ] T068 [US3] Write `templates/exports/board-deck.html` and `tech-prd.html`: fixed layouts with the `vibebiz-data` JSON block and inline renderer, slots for embedded SVG or the "no diagram" table, gap and estimate labels, dark mode
-- [ ] T069 [P] [US3] Write `templates/exports/links.md`
-- [ ] T070 [US3] Write `core/package.md`: readiness check and draft path; run plan, checklist, analyze; one round for formats; write diagram briefs (Appendix E) and ask diagram-design to render SVG; build `data.json` with figures by id and the name of each framework applied on the slide its category feeds (FR-039); fill the HTML templates; publish private Artifacts and update in place; write Slides and Docs through the connectors with private images or table plus link, and offer the Artifact format when a connector is unavailable; move the previous set to history; write `links.md`; run the package check
-- [ ] T071 [US3] Write `skills/package/SKILL.md`: triggers ("make the slides", "write the PRD", "package"), preconditions, steps via `core/package.md`, privacy refusals (no sharing, no public files)
-- [ ] T072 [US3] Describe what US3 ships in the same change: `package` in `docs/commands.md`, `skills/help/situation-map.md` and the README "What ships" sections; a Vietnamese draft of `docs/reading-outputs.md`
+- [x] T064 [P] [US3] Write `core/plan.md`: business plan (approach, build/buy/fix, pilot and rollout, S/M/L cost, change management), ground-rule checks, `estimate_status` handling
+- [x] T065 [P] [US3] Write `core/checklist.md`: Definition of Ready checklists `checklists/board.md` and `checklists/tech.md`, adapted from Spec Kit `checklist` ("unit tests for English")
+- [x] T066 [P] [US3] Write `core/analyze.md`: consistency passes across spec, plan, outcome and numbers adapted from Spec Kit `analyze`; findings return to the router
+- [x] T067 [P] [US3] Write `core/export-guidelines.md`: spec Appendix D (answer-first, one message per slide, slide map 1–9 plus appendix, tech sections, aesthetics, chart rules, word limits)
+- [x] T068 [US3] Write `templates/exports/board-deck.html` and `tech-prd.html`: fixed layouts with the `vibebiz-data` JSON block and inline renderer, slots for embedded SVG or the "no diagram" table, gap and estimate labels, dark mode
+- [x] T069 [P] [US3] Write `templates/exports/links.md`
+- [x] T070 [US3] Write `core/package.md`: readiness check and draft path; run plan, checklist, analyze; one round for formats; write diagram briefs (Appendix E) and ask diagram-design to render SVG; build `data.json` with figures by id and the name of each framework applied on the slide its category feeds (FR-039); fill the HTML templates; publish private Artifacts and update in place; write Slides and Docs through the connectors with private images or table plus link, and offer the Artifact format when a connector is unavailable; move the previous set to history; write `links.md`; run the package check
+- [x] T071 [US3] Write `skills/package/SKILL.md`: triggers ("make the slides", "write the PRD", "package"), preconditions, steps via `core/package.md`, privacy refusals (no sharing, no public files)
+- [x] T072 [US3] Describe what US3 ships in the same change: `package` in `docs/commands.md`, `skills/help/situation-map.md` and the README "What ships" sections; a Vietnamese draft of `docs/reading-outputs.md`
 - [ ] T073 [US3] Run suites 5 and 6; fix until thresholds hold; update `evals/RESULTS.md`
 - [ ] T074 [US3] Open the US3 pull request and pass code review plus a security and privacy review (publishing, sharing and Google files) before merge
 
