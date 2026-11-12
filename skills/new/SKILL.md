@@ -49,16 +49,9 @@ Ask one question through the question tool, counted outside the question budget 
 > - "Để sau (Đề xuất)": "Đi thẳng vào ý tưởng; luật chung ghi lúc nào cũng được."
 > - "Ghi ngay": "Bốn câu ngắn, giúp các câu hỏi sau sát với doanh nghiệp hơn."
 
-On "later" or Skip, leave `constitution.md` unchanged (`status: deferred`) and go on.
+On "later" or Skip, or with nobody to answer, leave `constitution.md` unchanged (`status: deferred`) and go on.
 
-On "now", ask one round of at most four questions under the ask protocol:
-
-1. **Business** (`vertical`): two to four options built from the user's words; recommend the one their message points to, or fashion when it says nothing (the shipped question pack is for fashion), and say why in the description.
-2. **Budget the user approves alone** (`approval_ceiling`): two to four ranges in their currency, each labelled as an example range, not a figure about their business; the free-text box takes an exact amount.
-3. **Steps that always need a person** (`mandatory_approvals`): `multiSelect`, options such as price changes, messages sent to customers, refunds, use of customers' personal data.
-4. **This year's priorities** (`priorities`): the round's one open question, in plain text, because only the user knows them.
-
-Write the answers into the matching fields of `constitution.md` frontmatter (`vertical`, `approval_ceiling`, `mandatory_approvals`, `priorities`, as the workspace template names them), set `status: set` only when at least one answer was given, set `updated` to today, rebuild its human body from the frontmatter, and rebuild the table of contents by the workspace module's rules. Skipped questions leave their fields unchanged. With nobody to answer, leave the ground rules deferred and do not invent them.
+On "now", hand over to the `constitution` entry skill, which owns the ground-rules round, writing `constitution.md` and rebuilding the table of contents; when it finishes, come back here and go on with step 5. If you cannot start it from here, tell the user in one sentence that they can type `/vibebiz:constitution` at any time to record the rules, leave them deferred, and go on with step 5. Do not ask the ground-rules questions yourself: one skill owns them, so the rules are asked and written the same way every time.
 
 ## 5. First use: the example
 
