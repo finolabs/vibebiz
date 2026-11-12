@@ -59,7 +59,8 @@ def build(out: Path, root: Path = ROOT) -> Path:
         _copy_tree(root / "skills" / skill, plugin / "skills" / skill)
         _copy_tree(root / "core", plugin / "skills" / skill / "references" / "core")
         # Templates too: a skill may only rely on files inside its own folder in Cowork.
-        _copy_tree(root / "templates", plugin / "skills" / skill / "references" / "templates")
+        for shared in ("templates", "packs"):
+            _copy_tree(root / shared, plugin / "skills" / skill / "references" / shared)
 
     for name in CONTENT_DIRS:
         _copy_tree(root / name, plugin / name)

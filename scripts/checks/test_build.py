@@ -33,7 +33,7 @@ class BuildTest(unittest.TestCase):
     def test_each_skill_holds_core_and_templates(self):
         for skill in SKILLS:
             refs = self.plugin / "skills" / skill / "references"
-            for sub in ("core", "templates"):
+            for sub in ("core", "templates", "packs"):
                 src = {q.relative_to(build_plugin.ROOT / sub).as_posix() for q in (build_plugin.ROOT / sub).rglob("*")
                        if q.is_file() and q.name not in JUNK}
                 dst = {q.relative_to(refs / sub).as_posix() for q in (refs / sub).rglob("*") if q.is_file()}

@@ -100,7 +100,7 @@ PRIVACY.md  SECURITY.md  TERMS.md  CODE_OF_CONDUCT.md  CONTRIBUTING.md
 THIRD_PARTY_LICENSES.md  UPSTREAM.md
 ```
 
-**Structure Decision**: A skills-only Cowork plugin. Six entry skills are the only components Cowork sees; shared behavior lives once in `core/` and is copied, with `templates/`, into each skill's `references/` by the build, so the shipped plugin resolves every reference inside its own skill folder. Content (templates, packs, docs, example) sits at the root for review; development tooling (`scripts/`, `evals/`, `.specify/`) is excluded from `dist/`.
+**Structure Decision**: A skills-only Cowork plugin. Six entry skills are the only components Cowork sees; shared behavior lives once in `core/` and is copied, with `templates/` and `packs/`, into each skill's `references/` by the build, so the shipped plugin resolves every reference inside its own skill folder. Content (templates, packs, docs, example) sits at the root for review; development tooling (`scripts/`, `evals/`, `.specify/`) is excluded from `dist/`.
 
 ### Delivery order by story
 
