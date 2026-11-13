@@ -81,7 +81,7 @@
 
 ## R9. Evals without a real Drive (FR-017)
 
-- **Decision**: add a small development-only stdio MCP server, `evals/fake-drive/server.py`, written with the Python standard library. It exposes the tools from R1 (`search_files`, `read_file_content`, `download_file_content`, `create_file`, `copy_file`, `trash_file`, `get_file_metadata`, `get_file_permissions`, plus `update_file` and `share_file` so that a forbidden call is visible), with the same names and parameters, stored in a temporary folder. It logs every call to `.calls.jsonl`, so graders can prove which tools were and were not called (FR-012, FR-014). It has fixture modes for:
+- **Decision**: add a small development-only stdio MCP server, `evals/fake-drive/server.py`, written with the Python standard library. It exposes the tools from R1 (`search_files`, `read_file_content`, `download_file_content`, `create_file`, `copy_file`, `trash_file`, `get_file_metadata`, `get_file_permissions`, plus `update_file` and `share_file` so that a forbidden call is visible), with the same names and parameters, stored in a temporary folder. It logs every call to `.fake-drive/calls.jsonl`, so graders can prove which tools were and were not called (FR-012, FR-014). It has fixture modes for:
   - an empty Drive;
   - one workspace;
   - two workspaces;

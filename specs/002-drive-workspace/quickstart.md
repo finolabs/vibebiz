@@ -52,7 +52,7 @@ claude plugin eval . --tag workspace --allow-tools Write Edit --ablation none --
 
 Expected:
 - Every Drive case passes: workspace found, none found, several found, no connector (each entry skill), read-only connector, shared folder and shared drive, desktop with both available, desktop without a folder, replacement of a file that changed meanwhile, converted file, full Drive, newer version, and package.
-- `.calls.jsonl` shows no `share_file` call and no read outside the workspace in any case.
+- `.fake-drive/calls.jsonl` shows no `share_file` call and no read outside the workspace in any case.
 - Every 0.1.x workspace case still passes (SC-004).
 
 ## Release smoke test (before v0.1.2)
