@@ -293,6 +293,7 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
 - [ ] T049 Release smoke test in real Cowork ([quickstart.md](quickstart.md)). Run connector checks 1–10 first, then smoke steps 1–6. Use a test Google account and fictional ideas.
   - Record the results in `evals/RESULTS.md`, with no IDs, accounts or emails.
   - This needs Fio, or someone with a Cowork web session.
+  - Fio, 13/11/2026: he runs this test himself once Phases 4–7 are done; the agent prepares everything else and does not wait on it mid-way.
   - If a required connector check fails, stop: do not tag, and report to Fio.
 - [ ] T050 After T048 and T049 pass and the release PR is merged with code and security reviews, tag `v0.1.2` on the merge commit. Then create the GitHub Release with `dist/vibebiz.plugin`, built from a fresh clone.
 
