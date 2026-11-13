@@ -43,7 +43,7 @@ Follow-up: CLAUDE.md "Plugin shape" and "Workspace and outputs" (A2)
 **"Workspace and outputs"**, add after the first bullet:
 
 ```text
-- Drive mode keeps the same layout in a Drive folder the user chooses, with the differences listed in `specs/002-drive-workspace/contracts/drive-workspace.md`: `index.json` instead of `index.html`, and the board and tech views as private Artifacts only. vibebiz never shares or changes the visibility of a Drive file.
+- Drive mode keeps the same layout in a Drive folder the user chooses, with the differences listed in `specs/002-drive-workspace/contracts/drive-workspace.md`: `index.json` instead of `index.html`, and the board and tech views as private Artifacts or, at the user's choice, private Google Slides and Docs; `board-deck.html` and `tech-prd.html` are never written to Drive. vibebiz never shares or changes the visibility of a Drive file.
 ```
 
 ## Status
@@ -51,4 +51,4 @@ Follow-up: CLAUDE.md "Plugin shape" and "Workspace and outputs" (A2)
 | Draft | Status |
 |---|---|
 | A1 | approved by Fio 13/11/2026, applied |
-| A2 | approved by Fio 13/11/2026, applied |
+| A2 | approved by Fio 13/11/2026, applied; Artifacts-only wording corrected to match FR-009 (Fio, 13/11/2026, after the PR #7 review) |

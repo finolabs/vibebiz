@@ -9,10 +9,10 @@ Quy trình tổng quan: từ ý tưởng ban đầu của giám đốc kinh doan
 ## 1. Chuẩn bị
 
 Bạn chỉ cần:
-- Ứng dụng **Claude Cowork** trên máy tính.
+- **Claude Cowork**: ứng dụng trên máy tính, hoặc (từ bản 0.1.2) bản web và điện thoại.
 - Một nơi để vibebiz lưu các tệp ý tưởng, chọn một trong hai:
   - **Trên máy tính:** mở sẵn một thư mục trong Cowork. Đây là cách nên dùng nếu bạn làm việc chủ yếu trên máy.
-  - **Trên web hoặc điện thoại:** nối Google Drive trong phần kết nối (Connectors) của Cowork. Lần đầu, vibebiz hỏi bạn chọn thư mục Drive nào; sau đó mọi thiết bị dùng chung thư mục ấy. Xem thêm [câu hỏi 12](faq.md#12-tôi-dùng-được-vibebiz-trên-cowork-bản-web-hoặc-điện-thoại-không).
+  - **Trên web hoặc điện thoại (từ bản 0.1.2):** nối Google Drive trong phần kết nối (Connectors) của Cowork. Lần đầu, vibebiz hỏi bạn chọn thư mục Drive nào; sau đó mọi thiết bị dùng chung thư mục ấy. Xem thêm [câu hỏi 12](faq.md#12-tôi-dùng-được-vibebiz-trên-cowork-bản-web-hoặc-điện-thoại-không).
 - Không cần mở cửa sổ dòng lệnh (terminal) và không cần biết lập trình.
 
 ---

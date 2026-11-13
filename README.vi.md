@@ -18,7 +18,7 @@ Giám đốc kinh doanh và vận hành ngành bán lẻ, bán trực tuyến ha
 
 1. Tải tệp `vibebiz.plugin` ở [bản phát hành](https://github.com/finolabs/vibebiz/releases) mới nhất.
 2. Trong Claude Cowork, mở Cài đặt › Plugin, chọn "Tải plugin lên" và chọn tệp `vibebiz.plugin`.
-3. Mở một thư mục trống trong Claude Cowork và bắt đầu bằng cách gõ `/vibebiz:new` hoặc `/vibebiz:help`. Trên web hoặc điện thoại, Cowork không mở được thư mục trên máy tính của bạn, nên hãy nối Google Drive trong phần kết nối (Connectors) của Cowork: vibebiz sẽ lưu ý tưởng vào một thư mục Drive bạn chọn, cùng cấu trúc tệp như trên máy. Trên máy tính, thư mục đang mở luôn được ưu tiên, và hai nơi không tự đồng bộ với nhau.
+3. Mở một thư mục trống trong Claude Cowork và bắt đầu bằng cách gõ `/vibebiz:new` hoặc `/vibebiz:help`. Từ bản 0.1.2, trên web hoặc điện thoại, Cowork không mở được thư mục trên máy tính của bạn, nên hãy nối Google Drive trong phần kết nối (Connectors) của Cowork: vibebiz sẽ lưu ý tưởng vào một thư mục Drive bạn chọn, cùng cấu trúc tệp như trên máy. Trên máy tính, thư mục đang mở luôn được ưu tiên, và hai nơi không tự đồng bộ với nhau.
 
 Cài thêm plugin đi kèm `diagram-design` nếu bạn muốn sơ đồ được vẽ tự động trong kết quả (xem bên dưới).
 

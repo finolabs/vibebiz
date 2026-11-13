@@ -18,7 +18,7 @@ Extends spec 001's [workspace-files.md](../../001-idea-to-prd/contracts/workspac
 
 **Rules** (in addition to the local rules, which all hold):
 
-- Names, layout and slug rules are identical to the local workspace. The only differences are the three files listed in [data-model.md](../data-model.md) "Drive workspace".
+- Names, layout and slug rules are identical to the local workspace, with exactly three differences (detail in [data-model.md](../data-model.md) "Drive workspace"): `index.json` replaces `index.html`, and `exports/board-deck.html` and `exports/tech-prd.html` are never written (the board and tech views are private Artifacts or, at the user's choice, private Google Slides and Docs).
 - Every file is a plain file created with conversion to Google types turned off. `.md` files are `text/markdown`; `.json` files are `application/json`, or `text/plain` if research R4 shows that type cannot be read back.
 - Content changes go through a file replacement ([data-model.md](../data-model.md) "File replacement"). Nothing is updated in place, and nothing is deleted permanently.
 - vibebiz never calls the connector's sharing tool, never changes a file's visibility or parent folder outside the workspace, and never reads file content outside the workspace, except the `index.json` search.

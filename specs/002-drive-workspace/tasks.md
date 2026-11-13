@@ -90,12 +90,14 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
 - [x] T008 [P] [US4] Add the eval cases `evals/workspace/drive-no-connector-<skill>/`, one for each of `new`, `continue`, `status`, `package` and `constitution`, so that SC-003 covers every entry skill.
   - Each case has its own prompt and the graders `nothing-written`, `no-questions` and `two-way-message` (names both Google Drive and the Claude desktop app). The prompt is a slash command, which does not fire the Skill tool, so these cases carry no `skill-fired` grader.
   - Copy the shape of `evals/workspace/no-folder-chat/`, with tags `[workspace, drive, us4]`.
-- [x] T010 [P] [US5] Add the eval case `evals/workspace/drive-desktop-both/`: a local folder plus the fake Drive in mode `empty`. The graders check that the workspace is created locally and that `.fake-drive/calls.jsonl` has no `create_file` call (spec US5 scenario 1).
+- [x] T010 [P] [US5] Add the eval case `evals/workspace/drive-desktop-both/`: a local folder plus a fake Drive holding one unrelated user file (the `empty` fixture, inlined in `scaffold.sh`). The graders check that the workspace is created locally and that `.fake-drive/calls.jsonl` has no `create_file` call (spec US5 scenario 1).
 - [x] T012 [US4] Update `evals/workspace/no-folder-chat/graders/stop-message.md:6`. It now expects the two-way message, naming both Google Drive and the Claude desktop app with a folder. This is the stale grader that the review of PR finolabs/vibebiz#4 found.
 - [x] T013 [US4] Red run. First check `uptime`. Then run the T008–T012 cases with `--tag drive` and `--case 'no-folder-chat'`, one command at a time.
   - Confirm that T008 and `no-folder-chat` fail for the expected reason. T010 guards existing behavior and is not run red.
   - Record the failures in `evals/RESULTS.md`.
 
+
+- [x] T018a [US4] (from the PR #7 security review) Add `evals/workspace/drive-stub-no-folder/`: web session, Google Drive connected (fake Drive), no folder. The graders check that `new` makes no Drive call (`.fake-drive/calls.jsonl` absent), writes nothing and gives the §1a message. Phase 4 replaces this case with the real Drive flow (T019).
 
 **Moved to Phase 4 (13/11/2026):** T009 (read-only) and T011 (desktop with no folder) need Drive discovery and writing, which arrive in Phase 4, so they cannot pass here. In Phase 3, §1 step 2 routes Drive mode to a §1a stub that says Drive saving is not ready yet, calls no Drive tool, writes nothing and stops; Phase 4 (T027) replaces the stub.
 
@@ -105,7 +107,7 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
   - **Step 1:** a local working folder, as in 0.1.1.
   - **Step 2:** otherwise, a Google Drive connector that can search and create. This is Drive mode, and the run continues at §1a.
   - **Step 3:** otherwise, the two-way message from research R10, in Vietnamese and in English.
-  - A read-only connector gets its own sentence.
+  - A read-only connector gets its own sentence in §1a: moved to Phase 4 with T009, since the Phase 3 stub makes no Drive call.
   - Keep the `help` exception. Keep the 0.1.1 sentence about web and phone sessions, but only for the case with no connector.
 - [x] T015 [P] [US4] Update step 1 in `skills/new/SKILL.md`, `skills/continue/SKILL.md`, `skills/status/SKILL.md`, `skills/package/SKILL.md` and `skills/constitution/SKILL.md`. The new wording is "a local folder, or Google Drive when the session has none (see `references/core/workspace.md` §1)". Each skill still stops with nothing written in the `none` case.
 - [x] T016 [P] [US4] Docs for the new message (constitution VII):
@@ -285,6 +287,7 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
   - `examples/000-giu-chan-khach-cu/` still passes `package_check.py` and the Spec Kit check;
   - `claude plugin validate dist/vibebiz` passes on a fresh clone;
   - the constitution amendment from T017 is approved and applied. **If it is still open, stop: do not tag.**
+  - `core/workspace.md` §1a is no longer the Phase 3 stub (T027 merged), so the Drive promises that Phase 3 put in the docs (FAQ 12, quick-start, admin-setup, README pair: choosing the folder, the shared-folder warning) hold. **Until then, stop: do not tag 0.1.2 or any build from main.** Then drop the "từ bản 0.1.2" / "from version 0.1.2" / "(đang làm)" markers Phase 3 put in those docs.
 - [ ] T049 Release smoke test in real Cowork ([quickstart.md](quickstart.md)). Run connector checks 1–10 first, then smoke steps 1–6. Use a test Google account and fictional ideas.
   - Record the results in `evals/RESULTS.md`, with no IDs, accounts or emails.
   - This needs Fio, or someone with a Cowork web session.

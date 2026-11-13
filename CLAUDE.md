@@ -31,7 +31,7 @@ These rules record the design decisions Fio settled on 12/11/2026. A rule here c
 ## Workspace and outputs
 
 - The user workspace is a public contract (`contracts/workspace-files.md`): fixed English names, slug from the idea title without diacritics, `new` never overwrites and repairs only missing pieces, the table of contents is rebuilt after every write.
-- Drive mode keeps the same layout in a Drive folder the user chooses, with the differences listed in `specs/002-drive-workspace/contracts/drive-workspace.md`: `index.json` instead of `index.html`, and the board and tech views as private Artifacts only. vibebiz never shares or changes the visibility of a Drive file.
+- Drive mode keeps the same layout in a Drive folder the user chooses, with the differences listed in `specs/002-drive-workspace/contracts/drive-workspace.md`: `index.json` instead of `index.html`, and the board and tech views as private Artifacts or, at the user's choice, private Google Slides and Docs; `board-deck.html` and `tech-prd.html` are never written to Drive. vibebiz never shares or changes the visibility of a Drive file.
 - All outputs render from `exports/data.json` into fixed templates; packaging adds no facts, shows gaps as "not yet clarified", keeps numbers identical across views with source, period and label, and labels estimates "not tech-reviewed" until reviewed.
 - Privacy: Artifacts are published private; vibebiz never shares an output and never makes an image or file public to insert it into Slides or Docs (a table plus the Artifact link instead).
 - Outputs and questions use the language the user communicates in, Vietnamese by default.
