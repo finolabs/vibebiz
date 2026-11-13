@@ -17,6 +17,7 @@ Modules are reference files under `core/`, copied into each entry skill's `refer
 | analyze | `core/analyze.md` | package | all idea files | findings returned to the router | consistency |
 | package | `core/package.md` | package | idea files, diagrams | data.json, exports, links, history | outputs |
 | workspace | `core/workspace.md` | every entry skill | folder | scaffold, table of contents | layout, index |
+| drive workspace | `core/drive-workspace.md` | workspace (Drive mode, spec 002) | the user's Drive through the connector, inside the workspace folder | Drive files by replacement, `index.json` | layout and index in Drive |
 | export guidelines | `core/export-guidelines.md` | package | | | Appendix D rules, aesthetics |
 | writing rules | `core/writing-rules.md` | every module | coverage (`language`), decisions (address form) | decisions (address-form entry) | plain language, vague-term list, Vietnamese style, address form |
 | anti-sycophancy | `core/anti-sycophancy.md` | challenge, router | | | Principle III rules |

@@ -1,6 +1,6 @@
 # Workspace module
 
-Every entry skill loads this module first. It chooses where the workspace lives (a local folder, or Google Drive when there is none), finds the user's working folder, decides what state the folder is in, creates or repairs the workspace, numbers and names idea folders, and rebuilds the table of contents (`index.html`) after every write. The layout is a public contract: names are fixed and English, and only the idea slug varies.
+Every entry skill loads this module first. It chooses where the workspace lives (a local folder, or Google Drive when there is none, with `references/core/drive-workspace.md`), finds the user's working folder, decides what state the folder is in, creates or repairs the workspace, numbers and names idea folders, and rebuilds the table of contents (`index.html`) after every write. The layout is a public contract: names are fixed and English, and only the idea slug varies.
 
 **Reads**: the working folder, `constitution.md` frontmatter, every idea's `coverage.md` frontmatter, the plugin's `templates/` folder.
 **Writes**: workspace scaffold, idea folders, `index.html`.
@@ -23,9 +23,7 @@ Why: an entry skill that runs without a place to save would lose every answer wh
 
 ## 1a. Drive mode
 
-Saving to Google Drive is being built (spec 002) and is not ready in this version. Give this message as written, in the user's language (Vietnamese by default), changing only the form of address; call no Drive tool, write nothing, and stop:
-
-"Bản vibebiz này chưa lưu được ý tưởng vào Google Drive. Hiện anh/chị dùng được vibebiz trong ứng dụng Claude trên máy tính: vào Cowork, chọn một thư mục làm việc rồi gõ lại lệnh này."
+Read `references/core/drive-workspace.md` and follow it for the whole run. It finds or creates the workspace in the user's Google Drive (asking which folder when it must), checks who can see that folder before the first write, and changes files only by replacement. Every rule below about layout, markers, numbering, slugs and the table-of-contents data still applies; wherever a section below reads, creates or changes a file, do it the way that module says, never with local file tools.
 
 ## 2. Locate the workspace root and the plugin's templates
 
