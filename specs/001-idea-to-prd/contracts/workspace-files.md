@@ -25,7 +25,7 @@ examples/000-<slug>/             same layout as an idea
 **Rules**
 
 - File and folder names are fixed and English; only `<slug>` varies, derived from the idea title without diacritics, lowercase, hyphenated.
-- `new` on a partial workspace creates only missing files and reports them; it never overwrites.
+- `idea` on a partial workspace creates only missing files and reports them; it never overwrites.
 - Hand edits by the user are authoritative: modules re-read files before writing and append rather than rewrite records.
 - Every write ends with a table-of-contents rebuild from frontmatter; the JSON block lists exactly the idea folders present.
 - No file outside the workspace is written, except Google files the user asked `package` to create in their Drive.

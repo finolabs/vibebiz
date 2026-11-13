@@ -1,6 +1,6 @@
 ---
 name: constitution
-description: "Record or update the organization's ground rules that vibebiz checks every idea against: this year's priorities, the budget the user approves alone, the retail business they are in, and the steps that always need a person to approve; optionally the company's strategy objectives and OKRs. Use when the user types /vibebiz:constitution or says, for example, 'set our ground rules', 'record our priorities', 'change my approval limit', 'add our OKRs', 'ghi luật chung', 'đặt luật chung cho công ty', 'đổi mức chi tôi tự duyệt', 'thêm OKR của công ty', 'ưu tiên năm nay của công ty là...'. Not for working on one idea (new, continue), packaging (package) or questions about how to use vibebiz (help)."
+description: "Record or update the organization's ground rules that vibebiz checks every idea against: this year's priorities, the budget the user approves alone, the retail business they are in, and the steps that always need a person to approve; optionally the company's strategy objectives and OKRs. Use when the user types /vibebiz:constitution or says, for example, 'set our ground rules', 'record our priorities', 'change my approval limit', 'add our OKRs', 'ghi luật chung', 'đặt luật chung cho công ty', 'đổi mức chi tôi tự duyệt', 'thêm OKR của công ty', 'ưu tiên năm nay của công ty là...'. Not for working on one idea (idea, continue), packaging (package) or questions about how to use vibebiz (help)."
 ---
 
 # vibebiz: ground rules
@@ -21,7 +21,7 @@ Follow the workspace module's storage check (§1) before anything else: a local 
 
 ## 2. Set up or repair the workspace
 
-Ground rules can be recorded before the first idea, so this skill may meet any folder state. Apply the workspace module's states exactly as `new` does: scaffold an empty folder; restore only the missing pieces of a partial workspace and name them in one plain sentence; change nothing in a complete one; for a folder with unrelated files, ask whether to use this folder or a new `vibebiz` subfolder, recommending the subfolder. Create no idea folder.
+Ground rules can be recorded before the first idea, so this skill may meet any folder state. Apply the workspace module's states exactly as `idea` does: scaffold an empty folder; restore only the missing pieces of a partial workspace and name them in one plain sentence; change nothing in a complete one; for a folder with unrelated files, ask whether to use this folder or a new `vibebiz` subfolder, recommending the subfolder. Create no idea folder.
 
 If a file named `constitution.md` exists but does not carry the workspace's marker (frontmatter with `status` `set` or `deferred`), it is the user's own file: do not touch it, tell the user in one sentence that a file of theirs already uses the name vibebiz needs for the ground rules, and stop.
 

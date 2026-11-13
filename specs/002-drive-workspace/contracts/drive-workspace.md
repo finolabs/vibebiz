@@ -28,7 +28,7 @@ Extends spec 001's [workspace-files.md](../../001-idea-to-prd/contracts/workspac
 
 | Skill | `local` | `drive` | `none` |
 |---|---|---|---|
-| `new` | as 0.1.x | find or choose the workspace (FR-005), privacy check (FR-013), scaffold missing pieces, create the idea | stop, two-way message |
+| `idea` | as 0.1.x | find or choose the workspace (FR-005), privacy check (FR-013), scaffold missing pieces, create the idea | stop, two-way message |
 | `continue` | as 0.1.x | find the workspace; resume | stop, two-way message |
 | `status` | as 0.1.x | find the workspace; answer from `index.json` and `coverage.md` | stop, two-way message |
 | `package` | as 0.1.x | write `data.json`, `spec.md` and `links.md`; publish the board and tech views as private Artifacts (or Slides/Docs); copy the old set to history | stop, two-way message |

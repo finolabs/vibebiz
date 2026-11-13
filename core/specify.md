@@ -1,6 +1,6 @@
 # Module: specify
 
-Turn the user's first description of an idea into a new idea folder, a draft requirement with every gap marked, and the first coverage record. Used by the `new` entry skill after the workspace is ready (`references/core/workspace.md`).
+Turn the user's first description of an idea into a new idea folder, a draft requirement with every gap marked, and the first coverage record. Used by the `idea` entry skill after the workspace is ready (`references/core/workspace.md`).
 
 - **Reads**: the user's description of the idea and their answer to the intake question; `constitution.md` (for `vertical`); the existing `specs/` folders (for the next number).
 - **Writes**: `specs/NNN-<slug>/` created from `templates/idea/`; `spec.md` (draft); `coverage.md` (frontmatter and body table).

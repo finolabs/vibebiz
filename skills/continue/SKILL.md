@@ -1,6 +1,6 @@
 ---
 name: continue
-description: "Resume work on an idea already started with vibebiz: summarize what is settled, where the work stopped and the next question, then carry on the question rounds. Also records what happened to a packaged idea: the board approved, rejected or asked for changes, or the tech team reviewed the estimates. Use when the user types /vibebiz:continue, asks to pick an idea back up ('continue my idea', 'resume the win-back idea', 'làm tiếp ý tưởng', 'quay lại ý tưởng nhắc khách'), reports a board decision ('the board approved it', 'the board wants changes', 'sếp duyệt rồi', 'ban lãnh đạo không duyệt', 'ban giám đốc yêu cầu sửa') or a tech review ('tech reviewed the estimates', 'đội kỹ thuật đã thẩm định chi phí'). Not for a brand-new idea (that goes to new), a list of all ideas (status) or questions about how to use vibebiz (help)."
+description: "Resume work on an idea already started with vibebiz: summarize what is settled, where the work stopped and the next question, then carry on the question rounds. Also records what happened to a packaged idea: the board approved, rejected or asked for changes, or the tech team reviewed the estimates. Use when the user types /vibebiz:continue, asks to pick an idea back up ('continue my idea', 'resume the win-back idea', 'làm tiếp ý tưởng', 'quay lại ý tưởng nhắc khách'), reports a board decision ('the board approved it', 'the board wants changes', 'sếp duyệt rồi', 'ban lãnh đạo không duyệt', 'ban giám đốc yêu cầu sửa') or a tech review ('tech reviewed the estimates', 'đội kỹ thuật đã thẩm định chi phí'). Not for a brand-new idea (that goes to idea), a list of all ideas (status) or questions about how to use vibebiz (help)."
 ---
 
 # vibebiz: continue an idea
@@ -20,7 +20,7 @@ Load each module from this skill's own folder when its step starts, and follow i
 
 Follow the workspace module's storage check (§1) first: a local folder, or Google Drive when the session has none. In Drive mode follow §1a, which in this version stops without calling any Drive tool. With neither, read §1 of `references/core/workspace.md` and give its stop message word for word, then stop: write nothing, ask nothing.
 
-If the folder holds no idea folder under `specs/` (the fictional examples in `examples/` never count), say in one sentence that there is no idea to continue yet and that `/vibebiz:new` starts one, and stop. If the table of contents is missing, restore it by the workspace module's rules before going on.
+If the folder holds no idea folder under `specs/` (the fictional examples in `examples/` never count), say in one sentence that there is no idea to continue yet and that `/vibebiz:idea` starts one, and stop. If the table of contents is missing, restore it by the workspace module's rules before going on.
 
 ## 2. Pick the idea and what the user wants
 

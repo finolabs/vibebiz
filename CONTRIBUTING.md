@@ -11,7 +11,7 @@ Thank you for helping. vibebiz is source-available (PolyForm Noncommercial 1.0.0
 
 - **Eval first.** A change to skill behavior starts from an eval case or fixture that fails for the reason the change addresses, and ends with that case passing. Structural properties (question counts, sections, cross-view numbers, index integrity, docs coverage) are checked in code.
 - **Docs in the same change.** Update every description of what you changed: `README.md` and `README.vi.md`, `docs/`, affected diagram briefs, `help`'s situation map and the fictional example. Every entry skill appears in `help` and `docs/commands.md`, and nothing else does.
-- **Exactly six entry skills** (`new`, `continue`, `status`, `package`, `constitution`, `help`). Anything else is a module in `core/`, never a skill.
+- **Exactly six entry skills** (`idea`, `continue`, `status`, `package`, `constitution`, `help`). Anything else is a module in `core/`, never a skill.
 - **Own words.** Framework cards and packs describe third-party frameworks in vibebiz's own words and credit their origin in `THIRD_PARTY_LICENSES.md`. Never copy their text, layout or artwork.
 - **No internal data.** No real people, companies, customers or figures; examples and fixtures are fictional or built from public knowledge. No secrets or env files.
 - **Independence.** Do not reference or reuse `finolabs-vibecode` skills in the plugin. Do not copy `diagram-design` into the repository.

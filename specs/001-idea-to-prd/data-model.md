@@ -8,7 +8,7 @@ Path: the folder open in Cowork (or its `vibebiz/` subfolder).
 
 | Field | Source | Rule |
 |---|---|---|
-| layout | fixed tree in `contracts/workspace-files.md` | `new` restores missing pieces, never overwrites |
+| layout | fixed tree in `contracts/workspace-files.md` | `idea` restores missing pieces, never overwrites |
 | ideas | `specs/NNN-<slug>/` | `NNN` is the next free three-digit number |
 | examples | `examples/000-<slug>/` | optional, excluded from status and numbering |
 

@@ -1,6 +1,6 @@
 ---
 name: package
-description: "Package a vibebiz idea for the board and the tech team: a board deck and a requirements document, as private Claude Artifacts or the user's own Google Slides and Docs, plus a requirement file the tech team can use with Spec Kit. Use when the user types /vibebiz:package or asks for the outputs of an idea already in the workspace, for example 'make the slides', 'write the PRD', 'package my idea', 'export a draft', 'làm slide', 'viết PRD', 'đóng gói ý tưởng', 'xuất bản nháp', 'làm tài liệu trình ban lãnh đạo'. Not for describing a new idea (new), answering more questions on an idea (continue), listing ideas (status) or questions about how to use vibebiz (help)."
+description: "Package a vibebiz idea for the board and the tech team: a board deck and a requirements document, as private Claude Artifacts or the user's own Google Slides and Docs, plus a requirement file the tech team can use with Spec Kit. Use when the user types /vibebiz:package or asks for the outputs of an idea already in the workspace, for example 'make the slides', 'write the PRD', 'package my idea', 'export a draft', 'làm slide', 'viết PRD', 'đóng gói ý tưởng', 'xuất bản nháp', 'làm tài liệu trình ban lãnh đạo'. Not for describing a new idea (idea), answering more questions on an idea (continue), listing ideas (status) or questions about how to use vibebiz (help)."
 ---
 
 # vibebiz: package an idea
@@ -20,7 +20,7 @@ Follow the workspace module's storage check (§1) first: a local folder, or Goog
 
 ## 2. Preconditions
 
-- **An idea exists.** If the folder holds no idea folder under `specs/` (the fictional examples in `examples/` never count and are never packaged here), say in one sentence that there is no idea to package yet and that `/vibebiz:new` starts one, and stop. If the table of contents is missing, restore it by the workspace module's rules before going on.
+- **An idea exists.** If the folder holds no idea folder under `specs/` (the fictional examples in `examples/` never count and are never packaged here), say in one sentence that there is no idea to package yet and that `/vibebiz:idea` starts one, and stop. If the table of contents is missing, restore it by the workspace module's rules before going on.
 - **Pick the idea.** If the user named or described one, take the idea whose `title` or `spec.md` `Input` line matches. Otherwise, if exactly one idea's `status` is `ready`, take it; if exactly one idea is open (not `approved` or `rejected`), take it. Otherwise ask one question through the question tool (it does not count toward the question budget): one option per open idea, `ready` ones first, then most recently `updated`, labelled with the title and described by its `next_step`; recommend the first. With more than four, offer the first four; the free-text box takes any other title.
 - **Closed ideas.** If the chosen idea is `approved` or `rejected`, say plainly that this version of vibebiz packages only open ideas, and stop. Do not change its status.
 - **The plugin is complete.** If the export templates cannot be read from `references/templates/exports/`, tell the user in plain words that the plugin looks incomplete and ask them to reinstall it; write nothing. Never rebuild a template from memory.

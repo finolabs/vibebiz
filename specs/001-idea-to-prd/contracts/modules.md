@@ -4,10 +4,10 @@ Modules are reference files under `core/`, copied into each entry skill's `refer
 
 | Module | File | Used by | Reads | Writes | Fills |
 |---|---|---|---|---|---|
-| router | `core/router.md` | new, continue, package (analyze findings) | coverage, ground rules | coverage (cynefin, `next_step`, `budget_rounds_used`, `status` between `clarifying` and `ready`, each category's `frameworks`) | chooses frontier, lens, framework, depth |
+| router | `core/router.md` | idea, continue, package (analyze findings) | coverage, ground rules | coverage (cynefin, `next_step`, `budget_rounds_used`, `status` between `clarifying` and `ready`, each category's `frameworks`) | chooses frontier, lens, framework, depth |
 | ask protocol | `core/ask-protocol.md` | every module that asks | coverage | spec Clarifications, decisions, open questions | rules only (spec Appendix B) |
 | clarify | `core/clarify.md` | router | spec, coverage | spec, coverage, glossary | G, H, N, leftovers |
-| specify | `core/specify.md` | new | user's intake answer | spec draft, coverage | initial statuses |
+| specify | `core/specify.md` | idea | user's intake answer | spec draft, coverage | initial statuses |
 | problem-framing | `core/lenses/problem-framing.md` | router | spec, ground rules, pack `retail-fashion/` drivers, traps, questions (fashion), handed-over card | spec Problem & Why | A, B |
 | outcome | `core/lenses/outcome.md` | router | spec, ground rules, pack `retail-fashion/` metrics, questions (fashion), handed-over card | spec Outcome, Success Criteria, Acceptance | C, O |
 | challenge | `core/lenses/challenge.md` | router | spec, ground rules, pack `retail-fashion/` traps, promotions, questions (fashion), handed-over card | spec Alternatives, Cost & Risk, decisions, assumptions | D, K, part of M |

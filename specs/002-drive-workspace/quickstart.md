@@ -60,9 +60,9 @@ Expected:
 
 Use the built `vibebiz.plugin` in real Cowork, with a test account and fictional ideas:
 
-1. **Web, Drive connected, no workspace.** Run `/vibebiz:new` with a one-line idea. Choose a new folder and answer one round. Check that the folder holds the contract files (contracts/drive-workspace.md) as plain files, and that the table of contents shows (Artifact or chat table). Covers SC-001.
+1. **Web, Drive connected, no workspace.** Run `/vibebiz:idea` with a one-line idea. Choose a new folder and answer one round. Check that the folder holds the contract files (contracts/drive-workspace.md) as plain files, and that the table of contents shows (Artifact or chat table). Covers SC-001.
 2. **New web session (phone if possible).** Run `/vibebiz:status`, then `/vibebiz:continue`. Neither asks where the workspace is, and `continue` resumes at the next open question. Covers SC-002.
 3. **Package from the web.** The board and tech Artifacts are private and their numbers match `exports/data.json`. Download the idea folder and run the Spec Kit compatibility check on `exports/spec.md`. Covers SC-006.
 4. **Web without Drive.** Run each entry skill. Each writes nothing and gives the two-way message. Covers SC-003.
-5. **Desktop with a local folder and Drive connected.** Run `new`. The workspace is local and nothing new appears in Drive. Covers SC-004.
+5. **Desktop with a local folder and Drive connected.** Run `idea`. The workspace is local and nothing new appears in Drive. Covers SC-004.
 6. **Sharing.** After the runs, search the test Drive for `visibility != 'limited'` among vibebiz files. Nothing is found. Covers SC-005.

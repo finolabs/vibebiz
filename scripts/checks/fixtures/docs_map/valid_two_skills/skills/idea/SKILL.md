@@ -1,6 +1,6 @@
 ---
-name: new
+name: idea
 description: Fixture skill.
 ---
 
-# new (fixture)
+# idea (fixture)

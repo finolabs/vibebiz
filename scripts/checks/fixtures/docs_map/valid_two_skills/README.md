@@ -14,7 +14,7 @@ Upload the plugin file.
 
 ## What ships
 
-- `/vibebiz:new`: start a new idea.
+- `/vibebiz:idea`: start a new idea.
 - `/vibebiz:continue`: keep working on an idea.
 
 ## License

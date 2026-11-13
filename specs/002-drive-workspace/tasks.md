@@ -83,11 +83,11 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
 
 **Goal**: §1 of `core/workspace.md` picks the storage mode: a local folder first, then Drive, otherwise the message that names both ways forward. Local mode is unchanged. This phase's pull request also carries the amendment drafts and the docs for the new message.
 
-**Independent Test**: with no fake Drive, each of the five entry skills writes nothing and gives the two-way message. With both a local folder and the fake Drive present, `new` writes only to the local folder.
+**Independent Test**: with no fake Drive, each of the five entry skills writes nothing and gives the two-way message. With both a local folder and the fake Drive present, `idea` writes only to the local folder.
 
 ### Tests
 
-- [x] T008 [P] [US4] Add the eval cases `evals/workspace/drive-no-connector-<skill>/`, one for each of `new`, `continue`, `status`, `package` and `constitution`, so that SC-003 covers every entry skill.
+- [x] T008 [P] [US4] Add the eval cases `evals/workspace/drive-no-connector-<skill>/`, one for each of `idea`, `continue`, `status`, `package` and `constitution`, so that SC-003 covers every entry skill.
   - Each case has its own prompt and the graders `nothing-written`, `no-questions` and `two-way-message` (names both Google Drive and the Claude desktop app). The prompt is a slash command, which does not fire the Skill tool, so these cases carry no `skill-fired` grader.
   - Copy the shape of `evals/workspace/no-folder-chat/`, with tags `[workspace, drive, us4]`.
 - [x] T010 [P] [US5] Add the eval case `evals/workspace/drive-desktop-both/`: a local folder plus a fake Drive holding one unrelated user file (the `empty` fixture, inlined in `scaffold.sh`). The graders check that the workspace is created locally and that `.fake-drive/calls.jsonl` has no `create_file` call (spec US5 scenario 1).
@@ -97,7 +97,7 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
   - Record the failures in `evals/RESULTS.md`.
 
 
-- [x] T018a [US4] (from the PR #7 security review) Add `evals/workspace/drive-stub-no-folder/`: web session, Google Drive connected (fake Drive), no folder. The graders check that `new` makes no Drive call (`.fake-drive/calls.jsonl` absent), writes nothing and gives the §1a message. Phase 4 replaces this case with the real Drive flow (T019).
+- [x] T018a [US4] (from the PR #7 security review) Add `evals/workspace/drive-stub-no-folder/`: web session, Google Drive connected (fake Drive), no folder. The graders check that `idea` makes no Drive call (`.fake-drive/calls.jsonl` absent), writes nothing and gives the §1a message. Phase 4 replaces this case with the real Drive flow (T019).
 
 **Moved to Phase 4 (13/11/2026):** T009 (read-only) and T011 (desktop with no folder) need Drive discovery and writing, which arrive in Phase 4, so they cannot pass here. In Phase 3, §1 step 2 routes Drive mode to a §1a stub that says Drive saving is not ready yet, calls no Drive tool, writes nothing and stops; Phase 4 (T027) replaces the stub.
 
@@ -109,7 +109,7 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
   - **Step 3:** otherwise, the two-way message from research R10, in Vietnamese and in English.
   - A read-only connector gets its own sentence in §1a: moved to Phase 4 with T009, since the Phase 3 stub makes no Drive call.
   - Keep the `help` exception. Keep the 0.1.1 sentence about web and phone sessions, but only for the case with no connector.
-- [x] T015 [P] [US4] Update step 1 in `skills/new/SKILL.md`, `skills/continue/SKILL.md`, `skills/status/SKILL.md`, `skills/package/SKILL.md` and `skills/constitution/SKILL.md`. The new wording is "a local folder, or Google Drive when the session has none (see `references/core/workspace.md` §1)". Each skill still stops with nothing written in the `none` case.
+- [x] T015 [P] [US4] Update step 1 in `skills/idea/SKILL.md`, `skills/continue/SKILL.md`, `skills/status/SKILL.md`, `skills/package/SKILL.md` and `skills/constitution/SKILL.md`. The new wording is "a local folder, or Google Drive when the session has none (see `references/core/workspace.md` §1)". Each skill still stops with nothing written in the `none` case.
 - [x] T016 [P] [US4] Docs for the new message (constitution VII):
   - `docs/faq.md` question 12 says the web and the phone work through Google Drive and explains how to connect Drive.
   - `docs/admin-setup.md` and `docs/quick-start.md` explain both storage modes and when each one is used.
@@ -133,7 +133,7 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
 
 **Goal**: find or choose the Drive workspace, check its privacy, scaffold it, and write by replacement. The table of contents is shown as a private Artifact.
 
-**Independent Test**: on the fake Drive in mode `empty`, run `new` with a fictional idea and the answers written into the prompt. The run creates the contract layout as plain files, and `index.json` passes `test_index.py`.
+**Independent Test**: on the fake Drive in mode `empty`, run `idea` with a fictional idea and the answers written into the prompt. The run creates the contract layout as plain files, and `index.json` passes `test_index.py`.
 
 ### Tests
 

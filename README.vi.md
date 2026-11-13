@@ -18,7 +18,7 @@ Giám đốc kinh doanh và vận hành ngành bán lẻ, bán trực tuyến ha
 
 1. Tải tệp `vibebiz.plugin` ở [bản phát hành](https://github.com/finolabs/vibebiz/releases) mới nhất.
 2. Trong Claude Cowork, mở Cài đặt › Plugin, chọn "Tải plugin lên" và chọn tệp `vibebiz.plugin`.
-3. Mở một thư mục trống trong Claude Cowork và bắt đầu bằng cách gõ `/vibebiz:new` hoặc `/vibebiz:help`. Từ bản 0.1.2, trên web hoặc điện thoại, Cowork không mở được thư mục trên máy tính của bạn, nên hãy nối Google Drive trong phần kết nối (Connectors) của Cowork: vibebiz sẽ lưu ý tưởng vào một thư mục Drive bạn chọn, cùng cấu trúc tệp như trên máy. Trên máy tính, thư mục đang mở luôn được ưu tiên, và hai nơi không tự đồng bộ với nhau.
+3. Mở một thư mục trống trong Claude Cowork và bắt đầu bằng cách gõ `/vibebiz:idea` hoặc `/vibebiz:help`. Từ bản 0.1.2, trên web hoặc điện thoại, Cowork không mở được thư mục trên máy tính của bạn, nên hãy nối Google Drive trong phần kết nối (Connectors) của Cowork: vibebiz sẽ lưu ý tưởng vào một thư mục Drive bạn chọn, cùng cấu trúc tệp như trên máy. Trên máy tính, thư mục đang mở luôn được ưu tiên, và hai nơi không tự đồng bộ với nhau.
 
 Cài thêm plugin đi kèm `diagram-design` nếu bạn muốn sơ đồ được vẽ tự động trong kết quả (xem bên dưới).
 
@@ -28,7 +28,7 @@ Với gói Claude Team hoặc Enterprise, quản trị viên có thể thêm m�
 
 vibebiz có sáu kỹ năng. Mỗi lệnh là một kỹ năng (skill) cùng tên; bạn cũng có thể chỉ cần nói điều mình muốn bằng lời thường.
 
-- `/vibebiz:new`: bắt đầu một ý tưởng mới. vibebiz chuẩn bị thư mục làm việc nếu cần, hỏi về một tình huống thật gần đây, viết bản nháp yêu cầu đầu tiên với mọi chỗ còn thiếu được đánh dấu, rồi hỏi bạn từng vòng ngắn (tối đa bốn câu trắc nghiệm, phương án nên chọn đứng đầu) và lưu lại mọi câu trả lời.
+- `/vibebiz:idea`: bắt đầu một ý tưởng mới. vibebiz chuẩn bị thư mục làm việc nếu cần, hỏi về một tình huống thật gần đây, viết bản nháp yêu cầu đầu tiên với mọi chỗ còn thiếu được đánh dấu, rồi hỏi bạn từng vòng ngắn (tối đa bốn câu trắc nghiệm, phương án nên chọn đứng đầu) và lưu lại mọi câu trả lời.
 - `/vibebiz:continue`: làm tiếp một ý tưởng. vibebiz đọc lại các tệp (phần bạn tự sửa được giữ nguyên), tóm tắt trong ba dòng điều gì đã rõ, lần trước dừng ở đâu và câu hỏi tiếp theo, rồi hỏi tiếp. Lệnh này cũng ghi nhận kết quả phê duyệt của ban lãnh đạo (duyệt, không duyệt, cần sửa) và kết quả thẩm định chi phí của đội kỹ thuật.
 - `/vibebiz:package`: đóng gói một ý tưởng đã rõ để trình ban lãnh đạo và gửi đội kỹ thuật. vibebiz kiểm tra ý tưởng đã đủ điều kiện chưa (hoặc đề nghị bản nháp có ghi rõ chỗ thiếu), lập kế hoạch, soát chỗ thiếu và chỗ mâu thuẫn, rồi tạo bản trình bày và tài liệu yêu cầu dưới dạng Artifact riêng tư trên Claude hoặc Google Slides, Google Docs của chính bạn, kèm một tệp yêu cầu dùng được với Spec Kit. Mọi con số giống nhau ở mọi bản và có nguồn. vibebiz giữ lại các phiên bản cũ, không chia sẻ và không để công khai tài liệu nào.
 - `/vibebiz:status`: liệt kê mọi ý tưởng với trạng thái, số điểm đã rõ trên 15 điểm và bước tiếp theo. Lệnh này không hỏi gì.

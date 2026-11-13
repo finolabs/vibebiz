@@ -21,7 +21,7 @@ These rules record the design decisions Fio settled on 12/11/2026. A rule here c
 
 ## Plugin shape
 
-- Plugin name `vibebiz`, skills-only. **Exactly six skills**, the entry points, written as `skills/*/SKILL.md` and never as legacy `commands/`: `new`, `continue`, `status`, `package`, `constitution`, `help` (Fio, 12/11/2026). Everything else (router, ask protocol, clarify, specify, the four lenses, plan, checklist, analyze, package, workspace, export guidelines, writing rules, anti-sycophancy) is a **module** in `core/`, never a skill (`contracts/modules.md`).
+- Plugin name `vibebiz`, skills-only. **Exactly six skills**, the entry points, written as `skills/*/SKILL.md` and never as legacy `commands/`: `idea`, `continue`, `status`, `package`, `constitution`, `help` (Fio, 12/11/2026). Everything else (router, ask protocol, clarify, specify, the four lenses, plan, checklist, analyze, package, workspace, export guidelines, writing rules, anti-sycophancy) is a **module** in `core/`, never a skill (`contracts/modules.md`).
 - The build copies `core/` into each skill's `references/`; a `SKILL.md` refers only to files inside its own folder. Keep `SKILL.md` bodies under 3,000 words.
 - Write and edit every `SKILL.md`, `core/` module and framework card with the `writing-for-agents` skill (Fio, 13/11/2026): the description is a context pointer, steps end on completion criteria, detail moves into references, and no-ops and duplicates are pruned.
 - Installed plugins also load in claude.ai chat and in Cowork on the web or a phone, which have no local folder. Every entry skill picks its storage first: a local folder, then Google Drive through Cowork's connector, otherwise it writes nothing and names both ways forward (`core/workspace.md` §1).
@@ -30,7 +30,7 @@ These rules record the design decisions Fio settled on 12/11/2026. A rule here c
 
 ## Workspace and outputs
 
-- The user workspace is a public contract (`contracts/workspace-files.md`): fixed English names, slug from the idea title without diacritics, `new` never overwrites and repairs only missing pieces, the table of contents is rebuilt after every write.
+- The user workspace is a public contract (`contracts/workspace-files.md`): fixed English names, slug from the idea title without diacritics, `idea` never overwrites and repairs only missing pieces, the table of contents is rebuilt after every write.
 - Drive mode keeps the same layout in a Drive folder the user chooses, with the differences listed in `specs/002-drive-workspace/contracts/drive-workspace.md`: `index.json` instead of `index.html`, and the board and tech views as private Artifacts or, at the user's choice, private Google Slides and Docs; `board-deck.html` and `tech-prd.html` are never written to Drive. vibebiz never shares or changes the visibility of a Drive file.
 - All outputs render from `exports/data.json` into fixed templates; packaging adds no facts, shows gaps as "not yet clarified", keeps numbers identical across views with source, period and label, and labels estimates "not tech-reviewed" until reviewed.
 - Privacy: Artifacts are published private; vibebiz never shares an output and never makes an image or file public to insert it into Slides or Docs (a table plus the Artifact link instead).

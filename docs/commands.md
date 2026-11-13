@@ -1,10 +1,10 @@
 # Các lệnh của vibebiz
 
-Mỗi lệnh trong số sáu lệnh là một kỹ năng (skill) cùng tên trong plugin vibebiz: `new`, `continue`, `package`, `status`, `constitution`, và `help`. Bạn có thể gõ trực tiếp tên lệnh, hoặc chỉ cần nói điều mình muốn bằng lời thường, Claude sẽ tự nhận biết và chọn đúng lệnh phù hợp. Mọi lệnh đều cần một thư mục làm việc đang mở trong Claude Cowork; nếu chưa mở thư mục, vibebiz sẽ nhắc bạn mở thư mục trước và không thực hiện thao tác nào.
+Mỗi lệnh trong số sáu lệnh là một kỹ năng (skill) cùng tên trong plugin vibebiz: `idea`, `continue`, `package`, `status`, `constitution`, và `help`. Bạn có thể gõ trực tiếp tên lệnh, hoặc chỉ cần nói điều mình muốn bằng lời thường, Claude sẽ tự nhận biết và chọn đúng lệnh phù hợp. Mọi lệnh đều cần một thư mục làm việc đang mở trong Claude Cowork; nếu chưa mở thư mục, vibebiz sẽ nhắc bạn mở thư mục trước và không thực hiện thao tác nào.
 
-Hành trình của một ý tưởng trải qua các bước: khởi tạo với `/vibebiz:new`, làm rõ và phản biện qua các vòng với `/vibebiz:continue`, đóng gói tài liệu với `/vibebiz:package`, và cập nhật kết quả thẩm định kỹ thuật hoặc quyết định của ban lãnh đạo.
+Hành trình của một ý tưởng trải qua các bước: khởi tạo với `/vibebiz:idea`, làm rõ và phản biện qua các vòng với `/vibebiz:continue`, đóng gói tài liệu với `/vibebiz:package`, và cập nhật kết quả thẩm định kỹ thuật hoặc quyết định của ban lãnh đạo.
 
-## /vibebiz:new
+## /vibebiz:idea
 
 **Dùng khi**: bạn có một ý tưởng mới về hệ thống, cách dùng AI hoặc việc muốn tự động hóa. Ví dụ: "Tôi có ý tưởng", "Tôi muốn dùng AI nhắc khách cũ quay lại mua hàng", "Lên ý tưởng làm trợ lý tư vấn size".
 
@@ -102,7 +102,7 @@ Bên cạnh trạng thái là nhãn ước tính: "Chưa qua kỹ thuật thẩm
 
 **vibebiz sẽ làm gì**:
 
-1. **Khi bạn nêu một ý tưởng**: vibebiz không đi vào phỏng vấn ngay mà hướng dẫn bạn gõ `/vibebiz:new` (hoặc `/vibebiz:continue` nếu ý tưởng đã có sẵn) để bắt đầu quy trình làm rõ bài bản.
+1. **Khi bạn nêu một ý tưởng**: vibebiz không đi vào phỏng vấn ngay mà hướng dẫn bạn gõ `/vibebiz:idea` (hoặc `/vibebiz:continue` nếu ý tưởng đã có sẵn) để bắt đầu quy trình làm rõ bài bản.
 2. **Khi bạn mô tả tình huống**: vibebiz đối chiếu tình huống của bạn với bảng tình huống, đọc chỉ dẫn hiện tại của kỹ năng đó rồi giải thích ngắn gọn trong hai, ba câu lý do vì sao lệnh đó phù hợp và bước đầu tiên lệnh sẽ làm, sau đó dừng lại. vibebiz không tự ý chạy lệnh thay bạn.
 3. **Khi bạn hỏi về cách dùng hoặc thuật ngữ**: vibebiz chỉ trả lời dựa trên các tài liệu chính thức đi kèm, dẫn nguồn rõ ràng theo tên tài liệu và tiêu đề mục. Nếu tài liệu chưa đề cập, vibebiz nói thẳng là chưa có thông tin thay vì tự đoán hoặc bịa ra tính năng.
 4. **Khi bạn muốn xem ý tưởng mẫu**: vibebiz giới thiệu ý tưởng mẫu hoàn chỉnh trong thư mục `examples/` để bạn hình dung kết quả đầu ra thực tế trông như thế nào.

@@ -4,6 +4,10 @@ All notable changes to vibebiz are recorded here. The format follows [Keep a Cha
 
 ## [Unreleased]
 
+### Changed
+
+- **Breaking:** the command that starts an idea is now `/vibebiz:idea` (was `/vibebiz:new`), because `new` was easy to confuse with Claude Code's `/clear` (new) in the command list. Plain words such as "tôi có ý tưởng" still start it. Type `/vibebiz:idea` where you typed `/vibebiz:new`. A workspace created by 0.1.0 or 0.1.1 that has no idea yet still shows `/vibebiz:new` on its table of contents' copy button; start with `/vibebiz:idea` instead. The release stays on 0.1.x by Fio's choice (13/11/2026): no workspace file or layout changes, and vibebiz is pre-1.0.
+
 ## [0.1.1] - 2026-11-13
 
 ### Fixed

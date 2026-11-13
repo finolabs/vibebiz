@@ -1,6 +1,6 @@
 ---
 name: status
-description: "Show where every vibebiz idea in the workspace stands: status, how many points are clear and the next step. Use when the user types /vibebiz:status or asks for an overview, for example 'where are my ideas', 'show my ideas', 'what is the status of my ideas', 'các ý tưởng của tôi đến đâu rồi', 'xem danh sách ý tưởng', 'tình hình các ý tưởng'. Only lists; it never asks questions. Not for working on one idea (continue), starting one (new) or questions about how to use vibebiz (help)."
+description: "Show where every vibebiz idea in the workspace stands: status, how many points are clear and the next step. Use when the user types /vibebiz:status or asks for an overview, for example 'where are my ideas', 'show my ideas', 'what is the status of my ideas', 'các ý tưởng của tôi đến đâu rồi', 'xem danh sách ý tưởng', 'tình hình các ý tưởng'. Only lists; it never asks questions. Not for working on one idea (continue), starting one (idea) or questions about how to use vibebiz (help)."
 ---
 
 # vibebiz: status
@@ -16,7 +16,7 @@ Load these modules from this skill's own folder when their step starts:
 
 Follow the workspace module's storage check (§1) first: a local folder, or Google Drive when the session has none. In Drive mode follow §1a, which in this version stops without calling any Drive tool. With neither, read §1 of `references/core/workspace.md` and give its stop message word for word, then stop.
 
-If the folder holds no vibebiz workspace (no table of contents, no ground rules file and no `specs/` folder), say in one sentence that there is no idea yet and that `/vibebiz:new` starts one, and stop. Do not create a workspace here.
+If the folder holds no vibebiz workspace (no table of contents, no ground rules file and no `specs/` folder), say in one sentence that there is no idea yet and that `/vibebiz:idea` starts one, and stop. Do not create a workspace here.
 
 ## 2. Read every idea
 

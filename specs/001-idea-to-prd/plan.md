@@ -6,7 +6,7 @@
 
 ## Summary
 
-Build the vibebiz MVP as a Claude Cowork plugin of six entry skills (`new`, `continue`, `status`, `package`, `constitution`, `help`) backed by shared instruction modules: a router over a coverage map A–O, an interview protocol on the native question tool, four thinking lenses with fifteen framework cards for fashion retail, planning, readiness checks and packaging. Every idea lives as Markdown with frontmatter in the user's workspace; outputs render from one `data.json` into fixed HTML templates (published as private Artifacts) and into Google Slides and Docs through Cowork's connectors, with a Spec Kit 1.4.0-compatible snapshot for the tech team. Development tooling (structural checks, build, evals, persona harness) is Python and never ships.
+Build the vibebiz MVP as a Claude Cowork plugin of six entry skills (`idea`, `continue`, `status`, `package`, `constitution`, `help`) backed by shared instruction modules: a router over a coverage map A–O, an interview protocol on the native question tool, four thinking lenses with fifteen framework cards for fashion retail, planning, readiness checks and packaging. Every idea lives as Markdown with frontmatter in the user's workspace; outputs render from one `data.json` into fixed HTML templates (published as private Artifacts) and into Google Slides and Docs through Cowork's connectors, with a Spec Kit 1.4.0-compatible snapshot for the tech team. Development tooling (structural checks, build, evals, persona harness) is Python and never ships.
 
 ## Technical Context
 
@@ -37,7 +37,7 @@ Build the vibebiz MVP as a Claude Cowork plugin of six entry skills (`new`, `con
 | I. Non-Technical User First | Plain-language questions through `AskUserQuestion` (R6); write-back after each round; question budget; language follows the user (R10) | Pass |
 | II. Spec Kit Compatibility by Contract | Snapshot headings fixed (`contracts/exports.md`); heading check plus `speckit-plan` integration test (R5); content ported from 1.4.0 with `UPSTREAM.md`; mechanics not ported | Pass |
 | III. Evidence Over Agreement | `data.json` figures carry source, period, label; package check in code (R4); anti-sycophancy module; dismissed risks recorded | Pass |
-| IV. Self-Contained Runtime | Six skills plus copied modules (R1, R2); inline renderer runs in the page, not on the user's machine; diagram-design optional; `new` never overwrites | Pass |
+| IV. Self-Contained Runtime | Six skills plus copied modules (R1, R2); inline renderer runs in the page, not on the user's machine; diagram-design optional; `idea` never overwrites | Pass |
 | V. Eval-Proven Behavior | Ten suites with thresholds; structural checks in code; Jev development-only (R11); smoke test before release | Pass |
 | VI. Clean Source-Available Repository | Fictional examples and fixtures; own-words cards; license and CLA files in scope (FR-033); dev tooling outside the plugin | Pass |
 | VII. Docs Ship With Behavior | Docs and help map checked against shipped skills in code; diagram briefs carry versions; example rebuilt with templates | Pass |
@@ -66,7 +66,7 @@ specs/001-idea-to-prd/
 .claude-plugin/
 └── plugin.json                  # name vibebiz, version 0.1.0, license, repository
 skills/
-├── new/SKILL.md
+├── idea/SKILL.md
 ├── continue/SKILL.md
 ├── status/SKILL.md
 ├── package/SKILL.md
@@ -105,7 +105,7 @@ THIRD_PARTY_LICENSES.md  UPSTREAM.md
 
 | Story | Delivers | Depends on |
 |---|---|---|
-| P1 | workspace module and templates, specify, router, ask protocol, clarify, coverage, `new`, `continue` (resume path), `status` minimal, writing rules | — |
+| P1 | workspace module and templates, specify, router, ask protocol, clarify, coverage, `idea`, `continue` (resume path), `status` minimal, writing rules | — |
 | P2 | four lenses, anti-sycophancy, fifteen framework cards, fashion pack, AI patterns, Cynefin rule | P1 |
 | P3 | plan, checklist, analyze, package, export guidelines, export templates, `data.json`, diagram briefs, history, Slides and Docs writing | P1, P2 |
 | P4 | full table of contents, board outcomes and tech review in `continue`, status complete | P1, P3 |

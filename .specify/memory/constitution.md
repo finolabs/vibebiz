@@ -1,11 +1,10 @@
 <!--
 Sync Impact Report
-Version change: 1.1.0 → 1.2.0 (MINOR)
-Modified sections: Runtime and Distribution Constraints (target runtime adds the Google Drive
-  connector; the MAJOR-bump rule covers the local layout, Drive mode is a declared variant)
+Version change: 1.2.0 → 1.2.1 (PATCH)
+Modified sections: Principle on the workspace (the entry command is renamed /vibebiz:new → /vibebiz:idea; the rule is unchanged)
 Added sections: none
 Removed sections: none
-Follow-up: CLAUDE.md "Plugin shape" and "Workspace and outputs" (applied in the same change)
+Follow-up: none (CLAUDE.md, docs and specs renamed in the same change)
 -->
 # vibebiz Constitution
 
@@ -68,7 +67,7 @@ The plugin runs in Claude Cowork with nothing but its own files and the user's c
 - The plugin MUST NOT depend on, import or reference `finolabs-vibecode` or any of its skills.
 - `diagram-design` is a companion plugin and MUST NOT be copied into this repository. When it is
   absent, exports MUST show a table with a "no diagram" note instead of a substitute drawing.
-- `/vibebiz:new` MUST NOT overwrite an existing user file; it repairs only missing pieces of the
+- `/vibebiz:idea` MUST NOT overwrite an existing user file; it repairs only missing pieces of the
   workspace contract.
 
 Rationale: a non-technical user cannot debug a missing interpreter or a clobbered file.
@@ -148,4 +147,4 @@ Rationale: users learn vibebiz from its docs and `help`; stale docs teach the wr
 - Reviews and plans check compliance; a justified exception is recorded in the plan's Complexity
   Tracking with its reason.
 
-**Version**: 1.2.0 | **Ratified**: 2026-11-12 | **Last Amended**: 2026-11-13
+**Version**: 1.2.1 | **Ratified**: 2026-11-12 | **Last Amended**: 2026-11-13

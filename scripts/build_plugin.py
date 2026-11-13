@@ -14,7 +14,7 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SKILLS = ["new", "continue", "status", "package", "constitution", "help"]
+SKILLS = ["idea", "continue", "status", "package", "constitution", "help"]
 CONTENT_DIRS = ["templates", "packs", "docs", "examples"]
 # Development folders (.specify, .claude, specs, evals, scripts) sit at the repository root and are never
 # copied; only these junk names are dropped at any depth, so nested content such as an example's specs/ ships.

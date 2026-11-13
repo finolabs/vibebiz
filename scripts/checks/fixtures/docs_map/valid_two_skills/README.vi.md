@@ -14,7 +14,7 @@ Tải tệp plugin lên.
 
 ## Có gì trong bản này
 
-- `/vibebiz:new`: bắt đầu một ý tưởng mới.
+- `/vibebiz:idea`: bắt đầu một ý tưởng mới.
 - `/vibebiz:continue`: làm tiếp một ý tưởng.
 
 ## Giấy phép
