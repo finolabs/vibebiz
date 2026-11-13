@@ -289,7 +289,7 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
 
 **Purpose**: confirm that the descriptions match what ships, then cut 0.1.2.
 
-- [ ] T047 Add a Drive-mode row and a pointer to `specs/002-drive-workspace/contracts/drive-workspace.md` in `specs/001-idea-to-prd/contracts/workspace-files.md`. Set the version to `0.1.2` in `.claude-plugin/plugin.json`, and add a `test_build.py` assert that `plugin_version` in `templates/workspace/index.json` equals the manifest version. Add `## [0.1.2] - <date>` to `CHANGELOG.md`, with Added for Drive mode and Changed for the two-way message, following the `versioning` skill.
+- [x] T047 Add a Drive-mode row and a pointer to `specs/002-drive-workspace/contracts/drive-workspace.md` in `specs/001-idea-to-prd/contracts/workspace-files.md`. Set the version to `0.1.2` in `.claude-plugin/plugin.json`, and add a `test_build.py` assert that `plugin_version` in `templates/workspace/index.json` equals the manifest version. Add `## [0.1.2] - <date>` to `CHANGELOG.md`, with Added for Drive mode and Changed for the two-way message, following the `versioning` skill.
 - [ ] T048 Release review (CLAUDE.md "Release review"):
   - the README pair, `docs/`, the help map and `PRIVACY.md` match what ships;
   - `examples/000-giu-chan-khach-cu/` still passes `package_check.py` and the Spec Kit check;
