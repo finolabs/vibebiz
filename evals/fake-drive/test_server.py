@@ -204,6 +204,30 @@ class Modes(Base):
         meta = self.call("get_file_metadata", fileId=copy["id"], includeRichMetadata=True)
         self.assertEqual(meta["lastModifyingUserEmail"], idx["owner"])
 
+    def test_shared_drive_copy_is_last_changed_by_the_copier(self):
+        fixtures.main(["fixtures.py", "shared-drive", self.ws])
+        idx = self.find("title = 'index.json'")[0]
+        copy = self.call("copy_file", fileId=idx["id"], title="index-copy.json")
+        meta = self.call("get_file_metadata", fileId=copy["id"], includeRichMetadata=True)
+        self.assertEqual(meta["lastModifyingUserEmail"], server.USER_EMAIL)
+        self.assertEqual(meta["driveId"], "shared-drive-1")
+
+    def test_shared_drive_has_a_name(self):
+        fixtures.main(["fixtures.py", "shared-drive", self.ws])
+        self.assertEqual(self.call("get_shared_drive_metadata", driveId="shared-drive-1")["name"],
+                         "Kinh doanh miền Nam (hư cấu)")
+
+    def test_create_in_a_shared_drive_belongs_to_the_drive(self):
+        fixtures.main(["fixtures.py", "shared-drive", self.ws])
+        folder = self.find("title = 'vibebiz'")[0]
+        made = self.call("create_file", title="n.md", parentId=folder["id"], contentMimeType="text/markdown",
+                         textContent="x", disableConversionToGoogleType=True)
+        self.assertEqual(made["driveId"], "shared-drive-1")
+        self.assertNotEqual(made["owner"], server.USER_EMAIL)
+        self.assertNotIn(made["id"], [f["id"] for f in self.find("title = 'n.md' and owner = 'me'")])
+        meta = self.call("get_file_metadata", fileId=made["id"], includeRichMetadata=True)
+        self.assertEqual(meta["lastModifyingUserEmail"], server.USER_EMAIL)
+
     def test_trusted_ack_was_written_by_the_user(self):
         fixtures.main(["fixtures.py", "trusted-ack", self.ws])
         idx = self.find("title = 'index.json'")[0]

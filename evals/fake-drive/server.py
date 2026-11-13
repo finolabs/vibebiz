@@ -568,6 +568,10 @@ def t_create_file(drive, a):
     now = drive.tick()
     f = {"id": drive.new_id(), "title": title, "mimeType": final, "parentId": parent,
          "content": text or "", "modifiedTime": now, "createdTime": now, "owner": "me"}
+    home = drive.files.get(parent) if parent != "root" else None
+    if home and home.get("driveId"):
+        # A file created in a shared drive belongs to the drive; the user is its last modifier.
+        f.update(driveId=home["driveId"], owner=home.get("owner", home["driveId"]), last_modifier="me")
     if a.get("inheritedPermissionsDisabled") and final == FOLDER:
         f["inheritedPermissionsDisabled"] = True
     drive.files[f["id"]] = f
@@ -589,9 +593,9 @@ def t_copy_file(drive, a):
     f.update({"id": drive.new_id(), "title": a.get("title") or "Copy of " + src["title"],
               "parentId": parent, "modifiedTime": now, "createdTime": now, "permissions": []})
     f.pop("trashed", None)
-    f.pop("last_modifier", None)  # the copier creates, owns and last changed the copy
+    f["last_modifier"] = "me"  # the copier last changed the copy, in My Drive and in a shared drive
     if not f.get("driveId"):
-        f["owner"] = "me"
+        f["owner"] = "me"  # in My Drive the copier also owns it; in a shared drive the drive does
     drive.files[f["id"]] = f
     return public(f, drive)
 
@@ -602,6 +606,14 @@ def t_trash_file(drive, a):
     f["trashed"] = True
     f["modifiedTime"] = drive.tick()
     return {}
+
+
+def t_get_shared_drive_metadata(drive, a):
+    drives = drive.data.get("shared_drives", {})
+    did = a.get("driveId") or a.get("sharedDriveId")
+    if did not in drives:
+        raise DriveError("Shared drive not found")
+    return {"id": did, "name": drives[did]}
 
 
 def t_get_file_metadata(drive, a):
@@ -674,6 +686,8 @@ TOOLS = {
                   obj({"fileId": S, "parentId": S, "title": S, "pregeneratedId": S}, ["fileId"])),
     "trash_file": (t_trash_file, "Move a Drive file to the trash. It does not permanently delete the file.",
                    obj({"fileId": S}, ["fileId"])),
+    "get_shared_drive_metadata": (t_get_shared_drive_metadata, "Get the name and id of a shared drive the user belongs to.",
+                                  obj({"driveId": S}, ["driveId"])),
     "get_file_metadata": (t_get_file_metadata, "Get general metadata about a Drive file, including modifiedTime and etag.",
                           obj({"fileId": S, "includeRichMetadata": B, "excludeContentSnippets": B, "snippetVerbosity": S}, ["fileId"])),
     "get_file_permissions": (t_get_file_permissions, "List the permissions of a Drive file.",
