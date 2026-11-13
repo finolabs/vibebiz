@@ -12,9 +12,9 @@ Load these modules from this skill's own folder when their step starts:
 - `references/core/workspace.md`: working folder check and table of contents.
 - `references/core/writing-rules.md`: wording of everything the user reads.
 
-## 1. Check for a working folder
+## 1. Check where the workspace lives
 
-Follow the workspace module's working-folder check first. Without a working folder, give its message telling the user to open Cowork in the Claude desktop app with a folder, and stop.
+Follow the workspace module's storage check (§1) first: a local folder, or Google Drive when the session has none. With neither, read §1 of `references/core/workspace.md` and give its stop message word for word, then stop.
 
 If the folder holds no vibebiz workspace (no table of contents, no ground rules file and no `specs/` folder), say in one sentence that there is no idea yet and that `/vibebiz:new` starts one, and stop. Do not create a workspace here.
 

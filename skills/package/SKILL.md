@@ -14,9 +14,9 @@ Load each module from this skill's own folder when its step starts, and follow i
 - `references/core/ask-protocol.md`: how every question is asked, recorded and stopped.
 - `references/core/package.md`: the packaging steps; it loads `references/core/plan.md`, `references/core/checklist.md`, `references/core/analyze.md`, `references/core/export-guidelines.md` and, when findings go back to the interview, `references/core/router.md`.
 
-## 1. Check for a working folder
+## 1. Check where the workspace lives
 
-Follow the workspace module's working-folder check first. Without a working folder (for example in a claude.ai chat, or Cowork started on the web or a phone), give its message telling the user to open Cowork in the Claude desktop app with a folder, and stop: write nothing, ask nothing, publish nothing.
+Follow the workspace module's storage check (§1) first: a local folder, or Google Drive when the session has none. With neither (for example in a claude.ai chat, or Cowork started on the web or a phone without Google Drive), read §1 of `references/core/workspace.md` and give its stop message word for word, then stop: write nothing, ask nothing, publish nothing.
 
 ## 2. Preconditions
 
