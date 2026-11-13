@@ -1,0 +1,57 @@
+{
+  "vibebiz": "workspace",
+  "storage": "drive",
+  "toc_artifact": 42,
+  "plugin_version": "0.1.2",
+  "shared_ack": null,
+  "workspace": {
+    "updated": "2026-11-12",
+    "ground_rules_status": "deferred"
+  },
+  "ideas": [
+    {
+      "id": "001",
+      "title": "Nhắc khách cũ quay lại",
+      "status": "packaged",
+      "estimate_status": "not-tech-reviewed",
+      "coverage": {
+        "clear": 15,
+        "total": 15
+      },
+      "next_step": "Trình ban điều hành",
+      "outputs": [
+        "https://claude.ai/artifact/fictional-board",
+        "https://claude.ai/artifact/fictional-tech"
+      ],
+      "updated": "2026-11-12"
+    },
+    {
+      "id": "002",
+      "title": "Báo cáo bán hàng tuần",
+      "status": "clarifying",
+      "estimate_status": "not-tech-reviewed",
+      "coverage": {
+        "clear": 3,
+        "total": 15
+      },
+      "next_step": "Trả lời vòng hỏi tiếp theo",
+      "outputs": [],
+      "updated": "2026-11-12"
+    }
+  ],
+  "examples": [
+    {
+      "id": "000",
+      "title": "Xếp ca nhân viên cửa hàng",
+      "status": "ready",
+      "estimate_status": "not-tech-reviewed",
+      "coverage": {
+        "clear": 12,
+        "total": 15
+      },
+      "next_step": "",
+      "outputs": [],
+      "updated": "2026-11-12"
+    }
+  ]
+}

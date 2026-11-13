@@ -113,5 +113,55 @@ class BuildTest(unittest.TestCase):
         self.assertFalse(stray.exists())
 
 
+class FakeDriveBuildTest(unittest.TestCase):
+    """The eval-only build for Drive-mode cases (spec 002 T007, evals/README.md "Fake Drive")."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls._tmp = tempfile.TemporaryDirectory()
+        cls.out = Path(cls._tmp.name) / "dist"
+        cls.archive = build_plugin.build(cls.out, fake_drive=True)
+        cls.plugin = cls.out / "vibebiz"
+        cls.fake = cls.out / "vibebiz-fakedrive"
+
+    @classmethod
+    def tearDownClass(cls):
+        cls._tmp.cleanup()
+
+    def test_shipped_build_has_no_fake_drive(self):
+        self.assertFalse((self.plugin / ".mcp.json").exists())
+        for p in self.plugin.rglob("*"):
+            self.assertNotIn("fake-drive", p.as_posix(), p)
+        with zipfile.ZipFile(self.archive) as zf:
+            names = zf.namelist()
+        self.assertFalse([n for n in names if "fake-drive" in n or n.endswith(".mcp.json")], names)
+
+    def test_each_skill_ships_the_index_json_template(self):
+        for skill in SKILLS:
+            self.assertTrue((self.plugin / "skills" / skill / "references" / "templates" / "workspace"
+                             / "index.json").is_file(), skill)
+
+    def test_fake_build_declares_the_google_drive_server(self):
+        import json
+        config = json.loads((self.fake / ".mcp.json").read_text(encoding="utf-8"))
+        server = config["mcpServers"]["google-drive"]
+        self.assertEqual(server["command"], "python3")
+        self.assertIn("${CLAUDE_PLUGIN_ROOT}/srv/fake-drive/server.py", server["args"])
+        self.assertTrue((self.fake / "srv" / "fake-drive" / "server.py").is_file())
+
+    def test_fake_build_is_the_shipped_build_plus_the_server(self):
+        shipped = {p.relative_to(self.plugin).as_posix() for p in self.plugin.rglob("*") if p.is_file()}
+        fake = {p.relative_to(self.fake).as_posix() for p in self.fake.rglob("*") if p.is_file()}
+        self.assertEqual(fake - shipped, {".mcp.json", "srv/fake-drive/server.py"})
+        self.assertEqual(shipped - fake, set())
+
+    def test_plain_rebuild_removes_the_fake_build(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "dist"
+            build_plugin.build(out, fake_drive=True)
+            build_plugin.build(out)
+            self.assertFalse((out / "vibebiz-fakedrive").exists())
+
+
 if __name__ == "__main__":
     unittest.main()

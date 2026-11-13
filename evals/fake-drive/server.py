@@ -21,11 +21,13 @@ Standard library only. Python 3.10+.
 import argparse
 import base64
 import datetime as _dt
+import hashlib
 import json
 import os
 import re
 import shutil
 import sys
+import unicodedata
 
 SCHEMA_DATE = "2026-11-13"
 FOLDER = "application/vnd.google-apps.folder"
@@ -40,12 +42,29 @@ class DriveError(Exception):
     pass
 
 
+def unlink_if_link(path):
+    if os.path.islink(path):
+        os.unlink(path)
+
+
 def safe_component(title):
     """Encode one Drive title as a single, harmless path component for the mirror tree."""
     out = title.replace("%", "%25").replace("/", "%2F").replace("\\", "%5C").replace("\0", "%00")
     if out in ("", ".", ".."):
         out = out.replace(".", "%2E") or "%00"
     return out
+
+
+def fit_component(name, limit=200):
+    """Keep an encoded title under common file-system limits (255 bytes) without losing uniqueness.
+
+    Applied to the title before any suffix (".gdoc", ".dup-<id>"), so suffixes always survive.
+    """
+    if len(name.encode("utf-8")) <= limit:
+        return name
+    cut = name.encode("utf-8")[:limit].decode("utf-8", "ignore")
+    # A hash of the whole title, so two items with one long title still collide and get ".dup-".
+    return "%s~%s" % (cut, hashlib.sha1(name.encode("utf-8")).hexdigest()[:8])
 
 
 # ---------------------------------------------------------------- state
@@ -90,21 +109,29 @@ class Drive:
         return f
 
     def save(self):
+        unlink_if_link(self.path)
         with open(self.path, "w", encoding="utf-8") as fh:
             json.dump(self.data, fh, ensure_ascii=False, indent=2)
         tree = os.path.join(self.root, "tree")
+        unlink_if_link(tree)  # a symlinked tree would send the mirror elsewhere
         shutil.rmtree(tree, ignore_errors=True)
         os.makedirs(tree, exist_ok=True)
-        real_tree = os.path.realpath(tree) + os.sep
+        real_tree = os.path.join(os.path.realpath(self.root), "tree") + os.sep
+        if os.path.realpath(tree) + os.sep != real_tree:
+            raise DriveError("Refused: the mirror folder is not a plain folder")
         dirs = {"root": tree}
         used = set()
 
         def place(parent_dir, f, suffix=""):
-            name = safe_component(f["title"]) + suffix
+            name = fit_component(safe_component(f["title"])) + suffix
             target = os.path.join(parent_dir, name)
-            if target in used:
-                target += ".dup-" + f["id"]  # a second live item with one title stays visible
-            used.add(target)
+            # A second live item with one title (compared without case, as macOS does) stays
+            # visible: the older item keeps the plain name, the newer one gets ".dup-<id>".
+            key = unicodedata.normalize("NFC", target).casefold()
+            if key in used:
+                target = os.path.join(parent_dir, name + ".dup-" + f["id"])
+                key = unicodedata.normalize("NFC", target).casefold()
+            used.add(key)
             if not os.path.realpath(target).startswith(real_tree):
                 return None  # never mirror outside the tree
             return target
@@ -124,11 +151,22 @@ class Drive:
             dirs[fid] = target
             return target
 
-        live = [f for f in self.files.values() if self._alive_chain(f)]
-        for f in sorted(live, key=lambda f: f["id"]):
-            if f["mimeType"] == FOLDER:
-                folder_dir(f["id"])
-        for f in sorted(live, key=lambda f: f["id"]):
+        live = sorted((f for f in self.files.values() if self._alive_chain(f)),
+                      key=lambda f: (f.get("createdTime", f["modifiedTime"]), f["id"]))
+        def depth(f):
+            n, seen, pid = 0, set(), f.get("parentId")
+            while pid not in (None, "root") and pid in self.files and pid not in seen:
+                seen.add(pid)
+                n += 1
+                pid = self.files[pid].get("parentId")
+            return n
+
+        # Place folders level by level, oldest first, so the older of two same-title folders
+        # keeps the plain name whatever order their children are reached in.
+        for f in sorted((f for f in live if f["mimeType"] == FOLDER),
+                        key=lambda f: (depth(f), f.get("createdTime", f["modifiedTime"]), f["id"])):
+            folder_dir(f["id"])
+        for f in live:
             if f["mimeType"] == FOLDER:
                 continue
             parent = folder_dir(f.get("parentId") or "root")
@@ -166,6 +204,8 @@ def public(f, drive):
     }
     if f.get("driveId"):
         out["driveId"] = f["driveId"]
+    if f.get("creator"):
+        out["creator"] = f["creator"]
     return out
 
 
@@ -305,8 +345,10 @@ def field_value(name, f, drive):
         return f.get("parentId", "root")
     if name in ("modifiedTime", "createdTime", "viewedByMeTime"):
         return f.get(name, f["modifiedTime"])
-    if name in ("owner", "creator"):
+    if name == "owner":
         return f.get("owner", "me")
+    if name == "creator":
+        return f.get("creator", f.get("owner", "me"))
     if name == "trashed":
         return "true" if is_trashed(f, drive) else "false"
     if name == "visibility":
@@ -416,8 +458,8 @@ def t_download_file_content(drive, a):
 def t_create_file(drive, a):
     need_write(drive)
     title = a.get("title")
-    if not title:
-        raise DriveError("title is required")
+    if not isinstance(title, str) or not title:
+        raise DriveError("title is required and must be text")
     parent = a.get("parentId") or "root"
     if parent != "root":
         p = drive.get(parent)
@@ -463,6 +505,8 @@ def t_copy_file(drive, a):
         raise DriveError("Parent is not a folder")
     now = drive.tick()
     f = dict(src)
+    if a.get("title") is not None and not isinstance(a["title"], str):
+        raise DriveError("title must be text")
     f.update({"id": drive.new_id(), "title": a.get("title") or "Copy of " + src["title"],
               "parentId": parent, "modifiedTime": now, "createdTime": now, "permissions": []})
     f.pop("trashed", None)
@@ -496,20 +540,23 @@ def t_update_file(drive, a):
     f = drive.get(a.get("fileId"))
     if a.get("etag") and a["etag"] != public(f, drive)["etag"]:
         raise DriveError("FAILED_PRECONDITION: the file was modified since the etag was returned")
+    if "title" in a and not (isinstance(a["title"], str) and a["title"]):
+        raise DriveError("title must be non-empty text")
+    pid = a.get("parentId")
+    if pid and pid != "root":
+        if drive.get(pid)["mimeType"] != FOLDER:
+            raise DriveError("Parent is not a folder")
+        cur, seen = pid, set()
+        while cur not in (None, "root") and cur not in seen:
+            if cur == f["id"]:
+                raise DriveError("Cannot move a folder into itself")
+            seen.add(cur)
+            cur = drive.files.get(cur, {}).get("parentId")
+    # All checks passed: apply every change together, as the real API does.
     for key in ("title", "description", "starred", "inheritedPermissionsDisabled"):
         if key in a:
             f[key] = a[key]
-    if a.get("parentId"):
-        pid = a["parentId"]
-        if pid != "root":
-            if drive.get(pid)["mimeType"] != FOLDER:
-                raise DriveError("Parent is not a folder")
-            cur, seen = pid, set()
-            while cur not in (None, "root") and cur not in seen:
-                if cur == f["id"]:
-                    raise DriveError("Cannot move a folder into itself")
-                seen.add(cur)
-                cur = drive.files.get(cur, {}).get("parentId")
+    if pid:
         f["parentId"] = pid
     f["modifiedTime"] = drive.tick()
     return public(f, drive)
@@ -564,6 +611,7 @@ TOOLS = {
 
 def log_call(root, name, args, result, error):
     path = os.path.join(root, "calls.jsonl")
+    unlink_if_link(path)
     seq = 1
     if os.path.exists(path):
         with open(path, encoding="utf-8") as fh:

@@ -5,6 +5,7 @@ import base64
 import importlib.util
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -383,6 +384,125 @@ class NewModes(Base):
         fixtures.main(["fixtures.py", "injected-instruction", self.ws])
         cov = self.find("title = 'coverage.md'")[0]
         self.assertIn("chia sẻ thư mục", self.call("read_file_content", fileId=cov["id"])["content"])
+
+
+class ReviewFollowUps(Base):
+    """LOW findings from the PR finolabs/vibebiz#5 reviews, fixed in Phase 2."""
+    mode = "one-workspace"
+
+    def test_failed_update_changes_nothing(self):
+        plan = self.find("title = 'plan.md'")[0]
+        with self.assertRaises(server.DriveError):
+            self.call("update_file", fileId=plan["id"], title="RENAMED", parentId=plan["id"])
+        self.assertEqual(self.call("get_file_metadata", fileId=plan["id"])["title"], "plan.md")
+
+    def test_newer_duplicate_gets_the_suffix(self):
+        old = self.find("title = 'coverage.md'")[0]
+        new = self.call("create_file", title="coverage.md", parentId=old["parentId"],
+                        contentMimeType="text/markdown", textContent="new", disableConversionToGoogleType=True)
+        d = os.path.join(self.root, "tree", "vibebiz", "specs", "001-giu-chan-khach-cu")
+        with open(os.path.join(d, "coverage.md"), encoding="utf-8") as fh:
+            self.assertNotEqual(fh.read(), "new")
+        with open(os.path.join(d, "coverage.md.dup-" + new["id"]), encoding="utf-8") as fh:
+            self.assertEqual(fh.read(), "new")
+
+    def test_long_title_is_shortened_not_fatal(self):
+        title = "Ý tưởng " * 60 + ".md"
+        f = self.call("create_file", title=title, contentMimeType="text/markdown", textContent="x",
+                      disableConversionToGoogleType=True)
+        names = [n for n in os.listdir(os.path.join(self.root, "tree")) if "~" in n]
+        self.assertEqual(len(names), 1)
+        self.assertLessEqual(len(names[0].encode("utf-8")), 255)
+        self.call("search_files", query="title = 'x'")  # the server still saves after it
+
+    def test_titles_differing_only_in_case_stay_apart(self):
+        a = self.call("create_file", title="Notes.md", contentMimeType="text/markdown", textContent="A",
+                      disableConversionToGoogleType=True)
+        b = self.call("create_file", title="notes.md", contentMimeType="text/markdown", textContent="b",
+                      disableConversionToGoogleType=True)
+        names = sorted(os.listdir(os.path.join(self.root, "tree")))
+        self.assertIn("Notes.md", names)
+        self.assertIn("notes.md.dup-" + b["id"], names)
+        self.assertNotEqual(a["id"], b["id"])
+
+    def test_shared_drive_files_name_their_creator(self):
+        fixtures.main(["fixtures.py", "shared-drive", self.ws])
+        idx = self.find("title = 'index.json'")[0]
+        self.assertEqual(idx["creator"], "sales-manager@example.com")
+        self.assertEqual(self.find("title = 'index.json' and creator = 'me'"), [])
+
+
+class MirrorEdges(Base):
+    def test_long_google_title_keeps_gdoc_and_dup_suffixes(self):
+        title = "a" * 250
+        one = self.call("create_file", title=title, contentMimeType="text/plain", textContent="1")
+        two = self.call("create_file", title=title, contentMimeType="text/plain", textContent="2")
+        names = sorted(os.listdir(os.path.join(self.root, "tree")))
+        base = [n for n in names if n.startswith("a" * 200 + "~") and n.endswith(".gdoc")]
+        self.assertEqual(len(base), 1, names)
+        self.assertIn(base[0] + ".dup-" + two["id"], names)
+        self.assertNotEqual(one["id"], two["id"])
+
+    def test_older_folder_keeps_plain_name_after_a_move(self):
+        older = self.call("create_file", title="vibebiz", contentMimeType=server.FOLDER)
+        newer = self.call("create_file", title="vibebiz", contentMimeType=server.FOLDER)
+        f = self.call("create_file", title="x.md", contentMimeType="text/markdown", textContent="x",
+                      disableConversionToGoogleType=True)
+        self.call("update_file", fileId=f["id"], parentId=newer["id"])
+        tree = os.path.join(self.root, "tree")
+        self.assertTrue(os.path.isdir(os.path.join(tree, "vibebiz")))
+        self.assertTrue(os.path.exists(os.path.join(tree, "vibebiz.dup-" + newer["id"], "x.md")))
+        self.assertFalse(os.path.exists(os.path.join(tree, "vibebiz", "x.md")))
+
+
+class SecurityFollowUps(Base):
+    """LOW findings from the PR finolabs/vibebiz#6 security review."""
+
+    def test_symlinked_tree_is_not_followed(self):
+        outside = tempfile.mkdtemp()
+        try:
+            self.call("search_files", query="title = 'x'")
+            tree = os.path.join(self.root, "tree")
+            shutil.rmtree(tree)
+            os.symlink(outside, tree)
+            self.call("create_file", title="x.md", contentMimeType="text/markdown", textContent="x",
+                      disableConversionToGoogleType=True)
+            self.assertEqual(os.listdir(outside), [])
+            self.assertFalse(os.path.islink(tree))
+        finally:
+            shutil.rmtree(outside)
+
+    def test_symlinked_log_is_not_followed(self):
+        outside = tempfile.NamedTemporaryFile(delete=False)
+        outside.close()
+        try:
+            os.symlink(outside.name, os.path.join(self.root, "calls.jsonl"))
+            self.call("search_files", query="title = 'x'")
+            with open(outside.name, encoding="utf-8") as fh:
+                self.assertEqual(fh.read(), "")
+        finally:
+            os.unlink(outside.name)
+
+    def test_non_text_title_is_refused_and_server_keeps_working(self):
+        f = self.call("create_file", title="a.md", contentMimeType="text/markdown", textContent="1",
+                      disableConversionToGoogleType=True)
+        for bad in (123, None, ["x"]):
+            with self.assertRaises(server.DriveError):
+                self.call("update_file", fileId=f["id"], title=bad)
+            with self.assertRaises(server.DriveError):
+                self.call("create_file", title=bad, contentMimeType="text/markdown", textContent="1")
+        self.call("search_files", query="title = 'a.md'")
+
+    def test_nfc_and_nfd_titles_stay_apart(self):
+        import unicodedata
+        nfc = unicodedata.normalize("NFC", "Ý tưởng.md")
+        nfd = unicodedata.normalize("NFD", "Ý tưởng.md")
+        self.call("create_file", title=nfc, contentMimeType="text/markdown", textContent="1",
+                  disableConversionToGoogleType=True)
+        b = self.call("create_file", title=nfd, contentMimeType="text/markdown", textContent="2",
+                      disableConversionToGoogleType=True)
+        names = os.listdir(os.path.join(self.root, "tree"))
+        self.assertTrue(any(n.endswith(".dup-" + b["id"]) for n in names), names)
 
 
 if __name__ == "__main__":
