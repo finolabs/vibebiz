@@ -16,6 +16,7 @@ Fio settled these on 13/11/2026:
 - **Where the Drive workspace lives**: the user chooses the Drive folder the first time. Later sessions find it again without asking the user to remember where it is.
 - **Desktop with a local folder open**: the local folder wins, exactly as in 0.1.x. Drive is used only when the session has no local folder (web, phone). The two workspaces are separate and are never synced.
 - **Board deck and tech PRD views in Drive mode**: they are produced only as private Artifacts (or as Google Slides and Docs, as `package` already offers). The two large HTML views are not saved into Drive, because a connector that takes file content as a parameter cannot carry a 150–190 KB fixed template faithfully.
+- **Table of contents in Drive mode** (FR-010): the table-of-contents data stays in Drive and the rendered table of contents is a private Artifact; `index.html` (about 20 KB of fixed template) is not written into Drive, for the same reason.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -126,7 +127,7 @@ A director who uses the desktop app with a local folder sees no change: the work
 - **FR-007**: Every file vibebiz keeps in Drive MUST stay a plain file with its contract name and extension, never converted into a Google Doc or Sheet, so a tech team can download the idea folder and use it as Spec Kit files.
 - **FR-008**: The workspace rules of 0.1.x MUST hold in Drive: `new` never overwrites and repairs only missing pieces; hand edits are authoritative; records are appended; each answer is saved before the next question.
 - **FR-009**: In a Drive workspace, `package` MUST save `data.json`, `spec.md` and `links.md` in the idea's `exports/` folder and MUST produce the board deck and the tech PRD only as private Artifacts or, at the user's choice, private Google Slides and Docs. It MUST NOT save `board-deck.html` or `tech-prd.html` into Drive.
-- **FR-010**: In a Drive workspace, the table of contents MUST still be rebuilt after every write. The workspace MUST keep the table-of-contents data in Drive and MUST show the rendered table of contents as a private Artifact; it MUST NOT write a hand-retyped copy of the `index.html` template. [Decision derived from Fio's FR-009 choice; confirm in review.]
+- **FR-010**: In a Drive workspace, the table of contents MUST still be rebuilt after every write. The workspace MUST keep the table-of-contents data in Drive and MUST show the rendered table of contents as a private Artifact; it MUST NOT write a hand-retyped copy of the `index.html` template.
 - **FR-011**: Numbers, sources and the "not tech-reviewed" labels MUST match across `data.json`, the Artifacts and any Google file, exactly as in 0.1.x.
 
 **Privacy**
