@@ -290,7 +290,8 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
 **Purpose**: confirm that the descriptions match what ships, then cut 0.1.2.
 
 - [x] T047 Add a Drive-mode row and a pointer to `specs/002-drive-workspace/contracts/drive-workspace.md` in `specs/001-idea-to-prd/contracts/workspace-files.md`. Set the version to `0.1.2` in `.claude-plugin/plugin.json`, and add a `test_build.py` assert that `plugin_version` in `templates/workspace/index.json` equals the manifest version. Add `## [0.1.2] - <date>` to `CHANGELOG.md`, with Added for Drive mode and Changed for the two-way message, following the `versioning` skill.
-- [ ] T048 Release review (CLAUDE.md "Release review"):
+- [x] T048 Release review (CLAUDE.md "Release review"):
+  - 13/11/2026: done on f13daf3. `claude plugin validate` passes on a fresh clone, both on `dist/vibebiz` and on the repository root; its only advice is a marketplace install line, which does not apply to a Cowork upload. The example passes `package_check.py` and the Spec Kit check. Amendments A1 and A2 are approved and applied. The "(đang làm)" markers are gone; FAQ 12's "từ bản 0.1.2" states the version and stays. `help` routes web and phone questions to FAQ 12, which covers Drive.
   - the README pair, `docs/`, the help map and `PRIVACY.md` match what ships;
   - `examples/000-giu-chan-khach-cu/` still passes `package_check.py` and the Spec Kit check;
   - `claude plugin validate dist/vibebiz` passes on a fresh clone;
