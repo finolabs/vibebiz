@@ -4,6 +4,12 @@ All notable changes to vibebiz are recorded here. The format follows [Keep a Cha
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-11-13
+
+### Fixed
+
+- Opened without a folder (claude.ai chat, or Cowork started on the web or a phone), every entry skill now says vibebiz needs the Claude desktop app with a folder open, and that the session can still be followed on the web or a phone while the desktop app stays open. Before, it told users who were already in Cowork to "open Cowork". The FAQ gains the same answer.
+
 ## [0.1.0] - 2026-11-13
 
 First public release. vibebiz is a Claude Cowork plugin that acts as a product owner for retail sales directors: it turns a vague idea about a system, an AI use or an automation into a clear, challenged and measurable PRD for the board and the tech team.

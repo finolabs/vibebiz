@@ -108,3 +108,7 @@ Nếu chưa cài plugin này, tài liệu vẫn hiển thị đầy đủ thông
 **Có**. Trong thư mục `examples/` của plugin có sẵn một ý tưởng mẫu hoàn chỉnh về chuỗi thời trang áp dụng chương trình gửi tin nhắn kéo khách cũ quay lại.
 
 Bạn có thể gõ `/vibebiz:help` và hỏi: *"Cho tôi xem ý tưởng mẫu"*, vibebiz sẽ giới thiệu ý tưởng mẫu để bạn hình dung kết quả đầu ra thực tế.
+
+### 12. Tôi dùng được vibebiz trên Cowork bản web hoặc điện thoại không?
+
+Bản hiện tại thì chưa. vibebiz lưu mỗi ý tưởng thành tệp trong một thư mục trên máy tính của bạn, mà phiên Cowork mở từ web hay điện thoại chạy trên máy chủ nên không mở được thư mục đó. Bạn mở ứng dụng Claude trên máy tính, vào Cowork, chọn một thư mục rồi gõ lệnh. Trong lúc ứng dụng trên máy còn mở, bạn vẫn theo dõi phiên đó được trên web hoặc điện thoại. Chạy hẳn trên web, lưu ý tưởng vào Google Drive, là việc của một bản sau.

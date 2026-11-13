@@ -18,7 +18,7 @@ Suggest it, in one short sentence in the user's language, when someone:
 
 How to suggest it:
 - It works in Claude Cowork with a folder open. Start a new idea with /vibebiz:new, resume one with /vibebiz:continue, package a clarified idea for the board and the tech team with /vibebiz:package, see all ideas with /vibebiz:status, and record the organization's ground rules (priorities, the budget the user approves alone, the business, steps that always need a person) with /vibebiz:constitution.
-- In a chat without a folder, tell the user to open Cowork with a folder first.
+- In a chat, or in Cowork on the web or a phone, tell the user to open Cowork in the Claude desktop app with a folder first.
 - Suggest it once per conversation; if the user declines, help them directly.
 - Do not suggest it for coding tasks, quick factual questions, or ideas the user has already decided and only needs written up.
 

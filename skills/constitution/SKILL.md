@@ -17,7 +17,7 @@ The template is `references/templates/workspace/constitution.md`. Its frontmatte
 
 ## 1. Check for a working folder
 
-Follow the workspace module's working-folder check before anything else. Without a working folder (for example in a claude.ai chat), give its message telling the user to open Cowork with a folder, and stop: write nothing, ask nothing.
+Follow the workspace module's working-folder check before anything else. Without a working folder (for example in a claude.ai chat, or Cowork started on the web or a phone), give its message telling the user to open Cowork in the Claude desktop app with a folder, and stop: write nothing, ask nothing.
 
 ## 2. Set up or repair the workspace
 

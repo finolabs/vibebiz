@@ -16,7 +16,7 @@ Load each module from this skill's own folder when its step starts, and follow i
 
 ## 1. Check for a working folder
 
-Follow the workspace module's working-folder check first. Without a working folder (for example in a claude.ai chat), give its message telling the user to open Cowork with a folder, and stop: write nothing, ask nothing, publish nothing.
+Follow the workspace module's working-folder check first. Without a working folder (for example in a claude.ai chat, or Cowork started on the web or a phone), give its message telling the user to open Cowork in the Claude desktop app with a folder, and stop: write nothing, ask nothing, publish nothing.
 
 ## 2. Preconditions
 

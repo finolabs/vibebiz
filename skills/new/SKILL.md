@@ -20,7 +20,7 @@ Do the steps in order. Do not skip a step because the user seems in a hurry; eac
 
 ## 1. Check for a working folder
 
-Follow the workspace module's working-folder check before anything else. Without a working folder (for example in a claude.ai chat), give the module's message telling the user to open Cowork with a folder, and stop: write nothing, ask nothing. Running partway would leave files nowhere the user can find them.
+Follow the workspace module's working-folder check before anything else. Without a working folder (for example in a claude.ai chat, or Cowork started on the web or a phone), give the module's message telling the user to open Cowork in the Claude desktop app with a folder, and stop: write nothing, ask nothing. Running partway would leave files nowhere the user can find them.
 
 ## 2. Set up or repair the workspace
 
