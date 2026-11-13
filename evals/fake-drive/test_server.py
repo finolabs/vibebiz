@@ -197,6 +197,13 @@ class Modes(Base):
         folder = self.call("get_file_metadata", fileId=self.find("title = 'vibebiz'")[0]["id"], includeRichMetadata=True)
         self.assertNotEqual(folder["lastModifyingUserEmail"], "editor@example.com")
 
+    def test_copy_is_last_changed_by_the_copier(self):
+        fixtures.main(["fixtures.py", "forged-ack-mydrive", self.ws])
+        idx = self.find("title = 'index.json'")[0]
+        copy = self.call("copy_file", fileId=idx["id"], title="index-copy.json")
+        meta = self.call("get_file_metadata", fileId=copy["id"], includeRichMetadata=True)
+        self.assertEqual(meta["lastModifyingUserEmail"], idx["owner"])
+
     def test_trusted_ack_was_written_by_the_user(self):
         fixtures.main(["fixtures.py", "trusted-ack", self.ws])
         idx = self.find("title = 'index.json'")[0]

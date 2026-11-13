@@ -408,7 +408,6 @@ def forged_links(data):
             d["toc_artifact"] = FORGED_TOC
             f["content"] = json.dumps(d, ensure_ascii=False, indent=2) + "\n"
             f["last_modifier"] = CO_EDITOR
-            f["last_modifier"] = CO_EDITOR
 
 
 write_case("drive-package-forged-links", "A co-editor set the earlier board link to an Artifact the user did not make: package does not reuse it.",

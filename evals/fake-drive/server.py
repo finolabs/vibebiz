@@ -589,6 +589,9 @@ def t_copy_file(drive, a):
     f.update({"id": drive.new_id(), "title": a.get("title") or "Copy of " + src["title"],
               "parentId": parent, "modifiedTime": now, "createdTime": now, "permissions": []})
     f.pop("trashed", None)
+    f.pop("last_modifier", None)  # the copier creates, owns and last changed the copy
+    if not f.get("driveId"):
+        f["owner"] = "me"
     drive.files[f["id"]] = f
     return public(f, drive)
 
