@@ -23,7 +23,7 @@ Why: an entry skill that runs without a place to save would lose every answer wh
 
 ## 1a. Drive mode
 
-`package` does not work in Drive mode yet: give this message in the user's language and stop, writing nothing: "Phiên này lưu ý tưởng trong Google Drive. Việc đóng gói (bộ slide cho Ban điều hành và tài liệu cho đội kỹ thuật) trong Drive sẽ có ở bản sau; anh/chị đóng gói được ngay trong ứng dụng Claude trên máy tính, với một thư mục làm việc." Every other entry skill: read `references/core/drive-workspace.md` and follow it for the whole run. It finds or creates the workspace in the user's Google Drive (asking which folder when it must), checks who can see that folder before the first write, and changes files only by replacement. Every rule below about layout, markers, numbering, slugs and the table-of-contents data still applies; wherever a section below reads, creates or changes a file, do it the way that module says, never with local file tools.
+Read `references/core/drive-workspace.md` and follow it for the whole run; `package` also follows section 13 of `references/core/package.md`. It finds or creates the workspace in the user's Google Drive (asking which folder when it must), checks who can see that folder before the first write, and changes files only by replacement. Every rule below about layout, markers, numbering, slugs and the table-of-contents data still applies; wherever a section below reads, creates or changes a file, do it the way that module says, never with local file tools.
 
 ## 2. Locate the workspace root and the plugin's templates
 

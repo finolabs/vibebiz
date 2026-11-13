@@ -102,6 +102,8 @@ vibebiz sẽ:
    - **Bản trình bày cho ban lãnh đạo**: Thiết kế dạng infographic trực quan, mỗi trang một thông điệp rõ ràng kèm hình ảnh lớn, không rườm rà chữ; nêu bật bài toán kinh doanh, kết quả kỳ vọng, chi phí, rủi ro và lộ trình thử nghiệm.
    - **Tài liệu cho đội kỹ thuật (PRD)**: Đầy đủ tình huống sử dụng, yêu cầu chức năng, tiêu chí nghiệm thu và tệp đặc tả kỹ thuật tương thích chuẩn Spec Kit để kỹ sư phần mềm có thể lên kế hoạch làm ngay mà không phải phỏng vấn lại bạn từ đầu.
 
+Nếu bạn dùng Cowork trên web hay điện thoại, ý tưởng nằm trong Google Drive của bạn: vibebiz lưu dữ liệu, bản sao yêu cầu và danh sách liên kết vào thư mục của ý tưởng trong Drive, còn bản trình bày và tài liệu kỹ thuật thì hiện thành Artifact riêng tư (hoặc Google Slides và Docs nếu bạn chọn), không lưu thành tệp trang web trong Drive.
+
 ---
 
 ## 7. Báo cáo kết quả sau cuộc họp

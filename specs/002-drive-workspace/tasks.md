@@ -264,6 +264,7 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
   - `exports/history/<date>/` holds copies made with `copy_file`, including the earlier `links.md`;
   - no earlier file is trashed.
 - [ ] T042 [P] [US3] Add the eval case `evals/speckit-compat/drive-snapshot/`. The grader checks that `scripts/checks/speckit_integration.py` passes on the `exports/spec.md` downloaded from the fake Drive (SC-006).
+  - 13/11/2026: folded into `evals/package/drive-package` to save a run: its `spec-copy-headings` grader checks the Spec Kit headings, and `speckit_integration.py` and `package_check.py` run on the kept `.fake-drive/tree/` mirror after the eval (T046), since the harness has no script grader. The eval session has no Artifacts, so `drive-package` checks that the views are explained rather than published; publishing private Artifacts from Drive mode is a T049 check.
 - [ ] T043 [US3] Red run: run T040–T042 and confirm each case fails for the expected reason. Record the failures in `evals/RESULTS.md`.
 
 ### Implementation

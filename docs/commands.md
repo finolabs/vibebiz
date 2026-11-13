@@ -1,6 +1,6 @@
 # Các lệnh của vibebiz
 
-Mỗi lệnh trong số sáu lệnh là một kỹ năng (skill) cùng tên trong plugin vibebiz: `idea`, `continue`, `package`, `status`, `constitution`, và `help`. Bạn có thể gõ trực tiếp tên lệnh, hoặc chỉ cần nói điều mình muốn bằng lời thường, Claude sẽ tự nhận biết và chọn đúng lệnh phù hợp. Mọi lệnh đều cần một thư mục làm việc đang mở trong Claude Cowork; nếu chưa mở thư mục, vibebiz sẽ nhắc bạn mở thư mục trước và không thực hiện thao tác nào.
+Mỗi lệnh trong số sáu lệnh là một kỹ năng (skill) cùng tên trong plugin vibebiz: `idea`, `continue`, `package`, `status`, `constitution`, và `help`. Bạn có thể gõ trực tiếp tên lệnh, hoặc chỉ cần nói điều mình muốn bằng lời thường, Claude sẽ tự nhận biết và chọn đúng lệnh phù hợp. Mọi lệnh đều cần một nơi để lưu: một thư mục làm việc đang mở trong ứng dụng Claude trên máy tính, hoặc một thư mục trong Google Drive của bạn khi dùng Cowork trên web hay điện thoại. Nếu không có nơi nào, vibebiz chỉ cho bạn hai cách đó và không làm gì thêm.
 
 Hành trình của một ý tưởng trải qua các bước: khởi tạo với `/vibebiz:idea`, làm rõ và phản biện qua các vòng với `/vibebiz:continue`, đóng gói tài liệu với `/vibebiz:package`, và cập nhật kết quả thẩm định kỹ thuật hoặc quyết định của ban lãnh đạo.
 
@@ -53,7 +53,7 @@ Hành trình của một ý tưởng trải qua các bước: khởi tạo với
 3. Hỏi bạn muốn nhận bản trình bày dưới dạng Artifact trên Claude hay Google Slides, và tài liệu kỹ thuật dưới dạng Artifact hay Google Docs. Nếu chưa kết nối Google, vibebiz đề nghị dùng Artifact.
 4. Vẽ sơ đồ (cây chỉ số, hành trình trước và sau, các phương án, rủi ro, lộ trình thử nghiệm) nếu đã cài plugin diagram-design; nếu chưa, chỗ sơ đồ hiện một bảng kèm ghi chú "chưa có sơ đồ".
 5. Tạo bản trình bày cho ban lãnh đạo (theo phong cách infographic trực quan, mỗi trang một thông điệp cô đọng kèm một hình ảnh lớn), tài liệu cho đội kỹ thuật và một bản sao yêu cầu để đội kỹ thuật dùng trực tiếp với Spec Kit. Mọi con số giống nhau ở cả hai bản, kèm nguồn, thời kỳ và ghi rõ là số đo được hay số giả định. Chi phí ước tính ghi "chưa qua kỹ thuật thẩm định" cho tới khi đội kỹ thuật xác nhận.
-6. Khi đóng gói lại, vibebiz chuyển bản cũ vào thư mục lịch sử của ý tưởng và cập nhật Artifact ngay tại liên kết cũ.
+6. Khi đóng gói lại, vibebiz chuyển bản cũ vào thư mục lịch sử của ý tưởng và cập nhật Artifact ngay tại liên kết cũ. Nếu ý tưởng nằm trong Google Drive, vibebiz chép bản cũ vào thư mục lịch sử, và hai bản xem dạng trang web không được lưu vào Drive: bạn xem chúng qua Artifact riêng tư, hoặc qua Google Slides và Docs nếu bạn chọn.
 7. Gửi bạn các liên kết. Mọi tài liệu chỉ mình bạn xem được: vibebiz không bao giờ tự chia sẻ hay để công khai. Bạn tự chia sẻ cho ban lãnh đạo hoặc đội kỹ thuật khi muốn.
 
 Cách đọc từng tài liệu: [Đọc các tài liệu vibebiz tạo ra](reading-outputs.md).

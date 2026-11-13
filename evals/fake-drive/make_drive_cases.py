@@ -285,3 +285,47 @@ write_case("drive-newer-version", "A workspace written by a newer vibebiz: conti
                *never_share(),
                llm("asked-to-update", "The user's Drive workspace was written by a newer version of vibebiz than the one running. PASS if the assistant tells the user in plain Vietnamese that the workspace comes from a newer vibebiz, that it changed nothing, and that they should update vibebiz before going on. FAIL if it writes or replaces files, or says nothing about the version."),
            ], tags=("workspace", "drive", "us2"))
+
+
+# ---------------------------------------------------------------- Phase 6 (US3): package from the web
+
+PACKAGE = ("/vibebiz:package Đóng gói ý tưởng nhắc khách quay lại cửa hàng. Nếu còn thiếu thì xuất luôn bản nháp, "
+           "bản trình bày và tài liệu kỹ thuật đều dạng Artifact. %s" % NOANSWER)
+EXPORTS = WS + "/specs/001-giu-chan-khach-cu/exports"
+
+
+def no_exports(data):
+    ids = ids_under(data, "vibebiz")
+    files = data["files"]
+    folders = [i for i in ids if files[i]["title"] == "exports"]
+    for i in [i for i in ids if files[i]["parentId"] in folders]:
+        del files[i]
+
+
+def package_graders(first):
+    out = [
+        exists("data-json", EXPORTS + "/data.json"),
+        exists("spec-copy", EXPORTS + "/spec.md"),
+        exists("links-md", EXPORTS + "/links.md"),
+        exists("no-html-in-drive", TREE + "/**/*.html", False),
+        regex("spec-copy-headings", EXPORTS + "/spec.md", "## User Scenarios & Testing[^\\n]*\\n[\\s\\S]*## Requirements[\\s\\S]*## Success Criteria"),
+        regex("no-public-link", EXPORTS + "/links.md", "(usp=sharing|/share\\?|anyone)", "not_contains"),
+        *never_share(),
+    ]
+    if first:
+        out.append(llm("views-explained", "This Cowork session on the web keeps the workspace in Google Drive and has no Claude Artifacts. PASS if the assistant writes the export data into Drive (data, requirement copy, links) and tells the user in plain Vietnamese that the board view and the tech view could not be shown in this session (or offers Google Slides and Docs instead), without saving them as web pages in Drive. FAIL if it claims the views were published, or saves HTML files to Drive."))
+    else:
+        out += [exists("history-links", EXPORTS + "/history/*/links.md"),
+                exists("history-data", EXPORTS + "/history/*/data.json"),
+                regex("history-by-copy", CALLS, '"tool": "copy_file"[^\\n]*"ok": true')]
+    return out
+
+
+# T040 (+ T042: the requirement copy keeps its Spec Kit headings; package_check.py and
+# speckit_integration.py run on the kept mirror after the eval, see T046)
+write_case("drive-package", "Package from the web, first export: data.json, spec.md and links.md in Drive, no HTML in Drive, nothing shared (spec 002 US3).",
+           "one-workspace", PACKAGE, package_graders(True), tags=("package", "drive", "us3"), mutate=no_exports, suite="package")
+
+# T041
+write_case("drive-repackage", "Package again from the web: the earlier set is copied into exports/history/<date>/, exports holds only the latest set (spec 002 US3).",
+           "one-workspace", PACKAGE, package_graders(False), tags=("package", "drive", "us3"), suite="package")

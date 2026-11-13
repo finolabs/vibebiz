@@ -3,11 +3,13 @@
 Turn one ready idea into what the board decides on and what the tech team builds from: a board view, a tech view and a copy of the requirement, all rendered from one data file, published private, with the previous version kept. Used by the `package` entry skill.
 
 - **Reads**: the idea's `coverage.md`, `spec.md`, `plan.md`, `decisions.md`, `assumptions.md`, `open-questions.md`, `glossary.md`, `checklists/`, `diagrams/`, `exports/` (the previous set, when there is one); the workspace `constitution.md`; the templates in `references/templates/exports/`; the framework cards in `references/packs/frameworks/`.
-- **Writes**: diagram briefs and rendered diagrams in `diagrams/`; `exports/data.json`, `exports/board-deck.html`, `exports/tech-prd.html`, `exports/spec.md`, `exports/links.md`; `exports/history/<date>/`; `coverage.md` (`status`, `latest_export`, `next_step`, `updated`); the table of contents. Outside the workspace: private Artifacts, and the Google Slides and Docs files the user chose, in the user's own Drive.
+- **Writes**: diagram briefs and rendered diagrams in `diagrams/`; `exports/data.json`, `exports/board-deck.html`, `exports/tech-prd.html`, `exports/spec.md`, `exports/links.md`; `exports/history/<date>/`; `coverage.md` (`status`, `latest_export`, `next_step`, `updated`); the table of contents. In Drive mode, no HTML file in Drive (section 13). Outside the workspace: private Artifacts, and the Google Slides and Docs files the user chose, in the user's own Drive.
 - **Asks through**: `references/core/ask-protocol.md`. The format round (section 4) is not counted against the question budget.
 - **Loads, in order**: `references/core/plan.md`, `references/core/checklist.md`, `references/core/analyze.md`, `references/core/export-guidelines.md`; `references/core/router.md` when findings go back to the interview; `references/core/workspace.md` for the table of contents.
 
 Follow `references/core/writing-rules.md` for everything the user reads, and `references/core/export-guidelines.md` for everything in the outputs. Speak and write in the idea's `language` from `coverage.md` (Vietnamese by default). The outputs use the same language; only the requirement copy keeps its Spec Kit headings in English, because the tech team's tools find sections by those headings.
+
+In Drive mode (`references/core/workspace.md` §1a) every read and write in the workspace goes through `references/core/drive-workspace.md`, and section 13 changes sections 7, 8, 10 and 11.
 
 ## 1. Rules that hold in every step
 
@@ -190,3 +192,14 @@ A failure you can fix from the files (a missing id, a stray value in text, a mis
    - that everything is private and they share it with the board or the tech team themselves.
 
    Example: "Đã đóng gói xong ý tưởng nhắc khách quay lại. Bản trình bày cho ban lãnh đạo: <link>. Tài liệu cho đội kỹ thuật: <link>. Các con số chi phí đang ghi “chưa qua kỹ thuật thẩm định”. Hai liên kết này chỉ anh/chị xem được; anh/chị tự chia sẻ khi muốn gửi."
+
+## 13. Drive mode
+
+In Drive mode, the workspace lives in the user's Google Drive (`references/core/drive-workspace.md`), and these replace the matching steps:
+
+1. **History by copy** (section 7 step 1). Before writing the new set, copy each of `spec.md`, `data.json` and `links.md` that `exports/` holds into a new `exports/history/<date>/` folder with the connector's copy tool, named as section 7 says; copy only within the workspace, and never trash or change anything in `history/`. Then write the new `spec.md`, `data.json` and `links.md` by replacement (`drive-workspace.md` §3), so `exports/` holds only the latest set.
+2. **No HTML in Drive** (section 7 steps 4 and 5). Never save `board-deck.html` or `tech-prd.html` to Drive. Build each view in the session's scratch space exactly as section 7 steps 4 and 5 say (one throwaway command when there is a shell; without one, copy the template text exactly), read it back there, and publish it by section 8. The scratch copy is not a workspace file and never goes to Drive.
+3. **Artifacts unavailable** (section 8). Offer Google Slides and Docs (section 9) for the views instead; when the user chooses neither, or the Google connector is missing, leave both links `null`, write `data.json`, `spec.md` and `links.md`, and tell the user in plain words that the board view and the tech view could not be shown in this session and open in the Claude desktop app or in a session with Artifacts.
+4. **Final links** (section 10 step 2). Rewrite the data block of the scratch views and update the Artifacts; `data.json` and `links.md` in Drive are replaced once more by `drive-workspace.md` §3.
+5. **Checks** (section 11). Check 9 runs on the scratch views. `exports/` in Drive holds exactly `data.json`, `spec.md`, `links.md` and `history/`.
+
