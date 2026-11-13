@@ -204,4 +204,5 @@ In Drive mode, the workspace lives in the user's Google Drive (`references/core/
 5. **Final links** (section 10 step 2). Rewrite the data block of the scratch views and update the Artifacts; `data.json` and `links.md` in Drive are replaced once more by `drive-workspace.md` §3.
 6. **Slides and Docs** (section 9). Create them in the root of the user's own My Drive, never inside the workspace folder, so they never inherit the workspace's sharing; they are the only files vibebiz writes outside the workspace in Drive mode.
 7. **Checks** (section 11). Check 9 runs on the scratch views. `exports/` in Drive holds exactly `data.json`, `spec.md`, `links.md` and `history/`.
+8. **Close in every run** (section 12). Views or not, finish with section 12: replace `coverage.md` in Drive with its new `latest_export`, `status`, `next_step` and `updated` (`drive-workspace.md` §3), then rebuild `index.json` (`drive-workspace.md` §5). A run that wrote `data.json` and stopped before these leaves the table of contents wrong, so the run is not done until both are written.
 
