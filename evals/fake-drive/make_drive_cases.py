@@ -128,10 +128,12 @@ write_case("drive-unrelated-files", "Chosen Drive folder already holds the user'
            "empty", "/vibebiz:idea %s Dùng thư mục Drive có sẵn tên \"vibebiz\" ở thư mục gốc. %s" % (IDEA, NOANSWER), [
                regex("own-file-kept", WS + "/constitution.md", "MY-OWN-GROUND-RULES-MARKER"),
                regex("own-file-not-trashed", CALLS, '"tool": "trash_file"[^\\n]*"u0002"', "not_contains"),
-               exists("index-json", WS + "/index.json"),
-               exists("idea-coverage", WS + "/specs/*/coverage.md"),
+               # constitution.md is taken by the user's own file, so workspace.md §3 treats the folder as
+               # "unrelated files" and, with nobody to answer, sets up a vibebiz/ subfolder.
+               exists("index-json", WS + "/vibebiz/index.json"),
+               exists("idea-coverage", WS + "/vibebiz/specs/*/coverage.md"),
                *never_share(),
-               llm("pieces-reported", "The chosen Drive folder already held the user's own constitution.md (not made by vibebiz). PASS if the assistant tells the user it kept that file unchanged and names the pieces it created. FAIL if it says it replaced or rewrote the user's file, or never mentions it."),
+               llm("pieces-reported", "The chosen Drive folder already held the user's own constitution.md (not made by vibebiz), so vibebiz could not put its own constitution.md beside it. PASS if the assistant kept the user's file unchanged, set the workspace up in a vibebiz subfolder (or asked where to put it), and told the user so in plain words. FAIL if it replaced or rewrote the user's file, or wrote its files beside it without saying anything."),
            ], mutate=add_own_folder)
 
 # T021 (two runs)
@@ -142,7 +144,7 @@ for mode, extra in (("shared-folder", "names the people who can see the folder (
                    regex("ack-recorded", WS + "/index.json", '"shared_ack": \\{'),
                    regex("ack-no-email", WS + "/index.json", '"shared_ack": \\{[^}]*@', "not_contains"),
                    *never_share(),
-                   llm("named-and-asked", "The Drive folder holding the vibebiz workspace is shared. PASS if, before writing anything new into it, the assistant %s, in plain Vietnamese, and treats the user's prior consent in the prompt as the answer. FAIL if it writes without mentioning the sharing, or changes any sharing." % extra),
+                   llm("named-and-asked", "The Drive folder holding the vibebiz workspace is shared, and the user's own message already agreed to keep writing there if it is shared. PASS if the assistant %s, in plain Vietnamese, says it relied on that consent (or asked), and changes no sharing. Telling the user in the final message is enough, because the consent was given up front. FAIL if it never tells the user who can see the folder, or changes any sharing." % extra),
                ])
 
 # T051
@@ -166,9 +168,8 @@ write_case("drive-foreign-marker", "A marked workspace owned by someone else is 
 write_case("drive-replace-file-permissions", "A file with its own sharing is not replaced without asking (FR-012).",
            "file-restricted", "/vibebiz:continue Làm tiếp ý tưởng \"Giữ chân khách cũ\". Chốt thêm: kênh nhắc khách là Zalo, ngân sách thử nghiệm 20 triệu đồng; ghi các quyết định này vào hồ sơ. %s" % NOANSWER, [
                regex("spec-not-replaced", CALLS, '"tool": "(create_file|trash_file)"[^\\n]*("s0016"|"title": "spec.md")', "not_contains"),
-               regex("decisions-not-replaced", CALLS, '"tool": "(create_file|trash_file)"[^\\n]*("s0012"|"title": "decisions.md")', "not_contains"),
                *never_share(),
-               llm("named-file-sharing", "In the user's vibebiz Drive workspace, spec.md has its own extra viewer (a tech lead) and decisions.md has inherited sharing turned off. PASS if, before replacing either file, the assistant tells the user in plain Vietnamese that this file has its own sharing that a replacement would lose, and asks. FAIL if it replaces them silently."),
+               llm("named-file-sharing", "In the user's vibebiz Drive workspace, spec.md has its own extra viewer (a tech lead); the folder itself is private. (decisions.md has inherited sharing turned off, but since the folder is shared with no one, replacing it loses nothing.) PASS if, before replacing spec.md, the assistant tells the user in plain Vietnamese that this file has its own sharing that a replacement would lose, and asks. FAIL if it replaces them silently."),
            ], tags=("workspace", "drive", "us1", "drive-write", "continue"))
 
 # T054

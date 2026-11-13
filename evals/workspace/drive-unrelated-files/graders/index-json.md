@@ -1,5 +1,5 @@
 ---
 type: file_exists
-path: '.fake-drive/tree/vibebiz/index.json'
+path: '.fake-drive/tree/vibebiz/vibebiz/index.json'
 exists: true
 ---
