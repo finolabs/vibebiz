@@ -62,7 +62,7 @@ A new file (nothing to replace) is steps 3 and 4 only. Before creating any file,
 
 **Errors:**
 - **Read-only:** when a write is refused for permissions, say that vibebiz cannot save to this Google Drive and that nothing was saved, show this session's answers in the chat so nothing is lost, and say how to go on (a Drive account or folder the user can edit, or the Claude desktop app with a working folder). Stop.
-- **Drive full:** on a storage-quota error, say that Google Drive is full and vibebiz stopped saving, name any folder created before the error, then show this session's answers in the chat so nothing is lost. Stop writing.
+- **Drive full:** on a storage-quota error, say that Google Drive is full and vibebiz stopped saving, name any folder created before the error, then show this session's answers in the chat so nothing is lost, starting with the user's own description of the idea in their words. Stop writing.
 - **Any other failed write:** name the file and what is left undone; never retry by creating a second copy.
 
 `core/package.md`'s rule never to overwrite a Google file covers the Slides and Docs that `package` presented. Workspace records are vibebiz's own plain files, and replacing them through the trash is how they change.
