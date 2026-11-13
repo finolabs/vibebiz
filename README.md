@@ -18,7 +18,7 @@ Sales and operations directors in retail, online or offline (fashion first; elec
 
 1. Download `vibebiz.plugin` from the latest [release](https://github.com/finolabs/vibebiz/releases).
 2. In Claude Cowork, open Settings › Plugins, choose "Upload plugin" and select `vibebiz.plugin`.
-3. Open an empty folder in Claude Cowork and get started by typing `/vibebiz:new` or `/vibebiz:help`.
+3. Open an empty folder in Claude Cowork and get started by typing `/vibebiz:new` or `/vibebiz:help`. On the web or a phone, where Cowork cannot open a folder on your computer, connect Google Drive in Cowork's Connectors instead: vibebiz then keeps your ideas in a Drive folder you choose, with the same layout. On the desktop an open folder always wins, and the two are never synced.
 
 Install the companion plugin `diagram-design` if you want automatic diagram rendering in the outputs (see below).
 
