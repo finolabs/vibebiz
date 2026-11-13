@@ -298,7 +298,8 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
   - Fio, 13/11/2026: he runs this test himself once Phases 4–7 are done; the agent prepares everything else and does not wait on it mid-way.
   - If a required connector check fails, stop: do not tag, and report to Fio.
   - 13/11/2026: a hand probe of the real connector from Claude Code, in a personal Drive, settled the read and write shapes (see `evals/RESULTS.md`). Three checks are still open and belong to this test. First, whether a file in a shared drive carries `driveId` and an owner, and whether `owner = 'me'` returns it; the connected account had no shared drive, and Fio chose to skip it. Second, the Drive-full and read-only errors. Third, whether Cowork's download tool returns base64 inline or saves the file.
-- [ ] T050 After T048 and T049 pass and the release PR is merged with code and security reviews, tag `v0.1.2` on the merge commit. Then create the GitHub Release with `dist/vibebiz.plugin`, built from a fresh clone.
+- [ ] T055 Before T050, run the `security-audit` skill (cloudflare/security-audit-skill) on the release candidate, focused on `core/drive-workspace.md`, `core/router.md` and `core/ask-protocol.md`, and fix or record every finding. Both reviewers of the Phase 4 branch advised it; Fio agreed on 13/11/2026.
+- [ ] T050 After T048, T049 and T055 pass and the release PR is merged with code and security reviews, tag `v0.1.2` on the merge commit. Then create the GitHub Release with `dist/vibebiz.plugin`, built from a fresh clone.
 
 ---
 
