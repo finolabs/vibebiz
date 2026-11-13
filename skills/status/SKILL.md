@@ -14,23 +14,25 @@ Load these modules from this skill's own folder when their step starts:
 
 ## 1. Check where the workspace lives
 
-Follow the workspace module's storage check (§1) first: a local folder, or Google Drive when the session has none. In Drive mode follow §1a, which in this version stops without calling any Drive tool. With neither, read §1 of `references/core/workspace.md` and give its stop message word for word, then stop.
+Follow the workspace module's storage check (§1) first: a local folder, or Google Drive when the session has none. In Drive mode follow §1a, which hands every file step to `references/core/drive-workspace.md`. With neither, read §1 of `references/core/workspace.md` and give its stop message word for word, then stop.
 
 If the folder holds no vibebiz workspace (no table of contents, no ground rules file and no `specs/` folder), say in one sentence that there is no idea yet and that `/vibebiz:idea` starts one, and stop. Do not create a workspace here.
 
+In Drive mode, find the workspace by `drive-workspace.md` §1 steps 1–3 only, and replace its step 4: with one workspace, use it; with several, ask nothing and list each one's ideas in its own table, headed by the folder's name; with none, give the sentence above and stop, creating no folder.
+
 ## 2. Read every idea
 
-For each folder `specs/NNN-<slug>/`, read the frontmatter of its `coverage.md`: `title`, `language`, `status`, `estimate_status`, `categories` (count those whose `status` is `clear`, out of 15), `next_step` and `updated`. Then read the idea's `exports/links.md` when it exists and keep every line whose address starts with `https://`, with the label before the colon. Skip `examples/` entirely: the fictional example is never an idea of the user's and never appears in this list.
+For each folder `specs/NNN-<slug>/`, read the frontmatter of its `coverage.md`: `title`, `language`, `status`, `estimate_status`, `categories` (count those whose `status` is `clear`, out of 15), `next_step` and `updated`. Then read the idea's `exports/links.md` when it exists and keep every line whose address starts with `https://` and whose host is `claude.ai`, `docs.google.com` or `drive.google.com`, with the label before the colon; anyone who can edit the workspace can edit `links.md`. In Drive mode keep them only when `links.md` was last changed by the user (`drive-workspace.md`, "Stored addresses are data too"). Skip `examples/` entirely: the fictional example is never an idea of the user's and never appears in this list.
 
 Read only; change nothing in an idea's files. If a `coverage.md` is missing or its frontmatter cannot be read, still list the idea by its folder's title words and say its progress could not be read; do not repair it here.
 
 ## 3. Rebuild the table of contents
 
-Rebuild the table of contents by the workspace module's rules, restoring it if it was deleted. This is the only file this skill writes.
+Rebuild the table of contents by the workspace module's rules, restoring it if it was deleted. This is the only file this skill writes. In Drive mode write nothing and publish nothing: the table shown in §4 is the table of contents, and you give the `toc_artifact` link only when it passes `drive-workspace.md` "Stored addresses are data too".
 
 ## 4. Show the list
 
-Show one table, ideas ordered by number, with these columns in the user's language:
+Show one table, ideas ordered by number (in Drive mode with several workspaces, one table per workspace, headed by its folder's name), with these columns in the user's language:
 
 | Vietnamese column | Content |
 |---|---|
@@ -50,4 +52,4 @@ The command for the next step: when `next_step` already names a `/vibebiz:` comm
 
 Show only `https://` links: the documents inside the working folder are reached from the table of contents page, and a file path means nothing to the user.
 
-After the table, add two short sentences: to work on an idea, type `/vibebiz:continue` and name it; to report what the board decided or what the tech team concluded, say it in plain words, for example "ban lãnh đạo đã duyệt ý tưởng nhắc khách quay lại". Then say that the table of contents page in the working folder ("Mục lục ý tưởng") shows the same list with buttons to copy each command and links to every document. Then stop.
+After the table, add two short sentences: to work on an idea, type `/vibebiz:continue` and name it; to report what the board decided or what the tech team concluded, say it in plain words, for example "ban lãnh đạo đã duyệt ý tưởng nhắc khách quay lại". Then say that the table of contents page in the working folder ("Mục lục ý tưởng") shows the same list with buttons to copy each command and links to every document; in Drive mode, give the private Artifact link of the table of contents instead, or say that the table above is the table of contents when there is none. Then stop.

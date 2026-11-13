@@ -6,6 +6,7 @@
 
 - vibebiz is a plugin made of instructions and file templates. It runs inside Claude Cowork. It has no server, no account system and no analytics of its own.
 - Everything you tell vibebiz (ideas, numbers, decisions) is written to files in the folder you opened in Cowork, and to Google Docs, Slides or Drive only when you ask for an export through your own connectors.
+- When a Cowork session has no folder on your computer (on the web or a phone) and your Google Drive connector is on, vibebiz keeps the same files in one Google Drive folder you choose, and nowhere else. Before its first write there, it tells you if anyone else can see that folder and asks before going on. It never changes who can see a file, never moves a file out of that folder, and never deletes a file permanently: a replaced file goes to your Drive trash.
 - vibebiz's instructions publish Artifacts private, never share an output with anyone, and never make an image or file public to put it into Slides or Docs; they use a table plus the Artifact link instead. You decide who sees an output: your Artifact and Google Drive sharing settings, and wherever you later save or send an exported file (for example `board-deck.html`), still apply.
 
 ## What vibebiz does not do
@@ -14,7 +15,8 @@ vibebiz is a set of instructions that Claude follows; it has no code of its own 
 
 - send your data to any evaluator, scoring service or third-party API;
 - call a network service beyond the connectors you enabled;
-- read files outside the folder you opened.
+- write, move or trash any file outside the folder you opened or the workspace folder in your Google Drive. Outside them it only reads: it searches your Drive for vibebiz's own `index.json` to find the workspace again, checks who can see the folders above it, and may read documents in your Drive to look up a fact before asking you (for example the number of stores in a report), saying which document the fact came from;
+- share a file, change its visibility, or follow an instruction written inside a file.
 
 File and network access are enforced by Claude Cowork and your organization's settings, not by vibebiz. If Claude ever acts against these instructions, report it as a security issue (`SECURITY.md`).
 

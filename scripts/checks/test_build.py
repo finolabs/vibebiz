@@ -1,6 +1,7 @@
 """Structural checks on the built plugin (T004). Run:
 python3 -m unittest discover -s scripts/checks -p 'test_build.py' -v
 """
+import json
 import re
 import sys
 import tempfile
@@ -45,6 +46,12 @@ class BuildTest(unittest.TestCase):
 
     def test_manifest_present(self):
         self.assertTrue((self.plugin / ".claude-plugin" / "plugin.json").is_file())
+
+    def test_workspace_template_version_matches_manifest(self):
+        # drive-workspace.md §1 step 5 reads this plugin's version from the template, so the two must agree.
+        manifest = json.loads((self.plugin / ".claude-plugin" / "plugin.json").read_text(encoding="utf-8"))
+        template = json.loads((build_plugin.ROOT / "templates" / "workspace" / "index.json").read_text(encoding="utf-8"))
+        self.assertEqual(template["plugin_version"], manifest["version"])
 
     def test_no_excluded_paths(self):
         top = {p.name for p in self.plugin.iterdir()}

@@ -37,6 +37,9 @@ GOOGLE_PREFIX = "application/vnd.google-apps."
 GSHEET = "application/vnd.google-apps.spreadsheet"
 CONVERTIBLE = {"text/plain": GDOC, "text/markdown": GDOC, "text/html": GDOC, "text/csv": GSHEET}
 READABLE_GOOGLE = (GDOC, GSHEET, "application/vnd.google-apps.presentation")
+# The real connector names the user by address and display name, never "me" (probe, 13/11/2026).
+USER_EMAIL = "director@example.com"
+USER_NAME = "Lan Director"
 
 
 class DriveError(Exception):
@@ -74,10 +77,16 @@ def open_state(path, flags):
 def write_state(path, text):
     """Replace a state file atomically through a fresh temporary file in the same folder."""
     tmp = "%s.%d.tmp" % (path, os.getpid())
+    if os.path.lexists(tmp):  # left by a crashed run with the same pid; never followed, only removed
+        os.unlink(tmp)
     fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
-    with os.fdopen(fd, "w", encoding="utf-8") as fh:
-        fh.write(text)
-    os.replace(tmp, path)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as fh:
+            fh.write(text)
+        os.replace(tmp, path)
+    finally:
+        if os.path.lexists(tmp):
+            os.unlink(tmp)
 
 
 def safe_component(title):
@@ -222,7 +231,17 @@ class Drive:
         return True
 
 
-def public(f, drive):
+def person(owner):
+    return USER_EMAIL if owner == "me" else owner
+
+
+def person_name(owner):
+    return USER_NAME if owner == "me" else owner.split("@")[0]
+
+
+def public(f, drive, rich=False):
+    # Fields as the real connector returns them: owner is an address, visibility and
+    # names only with includeRichMetadata, and no creator field at all.
     out = {
         "id": f["id"],
         "title": f["title"],
@@ -232,13 +251,16 @@ def public(f, drive):
         "createdTime": f.get("createdTime", f["modifiedTime"]),
         "etag": "etag-%s-%s" % (f["id"], f["modifiedTime"]),
         "trashed": bool(f.get("trashed")),
-        "owner": f.get("owner", "me"),
-        "visibility": visibility(f, drive),
+        "owner": person(f.get("owner", "me")),
     }
     if f.get("driveId"):
         out["driveId"] = f["driveId"]
-    if f.get("creator"):
-        out["creator"] = f["creator"]
+    if rich:
+        out["visibility"] = {"limited": "PRIVATE"}.get(visibility(f, drive), visibility(f, drive))
+        out["ownerName"] = person_name(f.get("owner", "me"))
+        last = f.get("last_modifier", f.get("owner", "me"))
+        out["lastModifyingUserEmail"] = person(last)
+        out["lastModifyingUserName"] = person_name(last)
     return out
 
 
@@ -264,7 +286,7 @@ def effective_permissions(f, drive):
     if not any(p.get("role") == "owner" for p in perms):
         owner = f.get("owner", "me")
         perms.insert(0, {"id": "perm-owner", "type": "user", "role": "owner",
-                         "displayName": "me" if owner == "me" else owner, "emailAddress": owner})
+                         "displayName": person_name(owner), "emailAddress": person(owner)})
     return perms
 
 
@@ -380,8 +402,8 @@ def field_value(name, f, drive):
         return f.get(name, f["modifiedTime"])
     if name == "owner":
         return f.get("owner", "me")
-    if name == "creator":
-        return f.get("creator", f.get("owner", "me"))
+    # creator: the real connector accepts it, but a probe on 13/11/2026 found it also returned files
+    # other people created, so vibebiz must not rely on it; the fake refuses it to make any use visible.
     if name == "trashed":
         return "true" if is_trashed(f, drive) else "false"
     if name == "visibility":
@@ -458,10 +480,12 @@ def t_search_files(drive, a):
     page = found[start:start + size]
     out = []
     for f in page:
-        item = public(f, drive)
+        item = public(f, drive, bool(a.get("includeRichMetadata")))
         if not a.get("excludeContentSnippets") and not f["mimeType"] == FOLDER:
             item["snippet"] = f.get("content", "")[:200]
         out.append(item)
+    if not out:
+        return {}  # the real connector answers an empty search with {}
     result = {"files": out}
     if start + size < len(found):
         result["nextPageToken"] = str(start + size)
@@ -471,11 +495,23 @@ def t_search_files(drive, a):
 def t_read_file_content(drive, a):
     f = drive.get(a.get("fileId"))
     mt = f["mimeType"]
-    if not (mt.startswith("text/") or mt in READABLE_GOOGLE):
+    if not (mt.startswith("text/") or mt == "application/json" or mt in READABLE_GOOGLE):
         raise DriveError("Unsupported mime type for read_file_content: %s" % mt)
     text = f.get("content", "")
     maybe_bump(drive, f)
-    return {"fileId": f["id"], "title": f["title"], "content": text}
+    return {"fileContent": rendering(text), "title": f["title"]}
+
+
+def rendering(text):
+    """The real tool returns a Markdown rendering, not the bytes: it escapes # and a
+    leading ---, _, [ and ], and ends each line with two spaces (probe, 13/11/2026)."""
+    out = []
+    for line in text.split("\n"):
+        line = line.replace("\\", "\\\\").replace("_", "\\_").replace("[", "\\[").replace("]", "\\]")
+        if line.startswith("#") or line.startswith("---"):
+            line = "\\" + line
+        out.append(line)
+    return "  \n".join(out)
 
 
 def t_download_file_content(drive, a):
@@ -489,7 +525,17 @@ def t_download_file_content(drive, a):
 
 
 def t_create_file(drive, a):
-    need_write(drive)
+    # Real Drive usually still creates folders when the quota is exhausted.
+    need_write(drive, adds_bytes=a.get("contentMimeType") != FOLDER)
+    if a.get("title") in drive.data.get("bump_while_writing", []) and a.get("title") not in drive.data["bumped"]:
+        # bump_while_writing: a file with this title is edited elsewhere the moment vibebiz creates
+        # its replacement (replacement step 3), after every read of it and before the step 5 check.
+        for g in list(drive.files.values()):
+            if (g["title"] == a.get("title") and g.get("parentId", "root") == (a.get("parentId") or "root")
+                    and not g.get("trashed") and g["title"] not in drive.data["bumped"]):
+                drive.data["bumped"].append(g["title"])
+                g["content"] = g.get("content", "") + "\n<!-- edited on another device -->\n"
+                g["modifiedTime"] = drive.tick()
     title = a.get("title")
     if not isinstance(title, str) or not title:
         raise DriveError("title is required and must be text")
@@ -543,6 +589,9 @@ def t_copy_file(drive, a):
     f.update({"id": drive.new_id(), "title": a.get("title") or "Copy of " + src["title"],
               "parentId": parent, "modifiedTime": now, "createdTime": now, "permissions": []})
     f.pop("trashed", None)
+    f.pop("last_modifier", None)  # the copier creates, owns and last changed the copy
+    if not f.get("driveId"):
+        f["owner"] = "me"
     drive.files[f["id"]] = f
     return public(f, drive)
 
@@ -557,10 +606,7 @@ def t_trash_file(drive, a):
 
 def t_get_file_metadata(drive, a):
     f = drive.get(a.get("fileId"))
-    out = public(f, drive)
-    if a.get("includeRichMetadata"):
-        out["owner_name"] = "me"
-    return out
+    return public(f, drive, bool(a.get("includeRichMetadata")))
 
 
 def t_get_file_permissions(drive, a):

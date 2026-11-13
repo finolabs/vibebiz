@@ -16,7 +16,7 @@ Load each module from this skill's own folder when its step starts, and follow i
 
 ## 1. Check where the workspace lives
 
-Follow the workspace module's storage check (§1) first: a local folder, or Google Drive when the session has none. In Drive mode follow §1a, which in this version stops without calling any Drive tool. With neither (for example in a claude.ai chat, or Cowork started on the web or a phone without Google Drive), read §1 of `references/core/workspace.md` and give its stop message word for word, then stop: write nothing, ask nothing, publish nothing.
+Follow the workspace module's storage check (§1) first: a local folder, or Google Drive when the session has none. In Drive mode follow §1a, which hands every file step to `references/core/drive-workspace.md`. With neither (for example in a claude.ai chat, or Cowork started on the web or a phone without Google Drive), read §1 of `references/core/workspace.md` and give its stop message word for word, then stop: write nothing, ask nothing, publish nothing.
 
 ## 2. Preconditions
 
@@ -35,7 +35,7 @@ Run `references/core/package.md` from its first section to its last, in order. I
 2. The plan, the readiness checklists and the consistency analysis. Findings that need the user's decision go back to the question rounds; nothing is packaged until the analysis is clear, unless the user chose a draft.
 3. One round for formats: board view as an Artifact or Google Slides, tech view as an Artifact or Google Docs. When the Google connector is not available, offer the Artifact instead.
 4. Diagram briefs, drawn by the diagram-design companion when it is installed; without it, tables with a "no diagram" note.
-5. One data file for every view, the previous version moved to the idea's history, the two views filled from the fixed templates, and a copy of the requirement.
+5. One data file for every view, the previous version moved to the idea's history, the two views filled from the fixed templates, and a copy of the requirement. In Drive mode the history is copied, and the two views are built in the session and never saved to Drive (`references/core/package.md` section 13).
 6. Private Artifacts (updated at the same link on a later version), the Google files the user chose, and the links file.
 7. The final checks, then the idea's status, next step and table of contents, and a short report with the links.
 

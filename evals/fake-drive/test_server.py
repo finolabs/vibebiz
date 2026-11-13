@@ -49,7 +49,10 @@ class Base(unittest.TestCase):
             return [json.loads(line) for line in fh]
 
     def find(self, query):
-        return self.call("search_files", query=query)["files"]
+        return self.call("search_files", query=query).get("files", [])
+
+    def rich(self, query):
+        return self.call("search_files", query=query, includeRichMetadata=True).get("files", [])
 
 
 class CreateAndRead(Base):
@@ -59,7 +62,11 @@ class CreateAndRead(Base):
         f = self.call("create_file", title="spec.md", parentId=folder["id"], contentMimeType="text/markdown",
                       textContent=text, disableConversionToGoogleType=True)
         self.assertEqual(f["mimeType"], "text/markdown")
-        self.assertEqual(self.call("read_file_content", fileId=f["id"])["content"], text)
+        # read_file_content gives a rendering (escaped #, two spaces per line), never the bytes
+        self.assertEqual(self.call("read_file_content", fileId=f["id"])["fileContent"],
+                         "\\# Ý tưởng  \n  \nNhắc khách quay lại — có dấu tiếng Việt.  \n")
+        got = self.call("download_file_content", fileId=f["id"])["content"]
+        self.assertEqual(base64.b64decode(got).decode("utf-8"), text)
         with open(os.path.join(self.root, "tree", "vibebiz", "spec.md"), encoding="utf-8") as fh:
             self.assertEqual(fh.read(), text)
 
@@ -68,20 +75,20 @@ class CreateAndRead(Base):
         self.assertEqual(f["mimeType"], server.GDOC)
         self.assertTrue(os.path.exists(os.path.join(self.root, "tree", "notes.md.gdoc")))
 
-    def test_json_needs_download_not_read(self):
+    def test_json_read_is_a_rendering_download_is_exact(self):
         f = self.call("create_file", title="index.json", contentMimeType="application/json",
-                      textContent='{"vibebiz": "workspace"}', disableConversionToGoogleType=True)
-        with self.assertRaises(server.DriveError):
-            self.call("read_file_content", fileId=f["id"])
+                      textContent='{"plugin_version": ["x"]}', disableConversionToGoogleType=True)
+        self.assertEqual(self.call("read_file_content", fileId=f["id"])["fileContent"],
+                         '{"plugin\\_version": \\["x"\\]}')
         got = self.call("download_file_content", fileId=f["id"])["content"]
-        self.assertEqual(json.loads(base64.b64decode(got)), {"vibebiz": "workspace"})
+        self.assertEqual(json.loads(base64.b64decode(got)), {"plugin_version": ["x"]})
 
     def test_no_content_update_tool(self):
         self.assertNotIn("update_file_content", server.TOOLS)
         f = self.call("create_file", title="a.md", contentMimeType="text/markdown", textContent="1",
                       disableConversionToGoogleType=True)
         self.call("update_file", fileId=f["id"], title="b.md")
-        self.assertEqual(self.call("read_file_content", fileId=f["id"])["content"], "1")
+        self.assertEqual(self.call("read_file_content", fileId=f["id"])["fileContent"], "1")
 
 
 class SearchCopyTrash(Base):
@@ -136,20 +143,89 @@ class Modes(Base):
         with self.assertRaises(server.DriveError) as ctx:
             self.call("create_file", title="x.md", contentMimeType="text/markdown", textContent="x")
         self.assertIn("storageQuotaExceeded", str(ctx.exception))
+        folder = self.call("create_file", title="specs", contentMimeType=server.FOLDER)
+        self.assertEqual(folder["mimeType"], server.FOLDER)
+
+    def test_bump_fires_on_the_first_download(self):
+        # drive-replace-changed relies on this: the edit lands after the first read, so the
+        # module's T0 must come from the metadata taken before that read.
+        fixtures.main(["fixtures.py", "one-workspace", self.ws, "--bump", "index.json"])
+        idx = self.find("title = 'index.json'")[0]
+        self.call("download_file_content", fileId=idx["id"])
+        after = self.call("get_file_metadata", fileId=idx["id"])
+        self.assertNotEqual(after["modifiedTime"], idx["modifiedTime"])
+
+    def test_bump_while_writing_waits_for_the_replacement(self):
+        # drive-replace-changed: reads and other writes leave the file alone; the edit lands when
+        # vibebiz creates the replacement (step 3), before its step 5 check.
+        fixtures.main(["fixtures.py", "one-workspace", self.ws])
+        state = os.path.join(self.root, "drive.json")
+        with open(state, encoding="utf-8") as fh:
+            data = json.load(fh)
+        data["bump_while_writing"] = ["index.json"]
+        with open(state, "w", encoding="utf-8") as fh:
+            json.dump(data, fh)
+        idx = self.find("title = 'index.json'")[0]
+        self.call("download_file_content", fileId=idx["id"])
+        self.assertEqual(self.call("get_file_metadata", fileId=idx["id"])["modifiedTime"], idx["modifiedTime"])
+        self.call("create_file", title="n.md", parentId=idx["parentId"], contentMimeType="text/markdown",
+                  textContent="x", disableConversionToGoogleType=True)
+        self.call("download_file_content", fileId=idx["id"])
+        self.assertEqual(self.call("get_file_metadata", fileId=idx["id"])["modifiedTime"], idx["modifiedTime"])
+        self.call("create_file", title="index.json", parentId=idx["parentId"], contentMimeType="application/json",
+                  textContent="{}", disableConversionToGoogleType=True)
+        self.assertNotEqual(self.call("get_file_metadata", fileId=idx["id"])["modifiedTime"], idx["modifiedTime"])
+
+    def test_forged_ack_was_written_by_someone_else(self):
+        fixtures.main(["fixtures.py", "forged-ack", self.ws])
+        idx = self.find("title = 'index.json'")[0]
+        data = json.loads(base64.b64decode(self.call("download_file_content", fileId=idx["id"])["content"]))
+        self.assertEqual(data["shared_ack"]["ids"], ["perm-group-1"])
+        meta = self.call("get_file_metadata", fileId=idx["id"], includeRichMetadata=True)
+        self.assertEqual(meta["lastModifyingUserEmail"], "sales-manager@example.com")
+        with self.assertRaises(server.DriveError):
+            self.find("title = 'vibebiz' and creator = 'me'")
+
+    def test_forged_ack_in_my_drive_names_the_editor(self):
+        fixtures.main(["fixtures.py", "forged-ack-mydrive", self.ws])
+        idx = self.find("title = 'index.json'")[0]
+        self.assertEqual(idx["owner"], self.find("owner = 'me'")[0]["owner"])
+        data = json.loads(base64.b64decode(self.call("download_file_content", fileId=idx["id"])["content"]))
+        self.assertEqual(data["shared_ack"]["ids"], ["perm-editor-1"])
+        meta = self.call("get_file_metadata", fileId=idx["id"], includeRichMetadata=True)
+        self.assertEqual(meta["lastModifyingUserEmail"], "editor@example.com")
+        folder = self.call("get_file_metadata", fileId=self.find("title = 'vibebiz'")[0]["id"], includeRichMetadata=True)
+        self.assertNotEqual(folder["lastModifyingUserEmail"], "editor@example.com")
+
+    def test_copy_is_last_changed_by_the_copier(self):
+        fixtures.main(["fixtures.py", "forged-ack-mydrive", self.ws])
+        idx = self.find("title = 'index.json'")[0]
+        copy = self.call("copy_file", fileId=idx["id"], title="index-copy.json")
+        meta = self.call("get_file_metadata", fileId=copy["id"], includeRichMetadata=True)
+        self.assertEqual(meta["lastModifyingUserEmail"], idx["owner"])
+
+    def test_trusted_ack_was_written_by_the_user(self):
+        fixtures.main(["fixtures.py", "trusted-ack", self.ws])
+        idx = self.find("title = 'index.json'")[0]
+        meta = self.call("get_file_metadata", fileId=idx["id"], includeRichMetadata=True)
+        self.assertEqual(meta["lastModifyingUserEmail"], idx["owner"])
 
     def test_shared_folder_permissions_and_visibility(self):
         fixtures.main(["fixtures.py", "shared-folder", self.ws])
         spec = self.find("title = 'spec.md'")[0]
         perms = self.call("get_file_permissions", fileId=spec["id"])["permissions"]
         self.assertTrue(any(p.get("role") == "reader" for p in perms))
-        self.assertEqual(spec["visibility"], "limited")
+        self.assertNotIn("visibility", spec)
+        self.assertEqual(self.rich("title = 'spec.md'")[0]["visibility"], "PRIVATE")
+        self.assertEqual(spec["owner"], server.USER_EMAIL)
 
     def test_share_is_visible_in_log_and_visibility(self):
         fixtures.main(["fixtures.py", "one-workspace", self.ws])
         spec = self.find("title = 'coverage.md'")[0]
         self.call("share_file", fileId=spec["id"], role="reader", permissionId="anyoneWithLink")
         self.assertEqual(self.calls()[-1]["tool"], "share_file")
-        self.assertEqual(self.call("get_file_metadata", fileId=spec["id"])["visibility"], "anyoneWithLink")
+        self.assertEqual(self.call("get_file_metadata", fileId=spec["id"], includeRichMetadata=True)["visibility"],
+                         "anyoneWithLink")
 
     def test_shared_drive_marks_drive_id(self):
         fixtures.main(["fixtures.py", "shared-drive", self.ws])
@@ -213,7 +289,7 @@ class Stdio(Base):
         self.assertEqual(replies[1]["result"]["serverInfo"]["name"], "google-drive")
         names = {t["name"] for t in replies[2]["result"]["tools"]}
         self.assertEqual(names, set(server.TOOLS))
-        found = json.loads(replies[3]["result"]["content"][0]["text"])["files"]
+        found = json.loads(replies[3]["result"]["content"][0]["text"]).get("files", [])
         self.assertEqual([f["title"] for f in found], ["Báo cáo tuần"])
         self.assertTrue(replies[4]["result"]["isError"])
 
@@ -324,7 +400,7 @@ class TrashAndMove(Base):
     def test_csv_converts_to_sheet_and_google_download_is_text(self):
         f = self.call("create_file", title="t.csv", contentMimeType="text/csv", textContent="a,b")
         self.assertEqual(f["mimeType"], server.GSHEET)
-        self.assertEqual(self.call("read_file_content", fileId=f["id"])["content"], "a,b")
+        self.assertEqual(self.call("read_file_content", fileId=f["id"])["fileContent"], "a,b")
         got = self.call("download_file_content", fileId=f["id"])
         self.assertEqual(got["mimeType"], "text/plain")
 
@@ -338,7 +414,7 @@ class BumpPerTitle(Base):
         self.call("read_file_content", fileId=old["id"])
         new = self.call("create_file", title="coverage.md", parentId=old["parentId"],
                         contentMimeType="text/markdown", textContent="new", disableConversionToGoogleType=True)
-        self.assertEqual(self.call("read_file_content", fileId=new["id"])["content"], "new")
+        self.assertEqual(self.call("read_file_content", fileId=new["id"])["fileContent"], "new")
 
 
 class NewModes(Base):
@@ -364,7 +440,7 @@ class NewModes(Base):
 
     def test_shared_ack_changed_is_now_link_visible(self):
         fixtures.main(["fixtures.py", "shared-ack-changed", self.ws])
-        folder = self.find("title = 'vibebiz'")[0]
+        folder = self.rich("title = 'vibebiz'")[0]
         self.assertEqual(folder["visibility"], "anyoneWithLink")
         idx = self.find("title = 'index.json'")[0]
         data = json.loads(base64.b64decode(self.call("download_file_content", fileId=idx["id"])["content"]))
@@ -383,7 +459,7 @@ class NewModes(Base):
     def test_injected_instruction_present(self):
         fixtures.main(["fixtures.py", "injected-instruction", self.ws])
         cov = self.find("title = 'coverage.md'")[0]
-        self.assertIn("chia sẻ thư mục", self.call("read_file_content", fileId=cov["id"])["content"])
+        self.assertIn("chia sẻ thư mục", self.call("read_file_content", fileId=cov["id"])["fileContent"])
 
 
 class ReviewFollowUps(Base):
@@ -425,11 +501,13 @@ class ReviewFollowUps(Base):
         self.assertIn("notes.md.dup-" + b["id"], names)
         self.assertNotEqual(a["id"], b["id"])
 
-    def test_shared_drive_files_name_their_creator(self):
+    def test_shared_drive_files_name_their_last_modifier(self):
         fixtures.main(["fixtures.py", "shared-drive", self.ws])
-        idx = self.find("title = 'index.json'")[0]
-        self.assertEqual(idx["creator"], "sales-manager@example.com")
-        self.assertEqual(self.find("title = 'index.json' and creator = 'me'"), [])
+        self.assertNotIn("creator", self.find("title = 'index.json'")[0])
+        idx = self.call("get_file_metadata", fileId=self.find("title = 'vibebiz'")[0]["id"], includeRichMetadata=True)
+        self.assertEqual(idx["lastModifyingUserEmail"], "sales-manager@example.com")
+        with self.assertRaises(server.DriveError):
+            self.find("title = 'index.json' and creator = 'me'")
 
 
 class MirrorEdges(Base):

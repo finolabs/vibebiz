@@ -109,6 +109,8 @@ Mỗi khi bạn đóng gói lại một ý tưởng, vibebiz tự động:
 2. Tạo bộ tài liệu mới ở thư mục chính `exports/`.
 3. Không có tệp nào bị xóa bỏ, giúp bạn luôn tra cứu lại được chính xác phiên bản đã từng trình cho ban lãnh đạo vào bất kỳ ngày nào trong quá khứ.
 
+Nếu thư mục làm việc nằm trên Google Drive, vibebiz chép bản cũ vào thư mục lịch sử chứ không chuyển đi. Bản cũ gồm dữ liệu, bản sao yêu cầu và tệp liên kết, vì trên Drive không có tệp trang web nào. Tệp cũ bị thay thế nằm trong thùng rác của Drive 30 ngày, trong thời gian đó bạn vẫn khôi phục được.
+
 ---
 
 ## Cập nhật kết quả sau buổi trình ban lãnh đạo
@@ -123,7 +125,7 @@ Sau cuộc họp với ban lãnh đạo hoặc buổi làm việc với đội k
 
 ## Trang mục lục ý tưởng
 
-Thư mục làm việc của bạn luôn có tệp `index.html`. Khi mở tệp này bằng trình duyệt, bạn sẽ thấy bảng điều khiển trực quan hiển thị:
+Nếu thư mục làm việc nằm trên máy tính, thư mục đó luôn có tệp `index.html`. Trên Google Drive thì thay bằng tệp dữ liệu `index.json`, và vibebiz cho bạn xem mục lục dưới dạng một trang Artifact riêng tư hoặc một bảng ngắn trong khung chat. Khi mở `index.html` bằng trình duyệt, bạn sẽ thấy bảng điều khiển trực quan hiển thị:
 - Danh sách toàn bộ các ý tưởng của công ty kèm trạng thái hiện tại.
 - Thanh mức độ rõ nét (bao nhiêu điểm trên 15 điểm đã hoàn thành).
 - Nhãn thẩm định chi phí kỹ thuật.

@@ -48,7 +48,9 @@
         items: [{ref, caption, highlight}], target: {ref, label} }
         (target draws a reference line, for example a goal or a cost)
     | { type: "ratio", ref, max_ref, total, label } (pictogram: "1 of 5
-        people"; the share is ref / max_ref, or ref / 100 for a % figure)
+        people"; the share is ref / max_ref, or ref / 100 for a % figure;
+        total is the number of people drawn, a whole number from 2 to 10,
+        default 5: 18% is drawn as about 1 of 5, never total 100)
     | { type: "compare", form: "bars" | "cards", title, source,
         emphasis: 0 | 1 (default 1),
         sides: [{label, ref, caption, items: [text | {text, ref, icon}]}, {...}] }
@@ -62,7 +64,9 @@
         point). "gantt" adds axis_label, span_ref (the figure giving the
         length; otherwise the largest position) and
         lanes: [{label, ref, emphasis, bars: [{from, to, text, emphasis, gap}]}];
-        from, to and at are positions on the axis (weeks, months).
+        from, to and at are whole-number positions on the axis (weeks,
+        months) counted from 1, with from <= to: a 12-week pilot is
+        from 1 to 12, never from 0.
     | { type: "meter", form: "donut" | "gauge", ref, max_ref, label, source }
         (max is max_ref's value, or 100 for a % figure). "gauge" adds
         threshold_ref (required), below and above (zone names), note.
@@ -2686,7 +2690,7 @@
   var SVG_DROP = {
     script: 1, foreignobject: 1, animate: 1, animatemotion: 1, animatetransform: 1,
     set: 1, discard: 1, handler: 1, listener: 1, iframe: 1, embed: 1, object: 1,
-    audio: 1, video: 1
+    audio: 1, video: 1, style: 1
   };
 
   function sanitizeSvg(markup) {
