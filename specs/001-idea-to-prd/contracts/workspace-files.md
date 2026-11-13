@@ -29,3 +29,4 @@ examples/000-<slug>/             same layout as an idea
 - Hand edits by the user are authoritative: modules re-read files before writing and append rather than rewrite records.
 - Every write ends with a table-of-contents rebuild from frontmatter; the JSON block lists exactly the idea folders present.
 - No file outside the workspace is written, except Google files the user asked `package` to create in their Drive.
+- **Drive mode** (0.1.2): without a local folder, the same layout lives in a Google Drive folder the user chooses, with `index.json` in place of `index.html` and no `board-deck.html` or `tech-prd.html` in Drive. The differences and how files are found, checked and replaced are in `specs/002-drive-workspace/contracts/drive-workspace.md`.

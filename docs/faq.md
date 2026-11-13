@@ -111,7 +111,7 @@ Bạn có thể gõ `/vibebiz:help` và hỏi: *"Cho tôi xem ý tưởng mẫu"
 
 ### 12. Tôi dùng được vibebiz trên Cowork bản web hoặc điện thoại không?
 
-Được từ bản 0.1.2 (đang làm), nếu bạn nối Google Drive. Bản 0.1.1 chỉ chạy trong ứng dụng Claude trên máy tính, với một thư mục đang mở. Phiên Cowork mở từ web hay điện thoại chạy trên máy chủ, nên không mở được thư mục trên máy tính của bạn. Khi đó vibebiz lưu ý tưởng vào một thư mục trong Google Drive của chính bạn, với cùng cấu trúc tệp như trên máy.
+Được, từ bản 0.1.2, nếu bạn nối Google Drive. Các bản trước chỉ chạy trong ứng dụng Claude trên máy tính, với một thư mục đang mở. Phiên Cowork mở từ web hay điện thoại chạy trên máy chủ, nên không mở được thư mục trên máy tính của bạn. Khi đó vibebiz lưu ý tưởng vào một thư mục trong Google Drive của chính bạn, với cùng cấu trúc tệp như trên máy.
 
 Cách nối: trong Cowork, mở phần kết nối (Connectors), chọn Google Drive và đăng nhập tài khoản Google của bạn. Lần đầu, vibebiz hỏi bạn muốn dùng thư mục Drive nào. Từ đó, trên web và điện thoại bạn đều làm việc với cùng thư mục ấy; trên máy tính cũng vậy, nếu bạn không mở thư mục nào trên máy.
 
