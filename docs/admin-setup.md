@@ -31,6 +31,10 @@ vibebiz keeps the business data in the user's folder and Google Drive and publis
 - **Không gợi ý cho việc lập trình, câu hỏi tra cứu nhanh, hay ý tưởng đã chốt** chỉ cần viết ra. Những việc đó không cần một buổi hỏi đáp.
 - **Đoạn cuối nói về dữ liệu** để nhân viên yên tâm: dữ liệu kinh doanh nằm trong thư mục làm việc và Google Drive của họ.
 
+## Quyền cho connector Google Drive (từ bản 0.1.2)
+
+Trên web và điện thoại, vibebiz lưu ý tưởng qua connector Google Drive của chính nhân viên. Cowork có thể hỏi nhân viên duyệt từng lần gọi connector. Nếu Cowork cho chọn "Always allow" theo từng công cụ, chỉ nên bật cho các công cụ vibebiz cần để lưu ý tưởng: tìm, đọc, tải nội dung, tạo, sao chép, chuyển vào thùng rác, xem thông tin tệp và xem quyền truy cập. Không bao giờ bật cho công cụ chia sẻ tệp hay công cụ cập nhật tệp (đổi tên, chuyển thư mục). vibebiz không dùng hai công cụ này. Giữ bước duyệt ở đó nghĩa là nếu có ai cài một dòng chữ vào tệp để xúi chia sẻ hay chuyển thư mục, nhân viên vẫn phải tự bấm duyệt trước khi việc đó xảy ra.
+
 ## Khi nào cần cập nhật
 
 Danh sách lệnh trong đoạn trên phải khớp với các lệnh của bản vibebiz đang cài. Mỗi khi cập nhật vibebiz, hãy so lại với trang [Các lệnh](commands.md) và sửa đoạn trong Org Instruction nếu có lệnh mới.
