@@ -37,7 +37,7 @@ cat > .fake-drive/drive.json <<'VIBEBIZ_FAKE_DRIVE'
       "modifiedTime": "2026-11-11T09:03:00.000Z",
       "createdTime": "2026-11-11T09:03:00.000Z",
       "owner": "me",
-      "creator": "reader@example.com"
+      "last_modifier": "reader@example.com"
     },
     "s0004": {
       "id": "s0004",
@@ -148,7 +148,7 @@ cat > .fake-drive/drive.json <<'VIBEBIZ_FAKE_DRIVE'
       "modifiedTime": "2026-11-11T09:14:00.000Z",
       "createdTime": "2026-11-11T09:14:00.000Z",
       "owner": "me",
-      "creator": "reader@example.com"
+      "last_modifier": "reader@example.com"
     },
     "s0015": {
       "id": "s0015",
@@ -159,7 +159,7 @@ cat > .fake-drive/drive.json <<'VIBEBIZ_FAKE_DRIVE'
       "modifiedTime": "2026-11-11T09:15:00.000Z",
       "createdTime": "2026-11-11T09:15:00.000Z",
       "owner": "me",
-      "creator": "reader@example.com"
+      "last_modifier": "reader@example.com"
     },
     "s0016": {
       "id": "s0016",

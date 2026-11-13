@@ -258,7 +258,7 @@ def public(f, drive, rich=False):
     if rich:
         out["visibility"] = {"limited": "PRIVATE"}.get(visibility(f, drive), visibility(f, drive))
         out["ownerName"] = person_name(f.get("owner", "me"))
-        last = f.get("creator", f.get("owner", "me"))
+        last = f.get("last_modifier", f.get("owner", "me"))
         out["lastModifyingUserEmail"] = person(last)
         out["lastModifyingUserName"] = person_name(last)
     return out
@@ -402,8 +402,8 @@ def field_value(name, f, drive):
         return f.get(name, f["modifiedTime"])
     if name == "owner":
         return f.get("owner", "me")
-    if name == "creator":
-        return f.get("creator", f.get("owner", "me"))
+    # creator: the real connector accepts it, but a probe on 13/11/2026 found it also returned files
+    # other people created, so vibebiz must not rely on it; the fake refuses it to make any use visible.
     if name == "trashed":
         return "true" if is_trashed(f, drive) else "false"
     if name == "visibility":
@@ -527,12 +527,12 @@ def t_download_file_content(drive, a):
 def t_create_file(drive, a):
     # Real Drive usually still creates folders when the quota is exhausted.
     need_write(drive, adds_bytes=a.get("contentMimeType") != FOLDER)
-    if a.get("contentMimeType") != FOLDER and not drive.data.get("writing"):
-        # bump_while_writing: files with these titles are edited elsewhere the moment vibebiz
-        # writes its first file, i.e. after it read them and before it replaces them.
-        drive.data["writing"] = True
-        for g in drive.files.values():
-            if g["title"] in drive.data.get("bump_while_writing", []) and g["title"] not in drive.data["bumped"]:
+    if a.get("title") in drive.data.get("bump_while_writing", []) and a.get("title") not in drive.data["bumped"]:
+        # bump_while_writing: a file with this title is edited elsewhere the moment vibebiz creates
+        # its replacement (replacement step 3), after every read of it and before the step 5 check.
+        for g in list(drive.files.values()):
+            if (g["title"] == a.get("title") and g.get("parentId", "root") == (a.get("parentId") or "root")
+                    and not g.get("trashed") and g["title"] not in drive.data["bumped"]):
                 drive.data["bumped"].append(g["title"])
                 g["content"] = g.get("content", "") + "\n<!-- edited on another device -->\n"
                 g["modifiedTime"] = drive.tick()

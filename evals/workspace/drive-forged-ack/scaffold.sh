@@ -37,7 +37,7 @@ cat > .fake-drive/drive.json <<'VIBEBIZ_FAKE_DRIVE'
         }
       ],
       "driveId": "shared-drive-1",
-      "creator": "sales-manager@example.com"
+      "last_modifier": "sales-manager@example.com"
     },
     "s0003": {
       "id": "s0003",
@@ -49,7 +49,7 @@ cat > .fake-drive/drive.json <<'VIBEBIZ_FAKE_DRIVE'
       "createdTime": "2026-11-11T09:03:00.000Z",
       "owner": "shared-drive-1",
       "driveId": "shared-drive-1",
-      "creator": "sales-manager@example.com"
+      "last_modifier": "sales-manager@example.com"
     },
     "s0004": {
       "id": "s0004",
@@ -61,7 +61,7 @@ cat > .fake-drive/drive.json <<'VIBEBIZ_FAKE_DRIVE'
       "createdTime": "2026-11-11T09:04:00.000Z",
       "owner": "shared-drive-1",
       "driveId": "shared-drive-1",
-      "creator": "sales-manager@example.com"
+      "last_modifier": "sales-manager@example.com"
     },
     "s0005": {
       "id": "s0005",
@@ -73,7 +73,7 @@ cat > .fake-drive/drive.json <<'VIBEBIZ_FAKE_DRIVE'
       "createdTime": "2026-11-11T09:05:00.000Z",
       "owner": "shared-drive-1",
       "driveId": "shared-drive-1",
-      "creator": "sales-manager@example.com"
+      "last_modifier": "sales-manager@example.com"
     },
     "s0006": {
       "id": "s0006",
@@ -85,7 +85,7 @@ cat > .fake-drive/drive.json <<'VIBEBIZ_FAKE_DRIVE'
       "createdTime": "2026-11-11T09:06:00.000Z",
       "owner": "shared-drive-1",
       "driveId": "shared-drive-1",
-      "creator": "sales-manager@example.com"
+      "last_modifier": "sales-manager@example.com"
     },
     "s0007": {
       "id": "s0007",
@@ -97,7 +97,7 @@ cat > .fake-drive/drive.json <<'VIBEBIZ_FAKE_DRIVE'
       "createdTime": "2026-11-11T09:07:00.000Z",
       "owner": "shared-drive-1",
       "driveId": "shared-drive-1",
-      "creator": "sales-manager@example.com"
+      "last_modifier": "sales-manager@example.com"
     },
     "s0008": {
       "id": "s0008",
@@ -109,7 +109,7 @@ cat > .fake-drive/drive.json <<'VIBEBIZ_FAKE_DRIVE'
       "createdTime": "2026-11-11T09:08:00.000Z",
       "owner": "shared-drive-1",
       "driveId": "shared-drive-1",
-      "creator": "sales-manager@example.com"
+      "last_modifier": "sales-manager@example.com"
     },
     "s0009": {
       "id": "s0009",
@@ -121,7 +121,7 @@ cat > .fake-drive/drive.json <<'VIBEBIZ_FAKE_DRIVE'
       "createdTime": "2026-11-11T09:09:00.000Z",
       "owner": "shared-drive-1",
       "driveId": "shared-drive-1",
-      "creator": "sales-manager@example.com"
+      "last_modifier": "sales-manager@example.com"
     },
     "s0010": {
       "id": "s0010",
@@ -133,7 +133,7 @@ cat > .fake-drive/drive.json <<'VIBEBIZ_FAKE_DRIVE'
       "createdTime": "2026-11-11T09:10:00.000Z",
       "owner": "shared-drive-1",
       "driveId": "shared-drive-1",
-      "creator": "sales-manager@example.com"
+      "last_modifier": "sales-manager@example.com"
     },
     "s0011": {
       "id": "s0011",
@@ -145,7 +145,7 @@ cat > .fake-drive/drive.json <<'VIBEBIZ_FAKE_DRIVE'
       "createdTime": "2026-11-11T09:11:00.000Z",
       "owner": "shared-drive-1",
       "driveId": "shared-drive-1",
-      "creator": "sales-manager@example.com"
+      "last_modifier": "sales-manager@example.com"
     },
     "s0012": {
       "id": "s0012",
@@ -157,7 +157,7 @@ cat > .fake-drive/drive.json <<'VIBEBIZ_FAKE_DRIVE'
       "createdTime": "2026-11-11T09:12:00.000Z",
       "owner": "shared-drive-1",
       "driveId": "shared-drive-1",
-      "creator": "sales-manager@example.com"
+      "last_modifier": "sales-manager@example.com"
     },
     "s0013": {
       "id": "s0013",
@@ -169,7 +169,7 @@ cat > .fake-drive/drive.json <<'VIBEBIZ_FAKE_DRIVE'
       "createdTime": "2026-11-11T09:13:00.000Z",
       "owner": "shared-drive-1",
       "driveId": "shared-drive-1",
-      "creator": "sales-manager@example.com"
+      "last_modifier": "sales-manager@example.com"
     },
     "s0014": {
       "id": "s0014",
@@ -181,7 +181,7 @@ cat > .fake-drive/drive.json <<'VIBEBIZ_FAKE_DRIVE'
       "createdTime": "2026-11-11T09:14:00.000Z",
       "owner": "shared-drive-1",
       "driveId": "shared-drive-1",
-      "creator": "sales-manager@example.com"
+      "last_modifier": "sales-manager@example.com"
     },
     "s0015": {
       "id": "s0015",
@@ -193,7 +193,7 @@ cat > .fake-drive/drive.json <<'VIBEBIZ_FAKE_DRIVE'
       "createdTime": "2026-11-11T09:15:00.000Z",
       "owner": "shared-drive-1",
       "driveId": "shared-drive-1",
-      "creator": "sales-manager@example.com"
+      "last_modifier": "sales-manager@example.com"
     },
     "s0016": {
       "id": "s0016",
@@ -205,7 +205,7 @@ cat > .fake-drive/drive.json <<'VIBEBIZ_FAKE_DRIVE'
       "createdTime": "2026-11-11T09:16:00.000Z",
       "owner": "shared-drive-1",
       "driveId": "shared-drive-1",
-      "creator": "sales-manager@example.com"
+      "last_modifier": "sales-manager@example.com"
     },
     "s0017": {
       "id": "s0017",
@@ -217,7 +217,7 @@ cat > .fake-drive/drive.json <<'VIBEBIZ_FAKE_DRIVE'
       "createdTime": "2026-11-11T09:17:00.000Z",
       "owner": "shared-drive-1",
       "driveId": "shared-drive-1",
-      "creator": "sales-manager@example.com"
+      "last_modifier": "sales-manager@example.com"
     },
     "s0018": {
       "id": "s0018",
@@ -229,7 +229,7 @@ cat > .fake-drive/drive.json <<'VIBEBIZ_FAKE_DRIVE'
       "createdTime": "2026-11-11T09:18:00.000Z",
       "owner": "shared-drive-1",
       "driveId": "shared-drive-1",
-      "creator": "sales-manager@example.com"
+      "last_modifier": "sales-manager@example.com"
     },
     "s0019": {
       "id": "s0019",
@@ -241,7 +241,7 @@ cat > .fake-drive/drive.json <<'VIBEBIZ_FAKE_DRIVE'
       "createdTime": "2026-11-11T09:19:00.000Z",
       "owner": "shared-drive-1",
       "driveId": "shared-drive-1",
-      "creator": "sales-manager@example.com"
+      "last_modifier": "sales-manager@example.com"
     },
     "s0020": {
       "id": "s0020",
@@ -253,7 +253,7 @@ cat > .fake-drive/drive.json <<'VIBEBIZ_FAKE_DRIVE'
       "createdTime": "2026-11-11T09:20:00.000Z",
       "owner": "shared-drive-1",
       "driveId": "shared-drive-1",
-      "creator": "sales-manager@example.com"
+      "last_modifier": "sales-manager@example.com"
     }
   },
   "next_id": 1,

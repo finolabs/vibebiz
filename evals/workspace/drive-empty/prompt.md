@@ -1,5 +1,5 @@
 ---
-description: 'Web, empty Drive: idea creates the contract layout in a new Drive folder, plain files, saves before each question (spec 002 US1).'
+description: 'Web, empty Drive: idea creates the contract layout in a new Drive folder as plain files, and the user''s own file is left unchanged (spec 002 US1; the FR-008 save-before-question order is not gradable headless).'
 max_turns: 40
 timeout_seconds: 900
 allowed_tools: [Skill, Read, Glob, Grep, AskUserQuestion, 'mcp__plugin_vibebiz_google-drive__*']

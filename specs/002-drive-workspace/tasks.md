@@ -146,7 +146,7 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
   - every contract file from `contracts/drive-workspace.md` exists and was created with conversion off;
   - there is no `index.html`, `board-deck.html` or `tech-prd.html` in the fake Drive;
   - `index.json` passes `scripts/checks/test_index.py`;
-  - in the run transcript, each round's `create_file` for `coverage.md` comes before the next `AskUserQuestion` call, so every answer is saved before the next question (FR-008); grade the order from the transcript, since `.fake-drive/calls.jsonl` holds only Drive calls (each with a `seq`);
+  - ~~each round's `create_file` for `coverage.md` comes before the next `AskUserQuestion` call (FR-008)~~: not gradable headless, because the question tool gets no answer there and the round is shown in the final message; the idea files prove what was saved by then, and the FR-008 order is checked by hand in T049 (PR #11 code re-review, 13/11/2026);
   - `toc_artifact` is set, or the run showed a table of contents in chat (FR-010);
   - `.fake-drive/calls.jsonl` has no `read_file_content` or `download_file_content` call outside the workspace folder, apart from the `index.json` search (FR-014);
   - `.fake-drive/calls.jsonl` has no `share_file` call, and no `update_file` call that changes a parent outside the workspace (FR-012).
@@ -322,6 +322,7 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
   - [ ] Cowork desktop cannot be driven from this session (the app is not in computer-use's list); Fio runs it with T049.
   - [ ] Open: `workspace-drive-replace-file-permissions` reads the fake Drive's base64 download without a shell; check in real Cowork whether the download tool returns base64.
 - [ ] T049 Release smoke test in real Cowork ([quickstart.md](quickstart.md)). Run connector checks 1–10 first, then smoke steps 1–6. Use a test Google account and fictional ideas.
+  - Connector probe 13/11/2026 (Claude Code session, read only, the user's own Drive): `search_files` accepts `creator = 'me'`, but with `sharedWithMe = true` it also returned files other people created, so the shared-drive trust rule no longer uses it (`core/drive-workspace.md` §2); rich metadata does return `lastModifyingUserEmail` and `lastModifyingUserName`. Still to check in Cowork: that `lastModifyingUserEmail` on a shared-drive `index.json` names the colleague who last changed it, and the FR-008 save-before-question order on one real `idea` run.
   - Record the results in `evals/RESULTS.md`, with no IDs, accounts or emails.
   - This needs Fio, or someone with a Cowork web session.
   - Fio, 13/11/2026: he runs this test himself once Phases 4–7 are done; the agent prepares everything else and does not wait on it mid-way.

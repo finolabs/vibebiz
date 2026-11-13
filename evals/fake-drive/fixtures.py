@@ -11,7 +11,11 @@ converted-file, drive-full, newer-version, foreign-marker (a marked workspace ow
 someone else and shared with the user), shared-ack-changed (the user acknowledged one reader,
 and the folder has since become link-visible), file-restricted (one file with its own grant,
 one with inheritance turned off), injected-instruction (a shared folder whose coverage.md
-carries an instruction to share the folder). Every workspace is built from the repository's
+carries an instruction to share the folder), forged-ack (a shared-drive folder whose index.json a
+colleague last changed and gave a shared_ack matching its permissions), forged-ack-mydrive (the
+user's own My Drive folder shared with an editor, who last changed index.json and wrote a matching
+shared_ack), trusted-ack (the same folder, with the user as the last to change index.json).
+A file's last_modifier (default: its owner) is who the connector names as last changing it. Every workspace is built from the repository's
 fictional example (examples/000-giu-chan-khach-cu) and the workspace templates, without the
 HTML views that Drive mode never stores (specs/002-drive-workspace/data-model.md).
 """
@@ -30,7 +34,8 @@ FOLDER = "application/vnd.google-apps.folder"
 GDOC = "application/vnd.google-apps.document"
 MODES = ("empty", "one-workspace", "two-workspaces", "read-only", "shared-folder",
          "shared-drive", "converted-file", "drive-full", "newer-version", "foreign-marker",
-         "shared-ack-changed", "file-restricted", "injected-instruction", "forged-ack")
+         "shared-ack-changed", "file-restricted", "injected-instruction", "forged-ack",
+         "forged-ack-mydrive", "trusted-ack")
 READER = {"id": "perm-reader-1", "type": "user", "role": "reader",
           "displayName": "Trần Minh (hư cấu)", "emailAddress": "reader@example.com"}
 SKIP = {"board-deck.html", "tech-prd.html"}
@@ -115,13 +120,22 @@ def build(mode):
     elif mode in ("shared-drive", "forged-ack"):
         # Files in a shared drive belong to the drive, not to the user.
         drive = {"driveId": "shared-drive-1", "owner": "shared-drive-1",
-                 "creator": "sales-manager@example.com"}
+                 "last_modifier": "sales-manager@example.com"}
         # forged-ack: the colleague who set the folder up also wrote a shared_ack matching its permissions.
         forged = {"shared_ack": {"date": "2026-11-12", "who": ["Phòng bán hàng (hư cấu)"],
                                  "ids": ["perm-group-1"]}} if mode == "forged-ack" else {}
         workspace(b, "vibebiz", child_extra=drive, permissions=[
             {"id": "perm-group-1", "type": "group", "role": "writer",
              "displayName": "Phòng bán hàng (hư cấu)", "emailAddress": "sales@example.com"}], **forged, **drive)
+    elif mode in ("forged-ack-mydrive", "trusted-ack"):
+        editor = {"id": "perm-editor-1", "type": "user", "role": "writer",
+                  "displayName": "Đỗ Lan (hư cấu)", "emailAddress": "editor@example.com"}
+        ack = {"date": "2026-11-12", "who": ["Đỗ Lan (hư cấu)"], "ids": ["perm-editor-1"]}
+        workspace(b, "vibebiz", shared_ack=ack, permissions=[editor])
+        if mode == "forged-ack-mydrive":
+            for f in b.files.values():
+                if f["title"] == "index.json":
+                    f["last_modifier"] = "editor@example.com"
     elif mode == "foreign-marker":
         outsider = {"owner": "outsider@example.com"}
         workspace(b, "Ý tưởng của người khác", child_extra=outsider, permissions=[
