@@ -18,7 +18,7 @@ Load each module from this skill's own folder when its step starts, and follow i
 
 ## 1. Check where the workspace lives
 
-Follow the workspace module's storage check (§1) first: a local folder, or Google Drive when the session has none. With neither, read §1 of `references/core/workspace.md` and give its stop message word for word, then stop: write nothing, ask nothing.
+Follow the workspace module's storage check (§1) first: a local folder, or Google Drive when the session has none. In Drive mode follow §1a, which in this version stops without calling any Drive tool. With neither, read §1 of `references/core/workspace.md` and give its stop message word for word, then stop: write nothing, ask nothing.
 
 If the folder holds no idea folder under `specs/` (the fictional examples in `examples/` never count), say in one sentence that there is no idea to continue yet and that `/vibebiz:new` starts one, and stop. If the table of contents is missing, restore it by the workspace module's rules before going on.
 

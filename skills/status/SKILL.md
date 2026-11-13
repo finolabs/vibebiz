@@ -14,7 +14,7 @@ Load these modules from this skill's own folder when their step starts:
 
 ## 1. Check where the workspace lives
 
-Follow the workspace module's storage check (§1) first: a local folder, or Google Drive when the session has none. With neither, read §1 of `references/core/workspace.md` and give its stop message word for word, then stop.
+Follow the workspace module's storage check (§1) first: a local folder, or Google Drive when the session has none. In Drive mode follow §1a, which in this version stops without calling any Drive tool. With neither, read §1 of `references/core/workspace.md` and give its stop message word for word, then stop.
 
 If the folder holds no vibebiz workspace (no table of contents, no ground rules file and no `specs/` folder), say in one sentence that there is no idea yet and that `/vibebiz:new` starts one, and stop. Do not create a workspace here.
 
