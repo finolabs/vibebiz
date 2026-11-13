@@ -18,7 +18,7 @@ body:
     id: skill
     attributes:
       label: Which skill were you using?
-      options: [new, continue, status, package, constitution, help, not sure]
+      options: [idea, continue, status, package, constitution, help, not sure]
     validations:
       required: true
   - type: textarea

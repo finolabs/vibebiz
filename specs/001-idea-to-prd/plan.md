@@ -66,7 +66,7 @@ specs/001-idea-to-prd/
 .claude-plugin/
 └── plugin.json                  # name vibebiz, version 0.1.0, license, repository
 skills/
-├── new/SKILL.md
+├── idea/SKILL.md
 ├── continue/SKILL.md
 ├── status/SKILL.md
 ├── package/SKILL.md

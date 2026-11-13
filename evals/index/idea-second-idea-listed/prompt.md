@@ -1,5 +1,5 @@
 ---
-description: 'new adds a second idea: the table of contents lists both folders (test_index.py passes).'
+description: 'idea adds a second idea: the table of contents lists both folders (test_index.py passes).'
 max_turns: 30
 timeout_seconds: 900
 allowed_tools: [Skill, Read, Write, Edit, Glob, Grep, AskUserQuestion]

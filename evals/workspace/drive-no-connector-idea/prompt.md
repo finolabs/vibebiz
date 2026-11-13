@@ -1,5 +1,5 @@
 ---
-description: 'Cowork on the web without a folder and without Google Drive: new writes nothing and names both ways forward (spec 002 US4).'
+description: 'Cowork on the web without a folder and without Google Drive: idea writes nothing and names both ways forward (spec 002 US4).'
 max_turns: 15
 timeout_seconds: 420
 allowed_tools: [Skill, Read]

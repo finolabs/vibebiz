@@ -449,7 +449,7 @@ examples/000-<slug>/
 | # | Diagram | Type | In |
 |---|---|---|---|
 | 1 | The big picture: vague idea, vibebiz, two outputs, board approval and tech handoff | high-level | quick-start |
-| 2 | One idea's journey: new, continue rounds, package, tech review | timeline | commands, workflow |
+| 2 | One idea's journey: idea, continue rounds, package, tech review | timeline | commands, workflow |
 | 3 | The router loop: coverage, frontier, lens, round, write back | loop | workflow |
 | 4 | The A–O dependency tree | tree | workflow |
 | 5 | Lenses and the categories they fill | nested or matrix | workflow |

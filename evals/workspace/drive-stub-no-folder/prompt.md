@@ -1,5 +1,5 @@
 ---
-description: 'Cowork on the web with Google Drive connected and no folder: until Phase 4, new gives the §1a "not ready" message, calls no Drive tool and writes nothing (spec 002 Phase 3 stub).'
+description: 'Cowork on the web with Google Drive connected and no folder: until Phase 4, idea gives the §1a "not ready" message, calls no Drive tool and writes nothing (spec 002 Phase 3 stub).'
 max_turns: 15
 timeout_seconds: 420
 allowed_tools: [Skill, Read, Write, Edit, 'mcp__plugin_vibebiz_google-drive__*']
