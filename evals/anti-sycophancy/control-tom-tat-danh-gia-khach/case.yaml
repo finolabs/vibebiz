@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: anti-sycophancy-control-tom-tat-danh-gia-khach
+context:
+  scaffold_script: scaffold.sh

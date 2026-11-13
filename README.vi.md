@@ -6,7 +6,7 @@ English version: [README.md](README.md)
 
 ## vibebiz là gì
 
-Bạn bắt đầu với một câu như "mình muốn dùng AI để kéo khách cũ quay lại". vibebiz hỏi từng vòng ngắn, ghi mọi câu trả lời vào các tệp trong thư mục của bạn, phản biện ý tưởng một cách thẳng thắn (kể cả phương án "không làm gì" và "sửa quy trình") và bảo đảm mỗi mục tiêu đều có mốc hiện tại, mức đích và cách đo. Khi ý tưởng đã sẵn sàng, vibebiz tạo hai bản xem từ cùng một nguồn: bản trình bày cho hội đồng quản trị và bản PRD cho đội kỹ thuật. Bản kỹ thuật có kèm một tệp yêu cầu theo định dạng tương thích với Spec Kit (bộ công cụ viết đặc tả của giới lập trình), để đội kỹ thuật lập kế hoạch tiếp mà không phải làm lại.
+Bạn bắt đầu với một câu như "mình muốn dùng AI để kéo khách cũ quay lại". vibebiz hỏi từng vòng ngắn, ghi mọi câu trả lời vào các tệp trong thư mục của bạn, phản biện ý tưởng một cách thẳng thắn (kể cả phương án "không làm gì" và "sửa quy trình") và bảo đảm mỗi mục tiêu đều có mốc hiện tại, mức đích và cách đo. Khi ý tưởng đã sẵn sàng, vibebiz tạo hai bản xem từ cùng một nguồn: bản trình bày cho ban lãnh đạo và bản PRD cho đội kỹ thuật. Bản trình bày được thiết kế theo dạng infographic trực quan (mỗi trang một hình ảnh trung tâm, ít chữ, thông điệp nổi bật ở tiêu đề). Bản kỹ thuật có kèm một tệp yêu cầu theo định dạng tương thích với Spec Kit (bộ công cụ viết đặc tả của giới lập trình), để đội kỹ thuật lập kế hoạch tiếp mà không phải làm lại.
 
 vibebiz không phải công cụ lập trình và không bao giờ bắt bạn mở cửa sổ dòng lệnh.
 
@@ -14,17 +14,28 @@ vibebiz không phải công cụ lập trình và không bao giờ bắt bạn m
 
 Giám đốc kinh doanh và vận hành ngành bán lẻ, bán trực tuyến hay tại cửa hàng (thời trang trước, sau đó là điện máy, đồ gia dụng và các ngành tương tự), đang có một ý tưởng về hệ thống, cách dùng AI hoặc tự động hóa và cần đưa ý tưởng đó ra trước hội đồng quản trị và đội kỹ thuật. Câu hỏi và kết quả dùng đúng ngôn ngữ bạn trao đổi, mặc định là tiếng Việt.
 
-## Cài đặt bằng cách tải lên
+## Cài đặt trong Cowork
 
-1. Lấy tệp plugin `vibebiz.plugin` từ một bản phát hành (hiện chưa có bản nào).
-2. Trong Claude Cowork, tải tệp plugin lên.
-3. Mở một thư mục trống trong Cowork và bắt đầu bằng kỹ năng `new`.
+1. Tải tệp `vibebiz.plugin` ở [bản phát hành](https://github.com/finolabs/vibebiz/releases) mới nhất.
+2. Trong Claude Cowork, mở Cài đặt › Plugin, chọn "Tải plugin lên" và chọn tệp `vibebiz.plugin`.
+3. Mở một thư mục trống trong Claude Cowork và bắt đầu bằng cách gõ `/vibebiz:new` hoặc `/vibebiz:help`.
 
-Cài thêm plugin đi kèm `diagram-design` nếu bạn muốn có sơ đồ trong kết quả (xem bên dưới).
+Cài thêm plugin đi kèm `diagram-design` nếu bạn muốn sơ đồ được vẽ tự động trong kết quả (xem bên dưới).
+
+Với gói Claude Team hoặc Enterprise, quản trị viên có thể thêm một đoạn hướng dẫn chung cho tổ chức để Claude gợi ý vibebiz khi nhân viên kể về một ý tưởng: [docs/admin-setup.md](docs/admin-setup.md).
 
 ## Có gì trong bản phát hành
 
-_Hiện chưa có gì. Mục này sẽ liệt kê từng kỹ năng khi câu chuyện người dùng tạo ra nó được phát hành._
+vibebiz có sáu kỹ năng. Mỗi lệnh là một kỹ năng (skill) cùng tên; bạn cũng có thể chỉ cần nói điều mình muốn bằng lời thường.
+
+- `/vibebiz:new`: bắt đầu một ý tưởng mới. vibebiz chuẩn bị thư mục làm việc nếu cần, hỏi về một tình huống thật gần đây, viết bản nháp yêu cầu đầu tiên với mọi chỗ còn thiếu được đánh dấu, rồi hỏi bạn từng vòng ngắn (tối đa bốn câu trắc nghiệm, phương án nên chọn đứng đầu) và lưu lại mọi câu trả lời.
+- `/vibebiz:continue`: làm tiếp một ý tưởng. vibebiz đọc lại các tệp (phần bạn tự sửa được giữ nguyên), tóm tắt trong ba dòng điều gì đã rõ, lần trước dừng ở đâu và câu hỏi tiếp theo, rồi hỏi tiếp. Lệnh này cũng ghi nhận kết quả phê duyệt của ban lãnh đạo (duyệt, không duyệt, cần sửa) và kết quả thẩm định chi phí của đội kỹ thuật.
+- `/vibebiz:package`: đóng gói một ý tưởng đã rõ để trình ban lãnh đạo và gửi đội kỹ thuật. vibebiz kiểm tra ý tưởng đã đủ điều kiện chưa (hoặc đề nghị bản nháp có ghi rõ chỗ thiếu), lập kế hoạch, soát chỗ thiếu và chỗ mâu thuẫn, rồi tạo bản trình bày và tài liệu yêu cầu dưới dạng Artifact riêng tư trên Claude hoặc Google Slides, Google Docs của chính bạn, kèm một tệp yêu cầu dùng được với Spec Kit. Mọi con số giống nhau ở mọi bản và có nguồn. vibebiz giữ lại các phiên bản cũ, không chia sẻ và không để công khai tài liệu nào.
+- `/vibebiz:status`: liệt kê mọi ý tưởng với trạng thái, số điểm đã rõ trên 15 điểm và bước tiếp theo. Lệnh này không hỏi gì.
+- `/vibebiz:constitution`: ghi hoặc sửa luật chung của công ty trong một vòng tối đa bốn câu hỏi: ưu tiên năm nay, mức chi bạn tự duyệt, ngành hàng và những việc luôn cần người duyệt; có thể thêm mục tiêu chiến lược và OKR nếu công ty đã có. Bỏ qua thì luật chung được để sau. Khi phản biện và lập kế hoạch, vibebiz đối chiếu từng ý tưởng với các luật này; chỗ nào vượt luật được ghi rõ trong kế hoạch và bản trình bày. Khi sửa luật đã ghi, vibebiz cho bạn xem phần thay đổi và hỏi trước khi lưu.
+- `/vibebiz:help`: hướng dẫn chọn đúng lệnh phù hợp với tình huống của bạn và giải đáp thắc mắc từ tài liệu đi kèm có dẫn nguồn. Lệnh này đọc hướng dẫn hiện tại của kỹ năng trước khi mô tả, giới thiệu ý tưởng mẫu (`examples/`) khi bạn muốn xem, và không ghi bất kỳ tệp nào vào thư mục làm việc.
+
+Chi tiết các lệnh: [docs/commands.md](docs/commands.md).
 
 ## Giấy phép
 
@@ -37,7 +48,7 @@ vibebiz là phần mềm **công khai mã nguồn có điều kiện (source-ava
 | Doanh nghiệp dùng vibebiz cho công việc, kể cả doanh nghiệp được tặng vibebiz miễn phí | Giấy phép thương mại bằng văn bản, xem [COMMERCIAL-LICENSE.md](COMMERCIAL-LICENSE.md) |
 | Người đóng góp | Đồng ý với [CLA](CLA.md) |
 
-Các văn bản giấy phép hiện là bản nháp, đang chờ luật sư rà soát. Xem thêm [TERMS.md](TERMS.md).
+Xem thêm [TERMS.md](TERMS.md).
 
 ## Quyền riêng tư
 

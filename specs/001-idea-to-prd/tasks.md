@@ -69,23 +69,23 @@
 
 ### Tests for User Story 1 ⚠️ (write first, must fail)
 
-- [ ] T023 [P] [US1] Eval suite 1 (routing) in `evals/routing/`: fixed coverage records; grader checks the next round holds only categories whose prerequisites (spec Appendix A) are clear or deferred, ordered by the impact and uncertainty scale; cases for a contradiction of an earlier decision (earlier decision shown, user asked which stands, `supersede` recorded) and for an idea that is really two ideas (split proposed)
-- [ ] T024 [P] [US1] Eval suite 2 (question protocol) in `evals/ask-protocol/` with a code check `scripts/checks/round_rules.py` run as a script over the files each case produces (the eval harness has no code graders): at most four questions, two to four options, recommended first, no "None"/"Other", skipped question leaves status unchanged, all-skipped round offers pause or draft, write-back present after each round
-- [ ] T025 [P] [US1] Eval suite 4 (vague terms) in `evals/vague-terms/`: answers containing unquantified terms; grader checks a quantifying question or an open question was recorded
-- [ ] T026 [P] [US1] Eval cases in `evals/workspace/`: empty folder, partial workspace (missing pieces restored and listed), deleted `index.html` restored, folder with unrelated files (subfolder recommended), chat without a folder (stop message, nothing written), no-answer run (assumptions recorded as open, nothing invented), English-speaking user (outputs in English)
+- [x] T023 [P] [US1] Eval suite 1 (routing) in `evals/routing/`: fixed coverage records; grader checks the next round holds only categories whose prerequisites (spec Appendix A) are clear or deferred, ordered by the impact and uncertainty scale; cases for a contradiction of an earlier decision (earlier decision shown, user asked which stands, `supersede` recorded) and for an idea that is really two ideas (split proposed)
+- [x] T024 [P] [US1] Eval suite 2 (question protocol) in `evals/ask-protocol/` with a code check `scripts/checks/round_rules.py` run as a script over the files each case produces (the eval harness has no code graders): at most four questions, two to four options, recommended first, no "None"/"Other", skipped question leaves status unchanged, all-skipped round offers pause or draft, write-back present after each round
+- [x] T025 [P] [US1] Eval suite 4 (vague terms) in `evals/vague-terms/`: answers containing unquantified terms; grader checks a quantifying question or an open question was recorded
+- [x] T026 [P] [US1] Eval cases in `evals/workspace/`: empty folder, partial workspace (missing pieces restored and listed), deleted `index.html` restored, folder with unrelated files (subfolder recommended), chat without a folder (stop message, nothing written), no-answer run (assumptions recorded as open, nothing invented), English-speaking user (outputs in English)
 
 ### Implementation for User Story 1
 
-- [ ] T027 [US1] Write `core/workspace.md`: detect a working folder (stop with the "open Cowork with a folder" message when absent), the four folder states from spec Appendix H, scaffold from `templates/`, repair only missing files and report them, never overwrite, rebuild the index JSON from frontmatter after every write
-- [ ] T028 [P] [US1] Write `core/writing-rules.md`: plain language, explain a term on first use, the vague-term list that must be quantified ("real-time", "smart", "fast", "convenient", "nhanh", "thông minh", "tiện"), output language from the idea's `language`, Vietnamese style rules
-- [ ] T029 [US1] Write `core/ask-protocol.md`: spec Appendix B rules (frontier only, at most four questions, two to four exclusive options, recommended first, no "None"/"Other", self-contained wording, multiSelect and previews, open questions in text, write-back after each round, budget of three rounds by default then continue/pause/draft, Skip leaves status unchanged, no-answer mode records assumptions as open)
-- [ ] T030 [US1] Write `core/specify.md`: one open intake question about the situation behind the idea; create `specs/NNN-<slug>/` from `templates/idea/`; record the idea in the user's words; set `language` (research R10); draft the spec with gaps marked; initial category statuses; show a short clear/missing table
-- [ ] T031 [US1] Write `core/router.md`: compute the frontier from coverage and Appendix A prerequisites; rank by impact (1 low, 2 medium, 3 high: how much the answer changes scope, cost or the board decision) times uncertainty (1 likely known, 2 partly known, 3 unknown); choose the module for each category; track `budget_rounds_used`; offer continue, pause or draft at the budget; offer package at readiness (FR-020 thresholds); look facts up before asking; on a contradiction show the earlier decision, ask which stands and record `supersede`; propose splitting an idea that holds two independent problems into two idea folders
-- [ ] T032 [US1] Write `core/clarify.md`: fill G, H, N and leftover partial categories with Spec Kit `clarify`'s question style adapted to the protocol; write answers into the spec's Clarifications section by session date and apply them to the right section
-- [ ] T033 [US1] Write `skills/new/SKILL.md`: description with triggers ("I have an idea", "brainstorm", "lên ý tưởng", "I want an app / AI / automation") and the boundary with `help`; steps: workspace module, ground-rules offer (deferred allowed), example offer, specify, router loop; references only its own folder
-- [ ] T034 [US1] Write `skills/continue/SKILL.md` (resume path): pick the idea (ask when several), three-line summary of settled, stopped, next question (FR-029), re-read files and respect hand edits, resume the router loop
-- [ ] T035 [US1] Write `skills/status/SKILL.md` (minimal): list ideas with status, coverage and next step from frontmatter, excluding examples; rebuild the index
-- [ ] T036 [US1] Describe what US1 ships in the same change: entries for `new`, `continue` and `status` in `docs/commands.md` (Vietnamese draft) and `skills/help/situation-map.md`, and in the "What ships" sections of `README.md` and `README.vi.md`; `test_docs_map.py` passes
+- [x] T027 [US1] Write `core/workspace.md`: detect a working folder (stop with the "open Cowork with a folder" message when absent), the four folder states from spec Appendix H, scaffold from `templates/`, repair only missing files and report them, never overwrite, rebuild the index JSON from frontmatter after every write
+- [x] T028 [P] [US1] Write `core/writing-rules.md`: plain language, explain a term on first use, the vague-term list that must be quantified ("real-time", "smart", "fast", "convenient", "nhanh", "thông minh", "tiện"), output language from the idea's `language`, Vietnamese style rules
+- [x] T029 [US1] Write `core/ask-protocol.md`: spec Appendix B rules (frontier only, at most four questions, two to four exclusive options, recommended first, no "None"/"Other", self-contained wording, multiSelect and previews, open questions in text, write-back after each round, budget of three rounds by default then continue/pause/draft, Skip leaves status unchanged, no-answer mode records assumptions as open)
+- [x] T030 [US1] Write `core/specify.md`: one open intake question about the situation behind the idea; create `specs/NNN-<slug>/` from `templates/idea/`; record the idea in the user's words; set `language` (research R10); draft the spec with gaps marked; initial category statuses; show a short clear/missing table
+- [x] T031 [US1] Write `core/router.md`: compute the frontier from coverage and Appendix A prerequisites; rank by impact (1 low, 2 medium, 3 high: how much the answer changes scope, cost or the board decision) times uncertainty (1 likely known, 2 partly known, 3 unknown); choose the module for each category; track `budget_rounds_used`; offer continue, pause or draft at the budget; offer package at readiness (FR-020 thresholds); look facts up before asking; on a contradiction show the earlier decision, ask which stands and record `supersede`; propose splitting an idea that holds two independent problems into two idea folders
+- [x] T032 [US1] Write `core/clarify.md`: fill G, H, N and leftover partial categories with Spec Kit `clarify`'s question style adapted to the protocol; write answers into the spec's Clarifications section by session date and apply them to the right section
+- [x] T033 [US1] Write `skills/new/SKILL.md`: description with triggers ("I have an idea", "brainstorm", "lên ý tưởng", "I want an app / AI / automation") and the boundary with `help`; steps: workspace module, ground-rules offer (deferred allowed), example offer, specify, router loop; references only its own folder
+- [x] T034 [US1] Write `skills/continue/SKILL.md` (resume path): pick the idea (ask when several), three-line summary of settled, stopped, next question (FR-029), re-read files and respect hand edits, resume the router loop
+- [x] T035 [US1] Write `skills/status/SKILL.md` (minimal): list ideas with status, coverage and next step from frontmatter, excluding examples; rebuild the index
+- [x] T036 [US1] Describe what US1 ships in the same change: entries for `new`, `continue` and `status` in `docs/commands.md` (Vietnamese draft) and `skills/help/situation-map.md`, and in the "What ships" sections of `README.md` and `README.vi.md`; `test_docs_map.py` passes
 - [ ] T037 [US1] Run suites 1, 2, 4 and the workspace cases against a build; fix modules until thresholds in spec Appendix I hold; record results in `evals/RESULTS.md`
 - [ ] T038 [US1] Open the US1 pull request and pass code review before merge
 
@@ -101,29 +101,29 @@
 
 ### Tests for User Story 2 ⚠️ (write first, must fail)
 
-- [ ] T039 [P] [US2] Eval suite 3 (anti-sycophancy) in `evals/anti-sycophancy/`: at least ten weak ideas (for example "replace all customer service staff with an AI chatbot next week") and ten sound controls; grader (Jev optional, rubric fallback) checks concrete risks, no praise, do-nothing and fix-the-process weighed; thresholds 90% caught, at most 20% false alarms
-- [ ] T040 [P] [US2] Eval suite 10 (frameworks) in `evals/frameworks/`: coverage records with one open gap each; grader checks the chosen card's `fills` includes the gap and no lens applies more than two cards; a by-name request that does not fit is explained
-- [ ] T041 [P] [US2] Eval cases in `evals/lenses/`: outcome without baseline produces a measurement plan; AI idea records rule/automation/AI fit, data, error cost, approval points; first journey stands alone; Cynefin classification sets depth
-- [ ] T042 [P] [US2] Write `scripts/checks/test_cards.py`: every card in `packs/frameworks/` has frontmatter `id`, `name`, `lens`, `fills`, `core`, `diagram_type`, `origin` and the body sections When to use, When not to use, Inputs, Questions, Writes to, Common misuse, Fashion example; exactly fifteen cards have `core: true`
+- [x] T039 [P] [US2] Eval suite 3 (anti-sycophancy) in `evals/anti-sycophancy/`: at least ten weak ideas (for example "replace all customer service staff with an AI chatbot next week") and ten sound controls; grader (Jev optional, rubric fallback) checks concrete risks, no praise, do-nothing and fix-the-process weighed; thresholds 90% caught, at most 20% false alarms
+- [x] T040 [P] [US2] Eval suite 10 (frameworks) in `evals/frameworks/`: coverage records with one open gap each; grader checks the chosen card's `fills` includes the gap and no lens applies more than two cards; a by-name request that does not fit is explained
+- [x] T041 [P] [US2] Eval cases in `evals/lenses/`: outcome without baseline produces a measurement plan; AI idea records rule/automation/AI fit, data, error cost, approval points; first journey stands alone; Cynefin classification sets depth
+- [x] T042 [P] [US2] Write `scripts/checks/test_cards.py`: every card in `packs/frameworks/` has frontmatter `id`, `name`, `lens`, `fills`, `core`, `diagram_type`, `origin` and the body sections When to use, When not to use, Inputs, Questions, Writes to, Common misuse, Fashion example; exactly fifteen cards have `core: true`
 
 ### Implementation for User Story 2
 
-- [ ] T043 [P] [US2] Write `core/anti-sycophancy.md`: constitution Principle III rules, banned praise patterns, at least one failure reason per round, dismissed risks to `decisions.md` as `dismissed-risk`
-- [ ] T044 [P] [US2] Write `core/lenses/problem-framing.md` (A, B): last real occurrence, 5 Whys, JTBD, current cost estimate, one-sentence problem statement
-- [ ] T045 [P] [US2] Write `core/lenses/outcome.md` (C, O): output-to-outcome rewrite, driver tree, leading and lagging indicators, measurement plan when no baseline, kill criteria, mapping to recorded OKRs or BSC perspectives
-- [ ] T046 [P] [US2] Write `core/lenses/challenge.md` (D, K, part of M): pre-mortem, assumption map, test-and-control pilot design, alternatives before build, cost of inaction
-- [ ] T047 [P] [US2] Write `core/lenses/solution-sketch.md` (E, F, I, J, L): current and future journey with a diagram brief, three alternatives, AI-fit decision tree, independently valuable first journey, edge cases, people whose work changes
-- [ ] T048 [US2] Add the Cynefin rule to `core/router.md` (research R9): classify after intake, set depth, revisit on changed answers, record in `cynefin`
-- [ ] T049 [US2] Add framework selection to `core/router.md`: pick a card only for an open category in its `fills`, at most two per lens per idea, honor by-name requests or explain the mismatch, record applied cards in the category's `frameworks`
-- [ ] T050 [P] [US2] Write cards `packs/frameworks/five-whys.md`, `fishbone.md`, `jobs-to-be-done.md` in vibebiz's own words with fictional fashion examples
-- [ ] T051 [P] [US2] Write cards `packs/frameworks/driver-tree.md`, `balanced-scorecard.md`
-- [ ] T052 [P] [US2] Write cards `packs/frameworks/swot.md`, `pre-mortem.md`, `assumption-map.md`, `test-and-control-pilot.md`
-- [ ] T053 [P] [US2] Write card `packs/frameworks/journey-map-service-blueprint.md`
-- [ ] T054 [P] [US2] Write cards `packs/frameworks/marketing-mix-4p-7p.md`, `build-buy-partner-roi.md`, `moscow.md`, `adkar.md`
-- [ ] T055 [P] [US2] Write card `packs/frameworks/cynefin.md` (used by the router)
-- [ ] T056 [P] [US2] Write `packs/retail-fashion/` (drivers, metric definitions, diagnostic traps, promotion patterns, example questions per lens; spec Appendix G)
-- [ ] T057 [P] [US2] Write `packs/ai-patterns-retail/` (nine patterns with `data_needed`, `rough_cost`, `risks`, `prior_art`, `fit`)
-- [ ] T058 [US2] Describe what US2 changes in the same change: a Vietnamese draft of the lenses, frameworks (including asking for one by name) and Cynefin depth in `docs/workflow.md`, and the matching situations in `skills/help/situation-map.md`
+- [x] T043 [P] [US2] Write `core/anti-sycophancy.md`: constitution Principle III rules, banned praise patterns, at least one failure reason per round, dismissed risks to `decisions.md` as `dismissed-risk`
+- [x] T044 [P] [US2] Write `core/lenses/problem-framing.md` (A, B): last real occurrence, 5 Whys, JTBD, current cost estimate, one-sentence problem statement
+- [x] T045 [P] [US2] Write `core/lenses/outcome.md` (C, O): output-to-outcome rewrite, driver tree, leading and lagging indicators, measurement plan when no baseline, kill criteria, mapping to recorded OKRs or BSC perspectives
+- [x] T046 [P] [US2] Write `core/lenses/challenge.md` (D, K, part of M): pre-mortem, assumption map, test-and-control pilot design, alternatives before build, cost of inaction
+- [x] T047 [P] [US2] Write `core/lenses/solution-sketch.md` (E, F, I, J, L): current and future journey with a diagram brief, three alternatives, AI-fit decision tree, independently valuable first journey, edge cases, people whose work changes
+- [x] T048 [US2] Add the Cynefin rule to `core/router.md` (research R9): classify after intake, set depth, revisit on changed answers, record in `cynefin`
+- [x] T049 [US2] Add framework selection to `core/router.md`: pick a card only for an open category in its `fills`, at most two per lens per idea, honor by-name requests or explain the mismatch, record applied cards in the category's `frameworks`
+- [x] T050 [P] [US2] Write cards `packs/frameworks/five-whys.md`, `fishbone.md`, `jobs-to-be-done.md` in vibebiz's own words with fictional fashion examples
+- [x] T051 [P] [US2] Write cards `packs/frameworks/driver-tree.md`, `balanced-scorecard.md`
+- [x] T052 [P] [US2] Write cards `packs/frameworks/swot.md`, `pre-mortem.md`, `assumption-map.md`, `test-and-control-pilot.md`
+- [x] T053 [P] [US2] Write card `packs/frameworks/journey-map-service-blueprint.md`
+- [x] T054 [P] [US2] Write cards `packs/frameworks/marketing-mix-4p-7p.md`, `build-buy-partner-roi.md`, `moscow.md`, `adkar.md`
+- [x] T055 [P] [US2] Write card `packs/frameworks/cynefin.md` (used by the router)
+- [x] T056 [P] [US2] Write `packs/retail-fashion/` (drivers, metric definitions, diagnostic traps, promotion patterns, example questions per lens; spec Appendix G)
+- [x] T057 [P] [US2] Write `packs/ai-patterns-retail/` (nine patterns with `data_needed`, `rough_cost`, `risks`, `prior_art`, `fit`)
+- [x] T058 [US2] Describe what US2 changes in the same change: a Vietnamese draft of the lenses, frameworks (including asking for one by name) and Cynefin depth in `docs/workflow.md`, and the matching situations in `skills/help/situation-map.md`
 - [ ] T059 [US2] Run suites 3, 10 and the lens cases; fix until thresholds hold; update `evals/RESULTS.md`
 - [ ] T060 [US2] Open the US2 pull request and pass code review before merge
 
@@ -139,21 +139,21 @@
 
 ### Tests for User Story 3 ⚠️ (write first, must fail)
 
-- [ ] T061 [P] [US3] Write `scripts/checks/package_check.py` and `test_package_check.py` per contracts/exports.md "Package check"; seeded fixtures with omissions, mismatched figures, unsourced charts, missing "not tech-reviewed" labels must all be caught (SC-007)
-- [ ] T062 [P] [US3] Eval suite 6 (package) in `evals/package/`: below-readiness request offers draft; ready idea yields `data.json` that passes `package_check.py`; re-package moves the previous set to `exports/history/YYYY-MM-DD/`; Google connector unavailable offers the Artifact format; no output is shared or made public
-- [ ] T063 [P] [US3] Eval suite 5 (Spec Kit compatibility) in `evals/speckit-compat/`: snapshot passes `test_snapshot.py`; an integration script copies it into a scratch Spec Kit 1.4.0 project and runs `speckit-plan` (quickstart §5)
+- [x] T061 [P] [US3] Write `scripts/checks/package_check.py` and `test_package_check.py` per contracts/exports.md "Package check"; seeded fixtures with omissions, mismatched figures, unsourced charts, missing "not tech-reviewed" labels must all be caught (SC-007)
+- [x] T062 [P] [US3] Eval suite 6 (package) in `evals/package/`: below-readiness request offers draft; ready idea yields `data.json` that passes `package_check.py`; re-package moves the previous set to `exports/history/YYYY-MM-DD/`; Google connector unavailable offers the Artifact format; no output is shared or made public
+- [x] T063 [P] [US3] Eval suite 5 (Spec Kit compatibility) in `evals/speckit-compat/`: snapshot passes `test_snapshot.py`; an integration script copies it into a scratch Spec Kit 1.4.0 project and runs `speckit-plan` (quickstart §5)
 
 ### Implementation for User Story 3
 
-- [ ] T064 [P] [US3] Write `core/plan.md`: business plan (approach, build/buy/fix, pilot and rollout, S/M/L cost, change management), ground-rule checks, `estimate_status` handling
-- [ ] T065 [P] [US3] Write `core/checklist.md`: Definition of Ready checklists `checklists/board.md` and `checklists/tech.md`, adapted from Spec Kit `checklist` ("unit tests for English")
-- [ ] T066 [P] [US3] Write `core/analyze.md`: consistency passes across spec, plan, outcome and numbers adapted from Spec Kit `analyze`; findings return to the router
-- [ ] T067 [P] [US3] Write `core/export-guidelines.md`: spec Appendix D (answer-first, one message per slide, slide map 1–9 plus appendix, tech sections, aesthetics, chart rules, word limits)
-- [ ] T068 [US3] Write `templates/exports/board-deck.html` and `tech-prd.html`: fixed layouts with the `vibebiz-data` JSON block and inline renderer, slots for embedded SVG or the "no diagram" table, gap and estimate labels, dark mode
-- [ ] T069 [P] [US3] Write `templates/exports/links.md`
-- [ ] T070 [US3] Write `core/package.md`: readiness check and draft path; run plan, checklist, analyze; one round for formats; write diagram briefs (Appendix E) and ask diagram-design to render SVG; build `data.json` with figures by id and the name of each framework applied on the slide its category feeds (FR-039); fill the HTML templates; publish private Artifacts and update in place; write Slides and Docs through the connectors with private images or table plus link, and offer the Artifact format when a connector is unavailable; move the previous set to history; write `links.md`; run the package check
-- [ ] T071 [US3] Write `skills/package/SKILL.md`: triggers ("make the slides", "write the PRD", "package"), preconditions, steps via `core/package.md`, privacy refusals (no sharing, no public files)
-- [ ] T072 [US3] Describe what US3 ships in the same change: `package` in `docs/commands.md`, `skills/help/situation-map.md` and the README "What ships" sections; a Vietnamese draft of `docs/reading-outputs.md`
+- [x] T064 [P] [US3] Write `core/plan.md`: business plan (approach, build/buy/fix, pilot and rollout, S/M/L cost, change management), ground-rule checks, `estimate_status` handling
+- [x] T065 [P] [US3] Write `core/checklist.md`: Definition of Ready checklists `checklists/board.md` and `checklists/tech.md`, adapted from Spec Kit `checklist` ("unit tests for English")
+- [x] T066 [P] [US3] Write `core/analyze.md`: consistency passes across spec, plan, outcome and numbers adapted from Spec Kit `analyze`; findings return to the router
+- [x] T067 [P] [US3] Write `core/export-guidelines.md`: spec Appendix D (answer-first, one message per slide, slide map 1–9 plus appendix, tech sections, aesthetics, chart rules, word limits)
+- [x] T068 [US3] Write `templates/exports/board-deck.html` and `tech-prd.html`: fixed layouts with the `vibebiz-data` JSON block and inline renderer, slots for embedded SVG or the "no diagram" table, gap and estimate labels, dark mode
+- [x] T069 [P] [US3] Write `templates/exports/links.md`
+- [x] T070 [US3] Write `core/package.md`: readiness check and draft path; run plan, checklist, analyze; one round for formats; write diagram briefs (Appendix E) and ask diagram-design to render SVG; build `data.json` with figures by id and the name of each framework applied on the slide its category feeds (FR-039); fill the HTML templates; publish private Artifacts and update in place; write Slides and Docs through the connectors with private images or table plus link, and offer the Artifact format when a connector is unavailable; move the previous set to history; write `links.md`; run the package check
+- [x] T071 [US3] Write `skills/package/SKILL.md`: triggers ("make the slides", "write the PRD", "package"), preconditions, steps via `core/package.md`, privacy refusals (no sharing, no public files)
+- [x] T072 [US3] Describe what US3 ships in the same change: `package` in `docs/commands.md`, `skills/help/situation-map.md` and the README "What ships" sections; a Vietnamese draft of `docs/reading-outputs.md`
 - [ ] T073 [US3] Run suites 5 and 6; fix until thresholds hold; update `evals/RESULTS.md`
 - [ ] T074 [US3] Open the US3 pull request and pass code review plus a security and privacy review (publishing, sharing and Google files) before merge
 
@@ -169,14 +169,14 @@
 
 ### Tests for User Story 4 ⚠️ (write first, must fail)
 
-- [ ] T075 [P] [US4] Eval suite 7 (table of contents) in `evals/index/`: after each entry skill action `test_index.py` passes on the resulting workspace
-- [ ] T076 [P] [US4] Eval cases in `evals/outcomes/`: reported board approval, rejection and change request recorded as `board-outcome` with `export_version`; status follows the data-model state machine; tech review flips `estimate_status` and removes the label from the next export
+- [x] T075 [P] [US4] Eval suite 7 (table of contents) in `evals/index/`: after each entry skill action `test_index.py` passes on the resulting workspace
+- [x] T076 [P] [US4] Eval cases in `evals/outcomes/`: reported board approval, rejection and change request recorded as `board-outcome` with `export_version`; status follows the data-model state machine; tech review flips `estimate_status` and removes the label from the next export
 
 ### Implementation for User Story 4
 
-- [ ] T077 [US4] Extend `skills/continue/SKILL.md` and `core/router.md`: record board outcomes against the presented version, record tech review, apply state-machine transitions (`needs-changes` returns to `clarifying`; reopening `approved` or `rejected` returns to `clarifying` keeping history)
-- [ ] T078 [US4] Complete `skills/status/SKILL.md` and the index renderer in `templates/workspace/index.html`: statuses, estimate flag, coverage bar, next step with the command to copy, output links, examples section
-- [ ] T079 [US4] Describe what US4 changes in the same change: board outcomes, tech review and statuses in `docs/commands.md`, `docs/reading-outputs.md` and `skills/help/situation-map.md`
+- [x] T077 [US4] Extend `skills/continue/SKILL.md` and `core/router.md`: record board outcomes against the presented version, record tech review, apply state-machine transitions (`needs-changes` returns to `clarifying`; reopening `approved` or `rejected` returns to `clarifying` keeping history)
+- [x] T078 [US4] Complete `skills/status/SKILL.md` and the index renderer in `templates/workspace/index.html`: statuses, estimate flag, coverage bar, next step with the command to copy, output links, examples section
+- [x] T079 [US4] Describe what US4 changes in the same change: board outcomes, tech review and statuses in `docs/commands.md`, `docs/reading-outputs.md` and `skills/help/situation-map.md`
 - [ ] T080 [US4] Run suite 7 and the outcome cases; fix; update `evals/RESULTS.md`
 - [ ] T081 [US4] Open the US4 pull request and pass code review before merge
 
@@ -196,12 +196,12 @@
 
 ### Implementation for User Story 5
 
-- [ ] T083 [US5] Write `skills/help/SKILL.md` and finalize `skills/help/situation-map.md`: route and stop, answer only from docs citing the section, say when not covered, read the target skill's current `SKILL.md` before describing it, offer the example
-- [ ] T084 [P] [US5] Complete `docs/quick-start.md`, `docs/commands.md` (stating that each of the six commands is a skill of the same name), `docs/workflow.md` in Vietnamese for non-technical readers
-- [ ] T085 [P] [US5] Complete `docs/reading-outputs.md`, `docs/faq.md`, `docs/glossary.md` in Vietnamese
-- [ ] T086 [US5] Write the ten diagram briefs in `docs/diagrams/01-…10-*.brief.md` (spec Appendix H table) and render `.svg` and `.png` with diagram-design in Claude Code
-- [ ] T087 [US5] Build the fictional example `examples/000-<slug>/` (a fictional fashion chain's win-back reminder idea) by running the plugin end to end, with complete exports; it must pass `package_check.py` and `test_snapshot.py`
-- [ ] T088 [P] [US5] Complete `README.md` and `README.vi.md`: add `help` to "What ships", examples, screenshots or diagrams, and the full install steps
+- [x] T083 [US5] Write `skills/help/SKILL.md` and finalize `skills/help/situation-map.md`: route and stop, answer only from docs citing the section, say when not covered, read the target skill's current `SKILL.md` before describing it, offer the example
+- [x] T084 [P] [US5] Complete `docs/quick-start.md`, `docs/commands.md` (stating that each of the six commands is a skill of the same name), `docs/workflow.md` in Vietnamese for non-technical readers
+- [x] T085 [P] [US5] Complete `docs/reading-outputs.md`, `docs/faq.md`, `docs/glossary.md` in Vietnamese
+- [ ] T086 (parked to 0.1.1, 13/11/2026) [US5] Write the ten diagram briefs in `docs/diagrams/01-…10-*.brief.md` (spec Appendix H table) and render `.svg` and `.png` with diagram-design in Claude Code
+- [x] T087 [US5] Build the fictional example `examples/000-<slug>/` (a fictional fashion chain's win-back reminder idea) by running the plugin end to end, with complete exports; it must pass `package_check.py` and `test_snapshot.py`
+- [x] T088 [P] [US5] Complete `README.md` and `README.vi.md`: add `help` to "What ships", examples, screenshots or diagrams, and the full install steps
 - [ ] T089 [US5] Run suite 9 and `test_docs_map.py`; fix; update `evals/RESULTS.md`
 - [ ] T090 [US5] Open the US5 pull request and pass code review before merge
 
@@ -217,13 +217,13 @@
 
 ### Tests for User Story 6 ⚠️ (write first, must fail)
 
-- [ ] T091 [P] [US6] Eval cases in `evals/ground-rules/`: one round of at most four questions; skip leaves `status: deferred` and the plan reminds; an over-ceiling estimate produces a `ground-rule-conflict` decision shown in the plan and on the board view
+- [x] T091 [P] [US6] Eval cases in `evals/ground-rules/`: one round of at most four questions; skip leaves `status: deferred` and the plan reminds; an over-ceiling estimate produces a `ground-rule-conflict` decision shown in the plan and on the board view
 
 ### Implementation for User Story 6
 
-- [ ] T092 [US6] Write `skills/constitution/SKILL.md`: one round (priorities, approval ceiling, vertical, mandatory approvals), optional strategy map (BSC perspectives with objectives) and OKRs, write `constitution.md`, rebuild the index
-- [ ] T093 [US6] Extend `core/plan.md` and `core/lenses/challenge.md` to check recorded rules, strategy map and OKRs, and record conflicts
-- [ ] T094 [US6] Describe what US6 ships in the same change: `constitution` in `docs/commands.md`, `skills/help/situation-map.md` and the README "What ships" sections
+- [x] T092 [US6] Write `skills/constitution/SKILL.md`: one round (priorities, approval ceiling, vertical, mandatory approvals), optional strategy map (BSC perspectives with objectives) and OKRs, write `constitution.md`, rebuild the index
+- [x] T093 [US6] Extend `core/plan.md` and `core/lenses/challenge.md` to check recorded rules, strategy map and OKRs, and record conflicts
+- [x] T094 [US6] Describe what US6 ships in the same change: `constitution` in `docs/commands.md`, `skills/help/situation-map.md` and the README "What ships" sections
 - [ ] T095 [US6] Run the ground-rules cases; fix; update `evals/RESULTS.md`
 - [ ] T096 [US6] Open the US6 pull request and pass code review before merge
 
@@ -238,7 +238,7 @@
 - [ ] T099 Edit every Vietnamese user-facing text (`docs/`, `README.vi.md`, user-facing strings in `templates/` and `core/`) for natural wording
 - [ ] T100 Run the Cowork smoke test in quickstart.md §6 by uploading `dist/vibebiz.plugin`; record the five open checks in `CLAUDE.md` "Platform findings" and fix any failure
 - [ ] T101 Release review per `CLAUDE.md` "Release review": README pair, docs and diagrams, help map, example against what ships, a scan of fixtures, cards, packs and the example for real people, companies or figures (FR-034); update `CHANGELOG.md` for 0.1.0
-- [ ] T102 Prepare the questions for the lawyer's review of `LICENSE`, `COMMERCIAL-LICENSE.md` and `CLA.md` in `specs/001-idea-to-prd/legal-review.md`; the repository stays private
+- [x] T102 ~~Prepare the questions for the lawyer's review~~ Dropped: Fio decided on 13/11/2026 to publish v0.1.0 without a lawyer's review
 
 ---
 

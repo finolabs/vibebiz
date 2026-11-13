@@ -18,6 +18,15 @@ Thank you for helping. vibebiz is source-available (PolyForm Noncommercial 1.0.0
 - **Dependencies.** Development tooling is Python 3.10+ standard library only. Pin anything you add and commit lockfiles.
 - **Language.** Repository structure, file names and instruction prompts are English. Text for users is Vietnamese by default, plain and non-technical; edit it for natural wording.
 
+## Set up and test
+
+You need Python 3.10 or later and nothing else. From the repository root:
+
+- `python3 scripts/build_plugin.py` builds `dist/vibebiz/` and `dist/vibebiz.plugin` (the build copies `core/`, `templates/` and `packs/` into each skill's `references/`).
+- `python3 -m unittest scripts.checks.test_build` runs one check module; run the modules that cover the files you changed, for example `test_cards` for framework cards or `test_docs_map` for docs and help.
+- `claude plugin validate dist/vibebiz` checks the built plugin when Claude Code is installed.
+- Behavior evals live in `evals/`; `evals/README.md` lists the suites, their thresholds and how they run.
+
 ## Commits and pull requests
 
 - Small, atomic, verb-led commits ("Add the pre-mortem card").

@@ -1,6 +1,6 @@
 # vibebiz Terms of Use
 
-> **Status: draft.** This text has not been reviewed by a lawyer. It must be reviewed before the repository goes public.
+> **Version 1.0, 13/11/2026.**
 
 These terms apply to anyone who installs or uses the vibebiz plugin. They sit beside the license: the license (`LICENSE`, or a written commercial Grant under `COMMERCIAL-LICENSE.md`) decides whether you may use vibebiz; these terms describe how it behaves and what you are responsible for.
 

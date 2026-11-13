@@ -32,6 +32,7 @@ Decided by Fio on 2026-11-12 during the design session (full detail in `CLAUDE.m
 - Q: Which version does a diagram brief record? → A: Both: `rendered_with` names the vibebiz and the diagram-design versions, so a stale diagram shows whether its content or its renderer changed.
 - Q: How do assumptions stay append-only when a test result arrives? → A: An assumption is never deleted or reworded; only its `tested` and `evidence` fields are filled in when the result arrives.
 - Q: How are the code-checked eval rules graded, given that `claude plugin eval` has no code graders? → A: The eval cases use the built-in graders; code checks such as `scripts/checks/round_rules.py` run as scripts over the files each case produces, and both results go to `evals/RESULTS.md`.
+- Q: How does vibebiz address a Vietnamese-speaking user? → A: It follows the user's own form. It starts with "anh/chị" and refers to itself as "em" or avoids self-reference; when the user's answers use another pair (for example "tôi" and "bạn"), it switches to the matching form and keeps it for the idea. Written docs for readers in general use "bạn".
 - Q: Does vibebiz record the board's decision for each presented version? → A: Yes. The user reports the outcome through continue; vibebiz records approved, rejected or needs changes, with date and notes, in the decisions record, tied to the presented version in history, and shows it as the idea's status.
 
 ## User Scenarios & Testing *(mandatory)*

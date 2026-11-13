@@ -122,8 +122,8 @@ Rationale: users learn vibebiz from its docs and `help`; stale docs teach the wr
   user data handling also needs a security and privacy review.
 - Before a version is cut, everything that describes the product is reviewed against what ships
   (Principle VII), and the eval suites and smoke test pass (Principle V).
-- The repository stays private, and the license, commercial terms and CLA get a lawyer's review,
-  before any public release; going public needs Fio's explicit approval.
+- Going public needs Fio's explicit approval. Fio approved publishing with v0.1.0 without a
+  lawyer's review of the license, commercial terms and CLA (13/11/2026).
 
 ## Governance
 
@@ -135,4 +135,4 @@ Rationale: users learn vibebiz from its docs and `help`; stale docs teach the wr
 - Reviews and plans check compliance; a justified exception is recorded in the plan's Complexity
   Tracking with its reason.
 
-**Version**: 1.0.0 | **Ratified**: 2026-11-12 | **Last Amended**: 2026-11-12
+**Version**: 1.1.0 | **Ratified**: 2026-11-12 | **Last Amended**: 2026-11-13

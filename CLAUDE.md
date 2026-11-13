@@ -17,12 +17,13 @@ These rules record the design decisions Fio settled on 12/11/2026. A rule here c
 ## Independence
 
 - vibebiz depends on nothing from `finolabs-vibecode`. vibecode is for development teams. Do not reference, import or reuse its skills (for example `shape`, `fnl-ask`) inside the plugin. The only link to a tech team is the Spec Kit-compatible file format.
-- `diagram-design` (cathrynlavery/diagram-design, MIT) is a companion plugin. Never copy it into this repository. vibebiz writes diagram briefs; diagram-design renders them. Its brand profile is the single brand source. Without it, exports show a table with a "no diagram" note; do not draw a substitute.
+- `diagram-design` (cathrynlavery/diagram-design, MIT) is a companion plugin. Never copy it into this repository. vibebiz writes diagram briefs; diagram-design renders them. Its brand profile is the single brand source. Without it, exports show a table with a "no diagram" note; do not draw a substitute. Template blocks are a separate thing (Fio, 13/11/2026): the export templates may draw fixed-layout infographic blocks (charts, metric tiles, KPI tree, customer journey, Gantt, gauge, source matrix) from `exports/data.json`, because their layout is fixed and every value comes from the data. A free-form diagram is never drawn by vibebiz itself.
 
 ## Plugin shape
 
 - Plugin name `vibebiz`, skills-only. **Exactly six skills**, the entry points, written as `skills/*/SKILL.md` and never as legacy `commands/`: `new`, `continue`, `status`, `package`, `constitution`, `help` (Fio, 12/11/2026). Everything else (router, ask protocol, clarify, specify, the four lenses, plan, checklist, analyze, package, workspace, export guidelines, writing rules, anti-sycophancy) is a **module** in `core/`, never a skill (`contracts/modules.md`).
 - The build copies `core/` into each skill's `references/`; a `SKILL.md` refers only to files inside its own folder. Keep `SKILL.md` bodies under 3,000 words.
+- Write and edit every `SKILL.md`, `core/` module and framework card with the `writing-for-agents` skill (Fio, 13/11/2026): the description is a context pointer, steps end on completion criteria, detail moves into references, and no-ops and duplicates are pruned.
 - Installed plugins also load in claude.ai chat, which has no working folder; every entry skill checks for one first and otherwise tells the user to open Cowork.
 - Questions follow the interview protocol (spec Appendix B) through Cowork's `AskUserQuestion`: never add "None" or "Other" (the tool has Skip and free text), a skip leaves the category unchanged, and with nobody to answer proceed on recorded assumptions without inventing answers.
 - First-release content: `packs/retail-fashion`, `packs/ai-patterns-retail`, and the fifteen framework cards in `packs/frameworks/` (spec Appendix F). Frameworks are applied only to fill an open coverage gap, at most two per lens per idea.
@@ -47,7 +48,7 @@ These rules record the design decisions Fio settled on 12/11/2026. A rule here c
 - Contributions require the CLA (`CLA.md`).
 - Keep the MIT notices of Spec Kit and `grilling` in `THIRD_PARTY_LICENSES.md`.
 - Framework cards and packs describe third-party frameworks (for example Strategyzer's canvases, which are CC BY-SA) in vibebiz's own words and credit their origin; never copy their text, layout or artwork verbatim.
-- The license, the commercial terms and the CLA need a lawyer's review before the repository goes public. The repository stays private until Fio says otherwise.
+- The repository goes public with v0.1.0; Fio decided on 13/11/2026 that the license, the commercial terms and the CLA ship without a lawyer's review.
 - No internal data in the repository: no real people, companies, customers or figures, and no organization's constitution or brand. Examples, packs and eval fixtures are fictional or built from public knowledge.
 - `PRIVACY.md` states that business data stays in the user's workspace and Google Drive and that the plugin sends it nowhere else. TypeSafe/Jev is used only in developer evals, never at runtime.
 

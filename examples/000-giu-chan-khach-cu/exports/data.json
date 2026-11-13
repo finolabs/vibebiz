@@ -1,0 +1,1124 @@
+{
+  "idea": {
+    "id": "000",
+    "title": "Nhắc khách quay lại cửa hàng qua ứng dụng chat",
+    "language": "vi",
+    "version": "2026-11-12",
+    "draft": false,
+    "estimate_status": "not-tech-reviewed"
+  },
+  "board": {
+    "slides": [
+      {
+        "n": 1,
+        "title": "Duyệt thí điểm {{N-08}} tại {{N-07}}",
+        "message": "Cần quyết định trước 30/11/2026 để kịp mùa mua sắm Tết.",
+        "layout": "number",
+        "source_fields": [
+          "plan.Decision requested",
+          "plan.Size and scenarios"
+        ],
+        "blocks": [
+          {
+            "type": "figures",
+            "items": [
+              {
+                "ref": "N-03",
+                "caption": "Ngân sách thí điểm"
+              },
+              {
+                "ref": "N-07",
+                "caption": "Thí điểm",
+                "icon": "store"
+              },
+              {
+                "ref": "N-08",
+                "caption": "Thời gian chạy",
+                "icon": "clock"
+              },
+              {
+                "ref": "N-01",
+                "to_ref": "N-02",
+                "caption": "Khách quay lại",
+                "icon": "trend",
+                "highlight": true
+              }
+            ],
+            "estimate_label": "not tech-reviewed"
+          },
+          {
+            "type": "deadline",
+            "date": "2026-11-30",
+            "label": "Hạn quyết định"
+          },
+          {
+            "type": "timeline",
+            "form": "steps",
+            "source": "Kế hoạch thí điểm",
+            "items": [
+              {
+                "when": "30/11/2026",
+                "what": "Duyệt ngân sách"
+              },
+              {
+                "when": "12/2026",
+                "what": "Đội kỹ thuật bắt đầu"
+              },
+              {
+                "when": "Tuần 12",
+                "what": "Quyết định mở rộng",
+                "decision": "Mở rộng hoặc dừng"
+              }
+            ]
+          }
+        ],
+        "diagram": null,
+        "frameworks": [
+          {
+            "id": "build-buy-partner",
+            "name": "Tự làm, mua hay hợp tác",
+            "result": "chọn mua công cụ nhắn tin có sẵn"
+          }
+        ],
+        "estimate_label": "not tech-reviewed"
+      },
+      {
+        "n": 2,
+        "title": "Bốn trên năm khách mua lần đầu không quay lại",
+        "message": "Không ai nhắc khách cũ, nên tỷ lệ quay lại đứng yên.",
+        "layout": "ratio",
+        "source_fields": [
+          "spec.Problem & Why"
+        ],
+        "blocks": [
+          {
+            "type": "ratio",
+            "ref": "N-01",
+            "total": 5,
+            "label": "khách quay lại trong 90 ngày"
+          },
+          {
+            "type": "figures",
+            "place": "hero",
+            "items": [
+              {
+                "ref": "N-09",
+                "caption": "Mỗi lần khách cũ quay lại mua",
+                "icon": "coin"
+              }
+            ]
+          },
+          {
+            "type": "callout",
+            "place": "hero",
+            "tone": "risk",
+            "label": "Nguyên nhân gốc",
+            "text": "Không có lịch nhắc khách cũ"
+          },
+          {
+            "type": "chart",
+            "kind": "line",
+            "title": "Tỷ lệ quay lại trong 90 ngày, theo tháng",
+            "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+            "period": "01/2026 đến 06/2026",
+            "items": [
+              {
+                "ref": "N-11",
+                "caption": "T1"
+              },
+              {
+                "ref": "N-12",
+                "caption": "T2"
+              },
+              {
+                "ref": "N-13",
+                "caption": "T3"
+              },
+              {
+                "ref": "N-14",
+                "caption": "T4"
+              },
+              {
+                "ref": "N-15",
+                "caption": "T5"
+              },
+              {
+                "ref": "N-16",
+                "caption": "T6"
+              }
+            ],
+            "target": {
+              "ref": "N-02",
+              "label": "Mục tiêu"
+            }
+          },
+          {
+            "type": "list",
+            "form": "chips",
+            "items": [
+              {
+                "text": "Nhân viên không có danh sách khách",
+                "icon": "people"
+              },
+              {
+                "text": "Khuyến mãi gửi đồng loạt",
+                "icon": "chat"
+              }
+            ]
+          }
+        ],
+        "diagram": null,
+        "frameworks": [
+          {
+            "id": "five-whys",
+            "name": "5 Whys",
+            "result": "nguyên nhân gốc: cửa hàng không có lịch nhắc khách cũ"
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "title": "Đưa tỷ lệ khách quay lại từ {{N-01}} lên {{N-02}}",
+        "message": "Một chỉ số chính và một ngưỡng bảo vệ trải nghiệm khách.",
+        "layout": "compare",
+        "source_fields": [
+          "spec.Outcome",
+          "spec.Success Criteria"
+        ],
+        "blocks": [
+          {
+            "type": "compare",
+            "form": "bars",
+            "sides": [
+              {
+                "label": "Hiện nay",
+                "ref": "N-01"
+              },
+              {
+                "label": "Sau 12 tuần",
+                "ref": "N-02"
+              }
+            ]
+          },
+          {
+            "type": "tree",
+            "title": "Chỉ số chính kéo doanh thu từ khách cũ",
+            "root": "Doanh thu từ khách cũ",
+            "children": [
+              {
+                "label": "Số khách quay lại",
+                "ref": "N-01",
+                "to_ref": "N-02",
+                "highlight": true
+              },
+              {
+                "label": "Số lần mua mỗi khách",
+                "text": "giữ nguyên"
+              },
+              {
+                "label": "Giá trị mỗi lần mua",
+                "text": "giữ nguyên"
+              }
+            ]
+          },
+          {
+            "type": "callout",
+            "tone": "risk",
+            "icon": "shield",
+            "label": "Ngưỡng bảo vệ",
+            "text": "Khách hủy nhận tin dưới {{N-10}} mỗi tháng."
+          }
+        ],
+        "diagram": null,
+        "frameworks": [
+          {
+            "id": "driver-tree",
+            "name": "Cây chỉ số",
+            "result": "số khách quay lại là đòn bẩy chính"
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "title": "Mua công cụ có sẵn: chạy được sau {{N-19}}, thay vì {{N-20}} trở lên",
+        "message": "Bốn phương án, so trên cùng tiêu chí.",
+        "layout": "options",
+        "source_fields": [
+          "spec.Alternatives"
+        ],
+        "blocks": [
+          {
+            "type": "options",
+            "measure": "Thời gian đến khi chạy được",
+            "items": [
+              {
+                "name": "Giữ nguyên",
+                "pros": "Không tốn chi phí",
+                "cons": "Tỷ lệ quay lại đứng yên"
+              },
+              {
+                "name": "Sửa quy trình",
+                "pros": "Làm được ngay",
+                "cons": "Tốn giờ công, khó đo"
+              },
+              {
+                "name": "Mua công cụ có sẵn",
+                "ref": "N-19",
+                "pros": "Chạy được sau {{N-19}}",
+                "cons": "Phí thuê hằng tháng",
+                "chosen": true
+              },
+              {
+                "name": "Tự xây",
+                "ref": "N-20",
+                "ref_high": "N-21",
+                "pros": "Tùy biến hoàn toàn",
+                "cons": "Mất {{N-20}} đến {{N-21}}"
+              }
+            ],
+            "estimate_label": "not tech-reviewed"
+          }
+        ],
+        "diagram": null,
+        "frameworks": [],
+        "estimate_label": "not tech-reviewed"
+      },
+      {
+        "n": 5,
+        "title": "Sau {{N-24}}, khách nhận một lời nhắc đúng món",
+        "message": "Hành trình của khách trước và sau khi có lời nhắc.",
+        "layout": "journey",
+        "source_fields": [
+          "spec.User Scenarios & Testing",
+          "spec.AI-fit"
+        ],
+        "blocks": [
+          {
+            "type": "journey",
+            "steps": [
+              "Ngày 0",
+              "Ngày 30",
+              "Lần mua sau"
+            ],
+            "highlight": 1,
+            "lanes": [
+              {
+                "label": "Trước",
+                "cells": [
+                  {
+                    "text": "Khách mua và về",
+                    "icon": "bag"
+                  },
+                  {
+                    "text": "Không có gì xảy ra",
+                    "icon": "close",
+                    "empty": true
+                  },
+                  {
+                    "text": "Quay lại hay không: tùy khách",
+                    "icon": "question"
+                  }
+                ]
+              },
+              {
+                "label": "Sau",
+                "emphasis": true,
+                "cells": [
+                  {
+                    "text": "Khách mua, đồng ý nhận tin",
+                    "icon": "bagcheck"
+                  },
+                  {
+                    "text": "Tin gợi ý món hợp với món đã mua",
+                    "icon": "chat"
+                  },
+                  {
+                    "text": "Nhân viên biết khách đến vì lời nhắc",
+                    "icon": "peoplecheck"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "diagram": null,
+        "frameworks": [
+          {
+            "id": "journey-map",
+            "name": "Bản đồ hành trình khách hàng",
+            "result": "điểm rơi là ngày thứ 30 sau lần mua đầu"
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "title": "Bản đầu chỉ làm ba việc, hai việc để sau",
+        "message": "Phần mở rộng làm sau khi thí điểm đạt mục tiêu.",
+        "layout": "compare",
+        "source_fields": [
+          "spec.Requirements"
+        ],
+        "blocks": [
+          {
+            "type": "compare",
+            "form": "cards",
+            "emphasis": 0,
+            "sides": [
+              {
+                "label": "Có trong bản đầu",
+                "items": [
+                  {
+                    "text": "Nhắc sau lần mua đầu",
+                    "ref": "N-24",
+                    "icon": "calendar"
+                  },
+                  {
+                    "text": "Gợi ý theo món đã mua",
+                    "icon": "tag"
+                  },
+                  {
+                    "text": "Danh sách khách cho nhân viên",
+                    "icon": "list"
+                  }
+                ]
+              },
+              {
+                "label": "Làm sau khi đạt mục tiêu",
+                "items": [
+                  {
+                    "text": "Ưu đãi sinh nhật",
+                    "icon": "gift"
+                  },
+                  {
+                    "text": "Nhắc theo mùa",
+                    "icon": "sun"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "diagram": null,
+        "frameworks": [
+          {
+            "id": "moscow",
+            "name": "MoSCoW",
+            "result": "ba việc bắt buộc, hai việc để sau"
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "title": "Kịch bản cơ sở hoàn vốn thí điểm trong năm đầu",
+        "message": "Lợi nhuận gộp tăng thêm mỗi năm theo ba kịch bản.",
+        "layout": "bars",
+        "source_fields": [
+          "spec.Cost & Risk",
+          "plan.Size and scenarios"
+        ],
+        "blocks": [
+          {
+            "type": "chart",
+            "kind": "bar",
+            "title": "Lợi nhuận gộp tăng thêm trong năm đầu, so với chi phí thí điểm",
+            "source": "Ước tính sơ bộ trong kế hoạch",
+            "items": [
+              {
+                "ref": "N-04",
+                "caption": "Thấp"
+              },
+              {
+                "ref": "N-05",
+                "caption": "Cơ sở",
+                "highlight": true
+              },
+              {
+                "ref": "N-06",
+                "caption": "Cao"
+              }
+            ],
+            "estimate_label": "not tech-reviewed",
+            "period": "năm đầu sau thí điểm",
+            "target": {
+              "ref": "N-03",
+              "label": "Chi phí thí điểm"
+            }
+          },
+          {
+            "type": "list",
+            "form": "chips",
+            "items": [
+              {
+                "text": "Quy mô dự án: vừa",
+                "icon": "box"
+              }
+            ]
+          }
+        ],
+        "diagram": null,
+        "frameworks": [],
+        "estimate_label": "not tech-reviewed"
+      },
+      {
+        "n": 8,
+        "title": "Rủi ro lớn nhất: khách thấy phiền và hủy nhận tin",
+        "message": "Điều kiện dừng đã đặt trước.",
+        "layout": "meter",
+        "source_fields": [
+          "spec.Cost & Risk",
+          "decisions.md"
+        ],
+        "blocks": [
+          {
+            "type": "meter",
+            "form": "gauge",
+            "threshold_ref": "N-10",
+            "label": "Tỷ lệ khách hủy nhận tin mỗi tháng",
+            "below": "Tiếp tục",
+            "above": "Dừng",
+            "note": "hủy nhận tin, hai tháng liền",
+            "source": "Ngưỡng do giám đốc bán hàng đặt"
+          },
+          {
+            "type": "controls",
+            "title": "Ba lớp kiểm soát",
+            "items": [
+              {
+                "text": "Tối đa một tin mỗi tháng",
+                "note": "Giới hạn tần suất"
+              },
+              {
+                "text": "Kiểm tra số điện thoại",
+                "note": "Trước khi thí điểm",
+                "icon": "phone"
+              },
+              {
+                "text": "Dừng nếu vượt {{N-10}}",
+                "note": "Hai tháng liền",
+                "stop": true
+              }
+            ]
+          }
+        ],
+        "diagram": null,
+        "frameworks": [
+          {
+            "id": "pre-mortem",
+            "name": "Pre-mortem",
+            "result": "khách hủy nhận tin là cách thất bại dễ xảy ra nhất"
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "title": "{{N-08}}, hai điểm quyết định, so với {{N-23}} đối chứng",
+        "message": "Hai điểm quyết định: tuần 6 và tuần 12.",
+        "layout": "timeline",
+        "source_fields": [
+          "plan.Pilot and rollout"
+        ],
+        "blocks": [
+          {
+            "type": "timeline",
+            "form": "gantt",
+            "axis_label": "Tuần",
+            "span_ref": "N-08",
+            "source": "Kế hoạch thí điểm",
+            "lanes": [
+              {
+                "ref": "N-07",
+                "label": "cửa hàng thí điểm",
+                "emphasis": true,
+                "bars": [
+                  {
+                    "from": 1,
+                    "to": 4,
+                    "text": "Cài công cụ, hướng dẫn nhân viên"
+                  },
+                  {
+                    "from": 5,
+                    "to": 12,
+                    "text": "Nhắc khách ngày 30, đo tỷ lệ quay lại",
+                    "emphasis": true
+                  }
+                ]
+              },
+              {
+                "ref": "N-23",
+                "label": "cửa hàng đối chứng",
+                "bars": [
+                  {
+                    "from": 1,
+                    "to": 12,
+                    "text": "Giữ nguyên cách làm hiện nay",
+                    "gap": "plan.Pilot and rollout: cách chọn cửa hàng đối chứng"
+                  }
+                ]
+              }
+            ],
+            "items": [
+              {
+                "when": "Tuần 6",
+                "at": 6,
+                "what": "Xem tỷ lệ hủy nhận tin",
+                "decision": "Tiếp tục hoặc chỉnh nội dung"
+              },
+              {
+                "when": "Tuần 12",
+                "at": 12,
+                "what": "So với cửa hàng đối chứng",
+                "decision": "Mở rộng hoặc dừng"
+              }
+            ]
+          }
+        ],
+        "diagram": null,
+        "frameworks": [
+          {
+            "id": "test-and-control",
+            "name": "Thí điểm có nhóm đối chứng",
+            "result": "6 cửa hàng thí điểm, 6 cửa hàng đối chứng"
+          }
+        ]
+      },
+      {
+        "n": "appendix",
+        "title": "Còn hai giả định cần kiểm chứng, một câu hỏi chặn tiến độ",
+        "message": "Những điều chưa chắc chắn được ghi rõ để theo dõi.",
+        "source_fields": [
+          "assumptions.md",
+          "open-questions.md",
+          "coverage.md"
+        ],
+        "blocks": [
+          {
+            "type": "list",
+            "title": "Giả định cần kiểm chứng",
+            "items": [
+              {
+                "id": "A-001",
+                "text": "Khách đồng ý nhận tin nhắn qua ứng dụng chat.",
+                "icon": "chat"
+              },
+              {
+                "id": "A-002",
+                "text": "Ít nhất {{N-25}} khách có số điện thoại đúng trong hệ thống.",
+                "icon": "phone"
+              }
+            ]
+          },
+          {
+            "type": "questions",
+            "items": [
+              {
+                "id": "Q-001",
+                "text": "Công cụ nhắn tin có nối được với phần mềm bán hàng hiện tại không?",
+                "owner": "Trưởng nhóm kỹ thuật",
+                "blocking": true
+              },
+              {
+                "id": "Q-002",
+                "text": "Nội dung tin nhắn do ai duyệt?",
+                "owner": "Trưởng phòng marketing",
+                "blocking": false
+              }
+            ]
+          },
+          {
+            "type": "meter",
+            "ref": "N-17",
+            "max_ref": "N-18",
+            "label": "nhóm đã làm rõ",
+            "source": "Hồ sơ làm rõ ý tưởng",
+            "form": "donut"
+          }
+        ],
+        "diagram": null,
+        "frameworks": [
+          {
+            "id": "assumption-map",
+            "name": "Bản đồ giả định",
+            "result": "A-002 là giả định rủi ro nhất"
+          }
+        ]
+      }
+    ]
+  },
+  "tech": {
+    "sections": [
+      {
+        "id": "business-context",
+        "heading": "Bối cảnh kinh doanh",
+        "source_fields": [
+          "spec.Problem & Why",
+          "spec.Outcome"
+        ],
+        "content": [
+          {
+            "type": "text",
+            "text": "Tỷ lệ khách quay lại trong 90 ngày là {{N-01}}; mục tiêu là {{N-02}} sau thí điểm 12 tuần tại {{N-07}}.",
+            "estimate_label": "not tech-reviewed"
+          },
+          {
+            "type": "chart",
+            "kind": "line",
+            "title": "Tỷ lệ khách quay lại trong 90 ngày, theo tháng",
+            "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+            "items": [
+              {
+                "ref": "N-11",
+                "caption": "T1"
+              },
+              {
+                "ref": "N-12",
+                "caption": "T2"
+              },
+              {
+                "ref": "N-13",
+                "caption": "T3"
+              },
+              {
+                "ref": "N-14",
+                "caption": "T4"
+              },
+              {
+                "ref": "N-15",
+                "caption": "T5"
+              },
+              {
+                "ref": "N-16",
+                "caption": "T6"
+              }
+            ],
+            "period": "01/2026 đến 06/2026"
+          }
+        ],
+        "estimate_label": "not tech-reviewed"
+      },
+      {
+        "id": "user-stories",
+        "heading": "Câu chuyện người dùng",
+        "source_fields": [
+          "spec.User Scenarios & Testing"
+        ],
+        "content": [
+          {
+            "type": "stories",
+            "items": [
+              {
+                "priority": "P1",
+                "title": "Khách mua lần đầu nhận lời nhắc sau 30 ngày",
+                "why": "Đây là nhóm khách dễ mất nhất.",
+                "scenarios": [
+                  {
+                    "given": "khách mua lần đầu và đồng ý nhận tin",
+                    "when": "đủ 30 ngày chưa quay lại",
+                    "then": "khách nhận một tin gợi ý sản phẩm hợp với món đã mua"
+                  },
+                  {
+                    "given": "khách đã hủy nhận tin",
+                    "when": "đủ 30 ngày",
+                    "then": "không gửi tin nào"
+                  }
+                ]
+              },
+              {
+                "priority": "P2",
+                "title": "Nhân viên xem danh sách khách cần chăm sóc",
+                "scenarios": [
+                  {
+                    "given": "nhân viên mở danh sách đầu ca",
+                    "when": "có khách sắp đủ 30 ngày",
+                    "then": null
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "requirements",
+        "heading": "Yêu cầu",
+        "source_fields": [
+          "spec.Requirements"
+        ],
+        "content": [
+          {
+            "type": "list",
+            "items": [
+              {
+                "id": "FR-001",
+                "text": "Hệ thống phải gửi tối đa một tin nhắc mỗi tháng cho mỗi khách."
+              },
+              {
+                "id": "FR-002",
+                "text": "Hệ thống phải bỏ qua khách đã hủy nhận tin."
+              },
+              {
+                "id": "FR-003",
+                "text": "Nhân viên phải xem được danh sách khách cần chăm sóc của cửa hàng mình."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "key-entities",
+        "heading": "Dữ liệu chính",
+        "source_fields": [
+          "spec.Key Entities"
+        ],
+        "content": [
+          {
+            "type": "defs",
+            "items": [
+              {
+                "term": "Khách hàng",
+                "meaning": "người đã mua ít nhất một lần, có số điện thoại và trạng thái đồng ý nhận tin"
+              },
+              {
+                "term": "Lần mua",
+                "meaning": "ngày mua, cửa hàng, các món đã mua"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "success-criteria",
+        "heading": "Tiêu chí thành công",
+        "source_fields": [
+          "spec.Success Criteria"
+        ],
+        "content": [
+          {
+            "type": "compare",
+            "title": "Tỷ lệ khách quay lại trong 90 ngày",
+            "sides": [
+              {
+                "label": "Hiện nay",
+                "ref": "N-01"
+              },
+              {
+                "label": "Mục tiêu sau 12 tuần",
+                "ref": "N-02"
+              }
+            ],
+            "estimate_label": "not tech-reviewed"
+          },
+          {
+            "type": "list",
+            "items": [
+              {
+                "id": "SC-001",
+                "text": "Tỷ lệ khách quay lại trong 90 ngày tại cửa hàng thí điểm đạt {{N-02}}, so với cửa hàng đối chứng."
+              },
+              {
+                "id": "SC-002",
+                "text": "Tỷ lệ khách hủy nhận tin dưới {{N-10}} mỗi tháng."
+              }
+            ],
+            "estimate_label": "not tech-reviewed"
+          }
+        ],
+        "estimate_label": "not tech-reviewed"
+      },
+      {
+        "id": "ai-fit",
+        "heading": "Mức phù hợp của AI",
+        "source_fields": [
+          "spec.AI-fit"
+        ],
+        "content": [
+          {
+            "type": "text",
+            "text": "Lời nhắc theo lịch là tự động hóa, không cần AI. Gợi ý sản phẩm dùng quy tắc theo nhóm hàng trong bản đầu tiên."
+          }
+        ],
+        "diagram": null
+      },
+      {
+        "id": "non-functional",
+        "heading": "Yêu cầu vận hành",
+        "source_fields": [
+          "spec.Requirements"
+        ],
+        "content": [
+          {
+            "type": "list",
+            "items": [
+              "Khoảng 40 nhân viên dùng trên điện thoại tại 6 cửa hàng."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "glossary",
+        "heading": "Thuật ngữ",
+        "source_fields": [
+          "glossary.md"
+        ],
+        "content": [
+          {
+            "type": "defs",
+            "items": [
+              {
+                "term": "Khách quay lại",
+                "meaning": "khách mua thêm ít nhất một lần trong 90 ngày sau lần mua trước"
+              },
+              {
+                "term": "Cửa hàng đối chứng",
+                "meaning": "cửa hàng không dùng lời nhắc, dùng để so sánh kết quả"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "open-questions",
+        "heading": "Câu hỏi mở",
+        "source_fields": [
+          "open-questions.md"
+        ],
+        "content": [
+          {
+            "type": "questions",
+            "items": [
+              {
+                "id": "Q-001",
+                "text": "Công cụ nhắn tin có nối được với phần mềm bán hàng hiện tại không?",
+                "owner": "Trưởng nhóm kỹ thuật",
+                "blocking": true
+              },
+              {
+                "id": "Q-002",
+                "text": "Nội dung tin nhắn do ai duyệt?",
+                "owner": "Trưởng phòng marketing",
+                "blocking": false
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "numbers": [
+    {
+      "id": "N-01",
+      "value": 18,
+      "unit": "%",
+      "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+      "period": "01/2026 đến 06/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-02",
+      "value": 24,
+      "unit": "%",
+      "source": "Mục tiêu do giám đốc bán hàng đặt",
+      "period": "12 tuần thí điểm",
+      "label": "assumed"
+    },
+    {
+      "id": "N-03",
+      "value": 180000000,
+      "unit": "đ",
+      "source": "Ước tính sơ bộ trong kế hoạch",
+      "period": "12 tuần thí điểm",
+      "label": "assumed",
+      "estimate": true
+    },
+    {
+      "id": "N-04",
+      "value": 120000000,
+      "unit": "đ",
+      "source": "Ước tính sơ bộ trong kế hoạch",
+      "period": "năm đầu sau thí điểm",
+      "label": "assumed",
+      "estimate": true
+    },
+    {
+      "id": "N-05",
+      "value": 350000000,
+      "unit": "đ",
+      "source": "Ước tính sơ bộ trong kế hoạch",
+      "period": "năm đầu sau thí điểm",
+      "label": "assumed",
+      "estimate": true
+    },
+    {
+      "id": "N-06",
+      "value": 600000000,
+      "unit": "đ",
+      "source": "Ước tính sơ bộ trong kế hoạch",
+      "period": "năm đầu sau thí điểm",
+      "label": "assumed",
+      "estimate": true
+    },
+    {
+      "id": "N-07",
+      "value": 6,
+      "unit": "cửa hàng",
+      "source": "Kế hoạch thí điểm",
+      "period": "12 tuần thí điểm",
+      "label": "assumed"
+    },
+    {
+      "id": "N-08",
+      "value": 12,
+      "unit": "tuần",
+      "source": "Kế hoạch thí điểm",
+      "period": "12/2026 đến 02/2027",
+      "label": "assumed"
+    },
+    {
+      "id": "N-09",
+      "value": 650000,
+      "unit": "đ",
+      "source": "Báo cáo bán hàng nội bộ (dữ liệu hư cấu)",
+      "period": "01/2026 đến 06/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-10",
+      "value": 2,
+      "unit": "%",
+      "source": "Ngưỡng do giám đốc bán hàng đặt",
+      "period": "mỗi tháng",
+      "label": "assumed"
+    },
+    {
+      "id": "N-11",
+      "value": 17,
+      "unit": "%",
+      "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+      "period": "01/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-12",
+      "value": 19,
+      "unit": "%",
+      "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+      "period": "02/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-13",
+      "value": 18,
+      "unit": "%",
+      "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+      "period": "03/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-14",
+      "value": 17,
+      "unit": "%",
+      "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+      "period": "04/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-15",
+      "value": 18,
+      "unit": "%",
+      "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+      "period": "05/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-16",
+      "value": 19,
+      "unit": "%",
+      "source": "Báo cáo khách hàng thân thiết (dữ liệu hư cấu)",
+      "period": "06/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-17",
+      "value": 13,
+      "unit": "nhóm",
+      "source": "Hồ sơ làm rõ ý tưởng",
+      "period": "tại ngày đóng gói 12/11/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-18",
+      "value": 15,
+      "unit": "nhóm",
+      "source": "Hồ sơ làm rõ ý tưởng",
+      "period": "tại ngày đóng gói 12/11/2026",
+      "label": "measured"
+    },
+    {
+      "id": "N-19",
+      "value": 4,
+      "unit": "tuần",
+      "source": "Ước tính sơ bộ trong kế hoạch",
+      "period": "tại ngày đóng gói 12/11/2026",
+      "label": "assumed",
+      "estimate": true
+    },
+    {
+      "id": "N-20",
+      "value": 16,
+      "unit": "tuần",
+      "source": "Ước tính sơ bộ trong kế hoạch",
+      "period": "tại ngày đóng gói 12/11/2026",
+      "label": "assumed",
+      "estimate": true
+    },
+    {
+      "id": "N-21",
+      "value": 26,
+      "unit": "tuần",
+      "source": "Ước tính sơ bộ trong kế hoạch",
+      "period": "tại ngày đóng gói 12/11/2026",
+      "label": "assumed",
+      "estimate": true
+    },
+    {
+      "id": "N-23",
+      "value": 6,
+      "unit": "cửa hàng",
+      "source": "Kế hoạch thí điểm",
+      "period": "12 tuần thí điểm",
+      "label": "assumed"
+    },
+    {
+      "id": "N-24",
+      "value": 30,
+      "unit": "ngày",
+      "source": "Yêu cầu của bản đầu tiên",
+      "period": "bản đầu tiên",
+      "label": "assumed"
+    },
+    {
+      "id": "N-25",
+      "value": 70,
+      "unit": "%",
+      "source": "Giả định A-002 trong hồ sơ ý tưởng",
+      "period": "tại ngày đóng gói 12/11/2026",
+      "label": "assumed"
+    }
+  ],
+  "diagrams": [],
+  "gaps": [
+    {
+      "field": "spec.Requirements: giờ cao điểm dùng hệ thống",
+      "section": "non-functional"
+    },
+    {
+      "field": "plan.Pilot and rollout: cách chọn cửa hàng đối chứng",
+      "slide": 9
+    }
+  ],
+  "links": {
+    "board_artifact": null,
+    "tech_artifact": null,
+    "slides": null,
+    "docs": null
+  }
+}

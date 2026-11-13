@@ -30,6 +30,15 @@ class BuildTest(unittest.TestCase):
     def tearDownClass(cls):
         cls._tmp.cleanup()
 
+    def test_each_skill_holds_core_and_templates(self):
+        for skill in SKILLS:
+            refs = self.plugin / "skills" / skill / "references"
+            for sub in ("core", "templates", "packs"):
+                src = {q.relative_to(build_plugin.ROOT / sub).as_posix() for q in (build_plugin.ROOT / sub).rglob("*")
+                       if q.is_file() and q.name not in JUNK}
+                dst = {q.relative_to(refs / sub).as_posix() for q in (refs / sub).rglob("*") if q.is_file()}
+                self.assertEqual(src, dst, f"{skill}: references/{sub} differs from {sub}/")
+
     def test_exactly_six_skills(self):
         names = {p.name for p in (self.plugin / "skills").iterdir() if p.is_dir()}
         self.assertEqual(names, SKILLS)

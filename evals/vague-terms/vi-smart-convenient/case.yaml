@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: vague-terms-vi-smart-convenient
+context:
+  scaffold_script: scaffold.sh

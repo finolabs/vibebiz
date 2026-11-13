@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: index-hand-edit-kept-and-listed
+context:
+  scaffold_script: scaffold.sh

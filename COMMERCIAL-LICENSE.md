@@ -1,6 +1,6 @@
 # vibebiz Commercial License
 
-> **Status: draft.** This text has not been reviewed by a lawyer. It must be reviewed before the repository goes public or any license is sold.
+> **Version 1.0, 13/11/2026.**
 
 vibebiz is source-available. The public code is licensed under the PolyForm Noncommercial License 1.0.0 (see `LICENSE`). That license does not allow commercial use. A business that wants to use vibebiz needs a written commercial license under this document.
 
