@@ -214,7 +214,7 @@ class Modes(Base):
 
     def test_shared_drive_has_a_name(self):
         fixtures.main(["fixtures.py", "shared-drive", self.ws])
-        self.assertEqual(self.call("get_shared_drive_metadata", driveId="shared-drive-1")["name"],
+        self.assertEqual(self.call("get_shared_drive_metadata", sharedDriveId="shared-drive-1")["name"],
                          "Kinh doanh miền Nam (hư cấu)")
 
     def test_create_in_a_shared_drive_belongs_to_the_drive(self):

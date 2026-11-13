@@ -10,7 +10,8 @@ All notable changes to vibebiz are recorded here. The format follows [Keep a Cha
 
 - In a shared drive, the message that says who can see the workspace now also names the shared drive and the person who last changed it, also when the user agreed up front.
 - Packaging again in Google Drive keeps the previous set in `exports/history/<date>/`, never in a dated folder directly under `exports/`.
-- vibebiz reads its own instructions and templates with the file-reading tool, so claude.ai no longer warns that a command may change its settings.
+- A fact from a document you named or attached, or found where you asked vibebiz to look on a desktop folder, is written into the idea with its source and you are told. A document vibebiz finds on its own, or any document when the Drive workspace is shared and you did not name it, still needs your yes. Only your own messages count: a pointer written in a workspace file or another document never does.
+- vibebiz reads its own instructions and templates with the file-reading tool instead of a shell command, which made claude.ai warn that a command may change its settings (not yet rechecked on claude.ai).
 
 ## [0.1.2] - 2026-11-13
 

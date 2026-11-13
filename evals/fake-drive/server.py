@@ -610,7 +610,7 @@ def t_trash_file(drive, a):
 
 def t_get_shared_drive_metadata(drive, a):
     drives = drive.data.get("shared_drives", {})
-    did = a.get("driveId") or a.get("sharedDriveId")
+    did = a.get("sharedDriveId")  # the real tool takes sharedDriveId (schema seen 14/11/2026)
     if did not in drives:
         raise DriveError("Shared drive not found")
     return {"id": did, "name": drives[did]}
@@ -687,7 +687,7 @@ TOOLS = {
     "trash_file": (t_trash_file, "Move a Drive file to the trash. It does not permanently delete the file.",
                    obj({"fileId": S}, ["fileId"])),
     "get_shared_drive_metadata": (t_get_shared_drive_metadata, "Get the name and id of a shared drive the user belongs to.",
-                                  obj({"driveId": S}, ["driveId"])),
+                                  obj({"sharedDriveId": S}, ["sharedDriveId"])),
     "get_file_metadata": (t_get_file_metadata, "Get general metadata about a Drive file, including modifiedTime and etag.",
                           obj({"fileId": S, "includeRichMetadata": B, "excludeContentSnippets": B, "snippetVerbosity": S}, ["fileId"])),
     "get_file_permissions": (t_get_file_permissions, "List the permissions of a Drive file.",
