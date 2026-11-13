@@ -32,7 +32,7 @@ Done when one workspace folder is chosen (or the user has been asked), and no fi
 Before the first write in this run:
 
 1. Read the permissions of the workspace folder and of every folder above it, up to My Drive, and the folder's metadata.
-2. The folder is **shared** when anyone other than the user can see it: a person, a group, a domain or anyone with the link. A folder in a shared drive counts as shared; name the shared drive, and when the user did not create the folder, name who did, so a marked folder someone else placed there is not mistaken for the user's own.
+2. The folder is **shared** when anyone other than the user can see it: a person, a group, a domain or anyone with the link. A folder in a shared drive counts as shared: name the shared drive and the person who created the folder (from its metadata), so a marked folder someone else placed there is not mistaken for the user's own.
 3. **Not shared:** go on.
 4. **Shared:** compare the current permission ids with `shared_ack.ids` in `index.json`.
    - Same ids: go on without asking.
