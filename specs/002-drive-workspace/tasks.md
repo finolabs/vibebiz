@@ -62,14 +62,14 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
 
 **Purpose**: the `index.json` contract that every story uses
 
-- [ ] T005 Add `templates/workspace/index.json`. It holds the same object as the `vibebiz-data` block in `templates/workspace/index.html`, plus the top-level fields from data-model "index.json":
+- [x] T005 Add `templates/workspace/index.json`. It holds the same object as the `vibebiz-data` block in `templates/workspace/index.html`, plus the top-level fields from data-model "index.json":
   - `"vibebiz": "workspace"`
   - `"storage": "drive"`
   - `"toc_artifact": null`
   - `"plugin_version": "<the plugin's version>"`
   - `"shared_ack": null`, which is replaced by `{ "date": "YYYY-MM-DD", "who": [...] }` once confirmed
-- [ ] T006 Extend `scripts/checks/test_index.py` so it validates `index.json` against the same schema as the local block, plus the five fields above. The check must enforce "`ideas[]` lists exactly the idea folders present". Add one failing and one passing fixture under `scripts/checks/fixtures/`, then run `python3 scripts/checks/test_index.py`.
-- [ ] T007 Add a `--fake-drive` option to `scripts/build_plugin.py` that writes an eval-only build to `dist/vibebiz-fakedrive/` (add it to the script's `BUILD_OUTPUTS`, since the build refuses unknown entries in `dist/`), with a `.mcp.json` declaring the `google-drive` server (`evals/fake-drive/server.py`), as `evals/README.md` "Fake Drive" says. Extend `scripts/checks/test_build.py` with two asserts:
+- [x] T006 Extend `scripts/checks/test_index.py` so it validates `index.json` against the same schema as the local block, plus the five fields above. The check must enforce "`ideas[]` lists exactly the idea folders present". Add one failing and one passing fixture under `scripts/checks/fixtures/`, then run `python3 scripts/checks/test_index.py`.
+- [x] T007 Add a `--fake-drive` option to `scripts/build_plugin.py` that writes an eval-only build to `dist/vibebiz-fakedrive/` (add it to the script's `BUILD_OUTPUTS`, since the build refuses unknown entries in `dist/`), with a `.mcp.json` declaring the `google-drive` server (`evals/fake-drive/server.py`), as `evals/README.md` "Fake Drive" says. Extend `scripts/checks/test_build.py` with two asserts:
   - `dist/vibebiz/` ships `references/templates/workspace/index.json` in each entry skill;
   - `dist/vibebiz/` ships nothing from `evals/fake-drive/` and no `.mcp.json`; `dist/vibebiz.plugin` likewise.
 
@@ -150,7 +150,7 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
   - once on mode `shared-drive`.
 
   The graders check that:
-  - vibebiz names who can see the folder and asks before writing;
+  - vibebiz names who can see the folder and asks before writing; in `shared-drive` mode it also names the shared drive and the creator (`sales-manager@example.com` in the fixture);
   - after the prompt confirms, `shared_ack` is set with a date, display names and permission IDs, and contains no `@`;
   - `.fake-drive/calls.jsonl` has no `share_file` call and no `update_file` call that changes sharing (FR-012).
 - [ ] T051 [P] [US1] Add the eval case `evals/workspace/drive-shared-ack-changed/` on fake-Drive mode `shared-ack-changed`. The graders check that vibebiz warns again because the folder became link-visible after the recorded `shared_ack`, and that `.fake-drive/calls.jsonl` has no `create_file` or `trash_file` before the prompt's confirmation (FR-013).
@@ -178,7 +178,7 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
 - [ ] T028 [US1] Add §1b "Privacy check" to `core/workspace.md` (research R5, FR-012, FR-013):
   - Read the permissions of the folder and of every folder above it.
   - Check whether the folder sits in a shared drive.
-  - When the folder is shared, name who can see it and ask before writing.
+  - When the folder is shared, name who can see it and ask before writing. For a workspace in a shared drive that the user did not create, also name the shared drive and the file's creator, so a marked folder someone else placed there is not mistaken for the user's own.
   - Record `shared_ack` with the date, display names (or `link` / `domain`) and permission IDs, never email addresses. Ask again when the current permission IDs differ from the recorded ones.
   - Never call the sharing tool, never change visibility, and never move a file outside the workspace.
 - [ ] T029 [US1] Add §2a "Writing in Drive" to `core/workspace.md` (research R2 and R4, data-model "File replacement"):
@@ -275,7 +275,7 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
 
 **Purpose**: confirm that the descriptions match what ships, then cut 0.1.2.
 
-- [ ] T047 Add a Drive-mode row and a pointer to `specs/002-drive-workspace/contracts/drive-workspace.md` in `specs/001-idea-to-prd/contracts/workspace-files.md`. Set the version to `0.1.2` in `.claude-plugin/plugin.json`. Add `## [0.1.2] - <date>` to `CHANGELOG.md`, with Added for Drive mode and Changed for the two-way message, following the `versioning` skill.
+- [ ] T047 Add a Drive-mode row and a pointer to `specs/002-drive-workspace/contracts/drive-workspace.md` in `specs/001-idea-to-prd/contracts/workspace-files.md`. Set the version to `0.1.2` in `.claude-plugin/plugin.json`, and add a `test_build.py` assert that `plugin_version` in `templates/workspace/index.json` equals the manifest version. Add `## [0.1.2] - <date>` to `CHANGELOG.md`, with Added for Drive mode and Changed for the two-way message, following the `versioning` skill.
 - [ ] T048 Release review (CLAUDE.md "Release review"):
   - the README pair, `docs/`, the help map and `PRIVACY.md` match what ships;
   - `examples/000-giu-chan-khach-cu/` still passes `package_check.py` and the Spec Kit check;

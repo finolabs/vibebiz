@@ -111,7 +111,8 @@ def build(mode):
         workspace(b, "vibebiz", permissions=[dict(READER)])
     elif mode == "shared-drive":
         # Files in a shared drive belong to the drive, not to the user.
-        drive = {"driveId": "shared-drive-1", "owner": "shared-drive-1"}
+        drive = {"driveId": "shared-drive-1", "owner": "shared-drive-1",
+                 "creator": "sales-manager@example.com"}
         workspace(b, "vibebiz", child_extra=drive, permissions=[
             {"id": "perm-group-1", "type": "group", "role": "writer",
              "displayName": "Phòng bán hàng (hư cấu)", "emailAddress": "sales@example.com"}], **drive)

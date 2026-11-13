@@ -48,6 +48,14 @@ def safe_component(title):
     return out
 
 
+def fit_component(name, file_id, limit=200):
+    """Keep a mirror name under common file-system limits (255 bytes) without losing uniqueness."""
+    if len(name.encode("utf-8")) <= limit:
+        return name
+    cut = name.encode("utf-8")[:limit].decode("utf-8", "ignore")
+    return "%s~%s" % (cut, file_id)
+
+
 # ---------------------------------------------------------------- state
 
 
@@ -100,11 +108,13 @@ class Drive:
         used = set()
 
         def place(parent_dir, f, suffix=""):
-            name = safe_component(f["title"]) + suffix
+            name = fit_component(safe_component(f["title"]) + suffix, f["id"])
             target = os.path.join(parent_dir, name)
-            if target in used:
-                target += ".dup-" + f["id"]  # a second live item with one title stays visible
-            used.add(target)
+            # A second live item with one title (compared without case, as macOS does) stays
+            # visible: the older item keeps the plain name, the newer one gets ".dup-<id>".
+            if target.casefold() in used:
+                target = os.path.join(parent_dir, fit_component(name + ".dup-" + f["id"], f["id"]))
+            used.add(target.casefold())
             if not os.path.realpath(target).startswith(real_tree):
                 return None  # never mirror outside the tree
             return target
@@ -124,11 +134,12 @@ class Drive:
             dirs[fid] = target
             return target
 
-        live = [f for f in self.files.values() if self._alive_chain(f)]
-        for f in sorted(live, key=lambda f: f["id"]):
+        live = sorted((f for f in self.files.values() if self._alive_chain(f)),
+                      key=lambda f: (f.get("createdTime", f["modifiedTime"]), f["id"]))
+        for f in live:
             if f["mimeType"] == FOLDER:
                 folder_dir(f["id"])
-        for f in sorted(live, key=lambda f: f["id"]):
+        for f in live:
             if f["mimeType"] == FOLDER:
                 continue
             parent = folder_dir(f.get("parentId") or "root")
@@ -166,6 +177,8 @@ def public(f, drive):
     }
     if f.get("driveId"):
         out["driveId"] = f["driveId"]
+    if f.get("creator"):
+        out["creator"] = f["creator"]
     return out
 
 
@@ -305,8 +318,10 @@ def field_value(name, f, drive):
         return f.get("parentId", "root")
     if name in ("modifiedTime", "createdTime", "viewedByMeTime"):
         return f.get(name, f["modifiedTime"])
-    if name in ("owner", "creator"):
+    if name == "owner":
         return f.get("owner", "me")
+    if name == "creator":
+        return f.get("creator", f.get("owner", "me"))
     if name == "trashed":
         return "true" if is_trashed(f, drive) else "false"
     if name == "visibility":
@@ -496,20 +511,23 @@ def t_update_file(drive, a):
     f = drive.get(a.get("fileId"))
     if a.get("etag") and a["etag"] != public(f, drive)["etag"]:
         raise DriveError("FAILED_PRECONDITION: the file was modified since the etag was returned")
+    if "title" in a and not a["title"]:
+        raise DriveError("title must not be empty")
+    pid = a.get("parentId")
+    if pid and pid != "root":
+        if drive.get(pid)["mimeType"] != FOLDER:
+            raise DriveError("Parent is not a folder")
+        cur, seen = pid, set()
+        while cur not in (None, "root") and cur not in seen:
+            if cur == f["id"]:
+                raise DriveError("Cannot move a folder into itself")
+            seen.add(cur)
+            cur = drive.files.get(cur, {}).get("parentId")
+    # All checks passed: apply every change together, as the real API does.
     for key in ("title", "description", "starred", "inheritedPermissionsDisabled"):
         if key in a:
             f[key] = a[key]
-    if a.get("parentId"):
-        pid = a["parentId"]
-        if pid != "root":
-            if drive.get(pid)["mimeType"] != FOLDER:
-                raise DriveError("Parent is not a folder")
-            cur, seen = pid, set()
-            while cur not in (None, "root") and cur not in seen:
-                if cur == f["id"]:
-                    raise DriveError("Cannot move a folder into itself")
-                seen.add(cur)
-                cur = drive.files.get(cur, {}).get("parentId")
+    if pid:
         f["parentId"] = pid
     f["modifiedTime"] = drive.tick()
     return public(f, drive)

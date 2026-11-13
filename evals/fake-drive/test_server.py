@@ -385,5 +385,51 @@ class NewModes(Base):
         self.assertIn("chia sẻ thư mục", self.call("read_file_content", fileId=cov["id"])["content"])
 
 
+class ReviewFollowUps(Base):
+    """LOW findings from the PR finolabs/vibebiz#5 reviews, fixed in Phase 2."""
+    mode = "one-workspace"
+
+    def test_failed_update_changes_nothing(self):
+        plan = self.find("title = 'plan.md'")[0]
+        with self.assertRaises(server.DriveError):
+            self.call("update_file", fileId=plan["id"], title="RENAMED", parentId=plan["id"])
+        self.assertEqual(self.call("get_file_metadata", fileId=plan["id"])["title"], "plan.md")
+
+    def test_newer_duplicate_gets_the_suffix(self):
+        old = self.find("title = 'coverage.md'")[0]
+        new = self.call("create_file", title="coverage.md", parentId=old["parentId"],
+                        contentMimeType="text/markdown", textContent="new", disableConversionToGoogleType=True)
+        d = os.path.join(self.root, "tree", "vibebiz", "specs", "001-giu-chan-khach-cu")
+        with open(os.path.join(d, "coverage.md"), encoding="utf-8") as fh:
+            self.assertNotEqual(fh.read(), "new")
+        with open(os.path.join(d, "coverage.md.dup-" + new["id"]), encoding="utf-8") as fh:
+            self.assertEqual(fh.read(), "new")
+
+    def test_long_title_is_shortened_not_fatal(self):
+        title = "Ý tưởng " * 60 + ".md"
+        f = self.call("create_file", title=title, contentMimeType="text/markdown", textContent="x",
+                      disableConversionToGoogleType=True)
+        names = [n for n in os.listdir(os.path.join(self.root, "tree")) if n.endswith("~" + f["id"])]
+        self.assertEqual(len(names), 1)
+        self.assertLessEqual(len(names[0].encode("utf-8")), 255)
+        self.call("search_files", query="title = 'x'")  # the server still saves after it
+
+    def test_titles_differing_only_in_case_stay_apart(self):
+        a = self.call("create_file", title="Notes.md", contentMimeType="text/markdown", textContent="A",
+                      disableConversionToGoogleType=True)
+        b = self.call("create_file", title="notes.md", contentMimeType="text/markdown", textContent="b",
+                      disableConversionToGoogleType=True)
+        names = sorted(os.listdir(os.path.join(self.root, "tree")))
+        self.assertIn("Notes.md", names)
+        self.assertIn("notes.md.dup-" + b["id"], names)
+        self.assertNotEqual(a["id"], b["id"])
+
+    def test_shared_drive_files_name_their_creator(self):
+        fixtures.main(["fixtures.py", "shared-drive", self.ws])
+        idx = self.find("title = 'index.json'")[0]
+        self.assertEqual(idx["creator"], "sales-manager@example.com")
+        self.assertEqual(self.find("title = 'index.json' and creator = 'me'"), [])
+
+
 if __name__ == "__main__":
     unittest.main()
