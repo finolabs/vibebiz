@@ -8,7 +8,7 @@ Every entry skill loads this module first. It chooses where the workspace lives 
 
 Messages to the user follow `references/core/writing-rules.md`, including how to address them; the Vietnamese examples below use its default form.
 
-**A declined write is final.** When the host asks the user whether a command or a file write may run and the user declines (or you cannot tell whether the user or the host refused), write none of the files it would have written, by any other tool or step, in this run; that includes the section 7 restore. Stop the run there and tell the user in plain words what was not saved and that running the command again will ask again. A block the host makes on its own, with no question to the user (a protected-file or policy block), is not a decline: read the template and write the file instead (section 2).
+**A declined write is final.** When the host asks the user whether a command that writes files, or a file write, may run and the user declines (or you cannot tell whether the user or the host refused), write none of the files it would have written, by any other tool or step, in this run; that includes the section 7 restore. Stop the run there and tell the user in plain words what was not saved and that running the command again will ask again; in Drive mode, first show this session's answers in the chat as `drive-workspace.md` §3 says, so nothing is lost. A block the host makes on its own, with no question to the user, is not a decline: the refusal names a rule or a protected file, or says the command needs approval in a run where nobody is asked (for example "requires approval" or "sensitive file"); read the template and write the file instead (section 2). A refusal is the user's decline when it says the user declined, rejected it or does not want to proceed.
 
 ## 1. Choose where the workspace lives (every entry skill, before anything else)
 
@@ -60,7 +60,7 @@ Unrelated files may sit beside a workspace; they never change a Complete or Part
 
 ## 4. Scaffold
 
-Create, from the templates, only what the state calls for:
+Make the scaffold's writes one call after another, never several in parallel, so that a declined write stops the rest (top of this module). Create, from the templates, only what the state calls for:
 
 1. `index.html` from `templates/workspace/index.html`.
 2. `constitution.md` from `templates/workspace/constitution.md` (status stays `deferred`; the `constitution` skill sets ground rules).

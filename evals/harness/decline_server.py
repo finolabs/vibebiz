@@ -1,8 +1,9 @@
 """Permission-prompt MCP server for vibebiz dev evals (dev only, no dependencies).
 
 Claude Code calls its `decide` tool for every permission prompt in `claude -p --permission-prompt-tool
-mcp__decline__decide`. It plays a user who declines: any Bash command whose text matches the
-DECLINE_PATTERN environment variable is denied with a user's "no"; every other prompt is allowed.
+mcp__decline__decide`. It plays a user who declines: a Bash command whose text matches the DECLINE_PATTERN
+environment variable and also writes (a redirect, `tee`, `cp`, `mkdir`, a `write`/`open(` call, or any Python run) is denied
+with a user's "no"; every other prompt, reads included, is allowed.
 Each request and answer is appended to the file named by DECLINE_LOG as one JSON line.
 """
 import json
@@ -12,6 +13,7 @@ import sys
 
 PATTERN = re.compile(os.environ.get("DECLINE_PATTERN", "index\\.html"))
 LOG = os.environ.get("DECLINE_LOG", "decline-log.jsonl")
+WRITES = re.compile(r">|\btee\b|\bcp\b|write|open\(|\bpython3?\b|\bmkdir\b")
 TOOL = {"name": "decide", "description": "Answer a permission prompt as the user.",
         "inputSchema": {"type": "object", "properties": {"tool_name": {"type": "string"}, "input": {"type": "object"},
                                                          "tool_use_id": {"type": "string"}}, "required": ["tool_name", "input"]}}
@@ -19,7 +21,8 @@ TOOL = {"name": "decide", "description": "Answer a permission prompt as the user
 
 def answer(args):
     name, data = args.get("tool_name", ""), args.get("input", {})
-    if name == "Bash" and PATTERN.search(data.get("command", "")):
+    cmd = data.get("command", "")
+    if name == "Bash" and PATTERN.search(cmd) and WRITES.search(cmd):
         out = {"behavior": "deny", "message": "The user declined this command."}
     else:
         out = {"behavior": "allow", "updatedInput": data}
