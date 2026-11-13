@@ -17,8 +17,9 @@ DESKTOP = ("This session is Cowork in the Claude desktop app, started without ch
            "user chose. Claude Artifacts are not available in this session. Treat this as the real situation.")
 NOANSWER = ("Đây là lần chạy không người trả lời: công cụ hỏi có thể không nhận được câu trả lời nào. "
             "Cứ hiện vòng câu hỏi như bình thường; không tự bịa câu trả lời thay tôi.")
-IDEA = ("Tao muốn làm cái hệ thống tích điểm cho khách quen để họ mua lại nhiều hơn. "
-        "Đặt tên ý tưởng là \"Tích điểm khách quen\".")
+# Deliberately unlike the fixture's example idea (win-back via a chat app), so the run starts a new idea.
+IDEA = ("Tao muốn có cái công cụ báo cho nhân viên cửa hàng khi một size bán chạy sắp hết hàng, "
+        "để đặt bổ sung kịp. Đặt tên ý tưởng là \"Báo sắp hết size\".")
 NEWFOLDER = "Nếu phải chọn thư mục Drive thì tạo thư mục mới tên \"vibebiz\" ở thư mục gốc của Drive."
 CALLS = ".fake-drive/calls.jsonl"
 TREE = ".fake-drive/tree"

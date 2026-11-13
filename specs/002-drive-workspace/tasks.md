@@ -289,7 +289,7 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
   - `examples/000-giu-chan-khach-cu/` still passes `package_check.py` and the Spec Kit check;
   - `claude plugin validate dist/vibebiz` passes on a fresh clone;
   - the constitution amendment from T017 is approved and applied. **If it is still open, stop: do not tag.**
-  - `core/workspace.md` §1a is no longer the Phase 3 stub (T027 merged), so the Drive promises that Phase 3 put in the docs (FAQ 12, quick-start, admin-setup, README pair: choosing the folder, the shared-folder warning) hold. **Until then, stop: do not tag 0.1.2 or any build from main.** Then drop the "từ bản 0.1.2" / "from version 0.1.2" / "(đang làm)" markers Phase 3 put in those docs.
+  - `core/workspace.md` §1a is no longer the Phase 3 stub (T027 merged), so the Drive promises that Phase 3 put in the docs (FAQ 12, quick-start, admin-setup, README pair: choosing the folder, the shared-folder warning) hold. **Until then, stop: do not tag 0.1.2 or any build from main.** Then drop the "từ bản 0.1.2" / "from version 0.1.2" / "(đang làm)" markers Phase 3 and 4 put in the docs and `PRIVACY.md`, and check the lines that describe the two-way stop without a marker (`docs/admin-setup.md` Org Instruction block, `docs/faq.md` question 12's last paragraph) still read true.
 - [ ] T049 Release smoke test in real Cowork ([quickstart.md](quickstart.md)). Run connector checks 1–10 first, then smoke steps 1–6. Use a test Google account and fictional ideas.
   - Record the results in `evals/RESULTS.md`, with no IDs, accounts or emails.
   - This needs Fio, or someone with a Cowork web session.

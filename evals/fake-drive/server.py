@@ -74,10 +74,16 @@ def open_state(path, flags):
 def write_state(path, text):
     """Replace a state file atomically through a fresh temporary file in the same folder."""
     tmp = "%s.%d.tmp" % (path, os.getpid())
+    if os.path.lexists(tmp):  # left by a crashed run with the same pid; never followed, only removed
+        os.unlink(tmp)
     fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
-    with os.fdopen(fd, "w", encoding="utf-8") as fh:
-        fh.write(text)
-    os.replace(tmp, path)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as fh:
+            fh.write(text)
+        os.replace(tmp, path)
+    finally:
+        if os.path.lexists(tmp):
+            os.unlink(tmp)
 
 
 def safe_component(title):
