@@ -90,6 +90,9 @@ def workspace(b, name, version="0.1.2", parent="root", shared_ack=None, child_ex
         b.add("constitution.md", root, "text/markdown", fh.read())
     specs = b.add("specs", root)
     b.tree(EXAMPLE, b.add("001-giu-chan-khach-cu", specs))
+    for f in b.files.values():  # the example is numbered 000; as a user's idea in 001 its record says 001
+        if f["title"] == "coverage.md" and int(f["id"][1:]) > first:
+            f["content"] = f["content"].replace('id: "000"', 'id: "001"', 1)
     for f in b.files.values():
         if child_extra and int(f["id"][1:]) > first:
             f.update(child_extra)
