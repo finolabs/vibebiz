@@ -47,7 +47,7 @@ Every change to the content of a workspace file is a replacement:
 1. **Read** the old file's `modifiedTime` and permissions.
 2. **Its own sharing:** when the file's permissions differ from what the folder gives (an extra person, or the folder's access turned off for this file), stop and tell the user that replacing it would drop that sharing; replace only on their yes.
 3. **Create** the new content as a new plain file with the same title in the same folder.
-4. **Read it back** and confirm the content matches.
+4. **Read it back** and confirm the content matches: `.md` files with the read-content tool, `.json` files with the download tool (its content comes back base64-encoded; decode it), since the read-content tool does not return JSON.
 5. **Check `modifiedTime`** of the old file again. If it changed since step 1, someone else edited it: keep both, trash nothing, tell the user, and ask which version to keep.
 6. **Trash** the old file.
 
@@ -77,6 +77,6 @@ After every change, as the last step:
 1. Build the table-of-contents data exactly as `workspace.md` §7 says, from the frontmatter read through the connector, and keep the Drive fields (`vibebiz`, `storage`, `toc_artifact`, `plugin_version`, `shared_ack`). Write `index.json` by replacement (§3) and read it back.
 2. Show it to the user:
    - With Claude Artifacts and a shell: render `references/templates/workspace/index.html` with its `vibebiz-data` block replaced by the new JSON (a one-off command, with `<` escaped as `workspace.md` §7 says), publish it as a private Artifact, update the same Artifact on later runs when possible, and record its link in `toc_artifact`.
-   - Otherwise: show a short table in the chat (idea, status, points clear, next step).
+   - Otherwise: show a short table in the chat (idea, status, points clear, next step). This table is required whenever there is no Artifact link to give: put it in your last message of the run, after the questions, so the user always sees the table of contents.
 
 `board-deck.html` and `tech-prd.html` are never written to Drive; `package` publishes those views as private Artifacts, or as the user's own private Google Slides and Docs when they choose, and records the links in `links.md`.
