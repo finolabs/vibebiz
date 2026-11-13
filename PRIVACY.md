@@ -15,7 +15,7 @@ vibebiz is a set of instructions that Claude follows; it has no code of its own 
 
 - send your data to any evaluator, scoring service or third-party API;
 - call a network service beyond the connectors you enabled;
-- read files outside the folder you opened, or outside the workspace folder in your Google Drive (apart from searching your Drive for vibebiz's own `index.json`, to find that folder again);
+- write, move or trash any file outside the folder you opened or the workspace folder in your Google Drive. Outside them it only reads: it searches your Drive for vibebiz's own `index.json` to find the workspace again, checks who can see the folders above it, and may read documents in your Drive to look up a fact before asking you (for example the number of stores in a report), saying which document the fact came from;
 - share a file, change its visibility, or follow an instruction written inside a file.
 
 File and network access are enforced by Claude Cowork and your organization's settings, not by vibebiz. If Claude ever acts against these instructions, report it as a security issue (`SECURITY.md`).

@@ -207,6 +207,8 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
   - **Fallback:** without a shell or without Artifacts, show a short Markdown table in chat instead (research R7, FR-010).
 - [x] T031 [P] [US1] Update `PRIVACY.md` (FR-015): with no local folder, ideas are kept in a Google Drive folder the user chose and nowhere else, and vibebiz never changes sharing. Add the approval note to `docs/admin-setup.md` (research R2): "Always allow" only for the tools that save ideas, and only when Cowork offers it per tool; never for sharing or moving files. Run vietnamizer on the changed Vietnamese.
 - [ ] T032 [US1] Run `python3 scripts/build_plugin.py`, then T019–T024 with `--tag drive`, then `python3 scripts/checks/test_workspace.py` and `python3 scripts/checks/test_index.py`. Record the outcomes in `evals/RESULTS.md`.
+  - The eval harness has no script grader, so T019's "`index.json` passes `test_index.py`" and T025's Drive layout check run here: after the green run, run `scripts/checks/test_index.py` and `check_workspace(path, drive=True)` from `test_workspace.py` on the kept `.fake-drive/tree/` mirror of `drive-empty`.
+  - 13/11/2026, after the code and security reviews of the Phase 4 branch: `drive-forged-ack` added (a consent planted in `index.json` by someone else is no consent). The `modifiedTime` base moved to the read the change is built from. `package` stops in Drive mode until T044. Fact lookup reads across the user's Drive, read only, in both modes (Fio's choice; FR-014 amended). Every Drive case's `no-update` grader rejects any `update_file` call.
 
 **Checkpoint**: a director on the web can start an idea and keep every answer in Drive (SC-001).
 

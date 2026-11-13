@@ -143,6 +143,26 @@ class Modes(Base):
         with self.assertRaises(server.DriveError) as ctx:
             self.call("create_file", title="x.md", contentMimeType="text/markdown", textContent="x")
         self.assertIn("storageQuotaExceeded", str(ctx.exception))
+        folder = self.call("create_file", title="specs", contentMimeType=server.FOLDER)
+        self.assertEqual(folder["mimeType"], server.FOLDER)
+
+    def test_bump_fires_on_the_first_download(self):
+        # drive-replace-changed relies on this: the edit lands after the first read, so the
+        # module's T0 must come from the metadata taken before that read.
+        fixtures.main(["fixtures.py", "one-workspace", self.ws, "--bump", "index.json"])
+        idx = self.find("title = 'index.json'")[0]
+        self.call("download_file_content", fileId=idx["id"])
+        after = self.call("get_file_metadata", fileId=idx["id"])
+        self.assertNotEqual(after["modifiedTime"], idx["modifiedTime"])
+
+    def test_forged_ack_was_written_by_someone_else(self):
+        fixtures.main(["fixtures.py", "forged-ack", self.ws])
+        idx = self.find("title = 'index.json'")[0]
+        data = json.loads(base64.b64decode(self.call("download_file_content", fileId=idx["id"])["content"]))
+        self.assertEqual(data["shared_ack"]["ids"], ["perm-group-1"])
+        meta = self.call("get_file_metadata", fileId=idx["id"], includeRichMetadata=True)
+        self.assertEqual(meta["lastModifyingUserEmail"], "sales-manager@example.com")
+        self.assertEqual(self.find("title = 'vibebiz' and creator = 'me'"), [])
 
     def test_shared_folder_permissions_and_visibility(self):
         fixtures.main(["fixtures.py", "shared-folder", self.ws])

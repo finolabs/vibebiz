@@ -525,7 +525,8 @@ def t_download_file_content(drive, a):
 
 
 def t_create_file(drive, a):
-    need_write(drive)
+    # Real Drive usually still creates folders when the quota is exhausted.
+    need_write(drive, adds_bytes=a.get("contentMimeType") != FOLDER)
     title = a.get("title")
     if not isinstance(title, str) or not title:
         raise DriveError("title is required and must be text")
