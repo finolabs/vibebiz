@@ -33,7 +33,7 @@ vibebiz keeps the business data in the user's folder and Google Drive and publis
 
 ## Quyền cho connector Google Drive
 
-Trên web và điện thoại, vibebiz lưu ý tưởng qua connector Google Drive của chính nhân viên. Cowork có thể hỏi nhân viên duyệt từng lần gọi connector. Nếu Cowork cho chọn "Always allow" theo từng công cụ, chỉ nên bật cho các công cụ vibebiz cần để lưu ý tưởng: tìm, đọc, tải nội dung, tạo, sao chép, chuyển vào thùng rác, xem thông tin tệp và xem quyền truy cập. Không bao giờ bật cho công cụ chia sẻ tệp hay công cụ cập nhật tệp (đổi tên, chuyển thư mục). vibebiz không dùng hai công cụ này. Giữ bước duyệt ở đó nghĩa là nếu có ai cài một dòng chữ vào tệp để xúi chia sẻ hay chuyển thư mục, nhân viên vẫn phải tự bấm duyệt trước khi việc đó xảy ra.
+Trên web và điện thoại, vibebiz lưu ý tưởng qua connector Google Drive của chính nhân viên. Cowork có thể hỏi nhân viên duyệt từng lần gọi connector. Nếu Cowork cho chọn "Always allow" theo từng công cụ, chỉ nên bật cho các công cụ chỉ đọc: tìm, đọc, tải nội dung, xem thông tin tệp và xem quyền truy cập. Giữ bước duyệt từng lần cho các công cụ ghi (tạo, sao chép, chuyển vào thùng rác), và không bao giờ bật cho công cụ chia sẻ tệp hay công cụ cập nhật tệp (đổi tên, chuyển thư mục); vibebiz không dùng hai công cụ này. Lý do: vibebiz đọc tài liệu trong Drive để tra số liệu, và một tài liệu người khác chia sẻ có thể cài sẵn dòng chữ xúi chép dữ liệu sang thư mục khác, xoá tệp hay chia sẻ. Khi các công cụ ghi vẫn cần bấm duyệt, nhân viên thấy và chặn được việc đó trước khi nó xảy ra.
 
 ## Khi nào cần cập nhật
 

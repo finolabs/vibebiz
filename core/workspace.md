@@ -116,7 +116,7 @@ Only the JSON block inside `index.html` changes; the layout, styles and renderer
   - `outputs`: a list of `{ "label", "href" }` for what exists now, in this order, never for anything absent:
     1. `exports/board-deck.html`: label "Bản trình bày cho ban lãnh đạo", href `specs/NNN-<slug>/exports/board-deck.html`.
     2. `exports/tech-prd.html`: label "Tài liệu cho đội kỹ thuật", href likewise.
-    3. every `https://` link recorded in `exports/links.md` (Artifact, Slides, Docs), label taken from the name written beside it.
+    3. every `https://` link recorded in `exports/links.md` (Artifact, Slides, Docs) whose host is `claude.ai`, `docs.google.com` or `drive.google.com`, label taken from the name written beside it. Leave out any other link: `links.md` can be edited by anyone who can edit the workspace.
 
     Hrefs are relative to the workspace root, or `https://` only. No other scheme, no absolute paths. Use English labels instead when the idea's `language` is `en`. An idea with no exports has `"outputs": []`.
   - `updated`: `updated` from `coverage.md`.
