@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """Build the distributable plugin: dist/vibebiz/ and dist/vibebiz.plugin.
 
+With --fake-drive, also dist/vibebiz-fakedrive/: an eval-only copy that declares the fake Google
+Drive MCP server from evals/fake-drive/ (evals/README.md "Fake Drive"). It is never shipped.
+
 Python 3.10+ standard library only. See research R2 and R12.
 """
 import argparse
+import json
 import shutil
 import sys
 import zipfile
@@ -15,7 +19,8 @@ CONTENT_DIRS = ["templates", "packs", "docs", "examples"]
 # Development folders (.specify, .claude, specs, evals, scripts) sit at the repository root and are never
 # copied; only these junk names are dropped at any depth, so nested content such as an example's specs/ ships.
 EXCLUDED_NAMES = {".DS_Store", ".gitkeep", "__pycache__"}
-BUILD_OUTPUTS = {"vibebiz", "vibebiz.plugin"}
+BUILD_OUTPUTS = {"vibebiz", "vibebiz.plugin", "vibebiz-fakedrive"}
+FAKE_DRIVE_SERVER = Path("evals") / "fake-drive" / "server.py"
 
 
 def _ignore(_dir, names):
@@ -29,7 +34,7 @@ def _copy_tree(src: Path, dst: Path) -> None:
         dst.mkdir(parents=True, exist_ok=True)
 
 
-def build(out: Path, root: Path = ROOT) -> Path:
+def build(out: Path, root: Path = ROOT, fake_drive: bool = False) -> Path:
     """Replace `out` with a fresh build and return the plugin zip path."""
     out, root = out.resolve(), root.resolve()
     if out == root or out in root.parents:
@@ -77,16 +82,35 @@ def build(out: Path, root: Path = ROOT) -> Path:
         for path in sorted(plugin.rglob("*")):
             if path.is_file():
                 zf.write(path, path.relative_to(plugin).as_posix())
+    if fake_drive:
+        _fake_drive_build(plugin, out / "vibebiz-fakedrive", root)
     return archive
+
+
+def _fake_drive_build(plugin: Path, fake: Path, root: Path) -> None:
+    """Copy the built plugin and add the fake Drive server for Drive-mode evals only."""
+    server = root / FAKE_DRIVE_SERVER
+    if not server.is_file():
+        raise SystemExit(f"missing fake Drive server: {server}")
+    shutil.copytree(plugin, fake)
+    (fake / "srv" / "fake-drive").mkdir(parents=True)
+    shutil.copy2(server, fake / "srv" / "fake-drive" / "server.py")
+    config = {"mcpServers": {"google-drive": {
+        "command": "python3", "args": ["-I", "${CLAUDE_PLUGIN_ROOT}/srv/fake-drive/server.py"]}}}
+    (fake / ".mcp.json").write_text(json.dumps(config, indent=2) + "\n", encoding="utf-8")
 
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, default=ROOT / "dist", help="output directory (default: dist/)")
+    parser.add_argument("--fake-drive", action="store_true",
+                        help="also write the eval-only build with the fake Google Drive server")
     args = parser.parse_args(argv)
     out = args.out.resolve()
-    archive = build(out)
+    archive = build(out, fake_drive=args.fake_drive)
     print(f"built {out / 'vibebiz'} and {archive}")
+    if args.fake_drive:
+        print(f"built {out / 'vibebiz-fakedrive'} (evals only, never ship)")
     return 0
 
 
