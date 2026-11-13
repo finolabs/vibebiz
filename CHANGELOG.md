@@ -4,6 +4,14 @@ All notable changes to vibebiz are recorded here. The format follows [Keep a Cha
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-11-14
+
+### Changed
+
+- In a shared drive, the message that says who can see the workspace now also names the shared drive and the person who last changed it, also when the user agreed up front.
+- Packaging again in Google Drive keeps the previous set in `exports/history/<date>/`, never in a dated folder directly under `exports/`.
+- vibebiz reads its own instructions and templates with the file-reading tool, so claude.ai no longer warns that a command may change its settings.
+
 ## [0.1.2] - 2026-11-13
 
 ### Added
