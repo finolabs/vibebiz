@@ -1,6 +1,6 @@
 # Các lệnh của vibebiz
 
-Mỗi lệnh trong số sáu lệnh là một kỹ năng (skill) cùng tên trong plugin vibebiz: `idea`, `continue`, `package`, `status`, `constitution`, và `help`. Bạn có thể gõ trực tiếp tên lệnh, hoặc chỉ cần nói điều mình muốn bằng lời thường, Claude sẽ tự nhận biết và chọn đúng lệnh phù hợp. Mọi lệnh đều cần một nơi để lưu: một thư mục làm việc đang mở trong ứng dụng Claude trên máy tính, hoặc một thư mục trong Google Drive của bạn khi dùng Cowork trên web hay điện thoại. Nếu không có nơi nào, vibebiz chỉ cho bạn hai cách đó và không làm gì thêm.
+Mỗi lệnh trong số sáu lệnh là một kỹ năng (skill) cùng tên trong plugin vibebiz: `idea`, `continue`, `package`, `status`, `constitution`, và `help`. Bạn có thể gõ trực tiếp tên lệnh, hoặc chỉ cần nói điều mình muốn bằng lời thường, Claude sẽ tự nhận biết và chọn đúng lệnh phù hợp. Mọi lệnh đều cần một nơi để lưu: một thư mục làm việc đang mở trong ứng dụng Claude trên máy tính, hoặc một thư mục trong Google Drive của bạn khi dùng Cowork trên web hay điện thoại. Nếu chưa có nơi nào, vibebiz chỉ ra hai cách đó cho bạn và không làm gì thêm.
 
 Hành trình của một ý tưởng trải qua các bước: khởi tạo với `/vibebiz:idea`, làm rõ và phản biện qua các vòng với `/vibebiz:continue`, đóng gói tài liệu với `/vibebiz:package`, và cập nhật kết quả thẩm định kỹ thuật hoặc quyết định của ban lãnh đạo.
 
