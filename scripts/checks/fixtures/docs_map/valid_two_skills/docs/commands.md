@@ -2,7 +2,7 @@
 
 <img src="diagrams/02-idea-journey.svg" alt="Hành trình một ý tưởng">
 
-## /vibebiz:new
+## /vibebiz:idea
 
 Bắt đầu một ý tưởng mới.
 

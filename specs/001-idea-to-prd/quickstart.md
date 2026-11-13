@@ -56,7 +56,7 @@ Upload `dist/vibebiz.plugin` in Cowork, open an empty folder, then:
 
 | Step | Expected |
 |---|---|
-| `/vibebiz:new` with a one-line fashion idea | workspace scaffolded; intake question in plain text; first round via the question tool with Skip shown |
+| `/vibebiz:idea` with a one-line fashion idea | workspace scaffolded; intake question in plain text; first round via the question tool with Skip shown |
 | Skip one question, answer the rest | skipped category unchanged in `coverage.md` |
 | Answer until the budget | offer to continue, pause or export a draft |
 | `/vibebiz:status` | `index.html` lists the idea with coverage |

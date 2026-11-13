@@ -11,7 +11,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import build_plugin  # noqa: E402
 
-SKILLS = {"new", "continue", "status", "package", "constitution", "help"}
+SKILLS = {"idea", "continue", "status", "package", "constitution", "help"}
 DEV_DIRS = {".specify", ".claude", "specs", "evals", "scripts"}
 JUNK = {".DS_Store", ".gitkeep", "__pycache__"}
 MD_LINK = re.compile(r"\[[^\]]*\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)")

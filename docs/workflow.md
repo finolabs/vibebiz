@@ -2,7 +2,7 @@
 
 Trang này giải thích cặn kẽ cách vibebiz đào sâu một ý tưởng: 15 điểm cần làm rõ, cây phụ thuộc giữa các câu hỏi, bốn góc nhìn tư duy, các phương pháp quản trị có sẵn và cách vibebiz quyết định hỏi sâu hay hỏi nhanh.
 
-Bạn không bắt buộc phải đọc trang này để sử dụng vibebiz. Khi bắt đầu bằng `/vibebiz:new` hoặc tiếp tục bằng `/vibebiz:continue`, vibebiz sẽ tự động tính toán và chọn câu hỏi thích hợp nhất. Trang này dành cho lúc bạn muốn hiểu nguyên lý vì sao vibebiz lại đặt ra những câu hỏi đó.
+Bạn không bắt buộc phải đọc trang này để sử dụng vibebiz. Khi bắt đầu bằng `/vibebiz:idea` hoặc tiếp tục bằng `/vibebiz:continue`, vibebiz sẽ tự động tính toán và chọn câu hỏi thích hợp nhất. Trang này dành cho lúc bạn muốn hiểu nguyên lý vì sao vibebiz lại đặt ra những câu hỏi đó.
 
 Hành trình toàn diện của một ý tưởng từ khởi tạo, các vòng phỏng vấn làm rõ, đóng gói tài liệu đến cập nhật kết quả thẩm định và phê duyệt của ban lãnh đạo.
 

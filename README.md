@@ -18,7 +18,7 @@ Sales and operations directors in retail, online or offline (fashion first; elec
 
 1. Download `vibebiz.plugin` from the latest [release](https://github.com/finolabs/vibebiz/releases).
 2. In Claude Cowork, open Settings › Plugins, choose "Upload plugin" and select `vibebiz.plugin`.
-3. Open an empty folder in Claude Cowork and get started by typing `/vibebiz:new` or `/vibebiz:help`. From version 0.1.2, on the web or a phone, where Cowork cannot open a folder on your computer, connect Google Drive in Cowork's Connectors instead: vibebiz then keeps your ideas in a Drive folder you choose, with the same layout. On the desktop an open folder always wins, and the two are never synced.
+3. Open an empty folder in Claude Cowork and get started by typing `/vibebiz:idea` or `/vibebiz:help`. From version 0.1.2, on the web or a phone, where Cowork cannot open a folder on your computer, connect Google Drive in Cowork's Connectors instead: vibebiz then keeps your ideas in a Drive folder you choose, with the same layout. On the desktop an open folder always wins, and the two are never synced.
 
 Install the companion plugin `diagram-design` if you want automatic diagram rendering in the outputs (see below).
 
@@ -28,7 +28,7 @@ On Claude Team or Enterprise, administrators can add a short organization instru
 
 vibebiz ships six skills. Each command is a skill of the same name; you can also just say what you want in plain words.
 
-- `/vibebiz:new`: start a new idea. Sets up the workspace in your folder if needed, asks about a real recent case, drafts a first requirement with every gap marked, then interviews you in short rounds (at most four multiple-choice questions, recommended answer first) and saves every answer.
+- `/vibebiz:idea`: start a new idea. Sets up the workspace in your folder if needed, asks about a real recent case, drafts a first requirement with every gap marked, then interviews you in short rounds (at most four multiple-choice questions, recommended answer first) and saves every answer.
 - `/vibebiz:continue`: pick an idea back up. Re-reads its files (your own edits win), summarizes in three lines what is settled, where it stopped and the next question, then continues the rounds. Also records board outcomes (approved, rejected, needs changes) and tech team reviews of estimates.
 - `/vibebiz:package`: package a clarified idea for the board and the tech team. Checks readiness (or offers a labelled draft), builds the plan, checks for gaps and contradictions, then makes a board deck and a requirements document as private Claude Artifacts or your own Google Slides and Docs, plus a Spec Kit-compatible requirement file. The same figures appear in every view with their source; earlier versions are kept. Nothing is shared or made public.
 - `/vibebiz:status`: list every idea with its status, how many of the 15 points are clear and the next step. Asks nothing.

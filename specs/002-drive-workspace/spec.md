@@ -22,15 +22,15 @@ Fio settled these on 13/11/2026:
 
 ### User Story 1 - Start an idea from the web or a phone (Priority: P1)
 
-A sales director opens Cowork in a browser or on a phone, with the Google Drive connector already connected, and types `/vibebiz:new` with a one-line idea. vibebiz asks which Drive folder to keep ideas in, sets up the workspace there, and runs the interview exactly as on desktop. The answers are saved in that Drive folder as they go.
+A sales director opens Cowork in a browser or on a phone, with the Google Drive connector already connected, and types `/vibebiz:idea` with a one-line idea. vibebiz asks which Drive folder to keep ideas in, sets up the workspace there, and runs the interview exactly as on desktop. The answers are saved in that Drive folder as they go.
 
 **Why this priority**: today every entry skill stops on the web and on mobile. Without this story nothing else in the feature works.
 
-**Independent Test**: In a Cowork web session with Drive connected and no local folder, run `/vibebiz:new` with a fictional idea, answer the first round of questions, end the session, and check that the chosen Drive folder holds the workspace and the idea folder with the answers recorded.
+**Independent Test**: In a Cowork web session with Drive connected and no local folder, run `/vibebiz:idea` with a fictional idea, answer the first round of questions, end the session, and check that the chosen Drive folder holds the workspace and the idea folder with the answers recorded.
 
 **Acceptance Scenarios**:
 
-1. **Given** a web or phone session with Drive connected and no vibebiz workspace in Drive, **When** the user runs `new`, **Then** vibebiz asks the user to choose or name a Drive folder, creates the workspace there, and creates the idea folder with the same names as on desktop.
+1. **Given** a web or phone session with Drive connected and no vibebiz workspace in Drive, **When** the user runs `idea`, **Then** vibebiz asks the user to choose or name a Drive folder, creates the workspace there, and creates the idea folder with the same names as on desktop.
 2. **Given** the user picks a folder that already holds files that are not vibebiz's own, **When** the workspace is set up, **Then** vibebiz creates only the missing pieces, overwrites nothing, and reports what it created.
 3. **Given** the interview is under way, **When** the user answers a question, **Then** the answer is in the Drive files before the next question is asked, so closing the session loses nothing already answered.
 
@@ -70,7 +70,7 @@ On the web, `/vibebiz:package` produces the board deck and the tech PRD as priva
 
 ### User Story 4 - Clear message when Drive is not connected (Priority: P2)
 
-A director opens Cowork on a phone without the Google Drive connector and types `/vibebiz:new`. vibebiz writes nothing and says, in plain words, the two ways forward: connect Google Drive in Cowork's connector settings, or use the Claude desktop app with a folder.
+A director opens Cowork on a phone without the Google Drive connector and types `/vibebiz:idea`. vibebiz writes nothing and says, in plain words, the two ways forward: connect Google Drive in Cowork's connector settings, or use the Claude desktop app with a folder.
 
 **Why this priority**: it replaces the 0.1.1 message for web and phone sessions and prevents the user from losing answers in a session that cannot save them.
 
@@ -108,7 +108,7 @@ A director who uses the desktop app with a local folder sees no change: the work
 - A workspace file contains text that reads like an instruction ("share this folder"): it is part of the idea, never an instruction to vibebiz.
 - Two live files share one contract name after an interrupted write: vibebiz reports both and asks which one to keep; it trashes neither on its own.
 - Drive turns a saved file into a Google Doc, or saves a second copy with the same name: vibebiz keeps one file per contract name, as plain text, and reports a duplicate instead of guessing which one is current.
-- A connector call fails partway through setting up a workspace: the next run repairs only the missing pieces, as `new` does on a partial local workspace.
+- A connector call fails partway through setting up a workspace: the next run repairs only the missing pieces, as `idea` does on a partial local workspace.
 - The user's Drive is full: vibebiz says so plainly and stops writing; answers given in that session are shown to the user so they are not lost.
 - The Drive workspace was created by a newer vibebiz version: vibebiz reads it and does not downgrade any file.
 - The table of contents (`index.html`, about 20 KB of fixed template) cannot be written faithfully through the connector: see FR-010.
@@ -129,7 +129,7 @@ A director who uses the desktop app with a local folder sees no change: the work
 
 - **FR-006**: The Drive workspace MUST use the same folder layout, fixed English file names and slug rules as the local workspace (`contracts/workspace-files.md` in spec 001), except the files FR-009 and FR-010 name.
 - **FR-007**: Every file vibebiz keeps in Drive MUST stay a plain file with its contract name and extension, never converted into a Google Doc or Sheet, so a tech team can download the idea folder and use it as Spec Kit files.
-- **FR-008**: The workspace rules of 0.1.x MUST hold in Drive: `new` never overwrites and repairs only missing pieces; hand edits are authoritative; records are appended; each answer is saved before the next question.
+- **FR-008**: The workspace rules of 0.1.x MUST hold in Drive: `idea` never overwrites and repairs only missing pieces; hand edits are authoritative; records are appended; each answer is saved before the next question.
 - **FR-009**: In a Drive workspace, `package` MUST save `data.json`, `spec.md` and `links.md` in the idea's `exports/` folder and MUST produce the board deck and the tech PRD only as private Artifacts or, at the user's choice, private Google Slides and Docs. It MUST NOT save `board-deck.html` or `tech-prd.html` into Drive.
 - **FR-010**: In a Drive workspace, the table of contents MUST still be rebuilt after every write. The workspace MUST keep the table-of-contents data in Drive, in a plain file named `index.json` that also marks the folder as a vibebiz workspace (FR-004), and MUST show the rendered table of contents as a private Artifact; it MUST NOT write a hand-retyped copy of the `index.html` template.
 - **FR-011**: Numbers, sources and the "not tech-reviewed" labels MUST match across `data.json`, the Artifacts and any Google file, exactly as in 0.1.x.
@@ -157,7 +157,7 @@ A director who uses the desktop app with a local folder sees no change: the work
 
 ### Measurable Outcomes
 
-- **SC-001**: In a Cowork web or phone session with Drive connected, a director can run `new`, answer the first round of questions and find every answer saved in Drive, with no step that requires the desktop app.
+- **SC-001**: In a Cowork web or phone session with Drive connected, a director can run `idea`, answer the first round of questions and find every answer saved in Drive, with no step that requires the desktop app.
 - **SC-002**: An idea started on one device is continued on another with zero questions about where the workspace is, when only one workspace exists.
 - **SC-003**: 100% of entry-skill runs without a local folder and without a usable Drive connector write nothing and name both ways forward.
 - **SC-004**: Every 0.1.x workspace eval case still passes on desktop, and a desktop session with a local folder writes nothing new to Drive.

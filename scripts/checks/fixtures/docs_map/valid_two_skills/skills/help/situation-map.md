@@ -4,5 +4,5 @@
 
 | Situation | Entry point |
 |---|---|
-| Có một ý tưởng mới | /vibebiz:new |
+| Có một ý tưởng mới | /vibebiz:idea |
 | Muốn làm tiếp ý tưởng cũ | /vibebiz:continue |

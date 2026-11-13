@@ -1,6 +1,6 @@
 # Table-of-contents cases (suite 7, user story 4)
 
-Each case runs one entry skill (`new`, `continue`, `status`, `package`, `constitution`, `help`) on a seeded fictional workspace and checks that `index.html` matches the folders afterwards. Seeded cases need `--scaffold`. Threshold: 100%.
+Each case runs one entry skill (`idea`, `continue`, `status`, `package`, `constitution`, `help`) on a seeded fictional workspace and checks that `index.html` matches the folders afterwards. Seeded cases need `--scaffold`. Threshold: 100%.
 
 Headless runs cannot run code, so the structure check runs after each case on the workspace it produced (`test_index.py` holds `check_index`, which also compares the list with the `specs/` and `examples/` folders):
 
@@ -12,7 +12,7 @@ It prints the problems and exits 1, or prints `ok` and exits 0. A case passes on
 
 | Case | Entry skill | What it checks |
 |---|---|---|
-| `new-second-idea-listed` | new | A second idea is created and listed beside the first. |
+| `idea-second-idea-listed` | idea | A second idea is created and listed beside the first. |
 | `continue-round-rebuilds-index` | continue | After answers, idea 002's clear count in the index equals its `coverage.md`. |
 | `status-excludes-example` | status | Real ideas listed with coverage and next step; the example is under `examples`, never an idea. |
 | `package-sets-status-and-outputs` | package | Status `packaged` and links to the two exports. |

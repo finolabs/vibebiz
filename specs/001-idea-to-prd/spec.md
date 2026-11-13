@@ -319,7 +319,7 @@ Readiness to package: A, C, D and E Clear; F Clear when AI is involved; M at lea
 
 **Session flow**:
 
-1. First use of `/vibebiz:new`: scaffold the workspace; offer ground rules in one round (year priorities, approval ceiling, vertical, mandatory human approvals) or defer them; offer the fictional example.
+1. First use of `/vibebiz:idea`: scaffold the workspace; offer ground rules in one round (year priorities, approval ceiling, vertical, mandatory human approvals) or defer them; offer the fictional example.
 2. Intake: one open question about the situation behind the idea; create `specs/NNN-<slug>/`, a draft requirement with gaps marked, and the first coverage record; show a short table of what is clear and missing.
 3. Router loop: compute the frontier, choose the lens (and framework, Appendix F), ask one round, write back, update coverage, rebuild the table of contents; at the budget, offer continue, pause or draft.
 4. `/vibebiz:continue`: read the coverage record, summarize in three lines (settled, where it stopped, next question), resume the loop. Also records tech review of estimates and board outcomes.
@@ -442,7 +442,7 @@ specs/NNN-<slug>/
 examples/000-<slug>/
 ```
 
-`/vibebiz:new` by folder state: empty folder, scaffold then intake; partial workspace, restore missing pieces and list them; complete workspace, intake; folder with unrelated files, ask whether to use it or a `vibebiz/` subfolder (recommended).
+`/vibebiz:idea` by folder state: empty folder, scaffold then intake; partial workspace, restore missing pieces and list them; complete workspace, intake; folder with unrelated files, ask whether to use it or a `vibebiz/` subfolder (recommended).
 
 **Docs** (Vietnamese content, English names): `quick-start.md`, `commands.md`, `workflow.md`, `reading-outputs.md`, `faq.md`, `glossary.md`, with diagrams in `docs/diagrams/NN-<name>.brief.md` plus `.svg` and `.png`:
 

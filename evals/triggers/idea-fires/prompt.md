@@ -1,5 +1,5 @@
 ---
-description: 'Trigger: new-fires'
+description: 'Trigger: idea-fires'
 max_turns: 4
 timeout_seconds: 300
 allowed_tools: [Skill, Read, Glob, Grep, AskUserQuestion]

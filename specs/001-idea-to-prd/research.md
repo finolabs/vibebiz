@@ -4,7 +4,7 @@ Phase 0 for `plan.md`. Sources are the design session (2026-11-12), the installe
 
 ## R1. Plugin shape: six skills plus modules
 
-- **Decision**: The plugin exposes exactly six skills, the entry points `new`, `continue`, `status`, `package`, `constitution` and `help`. Router, interview engine, lenses, plan, checklists, analysis and packaging are **modules**: reference files loaded on demand by the entry skills, not skills of their own (Fio, 2026-11-12).
+- **Decision**: The plugin exposes exactly six skills, the entry points `idea`, `continue`, `status`, `package`, `constitution` and `help`. Router, interview engine, lenses, plan, checklists, analysis and packaging are **modules**: reference files loaded on demand by the entry skills, not skills of their own (Fio, 2026-11-12).
 - **Rationale**: Every skill's description sits in context and can trigger on its own; Cowork documents no way to hide a skill. Eighteen skills would compete for triggers and context; six entry points match what the user actually invokes. Progressive disclosure (skill body under 3,000 words, detail in references) is the pattern Anthropic's Cowork guidance recommends.
 - **Alternatives considered**: eighteen skills as first listed in `CLAUDE.md` (rejected: mis-triggering, context cost); entry skills plus four lens skills (rejected: lenses would still trigger on generic "analyze my idea" requests outside the flow).
 

@@ -220,8 +220,8 @@ INVALID = {
         f'{README_VI} "What ships" (section 5) does not list /vibebiz:continue',
     ),
     "English What ships lists outside the section": (
-        _edit(README_EN, "- `/vibebiz:new`: start a new idea.\n", ""),
-        f'{README_EN} "What ships" does not list /vibebiz:new',
+        _edit(README_EN, "- `/vibebiz:idea`: start a new idea.\n", ""),
+        f'{README_EN} "What ships" does not list /vibebiz:idea',
     ),
     "README structures differ": (
         _edit(README_VI, "## Quyền riêng tư", "### Quyền riêng tư"),
@@ -263,15 +263,15 @@ class Fixtures(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp) / "repo"
             shutil.copytree(FIXTURES / "valid_empty", root)
-            _edit(README_EN, "Nothing ships yet.", "Try /vibebiz:new.")(root)
+            _edit(README_EN, "Nothing ships yet.", "Try /vibebiz:idea.")(root)
             problems = check_docs_map(root)
-            self.assertIn(f'{README_EN} "What ships" lists /vibebiz:new, which is not a shipped skill', problems)
+            self.assertIn(f'{README_EN} "What ships" lists /vibebiz:idea, which is not a shipped skill', problems)
 
     def test_skills_without_docs(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            (root / "skills" / "new").mkdir(parents=True)
-            (root / "skills" / "new" / "SKILL.md").write_text("# new\n", encoding="utf-8")
+            (root / "skills" / "idea").mkdir(parents=True)
+            (root / "skills" / "idea" / "SKILL.md").write_text("# idea\n", encoding="utf-8")
             problems = check_docs_map(root)
             self.assertIn(f"{SITUATION_MAP} is missing", problems)
             self.assertIn(f"{COMMANDS} is missing", problems)

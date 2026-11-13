@@ -22,7 +22,7 @@ Bạn chỉ cần:
 Trong cuộc trò chuyện ở Claude Cowork, bạn gõ:
 
 ```
-/vibebiz:new
+/vibebiz:idea
 ```
 
 hoặc chỉ cần nói bằng lời thường: *"Tôi có ý tưởng dùng AI nhắc khách cũ quay lại mua hàng"* hay *"Tôi muốn làm ứng dụng quản lý hàng tồn cho các cửa hàng"*.

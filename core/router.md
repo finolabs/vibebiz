@@ -1,6 +1,6 @@
 # Module: router
 
-Run the interview loop for one idea: decide what to ask next, hand each category to the module that fills it, keep the session within its question budget, and tell the user what comes next. Used by the `new` and `continue` entry skills, and by `package` when the analyze module's findings send the idea back to the interview (see "Findings from analyze"). The `continue` entry skill records board outcomes and tech reviews itself and hands the board's requested changes here (see "Changes from the board").
+Run the interview loop for one idea: decide what to ask next, hand each category to the module that fills it, keep the session within its question budget, and tell the user what comes next. Used by the `idea` and `continue` entry skills, and by `package` when the analyze module's findings send the idea back to the interview (see "Findings from analyze"). The `continue` entry skill records board outcomes and tech reviews itself and hands the board's requested changes here (see "Changes from the board").
 
 - **Reads**: the idea's `coverage.md`, `spec.md`, `decisions.md`, `assumptions.md`, `open-questions.md`, `glossary.md`; the workspace `constitution.md`; the framework cards in `references/packs/frameworks/`.
 - **Writes**: `coverage.md` (`cynefin`, `budget_rounds_used`, `next_step`, `status` between `clarifying` and `ready`, each category's `frameworks`, `updated`, the body table); `decisions.md` for `supersede` entries and for split decisions (type `answer`).

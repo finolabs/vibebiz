@@ -1,6 +1,6 @@
 ---
 name: help
-description: "Answer questions about using vibebiz and point the user to the right command for their situation, then stop. Use when the user types /vibebiz:help or asks how vibebiz works, which command to use or what to do next, what a label, status or term in vibebiz means, what vibebiz can do, or to see a finished example idea, for example 'how do I use this', 'what next', 'what can vibebiz do', 'show me an example', 'dùng vibebiz thế nào', 'giờ tôi làm gì tiếp', 'vibebiz làm được gì', 'cho xem ý tưởng mẫu'. Not for describing an idea itself (that goes to new, or continue when the idea already exists)."
+description: "Answer questions about using vibebiz and point the user to the right command for their situation, then stop. Use when the user types /vibebiz:help or asks how vibebiz works, which command to use or what to do next, what a label, status or term in vibebiz means, what vibebiz can do, or to see a finished example idea, for example 'how do I use this', 'what next', 'what can vibebiz do', 'show me an example', 'dùng vibebiz thế nào', 'giờ tôi làm gì tiếp', 'vibebiz làm được gì', 'cho xem ý tưởng mẫu'. Not for describing an idea itself (that goes to idea, or continue when the idea already exists)."
 ---
 
 # vibebiz: help
@@ -34,16 +34,16 @@ Decide what the message asks for, from its meaning, in any language. One message
 | asks how something in vibebiz works, what a word, label or status means, or whether vibebiz can do something | **question** | 4 |
 | wants to see a finished idea or what the outputs look like | **example** | 5 |
 
-Help needs no working folder for any step. When a workspace is open, you may read existing idea titles to tell `new` from `continue`; read only.
+Help needs no working folder for any step. When a workspace is open, you may read existing idea titles to tell `idea` from `continue`; read only.
 
 ## 2. An idea: send it to the interview
 
 Help never works on an idea. Do not ask about it, judge it or suggest improvements: the interview does that with its own rules, and anything help says would bypass them.
 
 - If a working folder is open and an idea folder under `specs/` clearly matches what the user describes (its title in `coverage.md`), name `/vibebiz:continue` and that idea's title.
-- Otherwise name `/vibebiz:new`.
+- Otherwise name `/vibebiz:idea`.
 
-Say it in one or two sentences, for example: "Đây là một ý tưởng mới, anh/chị gõ `/vibebiz:new` rồi kể lại ý tưởng; em sẽ hỏi từng vòng ngắn để làm rõ." Then stop. Done when the reply names exactly one command and asks nothing about the idea.
+Say it in one or two sentences, for example: "Đây là một ý tưởng mới, anh/chị gõ `/vibebiz:idea` rồi kể lại ý tưởng; em sẽ hỏi từng vòng ngắn để làm rõ." Then stop. Done when the reply names exactly one command and asks nothing about the idea.
 
 ## 3. A situation: route and stop
 
@@ -63,7 +63,7 @@ When no row fits, say plainly that this version of vibebiz does not cover that s
 3. Answer in a few plain sentences in the user's language, then cite the source on its own line by the doc's title and the section heading, for example: "(Nguồn: Đọc các tài liệu vibebiz tạo ra › Các nhãn bạn sẽ gặp)". When the answer points to a next action, name its command.
 4. When no doc section answers it, say so plainly and do not fill the gap from general knowledge about Claude, Cowork or business practice, for example: "Tài liệu của vibebiz chưa nói tới việc này, nên em không trả lời chắc được." If a documented feature is close to what the user wants, name it with its source; otherwise stop there.
 
-A question about a feature vibebiz does not have (such as exporting to a spreadsheet, sending messages directly to customers, or connecting live to a point-of-sale system) is a docs gap: answer that this version does not do it, citing the section that says what it does do when one exists. A business question that is not about using vibebiz ("làm sao để tăng tỷ lệ chuyển đổi?") is outside help: say help only answers about using vibebiz, and that working an idea through starts with `/vibebiz:new`.
+A question about a feature vibebiz does not have (such as exporting to a spreadsheet, sending messages directly to customers, or connecting live to a point-of-sale system) is a docs gap: answer that this version does not do it, citing the section that says what it does do when one exists. A business question that is not about using vibebiz ("làm sao để tăng tỷ lệ chuyển đổi?") is outside help: say help only answers about using vibebiz, and that working an idea through starts with `/vibebiz:idea`.
 
 Done when every statement in the reply traces to a cited doc section, or the reply says the docs do not cover the question.
 

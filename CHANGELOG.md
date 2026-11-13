@@ -4,6 +4,10 @@ All notable changes to vibebiz are recorded here. The format follows [Keep a Cha
 
 ## [Unreleased]
 
+### Changed
+
+- The command that starts an idea is now `/vibebiz:idea` (was `/vibebiz:new`), because `new` was easy to confuse with Claude Code's `/clear` (new) in the command list. Plain words such as "tôi có ý tưởng" still start it. Type `/vibebiz:idea` where you typed `/vibebiz:new`.
+
 ## [0.1.1] - 2026-11-13
 
 ### Fixed
