@@ -2,7 +2,7 @@
 description: 'Desktop with a local folder and Google Drive connected: the local folder wins, nothing goes to Drive (spec 002 US5).'
 max_turns: 25
 timeout_seconds: 600
-allowed_tools: [Skill, Read, Write, Edit, Glob, Grep, AskUserQuestion]
+allowed_tools: [Skill, Read, Write, Edit, Glob, Grep, AskUserQuestion, 'mcp__plugin_vibebiz_google-drive__*']
 plugins: ["../../../dist/vibebiz-fakedrive"]
 tags: [workspace, drive, us5, drive-write]
 ---

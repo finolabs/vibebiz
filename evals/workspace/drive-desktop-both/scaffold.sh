@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Seeds an empty fake Google Drive (fictional, evals/fake-drive/fixtures.py mode 'empty').
+# Seeds the fake Google Drive with fixtures.py mode 'empty' (fictional): no vibebiz workspace, one unrelated user file.
 # Run with: claude plugin eval ... --scaffold
 set -euo pipefail
 mkdir -p .fake-drive
