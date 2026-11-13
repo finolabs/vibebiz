@@ -39,7 +39,7 @@ def tool(name, t, lo, hi):
 
 
 def llm(name, text, last=False):
-    head = "---\ntype: llm\nfocus: 'last_message'\n---\n\n" if last else "---\ntype: llm\n---\n\n"
+    head = "---\ntype: llm\nfocus: 'last_message'\n---\n\n" if last else "---\ntype: llm\nfocus: 'trace'\n---\n\n"
     return name, head + text.strip() + "\n"
 
 
