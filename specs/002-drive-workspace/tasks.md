@@ -241,7 +241,7 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
 ### Implementation
 
 - [x] T038 [US2] Update the resume path in `skills/continue/SKILL.md` and `skills/status/SKILL.md`. Both refer to the storage mode in `references/core/workspace.md` §1 and never read `index.html` in Drive mode. Keep each `SKILL.md` under 3,000 words. Add the cross-device answer to `docs/faq.md` question 12 (constitution VII).
-- [ ] T039 [US2] Run `python3 scripts/build_plugin.py`, then T033–T036. Record the outcomes in `evals/RESULTS.md`.
+- [x] T039 [US2] Run `python3 scripts/build_plugin.py`, then T033–T036. Record the outcomes in `evals/RESULTS.md`.
 
 **Checkpoint**: an idea started on one device continues on another with zero questions about location (SC-002).
 
@@ -264,7 +264,7 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
 - [x] T041 [P] [US3] Add the eval case `evals/package/drive-repackage/` for an idea with an earlier export set. The graders check that:
   - `exports/history/<date>/` holds copies made with `copy_file`, including the earlier `links.md`;
   - no earlier file is trashed.
-- [ ] T042 [P] [US3] Add the eval case `evals/speckit-compat/drive-snapshot/`. The grader checks that `scripts/checks/speckit_integration.py` passes on the `exports/spec.md` downloaded from the fake Drive (SC-006).
+- [x] T042 [P] [US3] Add the eval case `evals/speckit-compat/drive-snapshot/`. The grader checks that `scripts/checks/speckit_integration.py` passes on the `exports/spec.md` downloaded from the fake Drive (SC-006).
   - 13/11/2026: folded into `evals/package/drive-package` to save a run: its `spec-copy-headings` grader checks the Spec Kit headings, and `speckit_integration.py` and `package_check.py` run on the kept `.fake-drive/tree/` mirror after the eval (T046), since the harness has no script grader. The eval session has no Artifacts, so `drive-package` checks that the views are explained rather than published; publishing private Artifacts from Drive mode is a T049 check.
 - [x] T043 [US3] Red run: run T040–T042 and confirm each case fails for the expected reason. Record the failures in `evals/RESULTS.md`.
   - 13/11/2026: as T037, the first run (both package cases failed) stands in for the red run.
