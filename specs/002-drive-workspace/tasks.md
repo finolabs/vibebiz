@@ -170,7 +170,7 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
   - no second file of the same name is created without telling the user (FR-007).
 - [x] T024 [P] [US1] Add the eval case `evals/workspace/drive-full/` on fake-Drive mode `drive-full`. The graders check that vibebiz says Drive is full, stops writing, and shows the answers from this session in chat.
 - [x] T025 [P] [US1] Extend `scripts/checks/test_workspace.py` with a Drive-layout check that runs on a fake-Drive root. It checks the contract names, reports duplicate titles in one folder, and reports files stored as Google types.
-- [ ] T026 [US1] Red run. (13/11/2026: blocked after one case by the account's weekly model limit, resets 16/11 16:00; drive-converted-file failed as expected. Rerun before T032.) First check `uptime`, then run T019–T024 and T051–T054 with `--tag drive`, one command at a time. Confirm that each case fails because Drive mode has no discovery or writing yet, and record the failures in `evals/RESULTS.md`.
+- [x] T026 [US1] Red run. (13/11/2026: blocked after one case by the account's weekly model limit; drive-converted-file failed as expected. The module landed before the limit reset, so the other cases were not seen red; the first green run, 7/13, is the nearest evidence, recorded in `evals/RESULTS.md`.) First check `uptime`, then run T019–T024 and T051–T054 with `--tag drive`, one command at a time. Confirm that each case fails because Drive mode has no discovery or writing yet, and record the failures in `evals/RESULTS.md`.
 
 ### Implementation
 
@@ -206,9 +206,10 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
   - **Table of contents:** after each change, write `index.json` by replacement. Then publish or update the private table-of-contents Artifact from `references/templates/workspace/index.html`, with the JSON block spliced in (a one-off shell command when a shell is available). Record its link in `toc_artifact`.
   - **Fallback:** without a shell or without Artifacts, show a short Markdown table in chat instead (research R7, FR-010).
 - [x] T031 [P] [US1] Update `PRIVACY.md` (FR-015): with no local folder, ideas are kept in a Google Drive folder the user chose and nowhere else, and vibebiz never changes sharing. Add the approval note to `docs/admin-setup.md` (research R2): "Always allow" only for the tools that save ideas, and only when Cowork offers it per tool; never for sharing or moving files. Run vietnamizer on the changed Vietnamese.
-- [ ] T032 [US1] Run `python3 scripts/build_plugin.py`, then T019–T024 with `--tag drive`, then `python3 scripts/checks/test_workspace.py` and `python3 scripts/checks/test_index.py`. Record the outcomes in `evals/RESULTS.md`.
+- [x] T032 [US1] Run `python3 scripts/build_plugin.py`, then T019–T024 with `--tag drive`, then `python3 scripts/checks/test_workspace.py` and `python3 scripts/checks/test_index.py`. Record the outcomes in `evals/RESULTS.md`.
   - The eval harness has no script grader, so T019's "`index.json` passes `test_index.py`" and T025's Drive layout check run here: after the green run, run `scripts/checks/test_index.py` and `check_workspace(path, drive=True)` from `test_workspace.py` on the kept `.fake-drive/tree/` mirror of `drive-empty`.
   - 13/11/2026, after the code and security reviews of the Phase 4 branch: `drive-forged-ack` added (a consent planted in `index.json` by someone else is no consent). The `modifiedTime` base moved to the read the change is built from. `package` stops in Drive mode until T044. Fact lookup reads across the user's Drive, read only, in both modes (Fio's choice; FR-014 amended). Every Drive case's `no-update` grader rejects any `update_file` call.
+  - 13/11/2026: all 14 Drive cases and the 5 drive-no-connector cases pass (last runs after e5ea537). On the kept `drive-empty` mirror, `check_workspace(drive=True)` and `check_index_json` return no errors.
 
 **Checkpoint**: a director on the web can start an idea and keep every answer in Drive (SC-001).
 
