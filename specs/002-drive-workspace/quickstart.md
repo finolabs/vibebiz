@@ -13,8 +13,9 @@ Fio decided on 13/11/2026 not to run these as a separate gate before building. R
 | 5 | Search finds `index.json` by exact title in a new session, also after the folder is renamed | yes |
 | 6 | Trash a file, then search with `trashed = false` and confirm it is gone | yes |
 | 7 | The session can publish a private Artifact and update it at the same link | no (fallback: Markdown table in chat) |
-| 8 | Whether the session has a shell; whether each Drive write asks the user for approval, and whether "Always allow" exists | no (shapes docs) |
+| 8 | Whether the session has a shell; whether each Drive call asks the user for approval, whether "Always allow" exists, and whether it can be given per tool (never advise it for `share_file` or `update_file`) | no (shapes docs) |
 | 9 | Repeat checks 2–6 in the Claude mobile app | no (phone support claim) |
+| 10 | In a shared drive the test account belongs to: search finds a marked `index.json` without an owner filter, and the file reports a `driveId` | no (shared-drive support claim) |
 
 **Stop rule**: if any required check fails, do not cut v0.1.2. Report the result to Fio.
 

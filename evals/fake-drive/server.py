@@ -11,7 +11,9 @@ files into <root>/tree/ so eval graders can read them. Google-type files are mir
 Fixture flags in drive.json:
   "mode": "normal" | "read-only" | "drive-full"
   "bump_after_read": [title, ...]  after the first content read of a file with that title,
-                                   change its content and modifiedTime (another device edited it)
+                                   change its content and modifiedTime (another device edited
+                                   it); fires once per title, so a same-title replacement that
+                                   vibebiz creates and reads back is left alone
 
 Standard library only. Python 3.10+.
 """
@@ -29,11 +31,21 @@ SCHEMA_DATE = "2026-11-13"
 FOLDER = "application/vnd.google-apps.folder"
 GDOC = "application/vnd.google-apps.document"
 GOOGLE_PREFIX = "application/vnd.google-apps."
-CONVERTIBLE = ("text/plain", "text/markdown", "text/html", "text/csv")
+GSHEET = "application/vnd.google-apps.spreadsheet"
+CONVERTIBLE = {"text/plain": GDOC, "text/markdown": GDOC, "text/html": GDOC, "text/csv": GSHEET}
+READABLE_GOOGLE = (GDOC, GSHEET, "application/vnd.google-apps.presentation")
 
 
 class DriveError(Exception):
     pass
+
+
+def safe_component(title):
+    """Encode one Drive title as a single, harmless path component for the mirror tree."""
+    out = title.replace("%", "%25").replace("/", "%2F").replace("\\", "%5C").replace("\0", "%00")
+    if out in ("", ".", ".."):
+        out = out.replace(".", "%2E") or "%00"
+    return out
 
 
 # ---------------------------------------------------------------- state
@@ -77,35 +89,54 @@ class Drive:
             raise DriveError("File not found: %s" % file_id)
         return f
 
-    def path_of(self, f):
-        parts = []
-        seen = set()
-        while f is not None and f["id"] not in seen:
-            seen.add(f["id"])
-            parts.append(f["title"])
-            f = self.files.get(f.get("parentId")) if f.get("parentId") not in (None, "root") else None
-        return "/".join(reversed(parts))
-
     def save(self):
         with open(self.path, "w", encoding="utf-8") as fh:
             json.dump(self.data, fh, ensure_ascii=False, indent=2)
         tree = os.path.join(self.root, "tree")
         shutil.rmtree(tree, ignore_errors=True)
         os.makedirs(tree, exist_ok=True)
-        for f in self.files.values():
-            if f.get("trashed") or not self._alive_chain(f):
-                continue
-            rel = self.path_of(f)
-            target = os.path.join(tree, rel)
-            if f["mimeType"] == FOLDER:
+        real_tree = os.path.realpath(tree) + os.sep
+        dirs = {"root": tree}
+        used = set()
+
+        def place(parent_dir, f, suffix=""):
+            name = safe_component(f["title"]) + suffix
+            target = os.path.join(parent_dir, name)
+            if target in used:
+                target += ".dup-" + f["id"]  # a second live item with one title stays visible
+            used.add(target)
+            if not os.path.realpath(target).startswith(real_tree):
+                return None  # never mirror outside the tree
+            return target
+
+        def folder_dir(fid, seen=()):
+            if fid in dirs:
+                return dirs[fid]
+            f = self.files.get(fid)
+            if f is None or fid in seen:
+                return None
+            parent = folder_dir(f.get("parentId") or "root", seen + (fid,))
+            if parent is None:
+                return None
+            target = place(parent, f)
+            if target is not None:
                 os.makedirs(target, exist_ok=True)
+            dirs[fid] = target
+            return target
+
+        live = [f for f in self.files.values() if self._alive_chain(f)]
+        for f in sorted(live, key=lambda f: f["id"]):
+            if f["mimeType"] == FOLDER:
+                folder_dir(f["id"])
+        for f in sorted(live, key=lambda f: f["id"]):
+            if f["mimeType"] == FOLDER:
                 continue
-            if f["mimeType"].startswith(GOOGLE_PREFIX):
-                target += ".gdoc"
-            os.makedirs(os.path.dirname(target), exist_ok=True)
-            if os.path.exists(target):
-                # Two live files with one title: keep both visible to graders.
-                target += ".dup-" + f["id"]
+            parent = folder_dir(f.get("parentId") or "root")
+            if parent is None:
+                continue
+            target = place(parent, f, ".gdoc" if f["mimeType"].startswith(GOOGLE_PREFIX) else "")
+            if target is None:
+                continue
             with open(target, "w", encoding="utf-8") as fh:
                 fh.write(f.get("content", ""))
 
@@ -151,14 +182,16 @@ def visibility(f, drive):
 def effective_permissions(f, drive):
     perms = list(f.get("permissions", []))
     seen = {f["id"]}
-    pid = f.get("parentId")
+    pid = None if f.get("inheritedPermissionsDisabled") else f.get("parentId")
     while pid not in (None, "root") and pid in drive.files and pid not in seen:
         seen.add(pid)
         parent = drive.files[pid]
         perms.extend(parent.get("permissions", []))
-        pid = parent.get("parentId")
+        pid = None if parent.get("inheritedPermissionsDisabled") else parent.get("parentId")
     if not any(p.get("role") == "owner" for p in perms):
-        perms.insert(0, {"type": "user", "role": "owner", "displayName": "me"})
+        owner = f.get("owner", "me")
+        perms.insert(0, {"id": "perm-owner", "type": "user", "role": "owner",
+                         "displayName": "me" if owner == "me" else owner, "emailAddress": owner})
     return perms
 
 
@@ -184,6 +217,7 @@ class Query:
     def __init__(self, q):
         self.t = tokenize(q)
         self.i = 0
+        self.mentions_trashed = False
 
     def peek(self):
         return self.t[self.i] if self.i < len(self.t) else None
@@ -233,6 +267,8 @@ class Query:
 
     def clause(self):
         a = self.take()
+        if a == "trashed":
+            self.mentions_trashed = True
         if a and a.startswith("'"):
             value = unquote(a)
             if self.take() != "in":
@@ -256,6 +292,10 @@ def unquote(tok):
     return tok[1:-1].replace("\\'", "'")
 
 
+def is_trashed(f, drive):
+    return not drive._alive_chain(f)
+
+
 def field_value(name, f, drive):
     if name == "title":
         return f["title"]
@@ -268,7 +308,7 @@ def field_value(name, f, drive):
     if name in ("owner", "creator"):
         return f.get("owner", "me")
     if name == "trashed":
-        return "true" if f.get("trashed") else "false"
+        return "true" if is_trashed(f, drive) else "false"
     if name == "visibility":
         return visibility(f, drive)
     if name in ("starred", "sharedWithMe"):
@@ -282,6 +322,8 @@ def compare_clause(name, op, value, f, drive):
         return actual == value
     if op == "!=":
         return actual != value
+    if value is None:
+        raise DriveError("Missing value after %s" % op)
     return {"<": actual < value, "<=": actual <= value, ">": actual > value, ">=": actual >= value}[op]
 
 
@@ -293,9 +335,9 @@ def contains_clause(name, value, f, drive):
 
 def in_clause(value, field, f, drive):
     if field in ("readers", "writers"):
-        if value == "me":
-            return True
         roles = ("reader", "commenter", "writer", "owner") if field == "readers" else ("writer", "owner")
+        if value == "me" and f.get("owner", "me") == "me":
+            return True
         return any(p.get("emailAddress") == value and p.get("role") in roles
                    for p in effective_permissions(f, drive))
     if field == "folderProperties":
@@ -306,33 +348,38 @@ def in_clause(value, field, f, drive):
 # ---------------------------------------------------------------- tools
 
 
-def need_write(drive):
+def need_write(drive, adds_bytes=True):
     if drive.data["mode"] == "read-only":
         raise DriveError("Insufficient permissions: the connector has read-only access to this Drive.")
-    if drive.data["mode"] == "drive-full":
+    if adds_bytes and drive.data["mode"] == "drive-full":
         raise DriveError("storageQuotaExceeded: The user's Drive storage quota has been exceeded.")
 
 
 def maybe_bump(drive, f):
-    if f["title"] in drive.data["bump_after_read"] and f["id"] not in drive.data["bumped"]:
-        drive.data["bumped"].append(f["id"])
+    if f["title"] in drive.data["bump_after_read"] and f["title"] not in drive.data["bumped"]:
+        drive.data["bumped"].append(f["title"])
         f["content"] = f.get("content", "") + "\n<!-- edited on another device -->\n"
         f["modifiedTime"] = drive.tick()
 
 
 def t_search_files(drive, a):
-    match = Query(a.get("query", "")).parse()
-    q = a.get("query", "")
+    parsed = Query(a.get("query") or "")
+    match = parsed.parse()
     found = []
     for f in drive.files.values():
-        if "trashed" not in q and f.get("trashed"):
+        # The connector documents trashed as "default false": without a trashed clause,
+        # trashed files (and files inside a trashed folder) are left out.
+        if not parsed.mentions_trashed and is_trashed(f, drive):
             continue
         if match(f, drive):
             found.append(f)
     if a.get("orderBy", "").startswith("modifiedTime"):
         found.sort(key=lambda f: f["modifiedTime"], reverse="asc" not in a["orderBy"])
-    size = int(a.get("pageSize") or 50)
-    start = int(a.get("pageToken") or 0)
+    try:
+        size = int(a.get("pageSize") or 50)
+        start = int(a.get("pageToken") or 0)
+    except (TypeError, ValueError):
+        raise DriveError("pageSize and pageToken must be integers")
     page = found[start:start + size]
     out = []
     for f in page:
@@ -349,7 +396,7 @@ def t_search_files(drive, a):
 def t_read_file_content(drive, a):
     f = drive.get(a.get("fileId"))
     mt = f["mimeType"]
-    if not (mt.startswith("text/") or mt == GDOC):
+    if not (mt.startswith("text/") or mt in READABLE_GOOGLE):
         raise DriveError("Unsupported mime type for read_file_content: %s" % mt)
     text = f.get("content", "")
     maybe_bump(drive, f)
@@ -384,19 +431,24 @@ def t_create_file(drive, a):
     if b64 is not None:
         if b64.startswith("sha256:"):
             raise DriveError("File references are not supported by the fake Drive")
-        text = base64.b64decode(b64).decode("utf-8")
+        try:
+            text = base64.b64decode(b64, validate=True).decode("utf-8")
+        except (ValueError, UnicodeDecodeError):
+            raise DriveError("base64Content is not valid base64 UTF-8 text")
     if mime == FOLDER:
         final = FOLDER
         text = ""
     elif text is not None and not mime:
         raise DriveError("contentMimeType is required when content is provided")
     elif mime in CONVERTIBLE and not a.get("disableConversionToGoogleType"):
-        final = GDOC
+        final = CONVERTIBLE[mime]
     else:
         final = mime or GDOC
     now = drive.tick()
     f = {"id": drive.new_id(), "title": title, "mimeType": final, "parentId": parent,
          "content": text or "", "modifiedTime": now, "createdTime": now, "owner": "me"}
+    if a.get("inheritedPermissionsDisabled") and final == FOLDER:
+        f["inheritedPermissionsDisabled"] = True
     drive.files[f["id"]] = f
     return public(f, drive)
 
@@ -419,7 +471,7 @@ def t_copy_file(drive, a):
 
 
 def t_trash_file(drive, a):
-    need_write(drive)
+    need_write(drive, adds_bytes=False)
     f = drive.get(a.get("fileId"))
     f["trashed"] = True
     f["modifiedTime"] = drive.tick()
@@ -440,22 +492,31 @@ def t_get_file_permissions(drive, a):
 
 
 def t_update_file(drive, a):
-    need_write(drive)
+    need_write(drive, adds_bytes=False)
     f = drive.get(a.get("fileId"))
     if a.get("etag") and a["etag"] != public(f, drive)["etag"]:
         raise DriveError("FAILED_PRECONDITION: the file was modified since the etag was returned")
-    for key in ("title", "description", "starred"):
+    for key in ("title", "description", "starred", "inheritedPermissionsDisabled"):
         if key in a:
             f[key] = a[key]
     if a.get("parentId"):
-        drive.get(a["parentId"])
-        f["parentId"] = a["parentId"]
+        pid = a["parentId"]
+        if pid != "root":
+            if drive.get(pid)["mimeType"] != FOLDER:
+                raise DriveError("Parent is not a folder")
+            cur, seen = pid, set()
+            while cur not in (None, "root") and cur not in seen:
+                if cur == f["id"]:
+                    raise DriveError("Cannot move a folder into itself")
+                seen.add(cur)
+                cur = drive.files.get(cur, {}).get("parentId")
+        f["parentId"] = pid
     f["modifiedTime"] = drive.tick()
     return public(f, drive)
 
 
 def t_share_file(drive, a):
-    need_write(drive)
+    need_write(drive, adds_bytes=False)
     f = drive.get(a.get("fileId"))
     perm = {"role": a.get("role")}
     if a.get("emailAddress"):
@@ -491,8 +552,8 @@ TOOLS = {
                           obj({"fileId": S, "includeRichMetadata": B, "excludeContentSnippets": B, "snippetVerbosity": S}, ["fileId"])),
     "get_file_permissions": (t_get_file_permissions, "List the permissions of a Drive file.",
                              obj({"fileId": S}, ["fileId"])),
-    "update_file": (t_update_file, "Update the metadata of a Drive file (title, parent, description, starred). Does not change content.",
-                    obj({"fileId": S, "title": S, "parentId": S, "description": S, "starred": B, "etag": S}, ["fileId"])),
+    "update_file": (t_update_file, "Update the metadata of a Drive file (title, parent, description, starred, inherited permissions). Does not change content.",
+                    obj({"fileId": S, "title": S, "parentId": S, "description": S, "starred": B, "etag": S, "inheritedPermissionsDisabled": B}, ["fileId"])),
     "share_file": (t_share_file, "Share a Drive file with a user, group, or anyone with the link.",
                    obj({"fileId": S, "role": S, "emailAddress": S, "permissionId": S, "chatSpaceId": S, "expirationTime": S}, ["fileId", "role"])),
 }
@@ -502,19 +563,31 @@ TOOLS = {
 
 
 def log_call(root, name, args, result, error):
-    entry = {"tool": name, "args": args, "ok": error is None}
+    path = os.path.join(root, "calls.jsonl")
+    seq = 1
+    if os.path.exists(path):
+        with open(path, encoding="utf-8") as fh:
+            seq = sum(1 for _ in fh) + 1
+    entry = {"seq": seq, "tool": name, "args": args, "ok": error is None}
     if error is not None:
         entry["error"] = error
-    with open(os.path.join(root, "calls.jsonl"), "a", encoding="utf-8") as fh:
+    with open(path, "a", encoding="utf-8") as fh:
         fh.write(json.dumps(entry, ensure_ascii=False) + "\n")
 
 
 def call_tool(root, name, args):
     drive = Drive(root)
-    if name not in TOOLS:
-        raise DriveError("Unknown tool: %s" % name)
     try:
-        result = TOOLS[name][0](drive, args or {})
+        try:
+            if name not in TOOLS:
+                raise DriveError("Unknown tool: %s" % name)
+            if not isinstance(args, dict):
+                raise DriveError("Arguments must be an object")
+            result = TOOLS[name][0](drive, args)
+        except DriveError:
+            raise
+        except Exception as exc:  # a bad argument must never kill the stdio loop
+            raise DriveError("Invalid request: %s" % exc.__class__.__name__)
     except DriveError as exc:
         drive.save()
         log_call(root, name, args, None, str(exc))
@@ -552,9 +625,10 @@ def serve(root):
                 result = call_tool(root, params.get("name"), params.get("arguments") or {})
                 send({"jsonrpc": "2.0", "id": mid, "result": {
                     "content": [{"type": "text", "text": json.dumps(result, ensure_ascii=False)}]}})
-            except DriveError as exc:
+            except Exception as exc:  # never let one bad call end the server
                 send({"jsonrpc": "2.0", "id": mid, "result": {
-                    "content": [{"type": "text", "text": str(exc)}], "isError": True}})
+                    "content": [{"type": "text", "text": str(exc) if isinstance(exc, DriveError) else "Internal error"}],
+                    "isError": True}})
         elif mid is not None:
             send({"jsonrpc": "2.0", "id": mid, "result": {}})
 

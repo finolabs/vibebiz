@@ -32,7 +32,7 @@ The same object as the `vibebiz-data` JSON block in the local `index.html` (spec
 | `storage` | string | always `"drive"` |
 | `toc_artifact` | string or null | the link to the private table-of-contents Artifact, once published |
 | `plugin_version` | string | the vibebiz version that last wrote the file; a reader with an older version reads the workspace and never downgrades a file (spec edge case) |
-| `shared_ack` | object or null | `{ "date": "YYYY-MM-DD", "who": ["<display names or 'link'>"] }` when the user confirmed using a shared folder (research R5); null otherwise |
+| `shared_ack` | object or null | `{ "date": "YYYY-MM-DD", "who": ["<display names, or 'link' / 'domain'>"], "ids": ["<permission ids>"] }` when the user confirmed using a shared folder (research R5); null otherwise. `who` is shown to the user; `ids` is compared to detect a change. Never an email address. |
 
 Validation:
 - `ideas[]` lists exactly the idea folders present, the same rule as local mode.
@@ -51,7 +51,8 @@ read (modifiedTime T0)
 ```
 
 - If the file's `modifiedTime` is no longer T0 when the write starts, stop and ask the user (concurrent edit).
-- If a run is interrupted while two files share a title, the next run keeps the newer one only after it reads back, trashes the older one, and reports this. If neither reads back, both stay and vibebiz reports the duplicate.
+- Before the create, read the old file's permissions. If they differ from what the folder gives (an extra person, or the folder's access turned off for this file), stop and ask: a replacement would take the folder's sharing instead (FR-012).
+- If a run is interrupted while two files share a title, the next run reports both (title, last change) and asks which one to keep. It trashes neither without the user's answer, because either may be a hand edit (spec edge case).
 - A trashed file is never permanently deleted by vibebiz.
 
 ## State impact

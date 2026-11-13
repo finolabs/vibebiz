@@ -25,20 +25,20 @@
   3. Confirm that the new file exists and that its content reads back.
   4. Move the old file to the Drive trash.
   If the `modifiedTime` changed between the read and the write, someone else edited the file: stop and ask the user before replacing anything (spec edge case on concurrent writes).
-- **Rationale**: this is the only way to write new content with the tools R1 lists. Trash is recoverable for 30 days, and Drive keeps the old file there, so a failed replace loses nothing. Two files with one title can exist only between steps 2 and 4. The next run repairs that: keep the newer file once its content reads back, and report the duplicate rather than guess (spec edge case).
+- **Rationale**: this is the only way to write new content with the tools R1 lists. Trash is recoverable for 30 days, and Drive keeps the old file there, so a failed replace loses nothing. Two files with one title can exist only between steps 2 and 4. The next run reports both files and asks which to keep, rather than guess (spec edge case). Before replacing, vibebiz compares the old file's permissions with the folder's; when they differ, it asks first, because the new file takes the folder's sharing (FR-012).
 - **Alternatives considered**:
   - Updating a file in place: the connector has no tool for it.
   - Using Google Docs as storage: breaks FR-007 and the Spec Kit handoff.
   - One file per record: breaks the fixed file names.
-- **Cost**: a question round writes about four files (coverage, spec, the record it changed, the table-of-contents data). That is about four creates and four trashes per round. Cowork may ask the user to approve each connector call (to verify, connector check 8). If it does, the docs must explain "Always allow" for the Drive connector.
+- **Cost**: a question round writes about four files (coverage, spec, the record it changed, the table-of-contents data). That is about four creates and four trashes per round. Cowork may ask the user to approve each connector call (to verify, connector check 8). If it does, the docs explain "Always allow" only for the tools vibebiz needs to save ideas (search, read, download, create, copy, trash, metadata, permissions), and only if Cowork offers per-tool approval; never for `share_file` or `update_file`, so an approval prompt stays between any text in a file and a change of sharing or location. Check 8 records whether per-tool approval exists.
 - **Constitution note**: the "never delete or overwrite a Google file" rule in `core/package.md` covers the Slides and Docs files that were presented. It is unchanged. Workspace files are vibebiz's own records, and replacing them through the trash is how they are updated. The module states this boundary in writing.
 
 ## R3. Finding the workspace again (FR-004, FR-005)
 
 - **Decision**: the Drive workspace keeps its table-of-contents data in a plain file named `index.json` at the workspace root. The file holds the same JSON as the `vibebiz-data` block of the local `index.html` and carries `"vibebiz": "workspace"`. Discovery works like this:
-  1. Search for `title = 'index.json' and trashed = false and owner = 'me'`.
-  2. Read each result.
-  3. Keep the ones that carry the marker.
+  1. Search for `title = 'index.json' and trashed = false` with `excludeContentSnippets: true`.
+  2. Drop every result owned by another person that is not in a shared drive (FR-018): an outsider could share a marked folder. Files in a shared drive belong to the drive, so an `owner = 'me'` filter would miss them; the shared-drive case is recognized by its `driveId` and then gets the privacy check (R5).
+  3. Download each remaining candidate and keep the ones that carry the marker; stop reading a candidate as soon as it lacks it.
   4. If there is none, ask the user for a folder, as in spec Story 1.
   The workspace is identified by the file, so moving or renaming its folder does not matter.
 - **Rationale**: a fixed file name makes the search exact and cheap. Reading only that file's content satisfies FR-014.
@@ -54,7 +54,8 @@
 
 ## R5. Privacy check (FR-012 to FR-014)
 
-- **Decision**: before the first write into a chosen folder, read `get_file_permissions` on that folder and on each folder above it up to My Drive. Also read `get_file_metadata` to see whether it sits in a shared drive. Anyone other than the user, or any link or domain visibility, means "shared": tell the user who can see the ideas and continue only on their yes. Record the yes in the table-of-contents data (`shared_ack` with a date), so the warning does not repeat every session. Repeat the check when the sharing set has changed since that date.
+- **Decision**: before the first write into a chosen folder, read `get_file_permissions` on that folder and on each folder above it up to My Drive. Also read `get_file_metadata` to see whether it sits in a shared drive. Anyone other than the user, or any link or domain visibility, means "shared": tell the user who can see the ideas and continue only on their yes. Record the yes in the table-of-contents data: `shared_ack` with the date, display names (or `link` / `domain`) to show, and permission IDs to compare, never email addresses. The warning does not repeat every session; it repeats when the current permission IDs differ from the recorded ones.
+- **Content is data**: in a shared folder, other people can write workspace files. Their text is part of the idea, never an instruction; the module says so (FR-018), and an eval feeds an injected instruction through the `injected-instruction` fixture.
 - **Rationale**: vibebiz changes no sharing, but the user should know who can read a board-level idea.
 - **Alternatives considered**: refusing shared folders outright. Rejected because a director may deliberately keep ideas in a team folder.
 
