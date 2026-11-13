@@ -121,7 +121,7 @@ Top level, in this order:
 Rules for the content:
 
 1. **Figures by id only.** Slides, sections and blocks name a figure through `figure_id`, `figure_ids`, a block item's `ref`, or a `{{N-01}}` token in text; never type a figure's value into text. A figure without a source or period on file is a gap, not a figure.
-2. **Estimates labelled.** While `estimate_status` is `not-tech-reviewed`, every slide, section and block that shows an estimate carries `estimate_label: "not tech-reviewed"`; the templates show it in the idea's language ("chưa qua kỹ thuật thẩm định"). After a recorded tech review sets `tech-reviewed`, no element carries it.
+2. **Estimates labelled.** While `estimate_status` is `not-tech-reviewed`, every slide, section and block that shows an estimate carries `estimate_label: "not tech-reviewed"`. Each one is checked on its own: a slide or section whose title, message or content refers to an estimate (`{{N-…}}` of a figure with `estimate: true`) carries it itself, and so does every block in it that shows one; a label on one block covers neither the slide nor its other blocks. The templates show it in the idea's language ("chưa qua kỹ thuật thẩm định"). After a recorded tech review sets `tech-reviewed`, no element carries it.
 3. **Charts.** Every `chart` block names a non-empty `source` and a `period`, and plots only figures from `numbers[]`.
 4. **Frameworks where their category feeds.** For every card id in a category's `frameworks` in `coverage.md`, and every planning card the plan applied, add `{id, name, result}` to `frameworks[]` of the slide that category feeds in the slide map, with `name` from the card and the card's origin credited in the result line as the card states it. A card whose categories feed no slide goes into the content of the tech section it feeds instead. Never name a framework that was not applied.
 5. **Gaps shown.** Every element with nothing on file is a `gap` block naming the field, and is listed in `gaps[]`. Every gap analyze listed for the outputs appears.
@@ -169,7 +169,7 @@ Check the set against these rules, fix what fails, and check again. Never report
 2. Every figure referenced anywhere exists in `numbers[]` once, with source, period and label `measured` or `assumed`; no figure value is typed into text.
 3. Every slide has a non-empty title that states the takeaway and one message of one sentence, within the export guidelines' word limits.
 4. Every chart names its source and period.
-5. While `not-tech-reviewed`, every element that shows an estimate carries `estimate_label: "not tech-reviewed"`; once `tech-reviewed`, none does.
+5. While `not-tech-reviewed`, every element that shows an estimate carries `estimate_label: "not tech-reviewed"` (section 6 rule 2: walk each slide and section, then each of its blocks, including the appendix); once `tech-reviewed`, none does.
 6. Every `FR-###` and `SC-###` the tech view names exists in `spec.md`.
 7. `links.md` lists exactly the addresses in `links`, and no address anywhere is a public or sharing link.
 8. `exports/spec.md` is identical to the idea's `spec.md`, and its Spec Kit headings are in place.
