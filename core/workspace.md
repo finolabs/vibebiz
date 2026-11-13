@@ -11,9 +11,9 @@ Messages to the user follow `references/core/writing-rules.md`, including how to
 ## 1. Find the working folder (every entry skill, before anything else)
 
 1. Look for the folder the user opened in Cowork: a user-chosen folder you can read and write with your file tools. A scratch or temporary location the platform gave you is not a working folder.
-2. If there is none (this is claude.ai chat, which has no working folder), say so plainly and stop. Write nothing, ask nothing else, do not continue partway. Use the user's language, Vietnamese by default:
-   - Vietnamese: "vibebiz cần chạy trong Cowork với một thư mục đã mở, vì mọi ý tưởng được lưu thành tệp trong thư mục đó. Anh/chị mở Cowork, chọn một thư mục làm việc, rồi gõ lại lệnh này nhé."
-   - English: "vibebiz needs Cowork with a folder open, because every idea is saved as files in that folder. Open Cowork, choose a working folder, then run this command again."
+2. If there is none, say so plainly and stop. Write nothing, ask nothing else, do not continue partway. This happens in claude.ai chat, and in a Cowork session started on the web or in the mobile app: those run on Anthropic's servers and cannot reach a folder on the user's computer, and the files such a session keeps are not a folder the user chose. The user may already be in Cowork, so name the desktop app rather than "Cowork". Use the user's language, Vietnamese by default:
+   - Vietnamese: "vibebiz lưu mỗi ý tưởng thành tệp trong một thư mục trên máy tính của anh/chị, nên cần chạy trong ứng dụng Claude trên máy tính. Phiên này (trò chuyện, hoặc Cowork mở từ web hay điện thoại) không mở được thư mục nào trên máy, nên em chưa ghi gì và chưa hỏi gì. Anh/chị mở ứng dụng Claude trên máy tính, vào Cowork, chọn một thư mục làm việc, rồi gõ lại lệnh này nhé. Khi ứng dụng trên máy còn mở, anh/chị vẫn theo dõi phiên đó được trên web hoặc điện thoại."
+   - English: "vibebiz saves every idea as files in a folder on your computer, so it needs the Claude desktop app. This session (a chat, or Cowork opened on the web or a phone) cannot open a folder on your computer, so nothing was written or asked. Open the Claude desktop app, go to Cowork, choose a working folder, then run this command again. While the desktop app stays open, you can follow that session on the web or your phone."
 3. The skills that work without a workspace (`help` answering a documentation question) skip steps 4 onward and write nothing.
 
 Why: an entry skill that runs without a folder would lose every answer when the chat ends; the user would not know why.

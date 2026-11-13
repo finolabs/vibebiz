@@ -14,7 +14,7 @@ Load these modules from this skill's own folder when their step starts:
 
 ## 1. Check for a working folder
 
-Follow the workspace module's working-folder check first. Without a working folder, give its message telling the user to open Cowork with a folder, and stop.
+Follow the workspace module's working-folder check first. Without a working folder, give its message telling the user to open Cowork in the Claude desktop app with a folder, and stop.
 
 If the folder holds no vibebiz workspace (no table of contents, no ground rules file and no `specs/` folder), say in one sentence that there is no idea yet and that `/vibebiz:new` starts one, and stop. Do not create a workspace here.
 

@@ -18,7 +18,7 @@ Load each module from this skill's own folder when its step starts, and follow i
 
 ## 1. Check for a working folder
 
-Follow the workspace module's working-folder check first. Without a working folder, give its message telling the user to open Cowork with a folder, and stop: write nothing, ask nothing.
+Follow the workspace module's working-folder check first. Without a working folder, give its message telling the user to open Cowork in the Claude desktop app with a folder, and stop: write nothing, ask nothing.
 
 If the folder holds no idea folder under `specs/` (the fictional examples in `examples/` never count), say in one sentence that there is no idea to continue yet and that `/vibebiz:new` starts one, and stop. If the table of contents is missing, restore it by the workspace module's rules before going on.
 
