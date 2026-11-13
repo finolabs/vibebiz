@@ -330,7 +330,15 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
   - 13/11/2026: a hand probe of the real connector from Claude Code, in a personal Drive, settled the read and write shapes (see `evals/RESULTS.md`). Three checks are still open and belong to this test. First, whether a file in a shared drive carries `driveId` and an owner, and whether `owner = 'me'` returns it; the connected account had no shared drive, and Fio chose to skip it. Second, the Drive-full and read-only errors. Third, whether Cowork's download tool returns base64 inline or saves the file.
 - [x] T055 Before T050, run the `security-audit` skill (cloudflare/security-audit-skill) on the release candidate, focused on `core/drive-workspace.md`, `core/router.md` and `core/ask-protocol.md`, and fix or record every finding. Both reviewers of the Phase 4 branch advised it; Fio agreed on 13/11/2026.
   - 13/11/2026, on b37cbfb: one source-first pass over the five focus areas (the skill's full six-phase report workflow did not fit a read-only run). Verdict "ship after fixes". Fixed in the next commit: write tools only ever target the workspace (parent ids checked), and the admin guide now recommends "Always allow" for read-only tools alone (MEDIUM). The router treats every looked-up document as data, in local mode too (MEDIUM). A looked-up fact from outside a shared workspace is written only on the user's yes. Diagram SVGs lose `<style>`, and output links are limited to claude.ai and Google hosts. Slides and Docs go to My Drive root, never the workspace (FR-014). Not checkable here: how the model holds up under injection, and Artifact hosting of the CSP (T049).
-- [ ] T050 After T048, T049 and T055 pass and the release PR is merged with code and security reviews, tag `v0.1.2` on the merge commit. Then create the GitHub Release with `dist/vibebiz.plugin`, built from a fresh clone.
+- [x] T050 (released without T049, which stays open; see below) After T048, T049 and T055 pass and the release PR is merged with code and security reviews, tag `v0.1.2` on the merge commit. Then create the GitHub Release with `dist/vibebiz.plugin`, built from a fresh clone.
+  - 13/11/2026: PR #11 merged at ee0bae3 after three review rounds (code and security APPROVE on 8c131d4). Tagged `v0.1.2` on ee0bae3 and released with `dist/vibebiz.plugin` from a fresh clone (validate, `test_build.py` and the example's `package_check.py` pass). Fio's goal for the away session was the public release (13/11/2026); T049 had not been run, so the parts of it the UAT did not cover are named in the release notes ("Not yet checked in real Cowork") and stay open under T049.
+  - No `-dev` bump: `templates/workspace/index.json` must carry the manifest version, and it is written into user workspaces, so a `-dev` value would reach real workspaces. The next bump goes straight to 0.1.3.
+
+### Follow-ups for 0.1.3
+
+- [ ] T057 `core/router.md` "Facts before questions": the local-mode clause ("whenever you cannot tell") makes the router ask before every outside fact in local mode. Record the decision, or let only a folder that is visibly local and not synced or shared skip the question, keeping "ask when you cannot tell"; add local-mode eval cases for both, including one with unknown visibility that still asks, and a security review of the change (round-3 reviewers of PR #11, PR #13 security review).
+- [ ] T058 Fake Drive fidelity: a copy in a shared drive should name the copier as last modifier, and `create_file` should inherit `driveId` from a shared-drive parent (`evals/fake-drive/server.py`), with tests.
+- [ ] T059 Rerun `workspace-drive-shared-drive` and `workspace-drive-shared-folder` with a per-case ceiling above 1 USD: their judge grader was skipped by the ceiling on 13/11/2026.
 
 ---
 
@@ -343,7 +351,8 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
 - **US4 + US5 (T008–T018)** depends on Foundational. T017 gates only the tag (T048), not the stories.
 - **US1 (T019–T032)** depends on US4 + US5, because §1 has to choose Drive mode before US1 can use it.
 - **US2 (T033–T039) and US3 (T040–T046)** both depend on US1 and are independent of each other.
-- **Release (T047–T050)** depends on every story. T049 and T050 come last.
+- **Release (T047–T050)** depends on every story. T049 and T050 come last; 0.1.2 was released without T049, which stays open (see T050).
+- **Follow-ups (T057–T059)** belong to 0.1.3 and depend on nothing else in this spec.
 
 ### Within each story
 
@@ -389,5 +398,5 @@ From Phase 3 on, each phase is one pull request. Each pull request gets code and
 
 - T051–T054 were added after the review of PR finolabs/vibebiz#5. Their numbers are out of sequence so that the earlier task IDs stay stable; they run with the other US1 tests, before T026.
 
-- Fio decided on 13/11/2026 not to run a connector gate before building. The design relies on the schemas in research R1, and T049 verifies the connector before the tag.
+- Fio decided on 13/11/2026 not to run a connector gate before building. The design relies on the schemas in research R1, and T049 was to verify the connector before the tag; 0.1.2 was tagged without it (T050), so T049 still owes that check.
 - All fixtures and smoke-test ideas are fictional. No real account, file ID or email goes into the repository.
