@@ -4,6 +4,10 @@ All notable changes to vibebiz are recorded here. The format follows [Keep a Cha
 
 ## [Unreleased]
 
+### Added
+
+- Google Drive mode: in Cowork on the web or a phone, where there is no folder on the user's computer, `/vibebiz:idea` keeps the workspace in a folder in the user's own Google Drive through Cowork's Google Drive connector. Every answer is saved there before the next round of questions. Before the first write it says who can see the folder and asks when the folder is shared. It changes files by saving a new copy and moving the old one to the Drive trash, and it never shares a file or changes who can see it. It also stops and asks when a file has its own sharing, was changed by someone else meanwhile, or exists twice. The table of contents is a private Artifact or a short table in the chat. The desktop app with a folder open works as before and makes no Drive call. `continue`, `status` and `package` on Drive follow in later changes of this release.
+
 ### Changed
 
 - **Breaking:** the command that starts an idea is now `/vibebiz:idea` (was `/vibebiz:new`), because `new` was easy to confuse with Claude Code's `/clear` (new) in the command list. Plain words such as "tôi có ý tưởng" still start it. Type `/vibebiz:idea` where you typed `/vibebiz:new`. A workspace created by 0.1.0 or 0.1.1 that has no idea yet still shows `/vibebiz:new` on its table of contents' copy button; start with `/vibebiz:idea` instead. The release stays on 0.1.x by Fio's choice (13/11/2026): no workspace file or layout changes, and vibebiz is pre-1.0.
