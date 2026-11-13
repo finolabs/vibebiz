@@ -64,6 +64,21 @@ Add `--case '<glob>'` or `--tag <tag>` to run one suite. Runs call the model wit
 
 Each file in `evals/fixtures/` is JSON with `id`, `sector`, `fictional_company`, `persona`, `intake_vi` (the one-line intake a sales director would say, in Vietnamese), `key_facts` (hidden truth: problem, users, baseline cost, outcome, constraints, data, risk, numbers) and `answers` (what the persona says per topic, with a `default` for questions it cannot answer). Everything is invented; company names are fictional and the release review (T101) scans them for real names and figures.
 
+## Fake Drive (spec 002)
+
+Cowork's Google Drive connector cannot run in a headless eval. `claude plugin eval` mocks only the MCP servers a plugin declares itself, and the Drive connector is not one of them. Never load your personal MCP servers or a workspace `.mcp.json` in an eval run. The Drive-mode cases therefore run against an eval-only build of the plugin. That build declares one extra MCP server, named `google-drive`, which is `evals/fake-drive/server.py`.
+
+Checked on 13/11/2026 with a throwaway plugin:
+- A server declared in a plugin's `.mcp.json` starts under `--allow-real-servers`.
+- Its tools are named `mcp__plugin_<plugin>_<server>__<tool>`.
+- The server process's working directory is the case workspace. That lets a `file_exists` grader read what the server wrote there.
+
+- **Server**: the files are `evals/fake-drive/server.py` and `fixtures.py`, with tests in `test_server.py`. They use only the standard library and are never shipped.
+- **State**: the server keeps its state in `<workspace>/.fake-drive/drive.json` and logs every call to `.fake-drive/calls.jsonl`. It mirrors the live files under `.fake-drive/tree/` for graders. Google-type files get a `.gdoc` suffix there, and a second live file with the same title gets a `.dup-<id>` suffix.
+- **Fixtures**: a case's `scaffold_script` seeds the fake Drive with `python3 -I <repo>/evals/fake-drive/fixtures.py <mode> . [--bump <title>]`. The modes are `empty`, `one-workspace`, `two-workspaces`, `read-only`, `shared-folder`, `shared-drive`, `converted-file`, `drive-full` and `newer-version`. Each workspace is built from `examples/000-giu-chan-khach-cu`.
+- **Run**: Drive-mode cases need `--scaffold --allow-real-servers --allow-tools 'mcp__plugin_vibebiz_google-drive__*'` and the eval-only build. Cases with no connector run against the normal build.
+- **Drift**: the tool names and parameters follow the connector schemas read on 13/11/2026 (`specs/002-drive-workspace/research.md` R1). The release smoke test records any difference with the real connector.
+
 ## US1 cases (T023–T026)
 
 Cases sit one level down: `evals/<suite>/<case>/`, so each `prompt.md` sets `plugins: ["../../../dist/vibebiz"]`. Seeded cases carry a `scaffold.sh` that writes a fictional workspace (fixed coverage records, hand-edited marker files) and need `--scaffold` on the run; without it they fail by design rather than pass on an empty folder. Whether `claude plugin eval` finds cases nested one level down is unconfirmed until the first run (`quickstart.md` §3); if it does not, point it at each suite folder or flatten the names.
