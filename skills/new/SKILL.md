@@ -18,9 +18,9 @@ Load each module from this skill's own folder when its step starts, and follow i
 
 Do the steps in order. Do not skip a step because the user seems in a hurry; each one protects their files or their time.
 
-## 1. Check for a working folder
+## 1. Check where the workspace lives
 
-Follow the workspace module's working-folder check before anything else. Without a working folder (for example in a claude.ai chat, or Cowork started on the web or a phone), give the module's message telling the user to open Cowork in the Claude desktop app with a folder, and stop: write nothing, ask nothing. Running partway would leave files nowhere the user can find them.
+Follow the workspace module's storage check (§1) before anything else: a local folder, or Google Drive when the session has none. In Drive mode follow §1a, which in this version stops without calling any Drive tool. With neither (for example in a claude.ai chat, or Cowork started on the web or a phone without Google Drive), read §1 of `references/core/workspace.md` and give its stop message word for word, then stop: write nothing, ask nothing.
 
 ## 2. Set up or repair the workspace
 

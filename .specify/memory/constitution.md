@@ -1,3 +1,12 @@
+<!--
+Sync Impact Report
+Version change: 1.1.0 → 1.2.0 (MINOR)
+Modified sections: Runtime and Distribution Constraints (target runtime adds the Google Drive
+  connector; the MAJOR-bump rule covers the local layout, Drive mode is a declared variant)
+Added sections: none
+Removed sections: none
+Follow-up: CLAUDE.md "Plugin shape" and "Workspace and outputs" (applied in the same change)
+-->
 # vibebiz Constitution
 
 ## Core Principles
@@ -104,12 +113,16 @@ Rationale: users learn vibebiz from its docs and `help`; stale docs teach the wr
 
 ## Runtime and Distribution Constraints
 
-- Target runtime is Claude Cowork with its native question tool, Claude Artifacts, and the Google
-  Workspace connectors for Docs and Slides.
+- Target runtime is Claude Cowork with its native question tool, Claude Artifacts, the Google
+  Workspace connectors for Docs and Slides, and the Google Drive connector, which holds the
+  workspace when a session has no local folder (Cowork on the web or a phone).
 - Board view exports to an Artifact or Google Slides; tech view exports to an Artifact or Google
   Docs, always with the `spec.md` snapshot.
 - The user workspace layout and file names defined in `CLAUDE.md` are a public contract. A change
-  to them is a breaking change for existing users and MUST bump the plugin's MAJOR version.
+  to the local layout is a breaking change for existing users and MUST bump the plugin's MAJOR
+  version. Drive mode is a declared variant of that layout; its differences are listed in
+  `specs/002-drive-workspace/contracts/drive-workspace.md`, and any other difference is a change
+  to the contract.
 - Business data stays in the user's workspace and Google Drive; the plugin sends it nowhere else.
 
 ## Development Workflow and Quality Gates
@@ -135,4 +148,4 @@ Rationale: users learn vibebiz from its docs and `help`; stale docs teach the wr
 - Reviews and plans check compliance; a justified exception is recorded in the plan's Complexity
   Tracking with its reason.
 
-**Version**: 1.1.0 | **Ratified**: 2026-11-12 | **Last Amended**: 2026-11-13
+**Version**: 1.2.0 | **Ratified**: 2026-11-12 | **Last Amended**: 2026-11-13

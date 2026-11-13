@@ -17,6 +17,7 @@ Help uses this map to route a situation the user describes to one entry skill, t
 | Muốn xem tất cả ý tưởng đang đến đâu ("các ý tưởng của tôi đến đâu rồi") | /vibebiz:status |
 | Muốn ghi luật chung cho mọi ý tưởng của công ty ("ghi luật chung", "ưu tiên năm nay của công ty là…") | /vibebiz:constitution |
 | Muốn sửa luật chung đã ghi, thêm mục tiêu chiến lược hoặc OKR ("đổi mức chi tôi tự duyệt", "thêm OKR năm nay") | /vibebiz:constitution |
+| Muốn dùng vibebiz trên web hoặc điện thoại, hoặc vibebiz báo chưa mở được thư mục nào ("dùng trên điện thoại được không", "chưa có thư mục thì làm sao") | /vibebiz:help |
 | Chưa biết bắt đầu từ đâu, muốn tìm hiểu cách dùng vibebiz hoặc cần hướng dẫn chọn lệnh phù hợp ("hướng dẫn tôi dùng", "làm gì tiếp theo", "tôi nên dùng lệnh nào", "cách dùng vibebiz") | /vibebiz:help |
 | Muốn xem một ý tưởng mẫu đã làm xong trông như thế nào ("cho xem ví dụ mẫu", "xem ý tưởng mẫu", "đầu ra trông ra sao") | /vibebiz:help |
 | Hỏi về cách thức hoạt động, quy trình hoặc tài liệu của vibebiz ("tài liệu ở đâu", "giải thích quy trình", "nhãn này nghĩa là gì") | /vibebiz:help |

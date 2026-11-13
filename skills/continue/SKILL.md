@@ -16,9 +16,9 @@ Load each module from this skill's own folder when its step starts, and follow i
 - `references/core/clarify.md`: loaded by the router when it hands a category to clarify.
 - `references/core/package.md`: only to read how export versions are named and moved to history (section 3.2).
 
-## 1. Check for a working folder
+## 1. Check where the workspace lives
 
-Follow the workspace module's working-folder check first. Without a working folder, give its message telling the user to open Cowork in the Claude desktop app with a folder, and stop: write nothing, ask nothing.
+Follow the workspace module's storage check (§1) first: a local folder, or Google Drive when the session has none. In Drive mode follow §1a, which in this version stops without calling any Drive tool. With neither, read §1 of `references/core/workspace.md` and give its stop message word for word, then stop: write nothing, ask nothing.
 
 If the folder holds no idea folder under `specs/` (the fictional examples in `examples/` never count), say in one sentence that there is no idea to continue yet and that `/vibebiz:new` starts one, and stop. If the table of contents is missing, restore it by the workspace module's rules before going on.
 

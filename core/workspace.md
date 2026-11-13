@@ -1,6 +1,6 @@
 # Workspace module
 
-Every entry skill loads this module first. It finds the user's working folder, decides what state the folder is in, creates or repairs the workspace, numbers and names idea folders, and rebuilds the table of contents (`index.html`) after every write. The layout is a public contract: names are fixed and English, and only the idea slug varies.
+Every entry skill loads this module first. It chooses where the workspace lives (a local folder, or Google Drive when there is none), finds the user's working folder, decides what state the folder is in, creates or repairs the workspace, numbers and names idea folders, and rebuilds the table of contents (`index.html`) after every write. The layout is a public contract: names are fixed and English, and only the idea slug varies.
 
 **Reads**: the working folder, `constitution.md` frontmatter, every idea's `coverage.md` frontmatter, the plugin's `templates/` folder.
 **Writes**: workspace scaffold, idea folders, `index.html`.
@@ -8,15 +8,24 @@ Every entry skill loads this module first. It finds the user's working folder, d
 
 Messages to the user follow `references/core/writing-rules.md`, including how to address them; the Vietnamese examples below use its default form.
 
-## 1. Find the working folder (every entry skill, before anything else)
+## 1. Choose where the workspace lives (every entry skill, before anything else)
 
-1. Look for the folder the user opened in Cowork: a user-chosen folder you can read and write with your file tools. A scratch or temporary location the platform gave you is not a working folder.
-2. If there is none, say so plainly and stop. Write nothing, ask nothing else, do not continue partway. This happens in claude.ai chat, and in a Cowork session started on the web or in the mobile app: those run on Anthropic's servers and cannot reach a folder on the user's computer, and the files such a session keeps are not a folder the user chose. The user may already be in Cowork, so name the desktop app rather than "Cowork". Use the user's language, Vietnamese by default:
-   - Vietnamese: "vibebiz lưu mỗi ý tưởng thành tệp trong một thư mục trên máy tính của anh/chị, nên cần chạy trong ứng dụng Claude trên máy tính. Phiên này (trò chuyện, hoặc Cowork mở từ web hay điện thoại) không mở được thư mục nào trên máy, nên em chưa ghi gì và chưa hỏi gì. Anh/chị mở ứng dụng Claude trên máy tính, vào Cowork, chọn một thư mục làm việc, rồi gõ lại lệnh này nhé. Khi ứng dụng trên máy còn mở, anh/chị vẫn theo dõi phiên đó được trên web hoặc điện thoại."
-   - English: "vibebiz saves every idea as files in a folder on your computer, so it needs the Claude desktop app. This session (a chat, or Cowork opened on the web or a phone) cannot open a folder on your computer, so nothing was written or asked. Open the Claude desktop app, go to Cowork, choose a working folder, then run this command again. While the desktop app stays open, you can follow that session on the web or your phone."
-3. The skills that work without a workspace (`help` answering a documentation question) skip steps 4 onward and write nothing.
+Pick the storage mode once, at the start of the skill, in this order, and keep it for the whole run. A session never uses both modes.
 
-Why: an entry skill that runs without a folder would lose every answer when the chat ends; the user would not know why.
+1. **Local mode.** Look for the folder the user opened in Cowork: a user-chosen folder you can read and write with your file tools. A scratch or temporary location the platform gave you is not a working folder. When there is one, use it and continue at §2. Do not look for a Drive workspace: on the desktop the local folder wins, and the two workspaces are never synced.
+2. **Drive mode.** Without a local folder, check whether the session has a Google Drive connector: tools that search the user's Drive and create files in it. When it does, continue at §1a.
+3. **Neither.** Say so plainly and stop. Write nothing, ask nothing else, do not continue partway. This happens in claude.ai chat, and in a Cowork session started on the web or in the mobile app without Google Drive connected: those run on Anthropic's servers, cannot reach a folder on the user's computer, and the files such a session keeps are not a folder the user chose. Give this message as written, in the user's language (Vietnamese by default), changing only the form of address that `references/core/writing-rules.md` sets. Add nothing before or after it: no summary of the idea, no preview of the questions to come. It names both ways forward and names the desktop app rather than "Cowork", since the user may already be in Cowork:
+   - Vietnamese: "Phiên này không mở được thư mục nào trên máy tính của anh/chị và chưa nối Google Drive, nên em chưa ghi gì. Anh/chị chọn một trong hai cách rồi gõ lại lệnh này nhé: nối Google Drive trong phần kết nối (Connectors) của Cowork, để ý tưởng được lưu trong một thư mục Drive anh/chị chọn; hoặc mở ứng dụng Claude trên máy tính, vào Cowork và chọn một thư mục làm việc."
+   - English: "This session cannot open a folder on your computer and Google Drive is not connected, so nothing was saved. Choose one of two ways, then run this command again: connect Google Drive in Cowork's Connectors, so your ideas are kept in a Drive folder you choose; or open the Claude desktop app, go to Cowork and choose a working folder."
+4. The skills that work without a workspace (`help` answering a documentation question) skip this section and write nothing.
+
+Why: an entry skill that runs without a place to save would lose every answer when the session ends; the user would not know why.
+
+## 1a. Drive mode
+
+Saving to Google Drive is being built (spec 002) and is not ready in this version. Give this message as written, in the user's language (Vietnamese by default), changing only the form of address; call no Drive tool, write nothing, and stop:
+
+"Bản vibebiz này chưa lưu được ý tưởng vào Google Drive. Hiện anh/chị dùng được vibebiz trong ứng dụng Claude trên máy tính: vào Cowork, chọn một thư mục làm việc rồi gõ lại lệnh này."
 
 ## 2. Locate the workspace root and the plugin's templates
 

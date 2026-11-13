@@ -444,44 +444,105 @@ class MirrorEdges(Base):
         self.assertNotEqual(one["id"], two["id"])
 
     def test_older_folder_keeps_plain_name_after_a_move(self):
+        child = self.call("create_file", title="child", contentMimeType=server.FOLDER)
         older = self.call("create_file", title="vibebiz", contentMimeType=server.FOLDER)
         newer = self.call("create_file", title="vibebiz", contentMimeType=server.FOLDER)
-        f = self.call("create_file", title="x.md", contentMimeType="text/markdown", textContent="x",
-                      disableConversionToGoogleType=True)
-        self.call("update_file", fileId=f["id"], parentId=newer["id"])
+        self.call("update_file", fileId=child["id"], parentId=newer["id"])
         tree = os.path.join(self.root, "tree")
+        self.assertTrue(os.path.isdir(os.path.join(tree, "vibebiz.dup-" + newer["id"], "child")))
+        self.assertFalse(os.path.exists(os.path.join(tree, "vibebiz", "child")))
         self.assertTrue(os.path.isdir(os.path.join(tree, "vibebiz")))
-        self.assertTrue(os.path.exists(os.path.join(tree, "vibebiz.dup-" + newer["id"], "x.md")))
-        self.assertFalse(os.path.exists(os.path.join(tree, "vibebiz", "x.md")))
+        self.assertNotEqual(older["id"], newer["id"])
 
 
 class SecurityFollowUps(Base):
     """LOW findings from the PR finolabs/vibebiz#6 security review."""
 
-    def test_symlinked_tree_is_not_followed(self):
+    def test_symlinked_tree_is_refused(self):
         outside = tempfile.mkdtemp()
         try:
             self.call("search_files", query="title = 'x'")
             tree = os.path.join(self.root, "tree")
             shutil.rmtree(tree)
             os.symlink(outside, tree)
-            self.call("create_file", title="x.md", contentMimeType="text/markdown", textContent="x",
-                      disableConversionToGoogleType=True)
+            with self.assertRaises(server.DriveError):
+                self.call("create_file", title="x.md", contentMimeType="text/markdown", textContent="x",
+                          disableConversionToGoogleType=True)
             self.assertEqual(os.listdir(outside), [])
-            self.assertFalse(os.path.islink(tree))
         finally:
             shutil.rmtree(outside)
 
-    def test_symlinked_log_is_not_followed(self):
+    def test_symlinked_log_is_refused(self):
         outside = tempfile.NamedTemporaryFile(delete=False)
         outside.close()
         try:
             os.symlink(outside.name, os.path.join(self.root, "calls.jsonl"))
-            self.call("search_files", query="title = 'x'")
+            with self.assertRaises(server.DriveError):
+                self.call("search_files", query="title = 'x'")
             with open(outside.name, encoding="utf-8") as fh:
                 self.assertEqual(fh.read(), "")
         finally:
             os.unlink(outside.name)
+
+    def test_hard_linked_state_is_refused_and_outside_file_unchanged(self):
+        for name in ("drive.json", "calls.jsonl"):
+            with self.subTest(name):
+                self.call("search_files", query="title = 'x'")
+                outside = tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False, encoding="utf-8")
+                outside.write("OUTSIDE")
+                outside.close()
+                try:
+                    state = os.path.join(self.root, name)
+                    os.unlink(state)
+                    os.link(outside.name, state)
+                    with self.assertRaises(server.DriveError):
+                        self.call("search_files", query="title = 'x'")
+                    with open(outside.name, encoding="utf-8") as fh:
+                        self.assertEqual(fh.read(), "OUTSIDE")
+                    os.unlink(state)
+                finally:
+                    os.unlink(outside.name)
+
+    def test_symlinked_state_file_is_refused_and_never_copied(self):
+        outside = tempfile.NamedTemporaryFile("w", suffix=".json", delete=False, encoding="utf-8")
+        outside.write('{"secret_token": "FAKE-VALUE"}')
+        outside.close()
+        try:
+            state = os.path.join(self.root, "drive.json")
+            os.unlink(state)
+            os.symlink(outside.name, state)
+            with self.assertRaises(server.DriveError):
+                self.call("search_files", query="title = 'x'")
+            for dirpath, _, names in os.walk(self.ws):
+                for n in names:
+                    full = os.path.join(dirpath, n)
+                    if not os.path.islink(full):
+                        with open(full, encoding="utf-8", errors="ignore") as fh:
+                            self.assertNotIn("FAKE-VALUE", fh.read(), full)
+        finally:
+            os.unlink(outside.name)
+
+    def test_symlinked_root_is_refused(self):
+        outside = tempfile.mkdtemp()
+        try:
+            os.makedirs(os.path.join(outside, "tree"))
+            open(os.path.join(outside, "tree", "keepme"), "w").close()
+            shutil.rmtree(self.root)
+            os.symlink(outside, self.root)
+            with self.assertRaises(server.DriveError):
+                self.call("search_files", query="title = 'x'")
+            self.assertTrue(os.path.exists(os.path.join(outside, "tree", "keepme")))
+        finally:
+            shutil.rmtree(outside)
+
+    def test_refused_copy_changes_nothing(self):
+        f = self.call("create_file", title="a.md", contentMimeType="text/markdown", textContent="1",
+                      disableConversionToGoogleType=True)
+        before = json.load(open(os.path.join(self.root, "drive.json"), encoding="utf-8"))["clock"]
+        with self.assertRaises(server.DriveError):
+            self.call("copy_file", fileId=f["id"], title=123)
+        after = json.load(open(os.path.join(self.root, "drive.json"), encoding="utf-8"))["clock"]
+        self.assertEqual(before, after)
 
     def test_non_text_title_is_refused_and_server_keeps_working(self):
         f = self.call("create_file", title="a.md", contentMimeType="text/markdown", textContent="1",

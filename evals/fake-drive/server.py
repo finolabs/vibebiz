@@ -26,6 +26,7 @@ import json
 import os
 import re
 import shutil
+import stat
 import sys
 import unicodedata
 
@@ -45,6 +46,38 @@ class DriveError(Exception):
 def unlink_if_link(path):
     if os.path.islink(path):
         os.unlink(path)
+
+
+def refuse_links(root):
+    """Fail closed when the state folder or any state file is a symlink or a hard link."""
+    for path in (root, os.path.join(root, "drive.json"), os.path.join(root, "tree"),
+                 os.path.join(root, "calls.jsonl")):
+        if os.path.islink(path):
+            raise DriveError("Refused: the fake Drive state at %s is a symlink" % os.path.basename(path))
+    for path in (os.path.join(root, "drive.json"), os.path.join(root, "calls.jsonl")):
+        if os.path.exists(path):
+            st = os.lstat(path)
+            if not stat.S_ISREG(st.st_mode) or st.st_nlink != 1:
+                raise DriveError("Refused: the fake Drive state at %s is not a plain file" % os.path.basename(path))
+
+
+def open_state(path, flags):
+    """Open a state file without following a link, and refuse anything but a plain, singly linked file."""
+    fd = os.open(path, flags | os.O_NOFOLLOW, 0o600)
+    st = os.fstat(fd)
+    if not stat.S_ISREG(st.st_mode) or st.st_nlink != 1:
+        os.close(fd)
+        raise DriveError("Refused: the fake Drive state at %s is not a plain file" % os.path.basename(path))
+    return fd
+
+
+def write_state(path, text):
+    """Replace a state file atomically through a fresh temporary file in the same folder."""
+    tmp = "%s.%d.tmp" % (path, os.getpid())
+    fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+    with os.fdopen(fd, "w", encoding="utf-8") as fh:
+        fh.write(text)
+    os.replace(tmp, path)
 
 
 def safe_component(title):
@@ -76,7 +109,7 @@ class Drive:
         os.makedirs(root, exist_ok=True)
         self.path = os.path.join(root, "drive.json")
         if os.path.exists(self.path):
-            with open(self.path, encoding="utf-8") as fh:
+            with os.fdopen(open_state(self.path, os.O_RDONLY), encoding="utf-8") as fh:
                 self.data = json.load(fh)
         else:
             self.data = {}
@@ -110,8 +143,7 @@ class Drive:
 
     def save(self):
         unlink_if_link(self.path)
-        with open(self.path, "w", encoding="utf-8") as fh:
-            json.dump(self.data, fh, ensure_ascii=False, indent=2)
+        write_state(self.path, json.dumps(self.data, ensure_ascii=False, indent=2))
         tree = os.path.join(self.root, "tree")
         unlink_if_link(tree)  # a symlinked tree would send the mirror elsewhere
         shutil.rmtree(tree, ignore_errors=True)
@@ -175,7 +207,8 @@ class Drive:
             target = place(parent, f, ".gdoc" if f["mimeType"].startswith(GOOGLE_PREFIX) else "")
             if target is None:
                 continue
-            with open(target, "w", encoding="utf-8") as fh:
+            fd = os.open(target, os.O_WRONLY | os.O_CREAT | os.O_TRUNC | os.O_NOFOLLOW, 0o600)
+            with os.fdopen(fd, "w", encoding="utf-8") as fh:
                 fh.write(f.get("content", ""))
 
     def _alive_chain(self, f):
@@ -503,10 +536,10 @@ def t_copy_file(drive, a):
     parent = a.get("parentId") or src.get("parentId", "root")
     if parent != "root" and drive.get(parent)["mimeType"] != FOLDER:
         raise DriveError("Parent is not a folder")
-    now = drive.tick()
-    f = dict(src)
     if a.get("title") is not None and not isinstance(a["title"], str):
         raise DriveError("title must be text")
+    now = drive.tick()
+    f = dict(src)
     f.update({"id": drive.new_id(), "title": a.get("title") or "Copy of " + src["title"],
               "parentId": parent, "modifiedTime": now, "createdTime": now, "permissions": []})
     f.pop("trashed", None)
@@ -614,16 +647,17 @@ def log_call(root, name, args, result, error):
     unlink_if_link(path)
     seq = 1
     if os.path.exists(path):
-        with open(path, encoding="utf-8") as fh:
+        with os.fdopen(open_state(path, os.O_RDONLY), encoding="utf-8") as fh:
             seq = sum(1 for _ in fh) + 1
     entry = {"seq": seq, "tool": name, "args": args, "ok": error is None}
     if error is not None:
         entry["error"] = error
-    with open(path, "a", encoding="utf-8") as fh:
+    with os.fdopen(open_state(path, os.O_WRONLY | os.O_APPEND | os.O_CREAT), "a", encoding="utf-8") as fh:
         fh.write(json.dumps(entry, ensure_ascii=False) + "\n")
 
 
 def call_tool(root, name, args):
+    refuse_links(root)  # nothing is read, written or logged through a link
     drive = Drive(root)
     try:
         try:
