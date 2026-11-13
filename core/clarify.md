@@ -107,7 +107,7 @@ After every write, check and fix:
 
 - Clarifications has exactly one line per question asked this session, answered or skipped, with no duplicates.
 - No placeholder, "not yet clarified" text or `[NEEDS CLARIFICATION]` marker remains for a point that was answered.
-- No earlier sentence contradicts a new answer.
+- No earlier sentence contradicts a new answer. Search `spec.md` for every mention of each answered point (a figure's period, a name, a count) and update each one, including success criteria and the `## Assumptions` lines. `assumptions.md` is append-only: for an A-### the answer settles, fill in only its `tested` and `evidence` fields.
 - One term per meaning across `spec.md` and `glossary.md`.
 - Headings are unchanged and `coverage.md`'s table matches its frontmatter.
 

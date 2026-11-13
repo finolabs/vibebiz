@@ -1,5 +1,6 @@
 """Workspace layout and naming check (T013, contracts/workspace-files.md)."""
 
+import json
 import re
 import shutil
 import sys
@@ -24,6 +25,12 @@ IDEA_FILES = (
 IDEA_DIRS = ("checklists", "diagrams", "exports")
 CHECKLISTS = ("board.md", "tech.md")
 EXPORT_FILES = ("board-deck.html", "tech-prd.html", "spec.md", "data.json", "links.md")
+# Drive mode (specs/002-drive-workspace/data-model.md "Drive workspace"): index.json replaces index.html,
+# and the two HTML views are never written to Drive.
+DRIVE_WORKSPACE_FILES = ("index.json", "constitution.md")
+DRIVE_EXPORT_FILES = ("spec.md", "data.json", "links.md")
+GDOC_SUFFIX = ".gdoc"
+DUP_RE = re.compile(r"\.dup-[A-Za-z0-9_-]+$")
 SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 FOLDER_RE = re.compile(r"^(\d+)-(.*)$")
 DIAGRAM_RE = re.compile(r"^(\d{2})-(.+)\.(brief\.md|html|svg)$")
@@ -68,18 +75,19 @@ def _check_diagrams(folder, rel):
     return problems
 
 
-def _check_export_set(folder, rel):
+def _check_export_set(folder, rel, drive=False):
+    allowed = DRIVE_EXPORT_FILES if drive else EXPORT_FILES
     problems = []
     for entry in sorted(folder.iterdir()):
         if _ignored(entry.name) or (entry.name == "history" and entry.is_dir() and rel.endswith("exports")):
             continue
-        if entry.is_dir() or entry.name not in EXPORT_FILES:
-            problems.append(f"{rel}/{entry.name}: unexpected export file (allowed: {', '.join(EXPORT_FILES)})")
+        if entry.is_dir() or entry.name not in allowed:
+            problems.append(f"{rel}/{entry.name}: unexpected export file (allowed: {', '.join(allowed)})")
     return problems
 
 
-def _check_exports(folder, rel):
-    problems = _check_export_set(folder, rel)
+def _check_exports(folder, rel, drive=False):
+    problems = _check_export_set(folder, rel, drive)
     history = folder / "history"
     if history.is_dir():
         for entry in sorted(history.iterdir()):
@@ -91,11 +99,11 @@ def _check_exports(folder, rel):
             if not entry.is_dir() or not valid_date:
                 problems.append(f"{where}: history folders must be named YYYY-MM-DD or YYYY-MM-DD-N")
                 continue
-            problems += _check_export_set(entry, where)
+            problems += _check_export_set(entry, where, drive)
     return problems
 
 
-def check_idea_folder(path, example=False, rel=None):
+def check_idea_folder(path, example=False, rel=None, drive=False):
     """Return the problems of one idea (or example) folder."""
     path = Path(path)
     rel = rel or path.name
@@ -128,7 +136,7 @@ def check_idea_folder(path, example=False, rel=None):
             elif entry.name == "diagrams":
                 problems += _check_diagrams(entry, where)
             else:
-                problems += _check_exports(entry, where)
+                problems += _check_exports(entry, where, drive)
         elif entry.name not in IDEA_FILES:
             problems.append(f"{where}: unexpected file")
 
@@ -146,13 +154,27 @@ def check_idea_folder(path, example=False, rel=None):
     return problems
 
 
-def check_workspace(path):
-    """Return the problems of a vibebiz workspace (empty list = pass)."""
+def check_workspace(path, drive=False):
+    """Return the problems of a vibebiz workspace (empty list = pass).
+
+    With drive=True, `path` is a Drive workspace as the fake Drive mirrors it (evals/fake-drive, `tree/`):
+    Drive-mode names apply, and a duplicate title (`.dup-<id>`) or a file stored as a Google type (`.gdoc`)
+    is reported.
+    """
     root = Path(path)
     if not root.is_dir():
         return [f"{root}: workspace folder does not exist"]
     problems = []
-    for name in WORKSPACE_FILES:
+    if drive:
+        for entry in sorted(root.rglob("*")):
+            rel = entry.relative_to(root).as_posix()
+            if DUP_RE.search(entry.name):
+                problems.append(f"{rel}: duplicate title in one Drive folder")
+            elif entry.name.endswith(GDOC_SUFFIX):
+                problems.append(f"{rel}: stored as a Google type, not a plain file")
+        if (root / "index.html").exists():
+            problems.append("index.html: not written in Drive mode (index.json replaces it)")
+    for name in (DRIVE_WORKSPACE_FILES if drive else WORKSPACE_FILES):
         if not (root / name).is_file():
             problems.append(f"missing {name}")
 
@@ -166,7 +188,7 @@ def check_workspace(path):
             if not entry.is_dir():
                 problems.append(f"{rel}: unexpected file; specs/ holds only idea folders")
                 continue
-            problems += check_idea_folder(entry, rel=rel)
+            problems += check_idea_folder(entry, rel=rel, drive=drive)
             m = FOLDER_RE.match(entry.name)
             if m and len(m.group(1)) == 3:
                 if m.group(1) in numbers:
@@ -281,6 +303,49 @@ class Fixtures(unittest.TestCase):
                 mutate(ws)
                 problems = check_workspace(ws)
                 self.assertTrue(any(fragment in p for p in problems), problems)
+
+
+class DriveLayout(unittest.TestCase):
+    """T025: the Drive-layout check on a fake-Drive mirror (spec 002)."""
+
+    def _tree(self, mode):
+        sys.path.insert(0, str(ROOT / "evals" / "fake-drive"))
+        import fixtures  # noqa: E402
+        import server  # noqa: E402
+        tmp = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, tmp)
+        state = tmp / ".fake-drive"
+        state.mkdir()
+        (state / "drive.json").write_text(json.dumps(fixtures.build(mode)), encoding="utf-8")
+        server.Drive(str(state))  # loading saves and mirrors the live files under tree/
+        return state / "tree" / "vibebiz", server, state
+
+    def test_fixture_workspace_passes(self):
+        ws, _, _ = self._tree("one-workspace")
+        self.assertEqual(check_workspace(ws, drive=True), [])
+
+    def test_google_type_reported(self):
+        ws, _, _ = self._tree("converted-file")
+        self.assertTrue(any("stored as a Google type" in p for p in check_workspace(ws, drive=True)))
+
+    def test_duplicate_title_reported(self):
+        ws, server, state = self._tree("one-workspace")
+        drive = server.Drive(str(state))
+        root = next(f["id"] for f in drive.files.values() if f["title"] == "vibebiz")
+        server.call_tool(str(state), "create_file", {"title": "constitution.md", "parentId": root,
+                                                      "contentMimeType": "text/markdown", "textContent": "x",
+                                                      "disableConversionToGoogleType": True})
+        self.assertTrue(any("duplicate title" in p for p in check_workspace(ws, drive=True)))
+
+    def test_html_views_and_index_html_reported(self):
+        ws, _, _ = self._tree("one-workspace")
+        (ws / "index.html").write_text("x", encoding="utf-8")
+        idea = next((ws / "specs").iterdir())
+        (idea / "exports").mkdir(exist_ok=True)
+        (idea / "exports" / "board-deck.html").write_text("x", encoding="utf-8")
+        problems = check_workspace(ws, drive=True)
+        self.assertIn("index.html: not written in Drive mode (index.json replaces it)", problems)
+        self.assertTrue(any("board-deck.html: unexpected export file" in p for p in problems))
 
 
 class RepositoryContent(unittest.TestCase):

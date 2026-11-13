@@ -1,6 +1,6 @@
 # Workspace module
 
-Every entry skill loads this module first. It chooses where the workspace lives (a local folder, or Google Drive when there is none), finds the user's working folder, decides what state the folder is in, creates or repairs the workspace, numbers and names idea folders, and rebuilds the table of contents (`index.html`) after every write. The layout is a public contract: names are fixed and English, and only the idea slug varies.
+Every entry skill loads this module first. It chooses where the workspace lives (a local folder, or Google Drive when there is none, with `references/core/drive-workspace.md`), finds the user's working folder, decides what state the folder is in, creates or repairs the workspace, numbers and names idea folders, and rebuilds the table of contents (`index.html`) after every write. The layout is a public contract: names are fixed and English, and only the idea slug varies.
 
 **Reads**: the working folder, `constitution.md` frontmatter, every idea's `coverage.md` frontmatter, the plugin's `templates/` folder.
 **Writes**: workspace scaffold, idea folders, `index.html`.
@@ -8,11 +8,13 @@ Every entry skill loads this module first. It chooses where the workspace lives 
 
 Messages to the user follow `references/core/writing-rules.md`, including how to address them; the Vietnamese examples below use its default form.
 
+**A declined write is final.** When the host asks the user whether a command that writes files, or a file write, may run and the user declines (or you cannot tell whether the user or the host refused), write none of the files it would have written, by any other tool or step, in this run; that includes the section 7 restore. Stop the run there and tell the user in plain words what was not saved and that running the command again will ask again; in Drive mode, first show this session's answers in the chat as `drive-workspace.md` §3 says, so nothing is lost. A block the host makes on its own, with no question to the user, is not a decline: the refusal names a rule or a protected file, or says the command needs approval in a run where nobody is asked (for example "requires approval" or "sensitive file"); read the template and write the file instead (section 2). A refusal is the user's decline when it says the user declined, rejected it or does not want to proceed.
+
 ## 1. Choose where the workspace lives (every entry skill, before anything else)
 
 Pick the storage mode once, at the start of the skill, in this order, and keep it for the whole run. A session never uses both modes.
 
-1. **Local mode.** Look for the folder the user opened in Cowork: a user-chosen folder you can read and write with your file tools. A scratch or temporary location the platform gave you is not a working folder. When there is one, use it and continue at §2. Do not look for a Drive workspace: on the desktop the local folder wins, and the two workspaces are never synced.
+1. **Local mode.** Look for the folder the user opened in Cowork: a user-chosen folder you can read and write with your file tools. A scratch or temporary location the platform gave you is not a working folder. When there is one, use it and continue at §2. Write nothing to Google Drive for the rest of the run: on the desktop the local folder wins and the two workspaces are never synced. Reading documents to look facts up (`references/core/router.md` "Facts before questions") is allowed, read only; only `package` writes to Drive in local mode, and only the Slides or Docs the user asked for.
 2. **Drive mode.** Without a local folder, check whether the session has a Google Drive connector: tools that search the user's Drive and create files in it. When it does, continue at §1a.
 3. **Neither.** Say so plainly and stop. Write nothing, ask nothing else, do not continue partway. This happens in claude.ai chat, and in a Cowork session started on the web or in the mobile app without Google Drive connected: those run on Anthropic's servers, cannot reach a folder on the user's computer, and the files such a session keeps are not a folder the user chose. Give this message as written, in the user's language (Vietnamese by default), changing only the form of address that `references/core/writing-rules.md` sets. Add nothing before or after it: no summary of the idea, no preview of the questions to come. It names both ways forward and names the desktop app rather than "Cowork", since the user may already be in Cowork:
    - Vietnamese: "Phiên này không mở được thư mục nào trên máy tính của anh/chị và chưa nối Google Drive, nên em chưa ghi gì. Anh/chị chọn một trong hai cách rồi gõ lại lệnh này nhé: nối Google Drive trong phần kết nối (Connectors) của Cowork, để ý tưởng được lưu trong một thư mục Drive anh/chị chọn; hoặc mở ứng dụng Claude trên máy tính, vào Cowork và chọn một thư mục làm việc."
@@ -23,15 +25,13 @@ Why: an entry skill that runs without a place to save would lose every answer wh
 
 ## 1a. Drive mode
 
-Saving to Google Drive is being built (spec 002) and is not ready in this version. Give this message as written, in the user's language (Vietnamese by default), changing only the form of address; call no Drive tool, write nothing, and stop:
-
-"Bản vibebiz này chưa lưu được ý tưởng vào Google Drive. Hiện anh/chị dùng được vibebiz trong ứng dụng Claude trên máy tính: vào Cowork, chọn một thư mục làm việc rồi gõ lại lệnh này."
+Read `references/core/drive-workspace.md` and follow it for the whole run; `package` also follows section 13 of `references/core/package.md`. It finds or creates the workspace in the user's Google Drive (asking which folder when it must), checks who can see that folder before the first write, and changes files only by replacement. Every rule below about layout, markers, numbering, slugs and the table-of-contents data still applies; wherever a section below reads, creates or changes a file, do it the way that module says, never with local file tools.
 
 ## 2. Locate the workspace root and the plugin's templates
 
 **Workspace root**: the opened folder, or its `vibebiz/` subfolder when the user chose a subfolder earlier. Check the opened folder first, then `vibebiz/`. Everything below is relative to the root, and nothing is ever written outside it.
 
-**Templates**: the build copies the plugin's templates into your own skill folder, at `references/templates/` (beside `references/core/`). Read them from there: `references/templates/workspace/` and `references/templates/idea/`. When this document or another module says `templates/...`, it means that folder.
+**Templates**: the build copies the plugin's templates into your own skill folder, at `references/templates/` (beside `references/core/`). Read them from there: `references/templates/workspace/` and `references/templates/idea/`. When this document or another module says `templates/...`, it means that folder. Make a file from a template by reading the template and writing the new file (with a shell, one command that reads it and writes the copy; a command never carries workspace text such as a title on its command line, so pass such text through a scratch file written with the file tool); never use a file-copy command such as `cp` on it, which some hosts refuse because the plugin folder is protected. This applies in local mode; in Drive mode files are created through the connector (`drive-workspace.md` §3). When the host itself blocks such a command, read and write instead; a user's decline is final (top of this module).
 
 If you cannot read `references/templates/workspace/index.html`, stop the scaffold. Tell the user in plain words that the plugin looks incomplete and ask them to reinstall it. Write no workspace file: do not recreate a template from memory, because fixed templates keep every workspace identical and checkable. Work that needs no new file (reading an idea, answering `status` from existing files) may continue.
 
@@ -60,7 +60,7 @@ Unrelated files may sit beside a workspace; they never change a Complete or Part
 
 ## 4. Scaffold
 
-Create, from the templates, only what the state calls for:
+Make the scaffold's writes one call after another, never several in parallel, so that a declined write stops the rest (top of this module). Create, from the templates, only what the state calls for:
 
 1. `index.html` from `templates/workspace/index.html`.
 2. `constitution.md` from `templates/workspace/constitution.md` (status stays `deferred`; the `constitution` skill sets ground rules).
@@ -104,7 +104,7 @@ Leave no `{{` on a live line of a file you wrote. Never mark a category `clear` 
 
 ## 7. Rebuild the table of contents after every write
 
-Run this as the last step of any action that wrote or changed a workspace file, including the scaffold, a round write-back, a status change and a package. It also runs when the user deleted `index.html` and you restored it. `status` writes nothing but this.
+Run this as the last step of any action that wrote or changed a workspace file, including the scaffold, a round write-back, a status change and a package. It also runs when the user deleted `index.html` and you restored it. `status` writes nothing but this (in Drive mode, nothing at all).
 
 Only the JSON block inside `index.html` changes; the layout, styles and renderer in the file stay exactly as they are.
 
@@ -118,7 +118,7 @@ Only the JSON block inside `index.html` changes; the layout, styles and renderer
   - `outputs`: a list of `{ "label", "href" }` for what exists now, in this order, never for anything absent:
     1. `exports/board-deck.html`: label "Bản trình bày cho ban lãnh đạo", href `specs/NNN-<slug>/exports/board-deck.html`.
     2. `exports/tech-prd.html`: label "Tài liệu cho đội kỹ thuật", href likewise.
-    3. every `https://` link recorded in `exports/links.md` (Artifact, Slides, Docs), label taken from the name written beside it.
+    3. every `https://` link recorded in `exports/links.md` (Artifact, Slides, Docs) whose host is `claude.ai`, `docs.google.com` or `drive.google.com`, label taken from the name written beside it. Leave out any other link: `links.md` can be edited by anyone who can edit the workspace.
 
     Hrefs are relative to the workspace root, or `https://` only. No other scheme, no absolute paths. Use English labels instead when the idea's `language` is `en`. An idea with no exports has `"outputs": []`.
   - `updated`: `updated` from `coverage.md`.

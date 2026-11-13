@@ -9,10 +9,10 @@ Quy trình tổng quan: từ ý tưởng ban đầu của giám đốc kinh doan
 ## 1. Chuẩn bị
 
 Bạn chỉ cần:
-- **Claude Cowork**: ứng dụng trên máy tính, hoặc (từ bản 0.1.2) bản web và điện thoại.
+- **Claude Cowork**: ứng dụng trên máy tính, hoặc bản web và điện thoại.
 - Một nơi để vibebiz lưu các tệp ý tưởng, chọn một trong hai:
   - **Trên máy tính:** mở sẵn một thư mục trong Cowork. Đây là cách nên dùng nếu bạn làm việc chủ yếu trên máy.
-  - **Trên web hoặc điện thoại (từ bản 0.1.2):** nối Google Drive trong phần kết nối (Connectors) của Cowork. Lần đầu, vibebiz hỏi bạn chọn thư mục Drive nào; sau đó mọi thiết bị dùng chung thư mục ấy. Xem thêm [câu hỏi 12](faq.md#12-tôi-dùng-được-vibebiz-trên-cowork-bản-web-hoặc-điện-thoại-không).
+  - **Trên web hoặc điện thoại:** nối Google Drive trong phần kết nối (Connectors) của Cowork. Lần đầu, vibebiz hỏi bạn chọn thư mục Drive nào; sau đó mọi thiết bị dùng chung thư mục ấy. Xem thêm [câu hỏi 12](faq.md#12-tôi-dùng-được-vibebiz-trên-cowork-bản-web-hoặc-điện-thoại-không).
 - Không cần mở cửa sổ dòng lệnh (terminal) và không cần biết lập trình.
 
 ---
@@ -101,6 +101,8 @@ vibebiz sẽ:
 4. Xuất hai bộ tài liệu:
    - **Bản trình bày cho ban lãnh đạo**: Thiết kế dạng infographic trực quan, mỗi trang một thông điệp rõ ràng kèm hình ảnh lớn, không rườm rà chữ; nêu bật bài toán kinh doanh, kết quả kỳ vọng, chi phí, rủi ro và lộ trình thử nghiệm.
    - **Tài liệu cho đội kỹ thuật (PRD)**: Đầy đủ tình huống sử dụng, yêu cầu chức năng, tiêu chí nghiệm thu và tệp đặc tả kỹ thuật tương thích chuẩn Spec Kit để kỹ sư phần mềm có thể lên kế hoạch làm ngay mà không phải phỏng vấn lại bạn từ đầu.
+
+Nếu bạn dùng Cowork trên web hay điện thoại, ý tưởng nằm trong Google Drive của bạn: vibebiz lưu dữ liệu, bản sao yêu cầu và danh sách liên kết vào thư mục của ý tưởng trong Drive, còn bản trình bày và tài liệu kỹ thuật được đăng thành Artifact riêng tư (hoặc thành Google Slides và Docs nếu bạn chọn) chứ không lưu thành tệp trang web trong Drive.
 
 ---
 
