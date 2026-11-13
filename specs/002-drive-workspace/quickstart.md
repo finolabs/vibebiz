@@ -1,8 +1,8 @@
 # Quickstart: validating the Drive workspace
 
-## Gate run (T001, before any other task)
+## Connector checks (first part of the release smoke test)
 
-Run this in a real Cowork session started on the web, with Google Drive connected, using a test Google account and a test folder with fictional content. It needs no vibebiz build: give each step to Cowork as a plain prompt. Record every result, with the tool name and what it returned, in `specs/002-drive-workspace/gate-run.md`. Leave out file IDs, account names and email addresses.
+Fio decided on 13/11/2026 not to run these as a separate gate before building. Run them at the start of the release smoke test, in a real Cowork session started on the web, with Google Drive connected, using a test Google account and a test folder with fictional content. It needs no vibebiz build: give each step to Cowork as a plain prompt. Record every result, with the tool name and what it returned, in `evals/RESULTS.md`. Leave out file IDs, account names and email addresses.
 
 | # | Check | Required |
 |---|---|---|
@@ -16,7 +16,7 @@ Run this in a real Cowork session started on the web, with Google Drive connecte
 | 8 | Whether the session has a shell; whether each Drive write asks the user for approval, and whether "Always allow" exists | no (shapes docs) |
 | 9 | Repeat checks 2–6 in the Claude mobile app | no (phone support claim) |
 
-**Stop rule**: if any required check fails, stop. Do not start T002 onward. Report the result to Fio.
+**Stop rule**: if any required check fails, do not cut v0.1.2. Report the result to Fio.
 
 ## Development checks (every task)
 

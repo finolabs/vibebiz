@@ -2,11 +2,11 @@
 
 **Feature**: [spec.md](spec.md) | **Date**: 2026-11-13
 
-**Evidence base**: on 13/11/2026 I read the tool schemas of the Google Drive connector that Claude desktop exposes in this development session. They are the tool descriptions only. I made no call against a real Drive. Cowork is assumed to use the same Anthropic-hosted connector. That assumption is unproven until T001 (R1) runs in a real Cowork web session. Each finding below is labelled **schema** (read from the tool description) or **to verify** (needs T001).
+**Evidence base**: on 13/11/2026 I read the tool schemas of the Google Drive connector that Claude desktop exposes in this development session. They are the tool descriptions only. I made no call against a real Drive. Cowork is assumed to use the same Anthropic-hosted connector. That assumption stays unproven until the release smoke test runs in a real Cowork web session. Fio chose on 13/11/2026 not to run a gate before building. Each finding below is labelled **schema** (read from the tool description) or **to verify** (checked in the release smoke test).
 
-## R1. Connector capabilities: the feature gate
+## R1. Connector capabilities
 
-- **Decision**: T001 runs first. It opens a real Cowork web session with Drive connected and installs a throwaway test plugin, or uses plain prompts with no plugin. It checks the nine items in [quickstart.md](quickstart.md) "Gate run". If any item marked *required* fails, all other tasks stop and the result goes back to Fio.
+- **Decision**: build on the schema findings below. The nine connector checks in [quickstart.md](quickstart.md) "Connector checks" open the release smoke test; if a *required* one fails, v0.1.2 is not cut and the result goes back to Fio.
 - **Schema findings**:
   - `create_file` creates folders (`application/vnd.google-apps.folder`, `parentId`). It creates plain files from `textContent` with `contentMimeType`. With `disableConversionToGoogleType: true` the file stays plain. Without that flag, `text/plain` and `text/markdown` turn into Google Docs. FR-007 depends on this flag.
   - `create_file` also takes `base64Content` as a reference to a local file (`sha256:<hex>:<absolute path>`). The app reads the file once the user approves the call. If Cowork supports this, a file built in the session VM could be uploaded without being retyped (to verify).
@@ -30,7 +30,7 @@
   - Updating a file in place: the connector has no tool for it.
   - Using Google Docs as storage: breaks FR-007 and the Spec Kit handoff.
   - One file per record: breaks the fixed file names.
-- **Cost**: a question round writes about four files (coverage, spec, the record it changed, the table-of-contents data). That is about four creates and four trashes per round. Cowork may ask the user to approve each connector call (to verify, gate item 8). If it does, the docs must explain "Always allow" for the Drive connector.
+- **Cost**: a question round writes about four files (coverage, spec, the record it changed, the table-of-contents data). That is about four creates and four trashes per round. Cowork may ask the user to approve each connector call (to verify, connector check 8). If it does, the docs must explain "Always allow" for the Drive connector.
 - **Constitution note**: the "never delete or overwrite a Google file" rule in `core/package.md` covers the Slides and Docs files that were presented. It is unchanged. Workspace files are vibebiz's own records, and replacing them through the trash is how they are updated. The module states this boundary in writing.
 
 ## R3. Finding the workspace again (FR-004, FR-005)
@@ -49,7 +49,7 @@
 
 ## R4. Plain files and types (FR-007)
 
-- **Decision**: every create uses `disableConversionToGoogleType: true`. `.md` files use `contentMimeType: text/markdown` and `.json` files use `application/json`. If gate item 4 shows that `application/json` cannot be read back, `.json` files use `text/plain` and keep their `.json` title. A file whose type became a Google type counts as the user's own file and is reported, never rewritten (spec edge case).
+- **Decision**: every create uses `disableConversionToGoogleType: true`. `.md` files use `contentMimeType: text/markdown` and `.json` files use `application/json`. If connector check 4 shows that `application/json` cannot be read back, `.json` files use `text/plain` and keep their `.json` title. A file whose type became a Google type counts as the user's own file and is reported, never rewritten (spec edge case).
 - **Rationale**: a tech team must be able to download the folder and get Spec Kit files (SC-006).
 
 ## R5. Privacy check (FR-012 to FR-014)
@@ -72,7 +72,7 @@
 - **Decision**: in Drive mode the table-of-contents data lives only in `index.json`. After every write, vibebiz shows the table of contents as a private Artifact. It renders that Artifact from `templates/workspace/index.html` with the JSON block replaced, publishes it, and updates it at the same link when the platform allows. When the session has a shell, the splice is a one-off command, as in `core/package.md` step 4. Without a shell, vibebiz shows a short Markdown table in the chat and skips the Artifact.
   The board deck and tech PRD follow the same rule. They are published as private Artifacts and are never written to Drive. `links.md` records the Artifact links.
 - **Rationale**: Fio's decisions of 13/11/2026. A connector parameter cannot carry a 20–190 KB fixed template faithfully.
-- **To verify** (gate items 6 and 7): whether a Cowork web session has a shell, and whether it can publish and update a private Artifact.
+- **To verify** (connector checks 7 and 8): whether a Cowork web session has a shell, and whether it can publish and update a private Artifact.
 
 ## R8. Export history in Drive (spec Story 3, scenario 2)
 
@@ -89,8 +89,8 @@
   - a shared folder;
   - a converted file.
   The `claude plugin eval` cases for the Drive mode load it through the eval's MCP configuration. Graders inspect the fake Drive's folder, so the existing structural checks (`test_workspace`, `test_index`) can run on it.
-- **Rationale**: the real connector cannot run in headless evals. A fake with the same tool names exercises the module's instructions. The real connector is covered by T001 and the release smoke test.
-- **Risk**: the fake can drift from the real connector. To limit that, the fake's tool list carries the date of the schema read, and T001 records any difference it finds.
+- **Rationale**: the real connector cannot run in headless evals. A fake with the same tool names exercises the module's instructions. The real connector is covered by the release smoke test.
+- **Risk**: the fake can drift from the real connector. To limit that, the fake's tool list carries the date of the schema read, and the smoke test records any difference it finds.
 - **Constitution IV**: the fake lives in `evals/` and never ships, the same as `scripts/`.
 
 ## R10. Messages to the user
@@ -103,4 +103,4 @@
 
 ## R11. Version
 
-- **Decision**: v0.1.2 (Fio, 13/11/2026). The CHANGELOG lists Drive mode under Added. The constitution rule that a change to the workspace layout bumps MAJOR (Runtime and Distribution Constraints) does not fit a new storage mode that leaves the local layout untouched. A constitution amendment that clarifies this is in the plan (T002) and needs Fio's yes. Until he approves it, the Constitution Check records the tension in Complexity Tracking.
+- **Decision**: v0.1.2 (Fio, 13/11/2026). The CHANGELOG lists Drive mode under Added. The constitution rule that a change to the workspace layout bumps MAJOR (Runtime and Distribution Constraints) does not fit a new storage mode that leaves the local layout untouched. A constitution amendment that clarifies this is in the plan (amendment task) and needs Fio's yes. Until he approves it, the Constitution Check records the tension in Complexity Tracking.

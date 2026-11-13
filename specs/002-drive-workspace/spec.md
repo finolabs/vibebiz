@@ -161,7 +161,7 @@ A director who uses the desktop app with a local folder sees no change: the work
 
 ## Assumptions
 
-- Cowork's Google Drive connector, in sessions started on the web and on the phone, can search the user's Drive, read file content, create folders and plain files, update a file in place and read a file's sharing. **This is the gate for the whole feature**: the first task of the plan verifies it in a real Cowork web session; if the connector is read-only or cannot keep plain files, the feature stops and returns to Fio.
+- Cowork's Google Drive connector, in sessions started on the web and on the phone, can search the user's Drive, read file content, create folders and plain files, copy and trash files, and read a file's sharing. It cannot edit a file's content in place, so vibebiz replaces a file to change it (plan research R2). The design rests on the connector's published tool schemas; Fio decided on 13/11/2026 not to run a separate gate first. The release smoke test verifies the connector in a real Cowork web session; if it is read-only or cannot keep plain files, v0.1.2 is not cut and the result returns to Fio.
 - Cowork web and phone sessions offer the same question tool (`AskUserQuestion`) as desktop, and can publish private Artifacts.
 - A Cowork web session may have a shell in its server-side environment; Drive mode MUST NOT depend on it, because files written there are not the user's and do not persist.
 - The user signs in to Google with the account whose Drive should hold the ideas; choosing between several Google accounts is the connector's job, not vibebiz's.

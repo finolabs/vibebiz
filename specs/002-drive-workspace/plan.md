@@ -15,7 +15,7 @@ The Drive workspace keeps the contract layout as plain files, with three differe
 
 The connector cannot edit a file's content (research R1). Every write is therefore a replacement: create the new file, read it back, then trash the old one, guarded by the file's `modifiedTime`. Desktop with a local folder does not change.
 
-The first task is a gate. It checks the connector in a real Cowork web session before anything else is built.
+There is no separate gate run (Fio, 13/11/2026: "không cần đâu, tao nghĩ là chạy được mà"). The design rests on the connector schemas (research R1). The release smoke test checks the connector in real Cowork web before v0.1.2 ships.
 
 ## Technical Context
 
@@ -35,7 +35,6 @@ The first task is a gate. It checks the connector in a real Cowork web session b
 **Testing**:
 - `scripts/checks/test_*.py` structural checks, extended to `index.json`.
 - `claude plugin eval` Drive cases against the fake Drive.
-- The gate run (T001).
 - The release smoke test ([quickstart.md](quickstart.md)).
 
 **Target Platform**: Claude Cowork on desktop, web and the mobile app.
@@ -68,12 +67,12 @@ The first task is a gate. It checks the connector in a real Cowork web session b
 | II. Spec Kit Compatibility by Contract | Files stay plain Markdown (R4). A downloaded idea folder passes the compatibility check (SC-006). | Pass |
 | III. Evidence Over Agreement | Packaging rules are unchanged. Numbers come from `data.json` in Drive. | Pass |
 | IV. Self-Contained Runtime | Runtime is instructions plus connector calls. A shell is optional (splicing the table-of-contents Artifact), with a chat fallback. The fake Drive is dev-only. | Pass |
-| V. Eval-Proven Behavior | Each behavior starts from a failing Drive eval case on the fake Drive. The gate run and smoke test run before release. | Pass |
-| VI. Clean Source-Available Repository | Fixtures are fictional. The gate run records no IDs, accounts or emails. | Pass |
+| V. Eval-Proven Behavior | Each behavior starts from a failing Drive eval case on the fake Drive. The release smoke test, opening with the connector checks, runs before release. | Pass |
+| VI. Clean Source-Available Repository | Fixtures are fictional. Smoke-test records carry no IDs, accounts or emails. | Pass |
 | VII. Docs Ship With Behavior | README pair, docs, help map and PRIVACY.md are updated with the behavior (FR-015, FR-016). | Pass |
-| Runtime and Distribution Constraints: "a change to the layout … MUST bump MAJOR" | Drive mode adds `index.json` and leaves out three HTML files, but only in a new mode. The local layout is unchanged, so no existing user breaks. Fio set the version to 0.1.2. | **Tension**: see Complexity Tracking; amendment T002 |
+| Runtime and Distribution Constraints: "a change to the layout … MUST bump MAJOR" | Drive mode adds `index.json` and leaves out three HTML files, but only in a new mode. The local layout is unchanged, so no existing user breaks. Fio set the version to 0.1.2. | **Tension**: see Complexity Tracking; amendment task |
 
-Post-design re-check (after Phase 1): unchanged. The tension stays open until Fio answers T002.
+Post-design re-check (after Phase 1): unchanged. The tension stays open until Fio answers the amendment.
 
 ## Project Structure
 
@@ -85,11 +84,10 @@ specs/002-drive-workspace/
 ├── plan.md              # This file
 ├── research.md          # R1–R11
 ├── data-model.md        # storage mode, index.json, file replacement
-├── quickstart.md        # gate run, checks, evals, smoke test
+├── quickstart.md        # connector checks, dev checks, evals, smoke test
 ├── contracts/
 │   └── drive-workspace.md
 ├── checklists/requirements.md
-├── gate-run.md          # written by T001
 └── tasks.md             # Phase 2 (/speckit-tasks)
 ```
 
@@ -120,15 +118,14 @@ CHANGELOG.md  .claude-plugin/plugin.json                         # 0.1.2
 
 | Step | Delivers | Depends on |
 |---|---|---|
-| T001 Gate | `gate-run.md` from a real Cowork web session ([quickstart.md](quickstart.md)); confirms or corrects research R1, R4 and R7 | — |
-| T002 Amendments | Proposed text for the constitution (layout rule scoped to the local workspace; Drive mode as a declared variant) and for `CLAUDE.md:27`, plus the eval grader line from PR finolabs/vibebiz#4's review. Written for Fio's yes; nothing is merged without it | T001 |
-| US4 + US5 (P2, P1) | §1 storage-mode choice and the two-way message; local mode untouched; Drive cases for "no connector", "read-only" and "desktop with both" | T001 |
+| Amendments | Proposed text for the constitution (layout rule scoped to the local workspace; Drive mode as a declared variant) and for `CLAUDE.md:27`, plus the eval grader line from PR finolabs/vibebiz#4's review. Written for Fio's yes; nothing is merged without it | — |
+| US4 + US5 (P2, P1) | §1 storage-mode choice and the two-way message; local mode untouched; Drive cases for "no connector", "read-only" and "desktop with both" | — |
 | US1 (P1) | Drive discovery and folder choice, privacy check, scaffold, file replacement, `index.json` and the table-of-contents Artifact; fake Drive server | US4 + US5 |
 | US2 (P1) | Resume and status on Drive; several workspaces; renamed folder | US1 |
 | US3 (P2) | `package` in Drive mode: exports, private Artifacts, history by copy | US1 |
 | Docs and release | README pair, docs, help map, PRIVACY.md, CHANGELOG, version 0.1.2, smoke test | all |
 
-Each step merges through a reviewed pull request with code and security reviews; this change touches user data handling (constitution, Development Workflow). Each step starts from its failing eval case.
+Each step merges through a reviewed pull request with code and security reviews; this change touches user data handling (constitution, Development Workflow). Each step starts from its failing eval case. The release smoke test opens with the connector checks from [quickstart.md](quickstart.md); a failure there stops the release and goes back to Fio.
 
 ## Complexity Tracking
 
@@ -137,4 +134,4 @@ Each step merges through a reviewed pull request with code and security reviews;
 | Write by replacement (create, read back, trash old) | The connector cannot edit a file's content (R1) | Google Docs as storage breaks plain Spec Kit files; one file per record breaks the fixed names |
 | `index.json` in Drive mode only | A marker that search can find exactly, across devices and after renames; and no 20 KB template has to be retyped | A remembered folder ID has nowhere to live across devices; searching for `constitution.md` is ambiguous |
 | Fake Drive MCP server in `evals/` | Headless evals cannot reach the real connector | Testing only by hand in Cowork leaves the behavior unguarded (constitution V) |
-| Version 0.1.2 despite the MAJOR-bump rule | Fio's decision on 13/11/2026; the local layout, the only one existing users have, is unchanged | Bumping to 0.2.0 or 1.0.0 contradicts Fio; amending the constitution needs his yes (T002) |
+| Version 0.1.2 despite the MAJOR-bump rule | Fio's decision on 13/11/2026; the local layout, the only one existing users have, is unchanged | Bumping to 0.2.0 or 1.0.0 contradicts Fio; amending the constitution needs his yes (amendment task) |

@@ -33,4 +33,4 @@
 
 - Names of the product surfaces (Cowork, Google Drive connector, Artifacts, Spec Kit) are the product's own platform and contract, not implementation choices; they stay.
 - FR-010 (table of contents rendered as a private Artifact, data kept in Drive) confirmed by Fio on 13/11/2026.
-- The connector-capability assumption is the feature's gate: the plan's first task verifies it in a real Cowork web session.
+- The connector-capability assumption is verified in the release smoke test, not by a gate before building (Fio, 13/11/2026).
