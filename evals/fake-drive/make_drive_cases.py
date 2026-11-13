@@ -253,7 +253,7 @@ def rename_and_edit(data):
 # T033
 write_case("drive-resume", "Another device, same Drive: continue finds the renamed workspace without asking where it is, resumes at the first open category and keeps a hand edit (spec 002 US2).",
            "one-workspace", RESUME, [
-               regex("hand-edit-kept", TREE + "/" + RENAMED + "/specs/*/decisions.md", "HAND-EDIT-MARKER"),
+               regex("hand-edit-kept", TREE + "/" + RENAMED + "/specs/001-giu-chan-khach-cu/decisions.md", "HAND-EDIT-MARKER"),
                regex("user-file-untouched", CALLS, '"tool": "(create_file|trash_file)"[^\\n]*"s0001"', "not_contains"),
                regex("nothing-at-root", CALLS, '"tool": "create_file"[^\\n]*"parentId": "root"', "not_contains"),
                *never_share(),

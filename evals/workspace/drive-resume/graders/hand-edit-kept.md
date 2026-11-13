@@ -1,6 +1,6 @@
 ---
 type: regex
-target: { source: 'file', path: '.fake-drive/tree/Ban hang 2026/specs/*/decisions.md' }
+target: { source: 'file', path: '.fake-drive/tree/Ban hang 2026/specs/001-giu-chan-khach-cu/decisions.md' }
 pattern: 'HAND-EDIT-MARKER'
 flags: ''
 match: 'contains'
