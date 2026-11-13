@@ -453,7 +453,11 @@ def need_write(drive, adds_bytes=True):
 
 
 def maybe_bump(drive, f):
-    if f["title"] in drive.data["bump_after_read"] and f["title"] not in drive.data["bumped"]:
+    # bump_while_writing: the edit lands on the first content read after vibebiz started writing
+    # files, i.e. between the read a replacement is built from and the replacement itself.
+    due = f["title"] in drive.data["bump_after_read"] or (
+        f["title"] in drive.data.get("bump_while_writing", []) and drive.data.get("writing"))
+    if due and f["title"] not in drive.data["bumped"]:
         drive.data["bumped"].append(f["title"])
         f["content"] = f.get("content", "") + "\n<!-- edited on another device -->\n"
         f["modifiedTime"] = drive.tick()
@@ -527,6 +531,8 @@ def t_download_file_content(drive, a):
 def t_create_file(drive, a):
     # Real Drive usually still creates folders when the quota is exhausted.
     need_write(drive, adds_bytes=a.get("contentMimeType") != FOLDER)
+    if a.get("contentMimeType") != FOLDER:
+        drive.data["writing"] = True
     title = a.get("title")
     if not isinstance(title, str) or not title:
         raise DriveError("title is required and must be text")

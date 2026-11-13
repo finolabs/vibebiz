@@ -155,6 +155,24 @@ class Modes(Base):
         after = self.call("get_file_metadata", fileId=idx["id"])
         self.assertNotEqual(after["modifiedTime"], idx["modifiedTime"])
 
+    def test_bump_while_writing_waits_for_the_first_write(self):
+        # drive-replace-changed: reads before any write leave the file alone; the first read after
+        # a write starts is the one the replacement is built from, and the edit lands right after it.
+        fixtures.main(["fixtures.py", "one-workspace", self.ws])
+        state = os.path.join(self.root, "drive.json")
+        with open(state, encoding="utf-8") as fh:
+            data = json.load(fh)
+        data["bump_while_writing"] = ["index.json"]
+        with open(state, "w", encoding="utf-8") as fh:
+            json.dump(data, fh)
+        idx = self.find("title = 'index.json'")[0]
+        self.call("download_file_content", fileId=idx["id"])
+        self.assertEqual(self.call("get_file_metadata", fileId=idx["id"])["modifiedTime"], idx["modifiedTime"])
+        self.call("create_file", title="n.md", contentMimeType="text/markdown", textContent="x",
+                  disableConversionToGoogleType=True)
+        self.call("download_file_content", fileId=idx["id"])
+        self.assertNotEqual(self.call("get_file_metadata", fileId=idx["id"])["modifiedTime"], idx["modifiedTime"])
+
     def test_forged_ack_was_written_by_someone_else(self):
         fixtures.main(["fixtures.py", "forged-ack", self.ws])
         idx = self.find("title = 'index.json'")[0]

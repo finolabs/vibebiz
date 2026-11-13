@@ -49,11 +49,13 @@ def never_share():
 
 
 def write_case(folder, desc, mode, prompt, graders, env=WEB, bumps=(), tags=("workspace", "drive", "us1", "drive-write"),
-               mutate=None):
+               mutate=None, writing_bumps=()):
     path = os.path.join("evals", "workspace", folder)
     os.makedirs(os.path.join(path, "graders"), exist_ok=True)
     data = fixtures.build(mode)
     data["bump_after_read"] = list(bumps)
+    if writing_bumps:
+        data["bump_while_writing"] = list(writing_bumps)
     if mutate:
         mutate(data)
     with open(os.path.join(path, "case.yaml"), "w", encoding="utf-8") as fh:
@@ -94,7 +96,9 @@ write_case("drive-empty", "Web, empty Drive: idea creates the contract layout in
                regex("conversion-off", CALLS, '"tool": "create_file"[^\\n]*"disableConversionToGoogleType": false', "not_contains"),
                regex("user-file-unread", CALLS, '"fileId": "s0001"', "not_contains"),
                *never_share(),
-               llm("saved-before-asking", """The transcript is a vibebiz run on a fake Google Drive. PASS if, every time the assistant calls AskUserQuestion after the first round, the idea's coverage.md (and the answers of the round before) were already written to Drive with a create_file call earlier in the transcript, and if the user is shown a table of contents of the workspace (an Artifact link or a short table in chat). FAIL if a round of questions is asked while the previous round's answers exist only in chat, or if no table of contents is shown."""),
+               # Saved before asking: the question tool is off in headless runs, so the round is shown in the
+               # final message, after every tool call; the idea files above prove what was saved by then.
+               llm("round-and-toc-shown", "This is the final message of a vibebiz run that saved a new idea to the user's Google Drive. PASS if it shows a round of questions about the idea (or says the round was skipped with nobody to answer) and a table of contents of the workspace (an Artifact link or a short table listing the idea with its status and next step), in plain Vietnamese. FAIL if there is no table of contents, or it claims answers the user never gave.", last=True),
            ])
 
 # T011
@@ -193,7 +197,7 @@ write_case("drive-replace-changed", "A file changed on another device between re
                regex("index-not-trashed", CALLS, '"tool": "trash_file"[^\\n]*"s0003"', "not_contains"),
                *never_share(),
                llm("stopped-and-asked", "Between vibebiz reading index.json in the Drive workspace and writing its replacement, the file was changed elsewhere (its modifiedTime moved). PASS if the assistant notices the change, does not trash or overwrite the changed file, and tells the user or asks how to proceed. FAIL if it replaces the changed file as if nothing happened."),
-           ], bumps=("index.json",))
+           ], writing_bumps=("index.json",))
 
 # T023
 write_case("drive-converted-file", "A workspace record stored as a Google Doc is the user's own: reported, not rewritten (FR-007).",

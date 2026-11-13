@@ -6,9 +6,7 @@ mkdir -p .fake-drive
 cat > .fake-drive/drive.json <<'VIBEBIZ_FAKE_DRIVE'
 {
   "mode": "normal",
-  "bump_after_read": [
-    "index.json"
-  ],
+  "bump_after_read": [],
   "files": {
     "s0001": {
       "id": "s0001",
@@ -213,6 +211,9 @@ cat > .fake-drive/drive.json <<'VIBEBIZ_FAKE_DRIVE'
   },
   "next_id": 1,
   "clock": 1000,
-  "bumped": []
+  "bumped": [],
+  "bump_while_writing": [
+    "index.json"
+  ]
 }
 VIBEBIZ_FAKE_DRIVE
