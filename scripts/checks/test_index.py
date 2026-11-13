@@ -200,7 +200,7 @@ def check_index(path, workspace=None):
 
 DRIVE_KEYS = ("vibebiz", "storage", "toc_artifact", "plugin_version", "shared_ack")
 SHARED_ACK_KEYS = ("date", "who", "ids")
-HTML_VIEWS = ("exports/board-deck.html", "exports/tech-prd.html")
+HTML_VIEWS = ("board-deck.html", "tech-prd.html")
 VERSION_RE = re.compile(r"^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$")
 
 
@@ -243,8 +243,9 @@ def check_index_json(path, workspace=None):
                 if key in ack and not (isinstance(value, list) and value
                                        and all(isinstance(v, str) and v.strip() for v in value)):
                     problems.append(f"shared_ack.{key}: must be a non-empty list of text")
-            if isinstance(ack.get("who"), list) and any("@" in str(v) for v in ack["who"]):
-                problems.append("shared_ack.who: must not hold an email address (show names, compare ids)")
+            for key in ("who", "ids"):
+                if isinstance(ack.get(key), list) and any("@" in str(v) for v in ack[key]):
+                    problems.append(f"shared_ack.{key}: must not hold an email address (show names, compare ids)")
     toc_data = {k: v for k, v in data.items() if k not in DRIVE_KEYS}
     problems += check_data(toc_data, path.parent if workspace is None else workspace)
     for key in ("ideas", "examples"):
@@ -252,8 +253,11 @@ def check_index_json(path, workspace=None):
         for i, item in enumerate(items):
             outputs = item.get("outputs") if isinstance(item, dict) else None
             for out in outputs if isinstance(outputs, list) else []:
-                if out in HTML_VIEWS:
-                    problems.append(f"{key}[{i}].outputs: Drive mode never stores {out} (spec 002 FR-009)")
+                # Outputs are {label, href} objects (core/workspace.md) or plain strings.
+                href = out.get("href") if isinstance(out, dict) else out
+                name = href.rsplit("/", 1)[-1] if isinstance(href, str) else None
+                if name in HTML_VIEWS:
+                    problems.append(f"{key}[{i}].outputs: Drive mode never stores {name} (spec 002 FR-009)")
     return problems
 
 
@@ -309,7 +313,9 @@ class DriveIndex(unittest.TestCase):
         "invalid_index_toc.json": "toc_artifact: must be a link or null",
         "invalid_index_shared_ack_email.json": "shared_ack.who: must not hold an email address",
         "invalid_index_shared_ack_shape.json": "shared_ack: missing field 'ids'",
-        "invalid_index_html_output.json": "ideas[0].outputs: Drive mode never stores exports/board-deck.html",
+        "invalid_index_shared_ack_id_email.json": "shared_ack.ids: must not hold an email address",
+        "invalid_index_html_output.json": "ideas[0].outputs: Drive mode never stores board-deck.html",
+        "invalid_index_html_path.json": "ideas[0].outputs: Drive mode never stores tech-prd.html",
         "invalid_index_missing_idea.json": "folder specs/002-bao-cao-ban-hang-tuan is not listed",
     }
 

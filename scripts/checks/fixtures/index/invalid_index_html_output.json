@@ -20,7 +20,10 @@
       },
       "next_step": "Trình ban điều hành",
       "outputs": [
-        "exports/board-deck.html"
+        {
+          "label": "Bản trình bày",
+          "href": "specs/001-nhac-khach-cu-quay-lai/exports/board-deck.html"
+        }
       ],
       "updated": "2026-11-12"
     },

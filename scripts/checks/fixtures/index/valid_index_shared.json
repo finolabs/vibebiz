@@ -30,8 +30,10 @@
       },
       "next_step": "Trình ban điều hành",
       "outputs": [
-        "https://claude.ai/artifact/fictional-board",
-        "https://claude.ai/artifact/fictional-tech"
+        {
+          "label": "Bản trình bày",
+          "href": "https://claude.ai/artifact/fictional-board"
+        }
       ],
       "updated": "2026-11-12"
     },
