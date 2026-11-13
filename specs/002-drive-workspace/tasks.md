@@ -279,7 +279,7 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
   - **Slides and Docs:** the rules stay as they are.
   - **Writes line:** update it.
 - [x] T045 [US3] Update `skills/package/SKILL.md` so it points to the Drive-mode section and still publishes nothing when the mode is `none`. Update `docs/commands.md` and the package section of `docs/quick-start.md` so they say what package produces in Drive mode (constitution VII). Run vietnamizer on the changed Vietnamese.
-- [ ] T046 [US3] Run `python3 scripts/build_plugin.py`, then T040–T042, then `python3 scripts/checks/test_package_check.py`. Record the outcomes in `evals/RESULTS.md`.
+- [x] T046 [US3] Run `python3 scripts/build_plugin.py`, then T040–T042, then `python3 scripts/checks/test_package_check.py`. Record the outcomes in `evals/RESULTS.md`. 14/11/2026: `test_package_check.py` OK; `drive-package`, `drive-repackage` (after the history-level fix), `drive-package-shared` and `drive-package-forged-links` pass; `drive-package-injected` stops because the fake returns base64 and the eval has no shell (the same open item as `drive-replace-file-permissions`, T049).
 
 **Checkpoint**: a director can package an idea from the web, with the same numbers in every view.
 
@@ -317,7 +317,7 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
   - [x] Host block: shown in UAT rounds 1–2 (`cp` refused as a sensitive file, then read-and-write); no separate case.
   - Not vibebiz defects: Antigravity loads the user's global rules, so it addressed the user as "mày/tao"; its closing links point at its own `~/.gemini` brain files.
   - [x] claude.ai web, Drive mode (13/11/2026, after the outage, build 1e97273): plain words fire `idea` and `package`; the question tool works (skip, free text, multi-select); the "cả quý" correction is applied; `status` in a new chat finds "vibebiz-uat", writes nothing, asks nothing; `package` publishes both views as private Artifacts ("Only you"), `exports/` in Drive holds exactly `data.json`, `spec.md`, `links.md`; the folder stays private; nothing shared. `package_check` was not run on the web output.
-  - [ ] Web observations, not fixed: reading plugin references with a shell command makes claude.ai warn "may write to Claude Code's own settings files" (the Read tool avoids it); per-file write prompts are many, but a user can choose Always allow once (Fio). Host effects, not vibebiz: the account's personal preferences made the first line say "Tao"; claude.ai memory recalled an earlier chat's idea.
+  - [x] Web observations: reading plugin references with a shell command makes claude.ai warn "may write to Claude Code's own settings files" (the Read tool avoids it); per-file write prompts are many, but a user can choose Always allow once (Fio). 14/11/2026: `core/workspace.md` §2 now reads every file under `references/` with the file-reading tool; only template commands use a shell. Not yet rechecked on claude.ai (T049). Host effects, not vibebiz: the account's personal preferences made the first line say "Tao"; claude.ai memory recalled an earlier chat's idea.
   - [x] Cowork Drive mode: first blocked by the Google Drive connector outage (claude.ai and this session's Drive tools both fail). In the first claude.ai chat, the stop message improvised "lỗi tạm thời, chờ một phút" instead of `core/drive-workspace.md` §1's message.
   - [ ] Cowork desktop cannot be driven from this session (the app is not in computer-use's list); Fio runs it with T049.
   - [ ] Open: `workspace-drive-replace-file-permissions` reads the fake Drive's base64 download without a shell; check in real Cowork whether the download tool returns base64.
@@ -336,9 +336,12 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
 
 ### Follow-ups for 0.1.3
 
-- [ ] T057 `core/router.md` "Facts before questions": the local-mode clause ("whenever you cannot tell") makes the router ask before every outside fact in local mode. Record the decision, or let only a folder that is visibly local and not synced or shared skip the question, keeping "ask when you cannot tell"; add local-mode eval cases for both, including one with unknown visibility that still asks, and a security review of the change (round-3 reviewers of PR #11, PR #13 security review).
-- [ ] T058 Fake Drive fidelity: a copy in a shared drive should name the copier as last modifier, and `create_file` should inherit `driveId` from a shared-drive parent (`evals/fake-drive/server.py`), with tests.
-- [ ] T059 Rerun `workspace-drive-shared-drive` and `workspace-drive-shared-folder` with a per-case ceiling above 1 USD: their judge grader was skipped by the ceiling on 13/11/2026.
+- [x] T057 `core/router.md` "Facts before questions": the local-mode clause ("whenever you cannot tell") makes the router ask before every outside fact in local mode. Record the decision, or let only a folder that is visibly local and not synced or shared skip the question, keeping "ask when you cannot tell"; add local-mode eval cases for both, including one with unknown visibility that still asks, and a security review of the change (round-3 reviewers of PR #11, PR #13 security review).
+  - 14/11/2026, settled for 0.1.3: a document the user named, attached or asked vibebiz to search is the user's choice, so its fact is written with its source and the user is told; a document vibebiz found on its own still needs the user's yes wherever the file may be seen by others, including any local folder (fail closed). Two runs showed the model reads "tìm trong Drive của tao" as that choice, which matches the product intent. Case `evals/workspace/local-asked-lookup-sourced` passes. The found-on-its-own branch has no headless case yet: a run cannot be made to search unprompted reliably; check it by hand in T049. The PR #15 security review found the first wording let a planted pointer count as the user's request; the rule now counts only the user's own messages, and a shared Drive workspace needs the user to name the document (case `drive-planted-lookup`). Still open in T060.
+- [x] T058 Fake Drive fidelity: a copy in a shared drive should name the copier as last modifier, and `create_file` should inherit `driveId` from a shared-drive parent (`evals/fake-drive/server.py`), with tests. Done 14/11/2026, with a fake `get_shared_drive_metadata` so the drive can be named; 63 tests.
+- [x] T059 Rerun `workspace-drive-shared-drive` and `workspace-drive-shared-folder` with a per-case ceiling above 1 USD: their judge grader was skipped by the ceiling on 13/11/2026. 14/11/2026: `drive-shared-folder` passed; `drive-shared-drive` failed twice (the message named neither the drive nor the last modifier), fixed by naming both in the §2 step 4 message and giving the fake Drive the drive's name, then passed.
+
+- [ ] T060 T057 leftovers: a headless case where vibebiz finds a document on its own (no user request, no planted pointer) and must ask before writing its fact, and one with unknown local visibility; until then, check both by hand in T049.
 
 ---
 
@@ -352,7 +355,7 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
 - **US1 (T019–T032)** depends on US4 + US5, because §1 has to choose Drive mode before US1 can use it.
 - **US2 (T033–T039) and US3 (T040–T046)** both depend on US1 and are independent of each other.
 - **Release (T047–T050)** depends on every story. T049 and T050 come last; 0.1.2 was released without T049, which stays open (see T050).
-- **Follow-ups (T057–T059)** belong to 0.1.3 and depend on nothing else in this spec.
+- **Follow-ups (T057–T060)** belong to 0.1.3 (T060 stays open) and depend on nothing else in this spec.
 
 ### Within each story
 

@@ -7,6 +7,9 @@ cat > .fake-drive/drive.json <<'VIBEBIZ_FAKE_DRIVE'
 {
   "mode": "normal",
   "bump_after_read": [],
+  "shared_drives": {
+    "shared-drive-1": "Kinh doanh miền Nam (hư cấu)"
+  },
   "files": {
     "s0001": {
       "id": "s0001",
