@@ -26,7 +26,7 @@ Read only; change nothing in an idea's files. If a `coverage.md` is missing or i
 
 ## 3. Rebuild the table of contents
 
-Rebuild the table of contents by the workspace module's rules, restoring it if it was deleted. This is the only file this skill writes.
+Rebuild the table of contents by the workspace module's rules, restoring it if it was deleted. This is the only file this skill writes. In Drive mode write no file: restore `index.json` only when it is missing, and show the table of contents as `references/core/drive-workspace.md` §5 step 2 says.
 
 ## 4. Show the list
 

@@ -49,8 +49,8 @@ def never_share():
 
 
 def write_case(folder, desc, mode, prompt, graders, env=WEB, bumps=(), tags=("workspace", "drive", "us1", "drive-write"),
-               mutate=None, writing_bumps=()):
-    path = os.path.join("evals", "workspace", folder)
+               mutate=None, writing_bumps=(), suite="workspace"):
+    path = os.path.join("evals", suite, folder)
     os.makedirs(os.path.join(path, "graders"), exist_ok=True)
     data = fixtures.build(mode)
     data["bump_after_read"] = list(bumps)
@@ -59,7 +59,7 @@ def write_case(folder, desc, mode, prompt, graders, env=WEB, bumps=(), tags=("wo
     if mutate:
         mutate(data)
     with open(os.path.join(path, "case.yaml"), "w", encoding="utf-8") as fh:
-        fh.write('schema_version: "1.1"\nname: workspace-%s\ncontext:\n  scaffold_script: scaffold.sh\n' % folder)
+        fh.write('schema_version: "1.1"\nname: %s-%s\ncontext:\n  scaffold_script: scaffold.sh\n' % (suite, folder))
     with open(os.path.join(path, "scaffold.sh"), "w", encoding="utf-8") as fh:
         fh.write("#!/usr/bin/env bash\n# Seeds the fake Google Drive with fixtures.py mode '%s'%s (fictional).\n"
                  "# Generated; run with: claude plugin eval ... --scaffold\nset -euo pipefail\nmkdir -p .fake-drive\n"
@@ -213,3 +213,75 @@ write_case("drive-full", "Drive is full: vibebiz says so, stops writing and show
                *never_share(),
                llm("full-reported", "The user's Google Drive is full: every create returns a quota error. PASS if the final message says in plain Vietnamese that Google Drive is full, that vibebiz stopped saving, and shows the idea details from this session in the chat so nothing is lost. FAIL if it claims to have saved, or loses the user's words.", last=True),
            ])
+
+
+# ---------------------------------------------------------------- Phase 5 (US2): continue on another device
+
+def ids_under(data, root_title):
+    """Ids of a workspace folder (by its root folder's title) and everything inside it."""
+    files = data["files"]
+    roots = {i for i, f in files.items() if f["title"] == root_title and f["parentId"] == "root"}
+    found, grew = set(roots), True
+    while grew:
+        grew = False
+        for i, f in files.items():
+            if i not in found and f["parentId"] in found:
+                found.add(i)
+                grew = True
+    return sorted(found)
+
+
+def no_write_into(name, ids):
+    alt = "|".join(ids)
+    return regex(name, CALLS, '"tool": "(create_file|trash_file|copy_file)"[^\\n]*"(parentId|fileId)": "(%s)"[^\\n]*"ok": true' % alt,
+                 "not_contains")
+
+
+RESUME = "/vibebiz:continue Làm tiếp ý tưởng nhắc khách quay lại cửa hàng. %s" % NOANSWER
+RENAMED = "Ban hang 2026"
+HAND = "HAND-EDIT-MARKER: ghi tay trên điện thoại, không phải của vibebiz."
+
+
+def rename_and_edit(data):
+    for f in data["files"].values():
+        if f["title"] == "vibebiz" and f["parentId"] == "root":
+            f["title"] = RENAMED
+        if f["title"] == "decisions.md":
+            f["content"] += "\n- date: 2026-11-13\n- type: note\n- text: %s\n" % HAND
+
+
+# T033
+write_case("drive-resume", "Another device, same Drive: continue finds the renamed workspace without asking where it is, resumes at the first open category and keeps a hand edit (spec 002 US2).",
+           "one-workspace", RESUME, [
+               regex("hand-edit-kept", TREE + "/" + RENAMED + "/specs/*/decisions.md", "HAND-EDIT-MARKER"),
+               regex("user-file-untouched", CALLS, '"tool": "(create_file|trash_file)"[^\\n]*"s0001"', "not_contains"),
+               regex("nothing-at-root", CALLS, '"tool": "create_file"[^\\n]*"parentId": "root"', "not_contains"),
+               *never_share(),
+               llm("resumed-without-asking", "The user's Drive holds exactly one vibebiz workspace, in a folder the user renamed to \"%s\"; its idea (nhắc khách quay lại) has every category clear except two partial ones: non-functional needs and cost, resources and return. PASS if the assistant asks no question about where the workspace is or which folder to use, names the folder it found in at most one short sentence, and goes on with the idea at one of the two partial categories (non-functional needs, or cost and return). FAIL if it asks the user to choose or confirm a folder, or starts the idea over." % RENAMED),
+           ], tags=("workspace", "drive", "us2"), mutate=rename_and_edit)
+
+
+_two = fixtures.build("two-workspaces")
+# T034
+write_case("drive-two-workspaces", "Two vibebiz workspaces in Drive: the user is asked which one, each named with its last update; the one chosen in the prompt is used and the other gets no write (spec 002 US2).",
+           "two-workspaces", "/vibebiz:continue Làm tiếp ý tưởng nhắc khách quay lại cửa hàng. Nếu có nhiều thư mục ý tưởng thì dùng thư mục \"Ý tưởng 2026\". %s" % NOANSWER, [
+               no_write_into("other-untouched", ids_under(_two, "vibebiz")),
+               *never_share(),
+               llm("asked-which", "The user's Drive holds two vibebiz workspaces, \"vibebiz\" and \"Ý tưởng 2026\", and the user's message says to use \"Ý tưởng 2026\" when there are several. PASS if the assistant either asks which workspace to use (naming both folders, ideally with when each was last updated) or, since the message already chose, says it found two and is using \"Ý tưởng 2026\"; and it then works in \"Ý tưởng 2026\". FAIL if it silently picks \"vibebiz\", or never mentions that there are two."),
+           ], tags=("workspace", "drive", "us2"))
+
+# T035
+write_case("drive-status", "status in Drive mode answers from index.json and coverage.md and writes no file; the table of contents is the chat table (spec 002 US2).",
+           "one-workspace", "/vibebiz:status", [
+               regex("no-write", CALLS, '"tool": "(create_file|trash_file|copy_file)"[^\\n]*"ok": true', "not_contains"),
+               *never_share(),
+               llm("status-listed", "The user's Drive workspace holds one idea, \"Nhắc khách quay lại cửa hàng qua ứng dụng chat\", packaged, with 13 of 15 points clear. PASS if the final message lists that idea with its status and progress (13 of 15, or the same in words) and a next step, in plain Vietnamese, and does not claim to have changed anything. FAIL if the idea is missing, its progress is wrong, or it lists the fictional example as a separate idea.", last=True),
+           ], tags=("index", "drive", "us2"), suite="index")
+
+# T036
+write_case("drive-newer-version", "A workspace written by a newer vibebiz: continue reads it but rewrites nothing in an older shape and asks the user to update vibebiz (spec 002 US2).",
+           "newer-version", RESUME, [
+               regex("no-write", CALLS, '"tool": "(create_file|trash_file|copy_file)"[^\\n]*"ok": true', "not_contains"),
+               *never_share(),
+               llm("asked-to-update", "The user's Drive workspace was written by a newer version of vibebiz than the one running. PASS if the assistant tells the user in plain Vietnamese that the workspace comes from a newer vibebiz, that it changed nothing, and that they should update vibebiz before going on. FAIL if it writes or replaces files, or says nothing about the version."),
+           ], tags=("workspace", "drive", "us2"))
