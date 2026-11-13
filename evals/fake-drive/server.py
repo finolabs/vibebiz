@@ -47,6 +47,14 @@ def unlink_if_link(path):
         os.unlink(path)
 
 
+def refuse_links(root):
+    """Fail closed when the state folder or any state file is a symlink (never read or write through one)."""
+    for path in (root, os.path.join(root, "drive.json"), os.path.join(root, "tree"),
+                 os.path.join(root, "calls.jsonl")):
+        if os.path.islink(path):
+            raise DriveError("Refused: the fake Drive state at %s is a symlink" % os.path.basename(path))
+
+
 def safe_component(title):
     """Encode one Drive title as a single, harmless path component for the mirror tree."""
     out = title.replace("%", "%25").replace("/", "%2F").replace("\\", "%5C").replace("\0", "%00")
@@ -503,10 +511,10 @@ def t_copy_file(drive, a):
     parent = a.get("parentId") or src.get("parentId", "root")
     if parent != "root" and drive.get(parent)["mimeType"] != FOLDER:
         raise DriveError("Parent is not a folder")
-    now = drive.tick()
-    f = dict(src)
     if a.get("title") is not None and not isinstance(a["title"], str):
         raise DriveError("title must be text")
+    now = drive.tick()
+    f = dict(src)
     f.update({"id": drive.new_id(), "title": a.get("title") or "Copy of " + src["title"],
               "parentId": parent, "modifiedTime": now, "createdTime": now, "permissions": []})
     f.pop("trashed", None)
@@ -624,6 +632,7 @@ def log_call(root, name, args, result, error):
 
 
 def call_tool(root, name, args):
+    refuse_links(root)  # nothing is read, written or logged through a link
     drive = Drive(root)
     try:
         try:
