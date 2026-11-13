@@ -1,4 +1,5 @@
-"""Table-of-contents data check (T014, data-model.md "Table of contents data")."""
+"""Table-of-contents data check (T014, data-model.md "Table of contents data"), and the Drive-mode
+index.json (spec 002 T006)."""
 
 import json
 import re
@@ -197,6 +198,65 @@ def check_index(path, workspace=None):
     return problems + check_data(data, path.parent if workspace is None else workspace)
 
 
+DRIVE_KEYS = ("vibebiz", "storage", "toc_artifact", "plugin_version", "shared_ack")
+SHARED_ACK_KEYS = ("date", "who", "ids")
+HTML_VIEWS = ("exports/board-deck.html", "exports/tech-prd.html")
+VERSION_RE = re.compile(r"^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$")
+
+
+def check_index_json(path, workspace=None):
+    """Return the problems of a Drive-mode index.json (empty list = pass).
+
+    Same table-of-contents rules as the index.html block, plus the Drive fields of
+    specs/002-drive-workspace/data-model.md "index.json".
+    """
+    path = Path(path)
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError) as exc:
+        return [f"{path}: cannot read: {exc}"]
+    except json.JSONDecodeError as exc:
+        return [f"{path.name} is not valid JSON: {exc}"]
+    if not isinstance(data, dict):
+        return ["index.json must be a JSON object"]
+    problems = [f"data: missing field {k!r}" for k in DRIVE_KEYS if k not in data]
+    if "vibebiz" in data and data["vibebiz"] != "workspace":
+        problems.append("vibebiz: must be 'workspace' (the marker discovery looks for)")
+    if "storage" in data and data["storage"] != "drive":
+        problems.append("storage: must be 'drive'")
+    toc = data.get("toc_artifact")
+    if "toc_artifact" in data and toc is not None and not (isinstance(toc, str) and toc.startswith("https://")):
+        problems.append("toc_artifact: must be a link or null")
+    version = data.get("plugin_version")
+    if "plugin_version" in data and not (isinstance(version, str) and VERSION_RE.match(version)):
+        problems.append(f"plugin_version {version!r} must be a version such as 0.1.2")
+    ack = data.get("shared_ack")
+    if ack is not None:
+        if not isinstance(ack, dict):
+            problems.append("shared_ack: must be an object or null")
+        else:
+            problems += _check_keys(ack, SHARED_ACK_KEYS, "shared_ack")
+            if "date" in ack and not _is_date(ack["date"]):
+                problems.append(f"shared_ack: date {ack['date']!r} must be a YYYY-MM-DD date")
+            for key in ("who", "ids"):
+                value = ack.get(key)
+                if key in ack and not (isinstance(value, list) and value
+                                       and all(isinstance(v, str) and v.strip() for v in value)):
+                    problems.append(f"shared_ack.{key}: must be a non-empty list of text")
+            if isinstance(ack.get("who"), list) and any("@" in str(v) for v in ack["who"]):
+                problems.append("shared_ack.who: must not hold an email address (show names, compare ids)")
+    toc_data = {k: v for k, v in data.items() if k not in DRIVE_KEYS}
+    problems += check_data(toc_data, path.parent if workspace is None else workspace)
+    for key in ("ideas", "examples"):
+        items = data.get(key) if isinstance(data.get(key), list) else []
+        for i, item in enumerate(items):
+            outputs = item.get("outputs") if isinstance(item, dict) else None
+            for out in outputs if isinstance(outputs, list) else []:
+                if out in HTML_VIEWS:
+                    problems.append(f"{key}[{i}].outputs: Drive mode never stores {out} (spec 002 FR-009)")
+    return problems
+
+
 class Fixtures(unittest.TestCase):
     EXPECTED = {
         "invalid_no_block.html": f'no <script type="application/json" id="{BLOCK_ID}"> block',
@@ -235,6 +295,45 @@ class RepositoryContent(unittest.TestCase):
         data, problems = read_block(path)
         self.assertEqual(problems, [])
         self.assertIsNotNone(data)
+
+
+class DriveIndex(unittest.TestCase):
+    """index.json, the Drive-mode table-of-contents data (spec 002 data-model "index.json")."""
+
+    EXPECTED = {
+        "invalid_index_json.json": "is not valid JSON",
+        "invalid_index_marker.json": "vibebiz: must be 'workspace'",
+        "invalid_index_storage.json": "storage: must be 'drive'",
+        "invalid_index_missing_field.json": "data: missing field 'plugin_version'",
+        "invalid_index_version.json": "plugin_version 'latest' must be a version",
+        "invalid_index_toc.json": "toc_artifact: must be a link or null",
+        "invalid_index_shared_ack_email.json": "shared_ack.who: must not hold an email address",
+        "invalid_index_shared_ack_shape.json": "shared_ack: missing field 'ids'",
+        "invalid_index_html_output.json": "ideas[0].outputs: Drive mode never stores exports/board-deck.html",
+        "invalid_index_missing_idea.json": "folder specs/002-bao-cao-ban-hang-tuan is not listed",
+    }
+
+    def test_valid_index_json_passes(self):
+        for name in ("valid_index.json", "valid_index_shared.json"):
+            with self.subTest(name):
+                self.assertEqual(check_index_json(FIXTURES / name, workspace=WORKSPACE), [])
+
+    def test_every_invalid_fixture_is_covered(self):
+        self.assertEqual(sorted(p.name for p in FIXTURES.glob("invalid_index_*.json")), sorted(self.EXPECTED))
+
+    def test_invalid_fixtures_report_the_problem(self):
+        for name, fragment in self.EXPECTED.items():
+            with self.subTest(name):
+                problems = check_index_json(FIXTURES / name, workspace=WORKSPACE)
+                self.assertTrue(any(fragment in p for p in problems), problems)
+
+    def test_template_passes_on_an_empty_workspace(self):
+        path = ROOT / "templates" / "workspace" / "index.json"
+        self.assertTrue(path.is_file(), "templates/workspace/index.json is missing")
+        self.assertEqual(check_index_json(path, workspace=HERE / "fixtures" / "index"), [])
+        data = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual((data["ideas"], data["examples"], data["toc_artifact"], data["shared_ack"]),
+                         ([], [], None, None))
 
 
 if __name__ == "__main__":
