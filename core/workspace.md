@@ -102,7 +102,7 @@ Leave no `{{` on a live line of a file you wrote. Never mark a category `clear` 
 
 ## 7. Rebuild the table of contents after every write
 
-Run this as the last step of any action that wrote or changed a workspace file, including the scaffold, a round write-back, a status change and a package. It also runs when the user deleted `index.html` and you restored it. `status` writes nothing but this.
+Run this as the last step of any action that wrote or changed a workspace file, including the scaffold, a round write-back, a status change and a package. It also runs when the user deleted `index.html` and you restored it. `status` writes nothing but this (in Drive mode, nothing at all).
 
 Only the JSON block inside `index.html` changes; the layout, styles and renderer in the file stay exactly as they are.
 

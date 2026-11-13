@@ -32,7 +32,7 @@ Rebuild the table of contents by the workspace module's rules, restoring it if i
 
 ## 4. Show the list
 
-Show one table, ideas ordered by number, with these columns in the user's language:
+Show one table, ideas ordered by number (in Drive mode with several workspaces, one table per workspace, headed by its folder's name), with these columns in the user's language:
 
 | Vietnamese column | Content |
 |---|---|

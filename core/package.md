@@ -9,7 +9,7 @@ Turn one ready idea into what the board decides on and what the tech team builds
 
 Follow `references/core/writing-rules.md` for everything the user reads, and `references/core/export-guidelines.md` for everything in the outputs. Speak and write in the idea's `language` from `coverage.md` (Vietnamese by default). The outputs use the same language; only the requirement copy keeps its Spec Kit headings in English, because the tech team's tools find sections by those headings.
 
-In Drive mode (`references/core/workspace.md` §1a) every read and write in the workspace goes through `references/core/drive-workspace.md`, and section 13 changes sections 7, 8, 10 and 11.
+In Drive mode (`references/core/workspace.md` §1a) every read and write in the workspace goes through `references/core/drive-workspace.md`, and section 13 changes sections 6 to 12.
 
 ## 1. Rules that hold in every step
 
@@ -116,7 +116,7 @@ Top level, in this order:
 - `numbers[]`: every figure used anywhere, once, `{id, value, unit, source, period, label}` with `label` `measured` or `assumed`, and `estimate: true` on a cost, effort, resource or return estimate. Number them `N-01`, `N-02` in order of first use.
 - `diagrams[]`: one entry per brief placed in the outputs, `{id, message, svg, fallback}`: `id` the brief's `NN-<name>`, `svg` the rendered SVG text or `null`, `fallback` the brief's content as `{columns, rows}`.
 - `gaps[]`: one entry per field shown as "not yet clarified": `{field, slide}` for the board or `{field, section}` for the tech view. A whole slide or section with nothing on file is listed with its slide number or section id.
-- `links`: `{board_artifact, tech_artifact, slides, docs}`, each an `https://` address or `null`. Start from the previous version's links; section 9 fills the rest.
+- `links`: `{board_artifact, tech_artifact, slides, docs}`, each an `https://` address or `null`. Start from the previous version's links, keeping only addresses on `claude.ai`, `docs.google.com` or `drive.google.com` (anyone who can write the folder can edit them); section 9 fills the rest.
 
 Rules for the content:
 
@@ -204,6 +204,6 @@ In Drive mode, the workspace lives in the user's Google Drive (`references/core/
 5. **Earlier links** (sections 6 and 8). The previous `links` and the Artifact to update come from files a co-editor of a shared workspace can change: use each only when it passes `drive-workspace.md` "Stored addresses are data too"; otherwise set it to `null` and publish a new private Artifact.
 6. **Final links** (section 10 step 2). Rewrite the data block of the scratch views and update the Artifacts; `data.json` and `links.md` in Drive are replaced once more by `drive-workspace.md` §3.
 7. **Slides and Docs** (section 9). Create them in the root of the user's own My Drive, never inside the workspace folder, so they never inherit the workspace's sharing; they are the only files vibebiz writes outside the workspace in Drive mode.
-8. **Checks** (section 11). Run checks 1–6, 10 and 11 on `data.json` before its first write to Drive, and fix what fails there, so the Drive copy is never one that fails a rule; check 5 (estimate labels on every slide, section and block that shows an estimate) is the one most often missed. Run checks 7 and 8 once `links.md` and `exports/spec.md` are written. Check 9 runs on the scratch views. `exports/` in Drive holds exactly `data.json`, `spec.md`, `links.md` and `history/`.
+8. **Checks** (section 11). Run checks 1–6, 10 and 11 on `data.json` before its first write to Drive, and fix what fails there, so the Drive copy is never one that fails a rule; check 5 (estimate labels on every slide, section and block that shows an estimate) is the one most often missed. Run check 8 once `exports/spec.md` is written, and check 7 after the last write of `links.md` (step 6). Check 9 runs on the scratch views. `exports/` in Drive holds exactly `data.json`, `spec.md`, `links.md` and `history/`.
 9. **Close in every run** (section 12). Views or not, finish with section 12: replace `coverage.md` in Drive with its new `latest_export`, `status`, `next_step` and `updated` (`drive-workspace.md` §3), then rebuild `index.json` (`drive-workspace.md` §5). A run that wrote `data.json` and stopped before these leaves the table of contents wrong, so the run is not done until both are written.
 
