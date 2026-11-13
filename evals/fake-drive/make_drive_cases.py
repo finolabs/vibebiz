@@ -138,7 +138,7 @@ write_case("drive-unrelated-files", "Chosen Drive folder already holds the user'
 
 # T021 (two runs)
 for mode, extra in (("shared-folder", "names the people who can see the folder (Trần Minh (hư cấu))"),
-                    ("shared-drive", "names the shared drive and that the folder was created by someone else (sales-manager@example.com in the fixture)")):
+                    ("shared-drive", "names the shared drive and says that someone else set up or last changed the folder (sales-manager in the fixture)")):
     write_case("drive-%s" % mode, "Workspace in a %s: vibebiz names who can see it and asks before writing; shared_ack has no email (FR-013)." % mode,
                mode, "/vibebiz:idea %s Nếu thư mục ý tưởng đang được chia sẻ cho người khác thì tôi biết rồi và đồng ý cứ ghi vào đó. %s" % (IDEA, NOANSWER), [
                    regex("ack-recorded", WS + "/index.json", '"shared_ack": \\{'),

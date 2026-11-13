@@ -37,6 +37,9 @@ GOOGLE_PREFIX = "application/vnd.google-apps."
 GSHEET = "application/vnd.google-apps.spreadsheet"
 CONVERTIBLE = {"text/plain": GDOC, "text/markdown": GDOC, "text/html": GDOC, "text/csv": GSHEET}
 READABLE_GOOGLE = (GDOC, GSHEET, "application/vnd.google-apps.presentation")
+# The real connector names the user by address and display name, never "me" (probe, 13/11/2026).
+USER_EMAIL = "director@example.com"
+USER_NAME = "Lan Director"
 
 
 class DriveError(Exception):
@@ -228,7 +231,17 @@ class Drive:
         return True
 
 
-def public(f, drive):
+def person(owner):
+    return USER_EMAIL if owner == "me" else owner
+
+
+def person_name(owner):
+    return USER_NAME if owner == "me" else owner.split("@")[0]
+
+
+def public(f, drive, rich=False):
+    # Fields as the real connector returns them: owner is an address, visibility and
+    # names only with includeRichMetadata, and no creator field at all.
     out = {
         "id": f["id"],
         "title": f["title"],
@@ -238,13 +251,16 @@ def public(f, drive):
         "createdTime": f.get("createdTime", f["modifiedTime"]),
         "etag": "etag-%s-%s" % (f["id"], f["modifiedTime"]),
         "trashed": bool(f.get("trashed")),
-        "owner": f.get("owner", "me"),
-        "visibility": visibility(f, drive),
+        "owner": person(f.get("owner", "me")),
     }
     if f.get("driveId"):
         out["driveId"] = f["driveId"]
-    if f.get("creator"):
-        out["creator"] = f["creator"]
+    if rich:
+        out["visibility"] = {"limited": "PRIVATE"}.get(visibility(f, drive), visibility(f, drive))
+        out["ownerName"] = person_name(f.get("owner", "me"))
+        last = f.get("creator", f.get("owner", "me"))
+        out["lastModifyingUserEmail"] = person(last)
+        out["lastModifyingUserName"] = person_name(last)
     return out
 
 
@@ -270,7 +286,7 @@ def effective_permissions(f, drive):
     if not any(p.get("role") == "owner" for p in perms):
         owner = f.get("owner", "me")
         perms.insert(0, {"id": "perm-owner", "type": "user", "role": "owner",
-                         "displayName": "me" if owner == "me" else owner, "emailAddress": owner})
+                         "displayName": person_name(owner), "emailAddress": person(owner)})
     return perms
 
 
@@ -464,10 +480,12 @@ def t_search_files(drive, a):
     page = found[start:start + size]
     out = []
     for f in page:
-        item = public(f, drive)
+        item = public(f, drive, bool(a.get("includeRichMetadata")))
         if not a.get("excludeContentSnippets") and not f["mimeType"] == FOLDER:
             item["snippet"] = f.get("content", "")[:200]
         out.append(item)
+    if not out:
+        return {}  # the real connector answers an empty search with {}
     result = {"files": out}
     if start + size < len(found):
         result["nextPageToken"] = str(start + size)
@@ -477,11 +495,23 @@ def t_search_files(drive, a):
 def t_read_file_content(drive, a):
     f = drive.get(a.get("fileId"))
     mt = f["mimeType"]
-    if not (mt.startswith("text/") or mt in READABLE_GOOGLE):
+    if not (mt.startswith("text/") or mt == "application/json" or mt in READABLE_GOOGLE):
         raise DriveError("Unsupported mime type for read_file_content: %s" % mt)
     text = f.get("content", "")
     maybe_bump(drive, f)
-    return {"fileId": f["id"], "title": f["title"], "content": text}
+    return {"fileContent": rendering(text), "title": f["title"]}
+
+
+def rendering(text):
+    """The real tool returns a Markdown rendering, not the bytes: it escapes # and a
+    leading ---, _, [ and ], and ends each line with two spaces (probe, 13/11/2026)."""
+    out = []
+    for line in text.split("\n"):
+        line = line.replace("\\", "\\\\").replace("_", "\\_").replace("[", "\\[").replace("]", "\\]")
+        if line.startswith("#") or line.startswith("---"):
+            line = "\\" + line
+        out.append(line)
+    return "  \n".join(out)
 
 
 def t_download_file_content(drive, a):
@@ -563,10 +593,7 @@ def t_trash_file(drive, a):
 
 def t_get_file_metadata(drive, a):
     f = drive.get(a.get("fileId"))
-    out = public(f, drive)
-    if a.get("includeRichMetadata"):
-        out["owner_name"] = "me"
-    return out
+    return public(f, drive, bool(a.get("includeRichMetadata")))
 
 
 def t_get_file_permissions(drive, a):
