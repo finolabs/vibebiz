@@ -451,6 +451,7 @@ class MirrorEdges(Base):
         tree = os.path.join(self.root, "tree")
         self.assertTrue(os.path.isdir(os.path.join(tree, "vibebiz.dup-" + newer["id"], "child")))
         self.assertFalse(os.path.exists(os.path.join(tree, "vibebiz", "child")))
+        self.assertTrue(os.path.isdir(os.path.join(tree, "vibebiz")))
         self.assertNotEqual(older["id"], newer["id"])
 
 
@@ -482,6 +483,25 @@ class SecurityFollowUps(Base):
                 self.assertEqual(fh.read(), "")
         finally:
             os.unlink(outside.name)
+
+    def test_hard_linked_state_is_refused_and_outside_file_unchanged(self):
+        for name in ("drive.json", "calls.jsonl"):
+            with self.subTest(name):
+                self.call("search_files", query="title = 'x'")
+                outside = tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False, encoding="utf-8")
+                outside.write("OUTSIDE")
+                outside.close()
+                try:
+                    state = os.path.join(self.root, name)
+                    os.unlink(state)
+                    os.link(outside.name, state)
+                    with self.assertRaises(server.DriveError):
+                        self.call("search_files", query="title = 'x'")
+                    with open(outside.name, encoding="utf-8") as fh:
+                        self.assertEqual(fh.read(), "OUTSIDE")
+                    os.unlink(state)
+                finally:
+                    os.unlink(outside.name)
 
     def test_symlinked_state_file_is_refused_and_never_copied(self):
         outside = tempfile.NamedTemporaryFile("w", suffix=".json", delete=False, encoding="utf-8")
