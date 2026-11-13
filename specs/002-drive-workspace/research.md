@@ -81,15 +81,18 @@
 
 ## R9. Evals without a real Drive (FR-017)
 
-- **Decision**: add a small development-only stdio MCP server, `evals/fake-drive/server.py`, written with the Python standard library. It exposes the subset of tools from R1 (`search_files`, `read_file_content`, `download_file_content`, `create_file`, `copy_file`, `trash_file`, `get_file_metadata`, `get_file_permissions`) with the same names and parameters, stored in a temporary folder. It has fixture modes for:
+- **Decision**: add a small development-only stdio MCP server, `evals/fake-drive/server.py`, written with the Python standard library. It exposes the tools from R1 (`search_files`, `read_file_content`, `download_file_content`, `create_file`, `copy_file`, `trash_file`, `get_file_metadata`, `get_file_permissions`, plus `update_file` and `share_file` so that a forbidden call is visible), with the same names and parameters, stored in a temporary folder. It logs every call to `.calls.jsonl`, so graders can prove which tools were and were not called (FR-012, FR-014). It has fixture modes for:
   - an empty Drive;
   - one workspace;
   - two workspaces;
   - a read-only Drive;
   - a shared folder;
-  - a converted file.
+  - a converted file;
+  - a shared drive;
+  - a full Drive;
+  - a workspace written by a newer version.
   The `claude plugin eval` cases for the Drive mode load it through the eval's MCP configuration. Graders inspect the fake Drive's folder, so the existing structural checks (`test_workspace`, `test_index`) can run on it.
-- **Rationale**: the real connector cannot run in headless evals. A fake with the same tool names exercises the module's instructions. The real connector is covered by the release smoke test.
+- **Rationale**: the real connector cannot run in headless evals. If T001 finds that an eval case cannot load an MCP server, the feature stops and Fio decides between a minimal Agent SDK harness and smoke-test-only coverage; `evals/persona/` does not exist yet. A fake with the same tool names exercises the module's instructions. The real connector is covered by the release smoke test.
 - **Risk**: the fake can drift from the real connector. To limit that, the fake's tool list carries the date of the schema read, and the smoke test records any difference it finds.
 - **Constitution IV**: the fake lives in `evals/` and never ships, the same as `scripts/`.
 

@@ -4,7 +4,7 @@ Extends spec 001's [workspace-files.md](../../001-idea-to-prd/contracts/workspac
 
 ```
 <user-chosen Drive folder>/
-  index.json                     table-of-contents data + marker (data-model "index.json")
+  index.json                     table-of-contents data + marker + plugin_version (data-model "index.json")
   constitution.md
   specs/NNN-<slug>/
     spec.md  coverage.md  plan.md  decisions.md  assumptions.md

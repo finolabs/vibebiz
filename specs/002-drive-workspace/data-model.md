@@ -31,12 +31,13 @@ The same object as the `vibebiz-data` JSON block in the local `index.html` (spec
 | `vibebiz` | string | always `"workspace"`; the marker discovery looks for (research R3) |
 | `storage` | string | always `"drive"` |
 | `toc_artifact` | string or null | the link to the private table-of-contents Artifact, once published |
+| `plugin_version` | string | the vibebiz version that last wrote the file; a reader with an older version reads the workspace and never downgrades a file (spec edge case) |
 | `shared_ack` | object or null | `{ "date": "YYYY-MM-DD", "who": ["<display names or 'link'>"] }` when the user confirmed using a shared folder (research R5); null otherwise |
 
 Validation:
 - `ideas[]` lists exactly the idea folders present, the same rule as local mode.
 - The file is a plain file and is never a Google Doc (FR-007).
-- `test_index.py` validates it against the same schema as the local block, plus the four fields above.
+- `test_index.py` validates it against the same schema as the local block, plus the five fields above.
 
 ## File replacement (Drive mode write)
 

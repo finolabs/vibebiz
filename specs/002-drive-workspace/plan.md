@@ -118,14 +118,14 @@ CHANGELOG.md  .claude-plugin/plugin.json                         # 0.1.2
 
 | Step | Delivers | Depends on |
 |---|---|---|
-| Amendments | Proposed text for the constitution (layout rule scoped to the local workspace; Drive mode as a declared variant) and for `CLAUDE.md:27`, plus the eval grader line from PR finolabs/vibebiz#4's review. Written for Fio's yes; nothing is merged without it | — |
-| US4 + US5 (P2, P1) | §1 storage-mode choice and the two-way message; local mode untouched; Drive cases for "no connector", "read-only" and "desktop with both" | — |
-| US1 (P1) | Drive discovery and folder choice, privacy check, scaffold, file replacement, `index.json` and the table-of-contents Artifact; fake Drive server | US4 + US5 |
+| Amendments (in the US4 + US5 pull request) | Proposed text for the constitution (layout rule scoped to the local workspace; Drive mode as a declared variant) and for `CLAUDE.md:27`, plus the eval grader line from PR finolabs/vibebiz#4's review. Written for Fio's yes; nothing is merged without it | — |
+| US4 + US5 (P2, P1) | §1 storage-mode choice and the two-way message; local mode untouched; Drive cases for "no connector" (all five entry skills), "read-only", "desktop with both" and "desktop without a folder"; FAQ 12, admin setup, quick start, README pair and help map for the new message | — |
+| US1 (P1) | Drive discovery and folder choice, privacy check, scaffold, file replacement, `index.json` and the table-of-contents Artifact; `PRIVACY.md` | US4 + US5 |
 | US2 (P1) | Resume and status on Drive; several workspaces; renamed folder | US1 |
 | US3 (P2) | `package` in Drive mode: exports, private Artifacts, history by copy | US1 |
-| Docs and release | README pair, docs, help map, PRIVACY.md, CHANGELOG, version 0.1.2, smoke test | all |
+| Release | release review of every description, CHANGELOG, version 0.1.2, smoke test; the tag waits for the approved constitution amendment | all |
 
-Each step merges through a reviewed pull request with code and security reviews; this change touches user data handling (constitution, Development Workflow). Each step starts from its failing eval case. The release smoke test opens with the connector checks from [quickstart.md](quickstart.md); a failure there stops the release and goes back to Fio.
+Each step carries the docs for the behavior it changes (constitution VII) and merges through a reviewed pull request with code and security reviews; this change touches user data handling (constitution, Development Workflow). Each step starts from its failing eval case. The release smoke test opens with the connector checks from [quickstart.md](quickstart.md); a failure there stops the release and goes back to Fio.
 
 ## Complexity Tracking
 
