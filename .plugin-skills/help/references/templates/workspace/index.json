@@ -2,7 +2,7 @@
   "vibebiz": "workspace",
   "storage": "drive",
   "toc_artifact": null,
-  "plugin_version": "0.1.5",
+  "plugin_version": "0.1.6-dev",
   "shared_ack": null,
   "workspace": {
     "updated": "2026-11-13",

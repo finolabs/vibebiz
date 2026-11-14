@@ -4,7 +4,7 @@
   "displayName": "vibebiz",
   "description": "A product owner for founders and business leaders: turns a vague idea for a system, an AI use or an automation into a clear, challenged, measurable PRD.",
   "logo": "assets/icon.svg",
-  "version": "0.1.5",
+  "version": "0.1.6-dev",
   "skills": "./.plugin-skills/",
   "author": {
     "name": "Fioenix"
