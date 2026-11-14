@@ -17,7 +17,7 @@
 
 ## Path Conventions
 
-The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`, built by `scripts/build_plugin.py`. `evals/` and `scripts/` never ship. Instruction files (`SKILL.md`, `core/`) are written with the `writing-for-agents` skill (CLAUDE.md). Vietnamese user text is edited with vietnamizer before its phase's pull request.
+The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`, built by `scripts/build_plugin.py`. Since spec 003 the source skills live in `src/skills/` and `scripts/build_plugin.py --skills` writes the tracked `.plugin-skills/` that every host manifest points at (`specs/003-multi-host/contracts/install-layout.md`); the `skills/` paths in the tasks below are those of their time and now read as `src/skills/`. `evals/` and `scripts/` never ship. Instruction files (`SKILL.md`, `core/`) are written with the `writing-for-agents` skill (CLAUDE.md). Vietnamese user text is edited with vietnamizer before its phase's pull request.
 
 ---
 

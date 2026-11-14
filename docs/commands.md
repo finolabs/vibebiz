@@ -1,6 +1,14 @@
 # Các lệnh của vibebiz
 
-Mỗi lệnh trong số sáu lệnh là một kỹ năng (skill) cùng tên trong plugin vibebiz: `idea`, `continue`, `package`, `status`, `constitution`, và `help`. Bạn có thể gõ trực tiếp tên lệnh, hoặc chỉ cần nói điều mình muốn bằng lời thường, Claude sẽ tự nhận biết và chọn đúng lệnh phù hợp. Mọi lệnh đều cần một nơi để lưu: một thư mục làm việc đang mở trong ứng dụng Claude trên máy tính, hoặc một thư mục trong Google Drive của bạn khi dùng Cowork trên web hay điện thoại. Nếu chưa có nơi nào, vibebiz chỉ ra hai cách đó cho bạn và không làm gì thêm.
+Mỗi lệnh trong số sáu lệnh là một kỹ năng (skill) cùng tên trong plugin vibebiz: `idea`, `continue`, `package`, `status`, `constitution`, và `help`. Bạn có thể gõ trực tiếp tên lệnh, hoặc chỉ cần nói điều mình muốn bằng lời thường, trợ lý sẽ tự nhận biết và chọn đúng lệnh phù hợp. Mọi lệnh đều cần một nơi để lưu: một thư mục làm việc đang mở trong ứng dụng, hoặc một thư mục trong Google Drive của bạn khi ứng dụng đã nối Drive (ví dụ Cowork trên web hay điện thoại). Nếu chưa có nơi nào, vibebiz chỉ ra hai cách đó cho bạn và không làm gì thêm.
+
+Trang này viết tên lệnh như Cowork và Claude Code hiển thị. Ở ứng dụng khác, tên lệnh đổi như sau:
+
+| Ứng dụng | Cách gõ | Ví dụ |
+|---|---|---|
+| Cowork, Claude Code | có `vibebiz:` ở đầu | `/vibebiz:idea` |
+| Codex | dấu `$` rồi tên lệnh | `$idea`, `$continue` |
+| Antigravity | dấu `/` rồi tên lệnh | `/idea`, `/continue`; riêng trợ giúp thì hỏi bằng lời, vì `/help` mở trợ giúp của chính Antigravity |
 
 Hành trình của một ý tưởng trải qua các bước: khởi tạo với `/vibebiz:idea`, làm rõ và phản biện qua các vòng với `/vibebiz:continue`, đóng gói tài liệu với `/vibebiz:package`, và cập nhật kết quả thẩm định kỹ thuật hoặc quyết định của ban lãnh đạo.
 
@@ -50,7 +58,7 @@ Hành trình của một ý tưởng trải qua các bước: khởi tạo với
 
 1. Kiểm tra ý tưởng đã đủ điều kiện chưa. Nếu còn thiếu, vibebiz liệt kê những điểm còn thiếu và để bạn chọn: trả lời thêm vài câu (nên chọn) hoặc lấy ngay bản nháp, trong đó mọi chỗ thiếu ghi rõ là "chưa làm rõ".
 2. Lập kế hoạch thực hiện, rà xem ban lãnh đạo và đội kỹ thuật đã có đủ thông tin chưa, rồi soát xem các tệp có chỗ nào mâu thuẫn hay thiếu. Chỗ nào cần bạn quyết, vibebiz hỏi lại theo từng vòng ngắn như khi làm rõ ý tưởng.
-3. Hỏi bạn muốn nhận bản trình bày dưới dạng Artifact trên Claude hay Google Slides, và tài liệu kỹ thuật dưới dạng Artifact hay Google Docs. Nếu chưa kết nối Google, vibebiz đề nghị dùng Artifact.
+3. Hỏi bạn muốn nhận bản trình bày dưới dạng Artifact trên Claude hay Google Slides, và tài liệu kỹ thuật dưới dạng Artifact hay Google Docs. Ở ứng dụng không có Artifact (Codex, Antigravity, hoặc Claude Code khi ứng dụng Claude không có), lựa chọn đầu tiên là trang web trong thư mục ý tưởng, mở bằng trình duyệt. vibebiz chỉ đề nghị Google Slides và Docs khi ứng dụng đã nối được với chúng; nếu chưa nối, vibebiz chỉ bạn cách nối trong ứng dụng đó và đề nghị cách xem còn lại.
 4. Vẽ sơ đồ (cây chỉ số, hành trình trước và sau, các phương án, rủi ro, lộ trình thử nghiệm) nếu đã cài plugin diagram-design; nếu chưa, chỗ sơ đồ hiện một bảng kèm ghi chú "chưa có sơ đồ".
 5. Tạo bản trình bày cho ban lãnh đạo (theo phong cách infographic trực quan, mỗi trang một thông điệp cô đọng kèm một hình ảnh lớn), tài liệu cho đội kỹ thuật và một bản sao yêu cầu để đội kỹ thuật dùng trực tiếp với Spec Kit. Mọi con số giống nhau ở cả hai bản, kèm nguồn, thời kỳ và ghi rõ là số đo được hay số giả định. Chi phí ước tính ghi "chưa qua kỹ thuật thẩm định" cho tới khi đội kỹ thuật xác nhận.
 6. Khi đóng gói lại, vibebiz chuyển bản cũ vào thư mục lịch sử của ý tưởng và cập nhật Artifact ngay tại liên kết cũ. Nếu ý tưởng nằm trong Google Drive, vibebiz chép bản cũ vào thư mục lịch sử, và hai bản xem dạng trang web không được lưu vào Drive: bạn xem chúng qua Artifact riêng tư, hoặc qua Google Slides và Docs nếu bạn chọn.
@@ -98,6 +106,8 @@ Bên cạnh trạng thái là nhãn ước tính: "Chưa qua kỹ thuật thẩm
 
 ## /vibebiz:help
 
+Trong Antigravity, bạn hỏi bằng lời (ví dụ "vibebiz dùng thế nào?") thay cho lệnh này.
+
 **Dùng khi**: bạn chưa biết bắt đầu từ đâu, muốn tìm hiểu cách vibebiz hoạt động, cần hướng dẫn chọn lệnh phù hợp, muốn giải thích một thuật ngữ hay nhãn trong tài liệu, hoặc muốn xem ý tưởng mẫu. Ví dụ: "Dùng vibebiz thế nào", "Giờ tôi làm gì tiếp", "Tôi nên dùng lệnh nào", "Nhãn chưa qua kỹ thuật thẩm định nghĩa là gì", "Cho xem ý tưởng mẫu".
 
 **vibebiz sẽ làm gì**:
@@ -106,4 +116,5 @@ Bên cạnh trạng thái là nhãn ước tính: "Chưa qua kỹ thuật thẩm
 2. **Khi bạn mô tả tình huống**: vibebiz đối chiếu tình huống của bạn với bảng tình huống, đọc chỉ dẫn hiện tại của kỹ năng đó rồi giải thích ngắn gọn trong hai, ba câu lý do vì sao lệnh đó phù hợp và bước đầu tiên lệnh sẽ làm, sau đó dừng lại. vibebiz không tự ý chạy lệnh thay bạn.
 3. **Khi bạn hỏi về cách dùng hoặc thuật ngữ**: vibebiz chỉ trả lời dựa trên các tài liệu chính thức đi kèm, dẫn nguồn rõ ràng theo tên tài liệu và tiêu đề mục. Nếu tài liệu chưa đề cập, vibebiz nói thẳng là chưa có thông tin thay vì tự đoán hoặc bịa ra tính năng.
 4. **Khi bạn muốn xem ý tưởng mẫu**: vibebiz giới thiệu ý tưởng mẫu hoàn chỉnh trong thư mục `examples/` để bạn hình dung kết quả đầu ra thực tế trông như thế nào.
-5. **Không thay đổi tệp**: lệnh này hoàn toàn mang tính hướng dẫn và tra cứu; vibebiz không tạo, sửa đổi hay ghi đè bất kỳ tệp nào trong thư mục làm việc của bạn.
+5. **Khi bạn hỏi về ứng dụng**: dùng được vibebiz trong ứng dụng nào, nối Google ở ứng dụng đang dùng ra sao, xem bản trình bày ở đâu. vibebiz trả lời theo ứng dụng bạn đang dùng, dựa trên [câu hỏi thường gặp](faq.md).
+6. **Không thay đổi tệp**: lệnh này hoàn toàn mang tính hướng dẫn và tra cứu; vibebiz không tạo, sửa đổi hay ghi đè bất kỳ tệp nào trong thư mục làm việc của bạn.
