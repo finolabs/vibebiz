@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>vibebiz · Mục lục ý tưởng</title>
+<!--
+  vibebiz table of contents (research R4, data-model.md "Table of contents data").
+  Fixed template: vibebiz rewrites only the JSON block with id "vibebiz-data";
+  layout, styles and the renderer never change between runs.
+  The JSON block is rebuilt from the frontmatter after every write and lists
+  exactly the idea folders present. Escape every "<" in JSON strings as
+  \u003c so the block cannot close the script tag early.
+  Self-contained: no external scripts, fonts or images; works opened from disk.
+
+  Security: strict CSP; data inserted only with textContent, createTextNode and
+  setAttribute; links pass safeHref (relative workspace paths or https only).
+  Visual tokens follow templates/exports/board-deck.html (brand group, status
+  colors, spacing, radius) so the workspace and the exports look like one
+  product. Keep the two in step when either changes.
+-->
+<style>
+  /* Tokens: same names and defaults as the board deck and tech document. */
+  :root {
+    /* Brand: colors (light) */
+    --accent: #0b6e66;
+    --accent-soft: #dcefec;
+    --ink: #18202c;
+    --quiet: #5a6474;
+    --canvas: #e9ecf0;
+    --surface: #ffffff;
+    --rule: #d5dae1;
+    --mark: #aeb6c2;
+    /* Brand: type */
+    --font-display: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-text: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    /* Status (fixed) */
+    --gap-ink: #8a6416;
+    --gap-line: #d6bd85;
+    --est-ink: #5a6474;
+    --est-line: #c3cad4;
+    --bad-ink: #a3362a;
+    /* Type scale */
+    --fs-h1: 2rem;
+    --fs-h2: 1.375rem;
+    --fs-body: 1rem;
+    --fs-small: 0.8125rem;
+    --fs-badge: 0.72rem;
+    /* Spacing */
+    --sp-1: 4px;
+    --sp-2: 8px;
+    --sp-3: 16px;
+    --sp-4: 24px;
+    --sp-5: 40px;
+    --sp-6: 64px;
+    --radius: 6px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --accent: #4cc3b2;
+      --accent-soft: #143a36;
+      --ink: #e7eaef;
+      --quiet: #98a2b2;
+      --canvas: #0c0f14;
+      --surface: #151a21;
+      --rule: #2a313c;
+      --mark: #4a5363;
+      --gap-ink: #d9b25c;
+      --gap-line: #6e5a2c;
+      --est-ink: #a9b2c0;
+      --est-line: #3a4250;
+      --bad-ink: #f0a093;
+    }
+  }
+  @media print {
+    :root {
+      --accent: #0b6e66;
+      --accent-soft: #dcefec;
+      --ink: #18202c;
+      --quiet: #4a5262;
+      --canvas: #ffffff;
+      --surface: #ffffff;
+      --rule: #c9ced6;
+      --mark: #9aa3b0;
+      --gap-ink: #6f500f;
+      --gap-line: #c2a66a;
+      --est-ink: #4a5262;
+      --est-line: #aab2bd;
+      --bad-ink: #8a2a20;
+    }
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .copy { display: none; }
+    a { color: inherit; }
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--canvas);
+    color: var(--ink);
+    font-family: var(--font-text);
+    font-size: var(--fs-body);
+    line-height: 1.5;
+  }
+  a { color: var(--accent); text-underline-offset: 0.15em; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  main { max-width: 960px; margin: 0 auto; padding: clamp(16px, 3vw, 32px) clamp(12px, 3vw, 40px) var(--sp-6); }
+
+  /* Header */
+  .brand { margin: 0; color: var(--quiet); font-size: var(--fs-small); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+  header h1 { margin: var(--sp-1) 0 0; font-family: var(--font-display); font-size: var(--fs-h1); font-weight: 750; letter-spacing: -0.02em; line-height: 1.15; }
+  .updated { margin: var(--sp-1) 0 0; color: var(--quiet); font-size: var(--fs-small); }
+  .notice {
+    margin: var(--sp-3) 0 0;
+    padding: var(--sp-2) var(--sp-3);
+    border: 1px dashed var(--gap-line);
+    border-radius: var(--radius);
+    color: var(--gap-ink);
+    font-size: var(--fs-small);
+  }
+  .summary { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin: var(--sp-3) 0 0; padding: 0; list-style: none; }
+  .summary li {
+    display: inline-flex; align-items: baseline; gap: 0.4em;
+    padding: 0.2em 0.75em;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    font-size: var(--fs-small);
+  }
+  .summary strong { font-family: var(--font-display); font-variant-numeric: tabular-nums; }
+
+  h2 { margin: var(--sp-5) 0 var(--sp-3); font-family: var(--font-display); font-size: var(--fs-h2); font-weight: 700; letter-spacing: -0.01em; }
+  .section-note { margin: calc(var(--sp-3) * -0.5) 0 var(--sp-3); color: var(--quiet); font-size: var(--fs-small); }
+  .list { display: grid; gap: var(--sp-3); }
+
+  /* Idea cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--mark);
+    border-radius: var(--radius);
+    padding: var(--sp-3) var(--sp-4);
+  }
+  .card.tone-ok { border-left-color: var(--accent); }
+  .card.tone-warn { border-left-color: var(--gap-line); }
+  .card.tone-bad { border-left-color: var(--bad-ink); }
+  .card-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--sp-2); }
+  .card-id { color: var(--quiet); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .card-title { margin: 0; flex: 1 1 240px; font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; letter-spacing: -0.01em; }
+
+  /* Labels: present but quiet, as in the exports */
+  .badges { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-2); }
+  .badge {
+    display: inline-block;
+    padding: 0.05em 0.7em;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    color: var(--quiet);
+    font-size: var(--fs-small);
+    font-weight: 500;
+    line-height: 1.6;
+  }
+  .badge.ok { background: var(--accent-soft); border-color: transparent; color: var(--accent); }
+  .badge.warn { border-style: dashed; border-color: var(--gap-line); color: var(--gap-ink); }
+  .badge.bad { border-color: var(--bad-ink); color: var(--bad-ink); }
+  .badge.est { border-radius: 4px; border-color: var(--est-line); color: var(--est-ink); font-size: var(--fs-badge); line-height: 1.9; }
+  .badge.est.ok { background: var(--accent-soft); border-color: transparent; color: var(--accent); }
+  .badge.example { border-style: dashed; }
+
+  /* Coverage bar */
+  .coverage { margin-top: var(--sp-3); }
+  .coverage-label { display: flex; justify-content: space-between; gap: var(--sp-2); font-size: var(--fs-small); color: var(--quiet); }
+  .coverage-label strong { color: var(--ink); font-variant-numeric: tabular-nums; }
+  .bar { height: 8px; margin-top: var(--sp-1); border-radius: 999px; background: var(--rule); overflow: hidden; }
+  .bar > span { display: block; height: 100%; border-radius: 999px; background: var(--accent); }
+
+  /* Next step and its command */
+  .next { margin: var(--sp-3) 0 0; }
+  .next-label { color: var(--quiet); font-size: var(--fs-small); font-weight: 600; }
+  .next-text { margin: 0; }
+  .command { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); margin-top: var(--sp-2); }
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.9em;
+    padding: 0.15em 0.5em;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    background: var(--canvas);
+    user-select: all;
+  }
+  .copy {
+    font: inherit;
+    font-size: var(--fs-small);
+    font-weight: 600;
+    padding: 0.2em 0.8em;
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--accent);
+    cursor: pointer;
+  }
+  .copy:hover { background: var(--accent-soft); }
+
+  /* Outputs */
+  .outputs { margin: var(--sp-3) 0 0; padding: var(--sp-2) 0 0; border-top: 1px solid var(--rule); list-style: none; display: flex; flex-wrap: wrap; gap: var(--sp-1) var(--sp-4); font-size: 0.95rem; }
+  .meta { margin-top: var(--sp-2); font-size: var(--fs-small); color: var(--quiet); }
+
+  .empty {
+    background: var(--surface);
+    border: 1px dashed var(--rule);
+    border-radius: var(--radius);
+    padding: var(--sp-4) var(--sp-3);
+    color: var(--quiet);
+  }
+  .empty strong { color: var(--ink); display: block; margin-bottom: var(--sp-1); }
+  footer { margin-top: var(--sp-5); font-size: var(--fs-small); color: var(--quiet); }
+  @media (max-width: 480px) {
+    header h1 { font-size: 1.5rem; }
+    .card { padding: var(--sp-3); }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="brand">vibebiz</p>
+    <h1>Mục lục ý tưởng</h1>
+    <p class="updated" id="updated"></p>
+    <p class="notice" id="ground-rules" hidden>Chưa đặt nguyên tắc chung cho không gian làm việc. Gõ <code>/vibebiz:constitution</code> để đặt.</p>
+    <ul class="summary" id="summary" aria-label="Số ý tưởng theo trạng thái" hidden></ul>
+  </header>
+
+  <section aria-labelledby="ideas-title">
+    <h2 id="ideas-title">Ý tưởng của bạn</h2>
+    <div class="list" id="ideas"></div>
+  </section>
+
+  <section aria-labelledby="examples-title">
+    <h2 id="examples-title">Ví dụ</h2>
+    <p class="section-note">Ý tưởng hư cấu đi hết quy trình, để xem trước kết quả. Không tính vào danh sách ý tưởng của bạn.</p>
+    <div class="list" id="examples"></div>
+  </section>
+
+  <footer>Trang này do vibebiz tự cập nhật sau mỗi lần làm việc. Mọi dữ liệu nằm trong thư mục của bạn.</footer>
+</main>
+
+<script type="application/json" id="vibebiz-data">
+{
+  "workspace": {
+    "updated": "2026-11-12",
+    "ground_rules_status": "deferred"
+  },
+  "ideas": [
+    {
+      "id": "001",
+      "title": "Nhắc khách quay lại cửa hàng qua ứng dụng chat",
+      "status": "clarifying",
+      "estimate_status": "not-tech-reviewed",
+      "coverage": { "clear": 5, "total": 15 },
+      "next_step": "/vibebiz:continue",
+      "outputs": [],
+      "updated": "2026-11-12"
+    }
+  ],
+  "examples": []
+}
+</script>
+
+<script>
+(function () {
+  "use strict";
+
+  // Status words match the status skill, so the user sees one name for one state.
+  var STATUS_ORDER = ["clarifying", "ready", "packaged", "presented", "needs-changes", "approved", "rejected"];
+  var STATUS = {
+    "clarifying": { label: "Đang làm rõ", tone: "" },
+    "ready": { label: "Sẵn sàng đóng gói", tone: "ok" },
+    "packaged": { label: "Đã đóng gói", tone: "" },
+    "presented": { label: "Đã trình ban lãnh đạo", tone: "" },
+    "approved": { label: "Được duyệt", tone: "ok" },
+    "rejected": { label: "Không được duyệt", tone: "bad" },
+    "needs-changes": { label: "Cần chỉnh sửa", tone: "warn" }
+  };
+  var ESTIMATE = {
+    "not-tech-reviewed": { label: "Ước tính chưa qua kỹ thuật thẩm định", tone: "" },
+    "tech-reviewed": { label: "Ước tính đã qua kỹ thuật thẩm định", tone: "ok" }
+  };
+  var COPY_LABEL = "Chép lệnh";
+
+  function el(tag, cls, text) {
+    var node = document.createElement(tag);
+    if (cls) node.className = cls;
+    if (text !== undefined && text !== null) node.textContent = String(text);
+    return node;
+  }
+
+  // Only relative workspace paths and https links are rendered as links.
+  function safeHref(href) {
+    if (typeof href !== "string" || href === "") return null;
+    // Reject whitespace and control characters, which browsers strip before reading the scheme.
+    if (/[\u0000-\u0020\u007f\\]/.test(href)) return null;
+    if (/^https:\/\/[^\/]/i.test(href)) return href;
+    // Otherwise only a relative workspace path: no scheme, not protocol-relative, not absolute.
+    if (/^[A-Za-z0-9._-][A-Za-z0-9._\/-]*$/.test(href) && !/^[a-z][a-z0-9+.-]*:/i.test(href)) return href;
+    return null;
+  }
+
+  function formatDate(iso) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || "");
+    return m ? m[3] + "/" + m[2] + "/" + m[1] : (iso || "");
+  }
+
+  function badge(map, key, extra) {
+    var item = map[key] || { label: key || "Chưa rõ", tone: "" };
+    var cls = "badge" + (extra ? " " + extra : "") + (item.tone ? " " + item.tone : "");
+    return el("span", cls, item.label);
+  }
+
+  // The command to type for the next step: the one the next step names, or the
+  // entry point that moves an idea in this status forward.
+  function commandFor(item) {
+    var m = /\/vibebiz:[a-z][a-z-]*/.exec(typeof item.next_step === "string" ? item.next_step : "");
+    if (m) return m[0];
+    return item.status === "ready" ? "/vibebiz:package" : "/vibebiz:continue";
+  }
+
+  function selectNode(node) {
+    try {
+      var range = document.createRange();
+      range.selectNodeContents(node);
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    } catch (e) { /* selection unavailable: the command stays visible to copy by hand */ }
+  }
+
+  function copyText(text, button, codeNode) {
+    function done(ok) {
+      button.textContent = ok ? "Đã chép" : "Đã chọn, nhấn Ctrl+C";
+      if (!ok) selectNode(codeNode);
+      window.setTimeout(function () { button.textContent = COPY_LABEL; }, 2000);
+    }
+    function fallback() {
+      var area = document.createElement("textarea");
+      area.value = text;
+      area.setAttribute("readonly", "");
+      area.style.position = "fixed";
+      area.style.opacity = "0";
+      document.body.appendChild(area);
+      area.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+      document.body.removeChild(area);
+      done(ok);
+    }
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+      navigator.clipboard.writeText(text).then(function () { done(true); }, fallback);
+    } else {
+      fallback();
+    }
+  }
+
+  function commandRow(command) {
+    var row = el("div", "command");
+    var code = el("code", null, command);
+    var button = el("button", "copy", COPY_LABEL);
+    button.type = "button";
+    button.setAttribute("aria-live", "polite");
+    button.setAttribute("aria-label", COPY_LABEL + " " + command);
+    button.addEventListener("click", function () { copyText(command, button, code); });
+    row.appendChild(code);
+    row.appendChild(button);
+    return row;
+  }
+
+  function renderCard(item, isExample) {
+    var tone = (STATUS[item.status] || {}).tone;
+    var card = el("article", "card" + (tone ? " tone-" + tone : ""));
+    var head = el("div", "card-head");
+    if (item.id) head.appendChild(el("span", "card-id", item.id));
+    head.appendChild(el("h3", "card-title", item.title || "Ý tưởng chưa có tên"));
+    card.appendChild(head);
+
+    var badges = el("div", "badges");
+    if (isExample) badges.appendChild(el("span", "badge example", "Ví dụ hư cấu"));
+    if (item.status) badges.appendChild(badge(STATUS, item.status));
+    if (item.estimate_status) badges.appendChild(badge(ESTIMATE, item.estimate_status, "est"));
+    if (badges.childNodes.length) card.appendChild(badges);
+
+    var cov = item.coverage;
+    if (cov && typeof cov.total === "number" && cov.total > 0) {
+      var clear = Math.max(0, Math.min(Number(cov.clear) || 0, cov.total));
+      var pct = Math.round((clear / cov.total) * 100);
+      var wrap = el("div", "coverage");
+      var label = el("div", "coverage-label");
+      label.appendChild(el("span", null, "Mức rõ"));
+      label.appendChild(el("strong", null, clear + "/" + cov.total + " hạng mục"));
+      wrap.appendChild(label);
+      var bar = el("div", "bar");
+      bar.setAttribute("role", "progressbar");
+      bar.setAttribute("aria-label", "Mức rõ");
+      bar.setAttribute("aria-valuemin", "0");
+      bar.setAttribute("aria-valuemax", String(cov.total));
+      bar.setAttribute("aria-valuenow", String(clear));
+      var fill = el("span");
+      fill.style.width = pct + "%";
+      bar.appendChild(fill);
+      wrap.appendChild(bar);
+      card.appendChild(wrap);
+    }
+
+    if (!isExample) {
+      var next = el("div", "next");
+      next.appendChild(el("div", "next-label", "Bước tiếp theo"));
+      var command = commandFor(item);
+      var text = typeof item.next_step === "string" ? item.next_step.trim() : "";
+      if (text && text !== command) next.appendChild(el("p", "next-text", text));
+      next.appendChild(commandRow(command));
+      card.appendChild(next);
+    }
+
+    var outputs = Array.isArray(item.outputs) ? item.outputs : [];
+    if (outputs.length) {
+      var ul = el("ul", "outputs");
+      outputs.forEach(function (out) {
+        var name = typeof out === "string" ? out : (out && (out.label || out.href));
+        var href = safeHref(typeof out === "string" ? out : out && out.href);
+        var li = el("li");
+        if (href) {
+          var a = el("a", null, name);
+          a.href = href;
+          if (/^https:/i.test(href)) { a.target = "_blank"; a.rel = "noopener noreferrer"; }
+          li.appendChild(a);
+        } else {
+          li.textContent = name || "";
+        }
+        ul.appendChild(li);
+      });
+      card.appendChild(ul);
+    } else if (!isExample) {
+      card.appendChild(el("div", "meta", "Chưa có tài liệu xuất."));
+    }
+
+    if (item.updated) card.appendChild(el("div", "meta", "Cập nhật " + formatDate(item.updated)));
+    return card;
+  }
+
+  function renderEmpty(target, title, body, command) {
+    var box = el("div", "empty");
+    box.appendChild(el("strong", null, title));
+    var p = el("span");
+    body.forEach(function (part) { p.appendChild(document.createTextNode(part)); });
+    box.appendChild(p);
+    if (command) box.appendChild(commandRow(command));
+    target.appendChild(box);
+  }
+
+  function renderSummary(ideas) {
+    var counts = {};
+    ideas.forEach(function (idea) {
+      if (idea && STATUS[idea.status]) counts[idea.status] = (counts[idea.status] || 0) + 1;
+    });
+    var box = document.getElementById("summary");
+    STATUS_ORDER.forEach(function (key) {
+      if (!counts[key]) return;
+      var li = el("li");
+      li.appendChild(el("strong", null, counts[key]));
+      li.appendChild(document.createTextNode(STATUS[key].label));
+      box.appendChild(li);
+    });
+    if (box.childNodes.length) box.hidden = false;
+  }
+
+  var data = {};
+  try {
+    data = JSON.parse(document.getElementById("vibebiz-data").textContent) || {};
+  } catch (e) {
+    data = {};
+    document.getElementById("updated").textContent = "Không đọc được dữ liệu mục lục. Gõ /vibebiz:status để vibebiz dựng lại.";
+  }
+
+  var ws = data.workspace || {};
+  if (ws.updated) document.getElementById("updated").textContent = "Cập nhật lần cuối " + formatDate(ws.updated);
+  if (ws.ground_rules_status === "deferred") document.getElementById("ground-rules").hidden = false;
+
+  var ideas = Array.isArray(data.ideas) ? data.ideas : [];
+  var ideasBox = document.getElementById("ideas");
+  renderSummary(ideas);
+  if (ideas.length) {
+    ideas.forEach(function (idea) { ideasBox.appendChild(renderCard(idea || {}, false)); });
+  } else {
+    renderEmpty(ideasBox, "Chưa có ý tưởng nào.", [
+      "Gõ lệnh dưới đây rồi kể cho vibebiz nghe vấn đề bạn đang muốn giải quyết."
+    ], "/vibebiz:idea");
+  }
+
+  var examples = Array.isArray(data.examples) ? data.examples : [];
+  var exBox = document.getElementById("examples");
+  if (examples.length) {
+    examples.forEach(function (ex) { exBox.appendChild(renderCard(ex || {}, true)); });
+  } else {
+    renderEmpty(exBox, "Chưa có ví dụ trong thư mục này.", [
+      "Muốn xem một ý tưởng mẫu đi hết quy trình? Gõ lệnh dưới đây."
+    ], "/vibebiz:help");
+  }
+})();
+</script>
+</body>
+</html>
