@@ -113,9 +113,10 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 
 - [x] T032 [US3] With Fio's yes, remove the imported 0.1.2 copy (`agy plugin uninstall vibebiz`); `agy plugin install <clean checkout>`; same run as T030 (through the T006 harness if it works); record the row.
   - 14/11/2026: Fio's yes (relayed by the coordinator session): `agy plugin uninstall vibebiz` removed the 0.1.2 copy imported from Claude Code (source `claude-code`); `agy plugin list` no longer lists vibebiz, the folder under `~/.gemini/config/plugins/` is gone and `import_manifest.json` no longer names it. Watch whether Antigravity imports it again from Claude Code's synced copy.
-- [ ] T033 [US3] Fix as T031, including the `/help` clash if T005 found one (for example a clearer description so the user reaches vibebiz's help).
+- [x] T033 [US3] Fix as T031, including the `/help` clash if T005 found one (for example a clearer description so the user reaches vibebiz's help).
   - 14/11/2026: commands named in the host's form, and vibebiz's help reached in words on Antigravity (`core/writing-rules.md` §2; eval `routing/command-form-antigravity`, red then green).
   - 14/11/2026, open for Fio: in the T032 run Gemini still wrote `/vibebiz:continue`, showed `file://` links, used English jargon and left 4 estimates unlabelled in the tech view (`package_check.py` fails). The modules already state each rule and Claude follows them, so no host-neutral wording is known to fix it.
+  - 14/11/2026: Fio chose a self-check (`core/package.md` sections 11 and 12: check from the files as written, then the closing message against `writing-rules.md`). Antigravity repackage: `package_check.py` passes, closing message clean.
 
 ---
 
