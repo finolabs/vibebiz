@@ -85,11 +85,13 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 
 ### Tests (red first)
 
-- [ ] T021 [P] Eval case `evals/ask-protocol/host-limit-three/`: the system prompt says the question tool takes at most three questions and three options per call; graders: a four-question round goes in two calls, nothing is dropped, a four-option question becomes plain text, no "Other" option added.
-- [ ] T022 [P] Eval case `evals/ask-protocol/no-question-tool/`: no question tool allowed; graders: plain-text questions with numbered choices, at most four, answers recorded as usual.
-- [ ] T023 [P] Eval case `evals/workspace/no-folder-other-host/`: a session that is not Cowork, no working folder, no Drive tools; graders: nothing written, the message names that host's ways forward (open a folder; connect its Google integration) and not Cowork's Connectors.
-- [ ] T024 [P] Eval case `evals/package/no-slides-tool/`: local folder, no Slides or Docs tools, the user asks for Google Slides; graders: no Slides call, says how to connect Slides on this host, offers the HTML views.
-- [ ] T025 Record the red runs of T021–T024, one at a time.
+- [x] T021 [P] Eval case `evals/ask-protocol/host-limit-three/`: the system prompt says the question tool takes at most three questions and three options per call; graders: a four-question round goes in two calls, nothing is dropped, a four-option question becomes plain text, no "Other" option added.
+  - 14/11/2026: not runnable in `claude plugin eval`: the session has no `AskUserQuestion` (Claude Code 2.1.325, also with `--allow-tools AskUserQuestion`), so the case was dropped. The split rule is checked in the Codex run (T030), where `request_user_input` takes at most three questions and three options.
+- [x] T022 [P] Eval case `evals/ask-protocol/no-question-tool/`: no question tool allowed; graders: plain-text questions with numbered choices, at most four, answers recorded as usual.
+  - 14/11/2026: continues a seeded idea, since `idea` writes `spec.md` only after the intake answer.
+- [x] T023 [P] Eval case `evals/workspace/no-folder-other-host/`: a session that is not Cowork, no working folder, no Drive tools; graders: nothing written, the message names that host's ways forward (open a folder; connect its Google integration) and not Cowork's Connectors.
+- [x] T024 [P] Eval case `evals/package/no-slides-tool/`: local folder, no Slides or Docs tools, the user asks for Google Slides; graders: no Slides call, says how to connect Slides on this host, offers the HTML views.
+- [x] T025 Record the red runs of T021–T024, one at a time.
 
 ### Implementation
 
