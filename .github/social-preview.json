@@ -1,9 +1,9 @@
 {
   "name": "vibebiz",
-  "tagline": "A product owner\nfor retail leaders.",
+  "tagline": "You think business.\nvibebiz writes it like\na product owner.",
   "mark": "../assets/icon-dark.svg",
   "input": "/vibebiz:idea we should use AI\nto bring lapsed customers back",
-  "output": "title: \"Nhắc khách quay lại\n        cửa hàng qua ứng dụng chat\"\nstatus: packaged\nestimate_status: not-tech-reviewed\nnext_step: \"/vibebiz:continue\"",
+  "output": "title: \"Win back lapsed customers\n        through chat reminders\"\nstatus: packaged\nestimate_status: not-tech-reviewed\nnext_step: \"/vibebiz:continue\"",
   "footer": [
     "For **Cowork**, **Claude Code**, **Codex**, **Antigravity**",
     "Source-available, github.com/finolabs/vibebiz"
