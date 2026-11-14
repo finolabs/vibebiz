@@ -6,7 +6,7 @@
 
 ## Summary
 
-A release tag of vibebiz must install as a working plugin on Claude Code, Codex and Antigravity, from the repository root, with no build on the user's side; then vibebiz is listed in the `finolabs/plugins` catalog. Following the organization's existing pattern (vietnamizer, agybird; Fio, 14/11/2026), the built skills are tracked in `.plugin-skills/`, every host manifest points its `skills` path there, and the source skills move from `skills/` to `src/skills/` so no host loads them unbuilt. A check keeps `.plugin-skills/` identical to what the build writes. Instruction modules learn to name "the host's question tool" and to say which features are Cowork-only. Each release records a real install and run on each host before the catalog entry.
+A release tag of vibebiz must install as a working plugin on Claude Code, Codex and Antigravity, from the repository root, with no build on the user's side, and vibebiz must work at parity with Cowork on each host through that host's own tools (Fio, 14/11/2026): folder and Drive workspaces, Google Slides and Docs, the views in the host's preview, and questions through the host's question tool. Following the organization's pattern (vietnamizer, agybird), the built skills are tracked in `.plugin-skills/`, every host manifest points there, and the source skills move to `src/skills/`; a check keeps the copy current. The modules choose every path by the tools present (contracts/host-capabilities.md), Drive operations are named by role and mapped per host, and each release records real runs on every host before the catalog entry.
 
 ## Technical Context
 
@@ -30,14 +30,14 @@ A release tag of vibebiz must install as a working plugin on Claude Code, Codex 
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.* Checked against constitution 1.3.0 (amended on this branch, Fio approved 14/11/2026).
+*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.* Checked against constitution 1.4.0 (amended on this branch, Fio approved 14/11/2026).
 
 | Principle | Result |
 | --- | --- |
 | I. Non-technical user first | Pass. Questions go through the host's question tool with the same rules; the new messages for Cowork-only features are plain Vietnamese. |
 | II. Spec Kit compatibility | Pass. Exports unchanged. |
 | III. Evidence over agreement | Pass. No change to lenses or packaging rules. |
-| IV. Self-contained runtime | Pass. Instructions and file operations only; Claude Code, Codex and Antigravity are named as supported in local folder mode. |
+| IV. Self-contained runtime | Pass. Instructions and file operations only; Antigravity's Google plugins run their own CLI as the user's connector, used through their skills; vibebiz ships and runs no script. |
 | V. Eval-proven behavior | Pass with work: the stale-copy check starts from a failing test; each instruction change starts from a failing eval case where one can run headless (Claude Code); Codex and Antigravity runs are recorded per release as Principle V now requires. |
 | VI. Clean repository | **Exception**, see Complexity Tracking: generated files are tracked. They are repository-required outputs with a drift check, not incidental build outputs. |
 | VII. Docs ship with behavior | Pass with work: README pair, `docs/`, `help`'s map and the example change in the same pull request. |
@@ -57,7 +57,7 @@ specs/003-multi-host/
 ├── quickstart.md
 ├── contracts/
 │   ├── install-layout.md
-│   └── host-capabilities.md
+│   └── host-capabilities.md     # capability map and path choice per host
 ├── checklists/requirements.md
 └── tasks.md             # /speckit-tasks, not created here
 ```
@@ -93,11 +93,7 @@ Done: [research.md](research.md) (R1 sources per host, R2 layout, R3 no exclude 
 
 ## Order of work
 
-1. Generator and check first (red: a test that fails while `.plugin-skills/` is absent or stale), then move `skills/` to `src/skills/` and generate `.plugin-skills/`.
-2. The two new manifests and the manifest-agreement test; `claude plugin validate .`.
-3. Instruction changes in `core/ask-protocol.md`, `core/workspace.md` §1, `core/package.md` (host tool by role, Cowork-only messages), each from a failing eval case on Claude Code.
-4. Docs, `help`'s map, README pair: install per host and what each supports. `CLAUDE.md` "Plugin shape" moves to `src/skills/*/SKILL.md` and names `.plugin-skills/` in the same change as the move.
-5. Release 0.1.5 with the per-host install records (FR-011); then a fresh catalog pull request adding vibebiz to both catalogs (the `list-vibebiz` branch is superseded; its `CLAUDE_ONLY` set is not needed).
+See [tasks.md](tasks.md): measure first (Phase 1, with a stop rule before Drive work), then the installable layout, the Claude Code MVP, host-neutral instructions, the folder journeys on Codex and Antigravity, Drive, Slides and Docs, views, docs, and the release with per-host records before a fresh catalog pull request (the `list-vibebiz` branch is superseded).
 
 ## Complexity Tracking
 

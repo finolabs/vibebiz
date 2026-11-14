@@ -37,6 +37,10 @@ agy plugin install https://github.com/finolabs/vibebiz
 
 If the URL form fails, record the error, then install from a clone checked out at the tag (`agy plugin install <clone>`), and record that the URL form does not work. Same run as step 2; record the skill name form and the limits of `ask_question`.
 
+## 4b. Drive, Slides and Docs on Codex and Antigravity
+
+With the host's Google integration connected (Codex: OpenAI's Google Drive plugin; Antigravity: the official `gdrive`, `gdocs`, `gslides` plugins, signed in), open no folder and run `idea` with the example: the workspace is created in a Drive folder you pick. Continue it from another host with Drive, then package to Slides and Docs. Expected: the Drive folder matches `specs/002-drive-workspace/contracts/drive-workspace.md`, every number in the deck and document matches `data.json`, nothing is shared or public, and the views appear in the host's preview or as file paths.
+
 ## 5. Cowork
 
 Install `vibebiz.plugin` from the release and run the Cowork smoke test (`specs/001-idea-to-prd/quickstart.md`). Expected: unchanged from 0.1.4.

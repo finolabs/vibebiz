@@ -1,16 +1,18 @@
-# Tasks: Install from the catalog on Claude Code, Codex and Antigravity
+# Tasks: First-class vibebiz on Claude Code, Codex and Antigravity
 
 **Input**: Design documents from `/specs/003-multi-host/`
 
 **Prerequisites**: [plan.md](plan.md), [spec.md](spec.md), [research.md](research.md), [data-model.md](data-model.md), [contracts/install-layout.md](contracts/install-layout.md), [contracts/host-capabilities.md](contracts/host-capabilities.md), [quickstart.md](quickstart.md)
 
-**Tests**: required (constitution V). The layout check starts from a failing test; each instruction change starts from an eval case that fails on Claude Code for the reason the change addresses. Codex and Antigravity have no headless eval harness, so their stories end in a recorded run (research R6).
+**Tests**: required (constitution V). The layout check starts from a failing test; each instruction change starts from an eval case that fails on Claude Code for the reason the change addresses. Behavior that only a real Codex or Antigravity session shows ends in a recorded run, or in an automated one if the harness probes (T003, T006) succeed.
 
-**Docs**: constitution VII. Each phase's pull request carries the docs for the behavior it changes; Phase 7 reviews them all against what ships.
+**Docs**: constitution VII. Each phase's pull request carries the docs for the behavior it changes; Phase 10 reviews them all against what ships.
 
-**Organization**: by user story, in delivery order: US5 (every tag installable) is foundational and blocks the rest, then US1 (Claude Code), US4 (Cowork-only features), US2 (Codex), US3 (Antigravity). v0.1.5 is cut in Phase 8 only after the three host rows are recorded.
+**Organization**: Phase 1 measures what research R7 left unverified, because the Drive and Slides design depends on it. Then US7 (every tag installable, foundational), US1 (Claude Code), the host-neutral instruction changes, US2 and US3 (folder journeys on Codex and Antigravity), US4 (Drive), US5 (Slides and Docs), US6 (views). v0.1.5 is cut in Phase 11 after every host row is recorded.
 
-**Heavy jobs**: eval runs go one at a time, with the one-minute load average at or below 25 (Fio's machine rule); targeted modules only, never more than two per command.
+**Heavy jobs**: eval runs and host sessions go one at a time, with the one-minute load average at or below 25 (Fio's machine rule); targeted modules only, never more than two per command.
+
+**Installs on Fio's machine**: probes install into scratch locations where the host allows it, and remove what they installed. Removing or replacing an existing install (the synced `vibebiz` in Claude Code, the imported `vibebiz` 0.1.2 in Antigravity) or connecting an account needs Fio's yes first.
 
 ## Format: `[ID] [P?] [Story] Description`
 
@@ -19,147 +21,162 @@
 
 ## Path Conventions
 
-After Phase 2 the source skills live in `src/skills/`; the built skills are tracked in `.plugin-skills/` and every host manifest points there (contracts/install-layout.md). `dist/vibebiz/` and `dist/vibebiz.plugin` are still built for the Cowork release archive and for `claude plugin eval` (`evals/README.md`). Instruction files are written with the `writing-for-agents` skill; Vietnamese user text is edited with vietnamizer before its phase's pull request.
+After Phase 2 the source skills live in `src/skills/`; the built skills are tracked in `.plugin-skills/` and every host manifest points there (contracts/install-layout.md). `dist/vibebiz/` and `dist/vibebiz.plugin` are still built for the Cowork release archive and for `claude plugin eval`. Instruction files are written with the `writing-for-agents` skill; Vietnamese user text is edited with vietnamizer before its phase's pull request.
 
 ---
 
-## Phase 1: Setup
+## Phase 1: Setup and measurement
 
-**Purpose**: confirm the one host behavior the layout depends on before moving files.
+**Purpose**: confirm what each host really offers before the modules depend on it. Each task records its result in research.md R7 and, where it changes a cell, in contracts/host-capabilities.md.
 
-- [x] T001 In a scratch copy of the repository (outside the worktree), add `"skills": "./.plugin-skills/"` to `.claude-plugin/plugin.json`, copy `dist/vibebiz/skills/` to `.plugin-skills/`, delete the root `skills/`, and run `claude plugin validate <copy>` and a headless `claude -p` with `--plugin-dir <copy>` that lists the plugin's skills. Record in `research.md` R2 that exactly the six skills load, with their `references/`. **If they do not load, stop** and take the result to Fio before Phase 2.
+- [x] T001 Claude Code loads skills from `.plugin-skills/` with no root `skills/` folder (research R2 probe, 14/11/2026).
+- [ ] T002 [P] Codex: in a scratch copy with `.plugin-skills/` and a `.codex-plugin/plugin.json`, add a scratch `local` marketplace, install, and with `codex exec --ephemeral` check that exactly six vibebiz skills load and that a skill can read its own `references/core/workspace.md` without an approval prompt in Auto mode. Remove the scratch marketplace and plugin.
+- [ ] T003 [P] Codex harness: drive one turn through `codex app-server` and find out whether a client can answer `request_user_input`; record whether the tool is offered in Default and Plan modes. If a harness works, sketch how the eval cases would run through it.
+- [ ] T004 Codex Google: with Fio's yes and his connector already connected in Codex, list the `mcp__codex_apps__google_drive_*` tools with their parameters (read only, no file created) and map each Drive operation of `contracts/host-capabilities.md` "Choosing a path" step 2 (search by title and parent, read, download, create with a parent, copy, trash, read permissions) and the Slides and Docs creation paths.
+- [ ] T005 [P] Antigravity: `agy plugin install <scratch copy>` with `.antigravity-plugin/plugin.json`; check the six skills load as `/idea` and so on, what `/help` opens, and that reading `references/` needs no approval in the Default preset. Record the imported 0.1.2 copy's effect. Uninstall the scratch install.
+- [ ] T006 [P] Antigravity harness: find out whether `agy -p --input-format stream-json` or `agy acp` lets a client answer `ask_question`; record its real limits (questions per call, options per question).
+- [ ] T007 Antigravity Google: read the official `gdrive`, `gdocs` and `gslides` plugins' skills in the local cache (`~/.gemini/config/plugins/` or the marketplace cache) and map the same operations as T004; record what needs a shell, network and sign-in.
+- [ ] T008 Claude Code desktop: check whether a plugin skill sees the `Artifact` tool and the Google Drive and Docs connector tools (a scratch skill that lists the tools it can call), so Claude Code follows the same tool-based paths.
+- [ ] T009 Previews: Fio opens one `board-deck.html` in Codex's desktop app (`visualize`, in-app browser) and in Antigravity's app (preview, built-in browser); record what works and the exact way a skill asks for it.
 
-**Checkpoint**: Claude Code loads skills from `.plugin-skills/` with no root `skills/` folder.
+**Stop rule**: if a host cannot do a Drive operation that `specs/002-drive-workspace/contracts/drive-workspace.md` requires (for example reading permissions before the first write, or replacing a file), parity in Drive mode on that host is not possible as specified: record it and take it to Fio before Phase 7.
+
+**Checkpoint**: every "measure" cell in contracts/host-capabilities.md is filled or marked impossible with its evidence.
 
 ---
 
-## Phase 2: Foundational (US5, Priority: P1) — every tag installs as is
+## Phase 2: Foundational (US7, Priority: P1) — every tag installs as is
 
 **Goal**: the repository root at any commit on `main` is a working plugin for all three hosts, and a stale copy fails the checks.
 
 **Independent Test**: change one line in a `core/` module without regenerating; `scripts/checks/test_build.py` fails and names the stale files; regenerate; it passes.
 
-### Tests (red first)
+- [ ] T010 [US7] Add tests to `scripts/checks/test_build.py` (contracts/install-layout.md "Check"): `.plugin-skills/` equals the generator's output (missing, changed and extra files each fail, named); the three manifests agree on name, version, description, keywords, license and `skills`; the description is 120–160 characters; no root `skills/` folder; the manifests' version equals `templates/workspace/index.json`. Run it and record the red result in the pull request.
+- [ ] T011 [US7] Refactor `scripts/build_plugin.py` so one function lays out a skill tree from `src/skills/`, `core/`, `templates/`, `packs/`, `docs/` and `examples/`; add `--skills` to write `.plugin-skills/` (replacing it whole, refusing a path outside the repository); keep `dist/vibebiz/`, `vibebiz.plugin` and `--fake-drive`.
+- [ ] T012 [US7] `git mv skills src/skills`; update every consumer found by `git grep -n 'skills/'`: `scripts/build_plugin.py`, `scripts/checks/test_docs_map.py`, `scripts/checks/test_build.py`, and `src/skills/help/SKILL.md` line 51 (read a sibling skill as `../<name>/SKILL.md`).
+- [ ] T013 [US7] Generate `.plugin-skills/` and commit it in its own commit; add `.plugin-skills/** linguist-generated=true` to `.gitattributes`.
+- [ ] T014 [P] [US7] Add `"skills": "./.plugin-skills/"` to `.claude-plugin/plugin.json`.
+- [ ] T015 [P] [US7] Create `.codex-plugin/plugin.json`: shared fields, `"skills": "./.plugin-skills/"`, an `interface` block (`displayName` and `shortDescription` within 30 characters, `longDescription`, category, website, support, privacy and terms URLs, `defaultPrompt`), modeled on finolabs-vibecode's.
+- [ ] T016 [P] [US7] Create `.antigravity-plugin/plugin.json`: `$schema`, shared fields, `displayName`, `logo`, `author`, `suggestedPrompts` (at most 3), `"skills": "./.plugin-skills/"`; run `agy plugin validate --strict .`.
+- [ ] T017 [US7] Run `test_build.py` (green), `test_docs_map.py`, `claude plugin validate .`, and the stale-copy demonstration in quickstart.md step 1.
 
-- [ ] T002 [US5] Add tests to `scripts/checks/test_build.py` (contracts/install-layout.md "Check"): `.plugin-skills/` equals the generator's output (missing, changed and extra files each fail, named); the three manifests agree on name, version, description, keywords, license and `skills`; the description is 120–160 characters; no root `skills/` folder; the manifests' version equals `templates/workspace/index.json`. Run it and record the red result in the pull request.
-
-### Implementation
-
-- [ ] T003 [US5] Refactor `scripts/build_plugin.py` so one function lays out a skill tree from `src/skills/`, `core/`, `templates/`, `packs/`, `docs/` and `examples/`; add `--skills` to write `.plugin-skills/` in the repository (replacing it whole, refusing a path outside the repository), keep `dist/vibebiz/` and `vibebiz.plugin` for Cowork with the same tree under `skills/`, and keep `--fake-drive`.
-- [ ] T004 [US5] Move the source skills with `git mv skills src/skills`; update every consumer found by `git grep -n 'skills/'`: `scripts/build_plugin.py`, `scripts/checks/test_docs_map.py` (the six skills and `src/skills/help/situation-map.md`), `scripts/checks/test_build.py`, and `src/skills/help/SKILL.md` line 51 (read a sibling skill as `../<name>/SKILL.md`, which holds in both `.plugin-skills/` and the archive's `skills/`).
-- [ ] T005 [US5] Run `python3 -I scripts/build_plugin.py --skills`, commit `.plugin-skills/` as generated output in its own commit, and add `.plugin-skills/** linguist-generated=true` to `.gitattributes`.
-- [ ] T006 [P] [US5] Add `"skills": "./.plugin-skills/"` to `.claude-plugin/plugin.json`.
-- [ ] T007 [P] [US5] Create `.codex-plugin/plugin.json` with the shared fields, `"skills": "./.plugin-skills/"` and an `interface` block (display name "vibebiz", category, website, support, privacy and terms URLs), modeled on finolabs-vibecode's.
-- [ ] T008 [P] [US5] Create `.antigravity-plugin/plugin.json` with `$schema` `https://antigravity.google/schemas/v1/plugin.json`, the shared fields, `displayName` and `"skills": "./.plugin-skills/"`.
-- [ ] T009 [US5] Run `test_build.py` (green), `test_docs_map.py`, and `claude plugin validate .`; then the stale-copy demonstration in quickstart.md step 1.
-
-**Checkpoint**: the repository root validates as a plugin; the checks guard the copy and the manifests.
+**Checkpoint**: the repository root validates on all three hosts; the checks guard the copy and the manifests.
 
 ---
 
 ## Phase 3: User Story 1 - Install and start an idea on Claude Code (Priority: P1) 🎯 MVP
 
-**Goal**: an install of the repository root works on Claude Code exactly like the built plugin.
-
-**Independent Test**: a headless eval case that loads the plugin from the repository root passes.
-
-- [ ] T010 [US1] Add eval case `evals/workspace/root-install-idea/` whose `prompt.md` sets `plugins: ["../../.."]` (the repository root, not `dist/`), runs `/vibebiz:idea` on a fictional idea in an empty folder, and grades: the workspace scaffold and idea folder exist, the skill read its `references/core/workspace.md` (trace), and no file under `.plugin-skills/` or the repository changed. Run it on `main` before Phase 2 is merged to record the red (the root has no `references/`), and after Phase 2 for the green.
-- [ ] T011 [US1] Run the existing local workspace suite once against the repository root (cases with `plugins` overridden on the command line if `claude plugin eval` allows it; otherwise the new case only) and record the scores beside 0.1.4's in `evals/RESULTS.md` (SC-003).
-- [ ] T012 [US1] Write the duplicate-install note for `docs/` (spec Edge Cases): a user with `vibebiz@synced` from a Cowork upload who also installs `vibebiz@finolabs` keeps one; say which and how to remove the other.
-
-**Checkpoint**: Claude Code works from the repository root; MVP for the catalog.
+- [ ] T018 [US1] Eval case `evals/workspace/root-install-idea/` with `plugins: ["../../.."]` (the repository root): `/vibebiz:idea` on a fictional idea in an empty folder; graders: scaffold and idea folder exist, the skill read `references/core/workspace.md` (trace), nothing under `.plugin-skills/` changed. Red on `main` before Phase 2 merges, green after.
+- [ ] T019 [US1] Run the local workspace suite once against the repository root and record the scores beside 0.1.4's in `evals/RESULTS.md` (SC-005).
+- [ ] T020 [US1] Duplicate-install note for `docs/`: a user with `vibebiz@synced` who also installs `vibebiz@finolabs` keeps one; which and how to remove the other.
 
 ---
 
-## Phase 4: User Story 4 - Cowork-only features on another host (Priority: P2)
+## Phase 4: Host-neutral instructions (FR-006, FR-010)
 
-**Goal**: on a host without Drive, Artifacts or Slides and Docs, vibebiz names Cowork, offers the local alternative and writes nothing unasked (contracts/host-capabilities.md).
-
-**Independent Test**: the three eval cases below pass on Claude Code with no Drive or Google Workspace tools.
+**Goal**: the modules choose by the tools present and respect each host's question limits.
 
 ### Tests (red first)
 
-- [ ] T013 [P] [US4] Eval case `evals/package/no-slides-tool/`: a session with a local folder and no Google Workspace tools asks `package` for Google Slides; graders: the answer names Cowork, offers the HTML views, and no Slides or Docs call is attempted (llm judge plus trace).
-- [ ] T014 [P] [US4] Eval case `evals/workspace/no-folder-other-host/`: a Claude Code session with no working folder chosen and no Drive tool runs `/vibebiz:idea`; graders: nothing written, the message asks to open a folder and names Cowork for Drive mode, and does not tell a Claude Code user to open Cowork's Connectors.
-- [ ] T015 [P] [US4] Eval case `evals/ask-protocol/host-question-tool/`: the system prompt says the host's question tool takes at most two questions per call; graders: a four-question round is sent in two calls and nothing is dropped. Record the red runs of T013–T015.
+- [ ] T021 [P] Eval case `evals/ask-protocol/host-limit-three/`: the system prompt says the question tool takes at most three questions and three options per call; graders: a four-question round goes in two calls, nothing is dropped, a four-option question becomes plain text, no "Other" option added.
+- [ ] T022 [P] Eval case `evals/ask-protocol/no-question-tool/`: no question tool allowed; graders: plain-text questions with numbered choices, at most four, answers recorded as usual.
+- [ ] T023 [P] Eval case `evals/workspace/no-folder-other-host/`: a session that is not Cowork, no working folder, no Drive tools; graders: nothing written, the message names that host's ways forward (open a folder; connect its Google integration) and not Cowork's Connectors.
+- [ ] T024 [P] Eval case `evals/package/no-slides-tool/`: local folder, no Slides or Docs tools, the user asks for Google Slides; graders: no Slides call, says how to connect Slides on this host, offers the HTML views.
+- [ ] T025 Record the red runs of T021–T024, one at a time.
 
 ### Implementation
 
-- [ ] T016 [US4] `core/ask-protocol.md`: name the tool by role ("the host's question tool: `AskUserQuestion` in Cowork and Claude Code, `request_user_input` in Codex, `ask_question` in Antigravity"), keep vibebiz's limits, split a round when the host allows fewer, plain text with numbered options when there is no tool. Replace bare `AskUserQuestion` mentions in `core/` and `src/skills/` with the role where the rule is host-neutral.
-- [ ] T017 [US4] `core/workspace.md` §1: "the folder the user opened" instead of "opened in Cowork"; a "Neither" message for hosts that are not Cowork (open a folder; Drive mode works in Claude Cowork), keeping the Cowork message as written; decide by the tools present, not the host's name.
-- [ ] T018 [US4] `core/package.md`: when Artifacts or Google Slides and Docs tools are absent, say they are Cowork features and offer the HTML views (contracts/host-capabilities.md "Behavior").
-- [ ] T019 [US4] Rerun T013–T015 and the cases that cover the changed modules (`evals/ask-protocol/*`, `evals/workspace/no-folder-chat`, `evals/workspace/drive-no-connector-*`, `evals/package/*`), one at a time; record in `evals/RESULTS.md`.
-
-**Checkpoint**: Cowork behavior unchanged; other hosts get clear, honest limits.
+- [ ] T026 `core/ask-protocol.md`: the host's question tool by role (`AskUserQuestion`, `request_user_input`, `ask_question`), vibebiz's limits kept, rounds split to the tool's limits, plain text with numbered choices without a tool; replace bare `AskUserQuestion` mentions in `core/` and `src/skills/` where the rule is host-neutral.
+- [ ] T027 `core/workspace.md` §1: storage by the tools present; "the folder the user opened"; a "Neither" message per host family (Cowork keeps its message; others: open a folder, or connect the host's Google integration).
+- [ ] T028 `core/package.md`: Artifacts, Slides and Docs by the tools present; when missing, how to connect them on this host and the HTML views as the alternative.
+- [ ] T029 Rerun T021–T024 and the cases covering the changed modules (`evals/ask-protocol/*`, `evals/workspace/no-folder-chat`, `evals/workspace/drive-no-connector-*`, `evals/package/*`) one at a time; record in `evals/RESULTS.md`.
 
 ---
 
-## Phase 5: User Story 2 - Codex (Priority: P1)
+## Phase 5: User Story 2 - The folder journey in Codex (Priority: P1)
 
-**Goal**: vibebiz installs and runs from `idea` to `package` in Codex.
-
-**Independent Test**: quickstart.md step 3 against the branch, then again against the tag in Phase 8.
-
-- [ ] T020 [US2] Install from a scratch Codex marketplace whose entry is a `local` source pointing at a clean checkout of this branch; record the skill name form Codex shows and that exactly six vibebiz skills load.
-- [ ] T021 [US2] Run the fictional example idea from `idea` through `continue` to `package` in a scratch folder (`codex exec` with answers in the prompt, or interactively); run `scripts/checks/package_check.py` and the Spec Kit compatibility check on the result. Record the limits `request_user_input` showed and copy them into contracts/host-capabilities.md. Remove the scratch marketplace and plugin afterwards.
-- [ ] T022 [US2] Fix what the run shows in `core/` or `src/skills/` with a failing Claude Code eval case first where the fault is host-neutral; host-specific faults are recorded and taken to Fio if no host-neutral wording fixes them.
+- [ ] T030 [US2] Install from a scratch `local` marketplace pointing at a clean checkout of this branch; run the fictional example idea from `idea` through `continue` to `package` in a scratch folder (through the T003 harness if it works, else interactively with Fio); run the package check and the Spec Kit compatibility check; record the row.
+- [ ] T031 [US2] Fix what the run shows: host-neutral faults from a failing Claude Code eval case first; host-specific faults recorded and taken to Fio if no host-neutral wording fixes them.
 
 ---
 
-## Phase 6: User Story 3 - Antigravity (Priority: P2)
+## Phase 6: User Story 3 - The folder journey in Antigravity (Priority: P1)
 
-**Goal**: vibebiz installs and runs in Antigravity.
-
-**Independent Test**: quickstart.md step 4.
-
-- [ ] T023 [US3] `agy plugin install <clean checkout of this branch>`; record the skill name form and that exactly six vibebiz skills load. Note the 0.1.2 copy already installed from `dist/vibebiz` and remove it first (`agy plugin uninstall vibebiz`), with Fio's yes.
-- [ ] T024 [US3] Same run as T021 in Antigravity; record `ask_question`'s limits in contracts/host-capabilities.md. Fix as T022.
+- [ ] T032 [US3] With Fio's yes, remove the imported 0.1.2 copy (`agy plugin uninstall vibebiz`); `agy plugin install <clean checkout>`; same run as T030 (through the T006 harness if it works); record the row.
+- [ ] T033 [US3] Fix as T031, including the `/help` clash if T005 found one (for example a clearer description so the user reaches vibebiz's help).
 
 ---
 
-## Phase 7: Docs and instructions (constitution VII)
+## Phase 7: User Story 4 - Drive workspace on Codex and Antigravity (Priority: P2)
 
-- [ ] T025 [P] `README.md` and `README.vi.md`: install per host (Cowork archive, Claude Code and Codex catalog, Antigravity repository URL) and the capability table in plain words; same sections in both.
-- [ ] T026 [P] `docs/quick-start.md`, `docs/commands.md`, `docs/faq.md`, `docs/admin-setup.md`: per-host install and skill name forms, what works where, the duplicate-install note (T012).
-- [ ] T027 [P] `src/skills/help/situation-map.md` and `help`'s answers: "which app can I use" and "why can't I make Slides here" situations, from the shipped docs only.
-- [ ] T028 `CLAUDE.md` "Plugin shape": `src/skills/*/SKILL.md`, `.plugin-skills/` generated and never edited by hand (Fio approved the layout 14/11/2026); `evals/README.md` and `specs/002-drive-workspace/tasks.md` Path Conventions follow the new paths.
-- [ ] T029 Edit the new Vietnamese text with vietnamizer, keeping the original voice, for readers who are not technical.
-- [ ] T030 Regenerate `.plugin-skills/` (T005) and run `test_build.py`, `test_docs_map.py`.
+**Goal**: Drive mode with the same rules on every host with Google Drive.
+
+- [ ] T034 [US4] Fake Drive: add tool-name profiles to `evals/fake-drive/server.py` so the same fixture can expose Cowork's tool names or Codex's `google_drive_*` names (from T004), with tests in `evals/fake-drive/test_server.py`. Antigravity's Drive goes through skills that run a CLI and cannot be faked this way; it is covered by real runs.
+- [ ] T035 [US4] Eval cases (red first): `evals/workspace/drive-codex-names-empty/` and `evals/workspace/drive-codex-names-resume/` run the existing empty and resume scenarios with the Codex tool profile.
+- [ ] T036 [US4] `core/drive-workspace.md`: each Drive operation named by role and mapped to the tools or skills present (contracts/host-capabilities.md "Choosing a path" step 2), every rule unchanged; for Antigravity, the steps to use the `gdrive` skill.
+- [ ] T037 [US4] Rerun T035 and all `evals/workspace/drive-*` cases (Cowork names) one at a time; record.
+- [ ] T038 [US4] Real runs: start an idea in Drive mode on Codex, continue it on Antigravity, then in Cowork on the web, and the other way round; check the Drive folder against `specs/002-drive-workspace/contracts/drive-workspace.md`; record the rows (SC-003).
 
 ---
 
-## Phase 8: Release 0.1.5 and the catalog
+## Phase 8: User Story 5 - Slides and Docs on Codex and Antigravity (Priority: P2)
 
-- [ ] T031 Bump the three manifests and `templates/workspace/index.json` to 0.1.5, regenerate `.plugin-skills/`, add `CHANGELOG.md` `[0.1.5]`; release review per `CLAUDE.md` "Release review"; open the pull request with code and security reviews; merge on `MERGE OK`.
-- [ ] T032 Tag `v0.1.5` on the merge commit; build `vibebiz.plugin` from a fresh clone at the tag, validate, `test_build`, package check on the example; publish the GitHub Release with the archive and its sha256.
-- [ ] T033 From the tag, per quickstart.md steps 2–4: Claude Code (scratch marketplace `github` source at the tag), Codex (scratch marketplace `url` source at the tag), Antigravity (`agy plugin install https://github.com/finolabs/vibebiz`; if the URL form fails, a clone at the tag, and record that). One row per host in `evals/RESULTS.md` (FR-011), committed by a follow-up pull request.
-- [ ] T034 Cowork smoke test with the release archive (quickstart.md step 5); Fio runs it (the T049 checklist of spec 002 still applies).
-- [ ] T035 In `finolabs/plugins`: a new branch from `main` adding vibebiz to `.claude-plugin/marketplace.json` (pinned `ref` `v0.1.5`), `.agents/plugins/marketplace.json` and the README table; `scripts/check-catalogs.py --remote` passes; pull request with code and security reviews; merge with Fio's go. Ask Fio whether to delete the superseded `list-vibebiz` branch.
-- [ ] T036 After the catalog merge, install `vibebiz@finolabs` on Claude Code and Codex from the catalog itself and record the result beside T033's rows; update the catalog README's note on which pins were checked against an install.
+- [ ] T039 [US5] `core/package.md` §13 and its Slides and Docs steps: the creation path per host by the tools or skills present (T004, T007), the same content rules, a table plus a link instead of any image that would need to be public.
+- [ ] T040 [US5] Eval case with the Codex tool profile of the fake (if T004 found tools a fake can mimic) for a Docs creation; red first, then green.
+- [ ] T041 [US5] Real runs: package the example idea to Slides and Docs on Codex and on Antigravity; check every number against `data.json` and that nothing is shared or public; record (SC-004).
+
+---
+
+## Phase 9: User Story 6 - Views in the host (Priority: P2)
+
+- [ ] T042 [US6] `core/package.md`: after writing the views, show them by the tools present (Artifact; Codex `visualize` or in-app browser; Antigravity preview or browser, as measured in T009); else give the paths.
+- [ ] T043 [US6] Eval case `evals/package/views-no-artifact/` (red first): no Artifact tool; graders: the paths are given, nothing published.
+- [ ] T044 [US6] Real runs on Codex and Antigravity apps: the views appear; record.
+
+---
+
+## Phase 10: Docs and instructions (constitution VII)
+
+- [ ] T045 [P] `README.md` and `README.vi.md`: install per host, skill name forms, how to connect Google on each host, the capability table in plain words.
+- [ ] T046 [P] `docs/quick-start.md`, `docs/commands.md`, `docs/faq.md`, `docs/admin-setup.md`: the same per host, the duplicate-install note (T020), Antigravity's imported copy, privacy wording for Codex's and Antigravity's Google integrations.
+- [ ] T047 [P] `src/skills/help/situation-map.md` and `help`'s answers: "which app can I use", "how do I connect Google here", "where do I see the deck here".
+- [ ] T048 `CLAUDE.md` "Plugin shape" (`src/skills/`, `.plugin-skills/` generated) and "Workspace and outputs" (views and Drive per host); `PRIVACY.md` (data stays in the user's workspace and Google Drive on every host); `evals/README.md` and spec 002 Path Conventions follow the new paths.
+- [ ] T049 Edit the new Vietnamese text with vietnamizer, keeping the original voice, for readers who are not technical.
+- [ ] T050 Regenerate `.plugin-skills/`; run `test_build.py`, `test_docs_map.py`.
+
+---
+
+## Phase 11: Release 0.1.5 and the catalog
+
+- [ ] T051 Bump the three manifests and `templates/workspace/index.json` to 0.1.5, regenerate `.plugin-skills/`, `CHANGELOG.md` `[0.1.5]`; release review per `CLAUDE.md`; pull request with code and security reviews (Drive and Google integrations trigger the security gate); merge on `MERGE OK`.
+- [ ] T052 Tag `v0.1.5` on the merge commit; build `vibebiz.plugin` from a fresh clone; validate, `test_build`, package check on the example; publish the GitHub Release with the archive and its sha256.
+- [ ] T053 From the tag, per quickstart.md: install on Claude Code (scratch `github` marketplace at the tag), Codex (scratch marketplace at the tag), Antigravity (`agy plugin install https://github.com/finolabs/vibebiz`, with `--ref` if supported; else a clone at the tag, recorded); one row per host in `evals/RESULTS.md` (FR-015), committed by a follow-up pull request.
+- [ ] T054 Cowork smoke test with the release archive; Fio runs it (spec 002's T049 checklist still applies).
+- [ ] T055 In `finolabs/plugins`: a new branch from `main` adding vibebiz to both catalogs (Claude Code pinned to `v0.1.5`) and the README table; `scripts/check-catalogs.py --remote` passes; pull request with code and security reviews; merge with Fio's go. Ask Fio whether to delete the superseded `list-vibebiz` branch.
+- [ ] T056 After the catalog merge, install `vibebiz@finolabs` on Claude Code and Codex from the catalog itself and record; update the catalog README's note on which pins were checked against an install.
 
 ---
 
 ## Dependencies & Execution Order
 
-- Phase 1 → Phase 2 (stop rule in T001).
-- Phase 2 blocks every later phase: nothing installs without it.
-- Phase 3 (US1) and Phase 4 (US4) can run in parallel after Phase 2; they touch different files (eval cases and `core/` modules vs. a new eval case and docs note).
-- Phase 5 (US2) and Phase 6 (US3) need Phase 4's instruction changes, so a failure there is not a known gap; they are manual or scripted runs and go one at a time.
-- Phase 7 needs Phases 3–6 (the docs describe what the runs proved).
-- Phase 8 needs everything; T035 needs T033's three rows; T036 needs T035 merged.
+- Phase 1 first; its stop rule gates Phase 7. T002, T003, T005, T006 can run in parallel as read-only probes, but host sessions still go one at a time on this machine. T004 and T009 need Fio.
+- Phase 2 blocks every later phase.
+- Phase 3 and Phase 4 can run in parallel after Phase 2.
+- Phases 5 and 6 need Phase 4. Phase 7 needs Phase 4 and T004/T007. Phase 8 needs Phase 7's mapping. Phase 9 needs T009.
+- Phase 10 needs Phases 3–9. Phase 11 needs everything; T055 needs T053's rows; T056 needs T055 merged.
 
 ### Parallel opportunities
 
-- T006, T007, T008 (three manifest files).
-- T013, T014, T015 (three new eval cases), then their red runs one at a time.
-- T025, T026, T027 (different docs).
+- T014, T015, T016 (three manifest files).
+- T021–T024 (four new eval cases), then their red runs one at a time.
+- T045, T046, T047 (different docs).
 
 ## Implementation Strategy
 
-MVP is Phases 1–3: Claude Code installs from the repository root, which is what the catalog needs first. Phases 4–6 extend to the other hosts; nothing ships until Phase 8, since the version and the catalog entry describe all three hosts together.
+MVP is Phases 1–3: Claude Code installs from the repository root, which the catalog needs first. Phases 4–6 give the folder journey on every host; Phases 7–9 bring Drive, Slides and Docs, and the views to parity. Nothing ships until Phase 11, since the version and the catalog entry describe all hosts together.
 
 ## Notes
 
-- `.plugin-skills/` is generated: never edit it by hand; regenerate in the same commit as the source change, and keep the generated update in its own commit where the change is large.
-- Moving `skills/` to `src/skills/` changes many paths in one commit; do it with `git mv` so history follows.
-- The two constitution exceptions in plan.md "Complexity Tracking" stay visible in the release pull request.
+- `.plugin-skills/` is generated: never edit it by hand; regenerate in the same commit as the source change, and keep large generated updates in their own commit.
+- The constitution exceptions in plan.md "Complexity Tracking" stay visible in the release pull request.
+- Phase 1 results can change this list; update it before Phase 7 if a stop rule fires.

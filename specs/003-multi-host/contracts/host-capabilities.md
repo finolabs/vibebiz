@@ -1,23 +1,28 @@
 # Contract: Host capabilities
 
-| Capability | Cowork desktop | Cowork web or phone | Claude Code | Codex | Antigravity |
-| --- | --- | --- | --- | --- | --- |
-| Local folder workspace | yes | no | yes | yes | yes |
-| Google Drive workspace | when no folder is open | yes | no | no | no |
-| Board and tech views as local HTML | yes | no | yes | yes | yes |
-| Private Artifacts | yes | yes | no | no | no |
-| Google Slides and Docs | yes | yes | no | no | no |
-| Question tool | `AskUserQuestion` | `AskUserQuestion` | `AskUserQuestion` | `request_user_input` | `ask_question` |
-| Install | `vibebiz.plugin` or a marketplace | same account sync | catalog `vibebiz@finolabs` | catalog `vibebiz@finolabs` | `agy plugin install` with the repository URL |
+vibebiz offers the same features on every supported host, each through that host's own tools (constitution 1.4.0). Every run decides by what the session actually has, never by the host's name. This table is what to expect and where to look; cells marked "measure" are confirmed by the Phase 1 tasks before the modules rely on them.
 
-"no" for Drive, Artifacts and Slides/Docs means the host session has no such tool. vibebiz decides by the tools the session actually has, not by the host's name; the table is what to expect.
+## Capability map
 
-## Behavior on a host without a feature
+| Capability | Cowork | Claude Code | Codex | Antigravity |
+| --- | --- | --- | --- | --- |
+| Local folder workspace | the opened folder (desktop) | the project folder | the workspace folder | the workspace folder |
+| Google Drive workspace | Drive connector | Drive connector tools when connected (desktop app; measure) | `mcp__codex_apps__google_drive_*` tools from OpenAI's Google Drive plugin (measure) | official `gdrive` plugin skills (measure) |
+| Google Slides | Slides connector | when a Slides tool is present | the `google-slides` skill or `presentations` runtime of the Google Drive plugin (measure) | official `gslides` plugin skills (measure) |
+| Google Docs | Docs connector | Docs connector tools when connected | the `google-docs` skill / Drive document tools (measure) | official `gdocs` plugin skills (measure) |
+| Views shown in the host | private Artifact | private Artifact when the `Artifact` tool is present; else file paths | `visualize` inline preview (desktop app) or in-app browser on the `file://` path; else file paths (measure) | app preview or built-in browser where available; else file paths (measure) |
+| Question tool | `AskUserQuestion` 1–4 questions, 2–4 options | `AskUserQuestion` | `request_user_input` 1–3 questions, 2–3 options, only in some modes (measure); else plain text | `ask_question`, maximums unknown (measure) |
+| Skill name shown | `/vibebiz:idea` | `/vibebiz:idea` | `$idea` (model: `vibebiz:idea`) | `/idea` |
+| Install | `vibebiz.plugin`, or a marketplace | catalog `vibebiz@finolabs` | catalog `vibebiz@finolabs` | `agy plugin install https://github.com/finolabs/vibebiz` |
 
-- **No folder open, no Drive tool**: the entry skill writes nothing and gives the "Neither" message. On a non-Cowork host the message tells the user to open a folder and run the command again, and says that keeping ideas in Google Drive works in Claude Cowork.
-- **Artifacts or Slides/Docs asked for, not available**: `package` says these are Cowork features and offers to write `board-deck.html` and `tech-prd.html` in the idea's `exports/`; it writes them only after the user agrees, or at once if the user's request was simply to package.
-- **Drive mode asked for, not available**: as "No folder open"; an open local folder is used as usual.
+## Choosing a path
 
-## Questions
+1. **Storage** (`core/workspace.md` §1): a working folder the user chose → local mode; else Google Drive tools or skills present → Drive mode; else neither → the "Neither" message for this host.
+2. **Drive operations** (`core/drive-workspace.md`): the module names each operation by role (search by title and parent, read, download, create with a parent, copy, trash, read permissions) and maps it to the tools present: Cowork's connector, Codex's `google_drive_*` tools, or Antigravity's `gdrive` skill. Every Drive rule of `specs/002-drive-workspace/contracts/drive-workspace.md` holds on every host: the user picks the folder, sharing is named and confirmed before the first write, files change only by replacement, nothing is shared or made public. An operation the host cannot do (for example reading a file's permissions) stops the run before writing, as a missing connector tool does in Cowork.
+3. **Slides and Docs** (`core/package.md`): the same content rules on every host (from `exports/data.json`, gaps "not yet clarified", estimates "not tech-reviewed", a table plus a link instead of any image that would need to be public).
+4. **Views**: Artifact if the tool exists; else the host's preview of the local file; else the file paths. Drive mode without an Artifact tool shows the views from a temporary local copy only if the host has a preview; it never writes `board-deck.html` or `tech-prd.html` to Drive.
+5. **Questions** (`core/ask-protocol.md`): vibebiz's limits stay (one to four questions per round, two to four options, recommended first, never adding "None" or "Other"). When the host tool allows fewer, split the round into several calls and trim no option the user needs: a question with four options becomes plain text if the tool takes three. Without a tool, ask in plain text with numbered choices.
 
-`core/ask-protocol.md` refers to "the host's question tool". vibebiz's own limits stay (one to four questions per round, two to four options, recommended first, no "None"/"Other"). When the host's tool takes fewer questions per call, send the round in several calls; when there is no question tool, ask in plain text with numbered options. The measured limits of `request_user_input` and `ask_question` are recorded at the first install run and copied into this table.
+## When a feature is not available
+
+vibebiz writes nothing for that feature, says in plain words how to turn it on in this host (Cowork: Connectors; Codex: install and connect OpenAI's Google Drive plugin; Antigravity: install and sign in to the official Google plugins), and offers the alternative (the folder workspace, the HTML views). It never invents a substitute or calls a tool that is not there.
