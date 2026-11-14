@@ -177,6 +177,7 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 ## Phase 11: Release 0.1.5 and the catalog
 
 - [ ] T051 Bump the three manifests and `templates/workspace/index.json` to 0.1.5, regenerate `.plugin-skills/`, `CHANGELOG.md` `[0.1.5]`; release review per `CLAUDE.md`; pull request with code and security reviews (Drive and Google integrations trigger the security gate); merge on `MERGE OK`.
+  - 15/11/2026: Fio's decisions on the release review (relayed by the coordinator session): the closing-message rule moves into the router so `continue` closes like `idea` (red and green in `evals/RESULTS.md`); the README pair follows the plugin-packaging README standard in 0.1.5; no note on Antigravity Slides and Docs; after the tag, a small pull request bumps main to 0.1.6-dev.
 - [ ] T052 Tag `v0.1.5` on the merge commit; build `vibebiz.plugin` from a fresh clone; validate, `test_build`, package check on the example; publish the GitHub Release with the archive and its sha256.
 - [ ] T053 From the tag, per quickstart.md: install on Claude Code (scratch `github` marketplace at the tag), Codex (scratch marketplace at the tag), Antigravity (`agy plugin install https://github.com/finolabs/vibebiz`, with `--ref` if supported; else a clone at the tag, recorded); one row per host in `evals/RESULTS.md` (FR-015), committed by a follow-up pull request.
 - [ ] T054 Cowork smoke test with the release archive; Fio runs it (spec 002's T049 checklist still applies).

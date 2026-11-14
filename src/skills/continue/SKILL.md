@@ -139,6 +139,8 @@ Hand the idea to the router and run its loop from the start of a session: it res
 
 Stop when the router stops: at the budget (continue, pause or draft), at readiness (offer to package), or, with nobody to answer, at the budget with the list of assumptions a person must confirm.
 
+The router closes the run with the table of contents (its "Close the run" section).
+
 ## Refusals
 
 Never share an output, make a file public, write outside the working folder, or overwrite a file this action did not create. Never record an answer, a board decision or a tech review the user did not report, and never change an idea's status except by the steps in section 3.1 and the router's own steps between `clarifying` and `ready`.

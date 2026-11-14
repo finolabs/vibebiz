@@ -24,6 +24,8 @@ At the start of a session (the first round for this idea in this conversation), 
 10. **Close the round**: increment `budget_rounds_used` by one (an all-skipped round counts too), make sure each category the round touched has its new status and its applied cards in `frameworks`, rebuild the `coverage.md` body table from the frontmatter, write `next_step` (see "Next step"), set `updated` to today, and rebuild the table of contents by the workspace module's rules (`references/core/workspace.md`). Do this after every round, so an abandoned session loses nothing.
 11. **Check the budget** (see "Budget"). If budget remains, go back to step 1.
 
+When the loop stops (readiness, the budget, or nobody to answer), close the run (see "Close the run").
+
 ## Depth
 
 How deep the interview goes depends on what kind of situation the idea is in. Classify it with the Cynefin card (`references/packs/frameworks/cynefin.md`) into one of four kinds and write the value to `cynefin` in `coverage.md`. The value specify wrote at intake is only a placeholder; replace it with your classification before the first round.
@@ -193,6 +195,10 @@ When `budget_rounds_used` reaches the session budget (three rounds by default) o
 - **"Xuất bản nháp"** (draft): an export with every gap labelled "not yet clarified" (in the idea's language). Hand over to the `package` entry skill and say a labelled draft is wanted; if it is not available, tell the user the draft requirement is already saved in the idea folder and offer pause.
 
 Recommend "Hỏi tiếp" when the frontier still has categories scoring 6 or more, otherwise "Tạm dừng". With nobody to answer, choose pause and stop.
+
+## Close the run
+
+This applies to a run that `idea` or `continue` handed here; when `package` sent the idea back, `package` closes. The last message ends with the table of contents, after the round or the note that it was skipped: the Artifact link when one was published, otherwise a short table in the chat with each idea's title, status, points clear and next step (`references/core/workspace.md` §7; in Drive mode `references/core/drive-workspace.md` §5). Ideas and files go by their plain titles ("mục lục", "bản yêu cầu"). Done when the last message shows the round and then the table of contents, in the user's language, with every file named by its plain title.
 
 ## Next step
 
