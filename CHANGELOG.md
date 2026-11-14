@@ -4,6 +4,12 @@ All notable changes to vibebiz are recorded here. The format follows [Keep a Cha
 
 ## [Unreleased]
 
+## [0.1.4] - 2026-11-14
+
+### Changed
+
+- The plugin description is shorter (137 characters), within the 120-160 characters the `finolabs/plugins` catalog takes. vibebiz is not in that catalog yet; install it from the latest release.
+
 ## [0.1.3] - 2026-11-14
 
 ### Changed
