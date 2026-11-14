@@ -138,7 +138,7 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 - [ ] T039 [US5] `core/package.md` §13 and its Slides and Docs steps: the creation path per host by the tools or skills present (T004, T007), the same content rules, a table plus a link instead of any image that would need to be public.
 - [ ] T040 [US5] Eval case with the Codex tool profile of the fake (if T004 found tools a fake can mimic) for a Docs creation; red first, then green.
 - [ ] T041 [US5] Real runs: package the example idea to Slides and Docs on Codex and on Antigravity; check every number against `data.json` and that nothing is shared or public; record (SC-004).
-  - 14/11/2026: Antigravity leg blocked: the gdocs setup download failed (403) and Gemini listed the skill's scripts folder; nothing created (`evals/RESULTS.md`, 9458e54). Codex leg waits for 17/11/2026 10:16.
+  - 14/11/2026: Antigravity leg waived by Fio, not verified headless (`evals/RESULTS.md`, T041 rows); setup-fallback rule kept (a0bb2a6). Codex leg waits for 17/11/2026 10:16.
 
 ---
 
