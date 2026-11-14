@@ -7,6 +7,8 @@ description: "Resume work on an idea already started with vibebiz: summarize wha
 
 Bring the user back into an idea they started earlier, in their idea's language, without making them remember anything. The user is a non-technical retail leader: never show them file names, paths, field names or category codes.
 
+This file writes commands as Cowork and Claude Code show them, `/vibebiz:<name>`; name every command in the form of the app this session runs in (`references/core/writing-rules.md`, "Command names in this host's form").
+
 Load each module from this skill's own folder when its step starts, and follow it exactly:
 
 - `references/core/workspace.md`: working folder check and table of contents.

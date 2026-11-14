@@ -7,6 +7,8 @@ description: "Record or update the organization's ground rules that vibebiz chec
 
 Record the organization's ground rules in one short round, or update rules already recorded. vibebiz checks every idea against them when it challenges the idea and drafts its plan, and flags an idea that breaks one. The user is a non-technical retail leader: never show them file names, paths, field names or codes, never ask them to use a terminal, and speak in the language they write in (Vietnamese by default).
 
+This file writes commands as Cowork and Claude Code show them, `/vibebiz:<name>`; name every command in the form of the app this session runs in (`references/core/writing-rules.md`, "Command names in this host's form").
+
 Load each module from this skill's own folder when its step starts, and follow it exactly:
 
 - `references/core/workspace.md`: working folder, workspace states, scaffold, repair, table of contents.

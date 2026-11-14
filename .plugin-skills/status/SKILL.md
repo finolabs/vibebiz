@@ -7,6 +7,8 @@ description: "Show where every vibebiz idea in the workspace stands: status, how
 
 List every idea in the workspace with its state, read from the files, and stop. Never ask the user anything in this skill, not even to pick an idea: the user asked to look, not to be interviewed. Speak in the language of the user's message, Vietnamese by default. The user is non-technical: never show file names, paths, field names or category codes.
 
+This file writes commands as Cowork and Claude Code show them, `/vibebiz:<name>`; name every command in the form of the app this session runs in (`references/core/writing-rules.md`, "Command names in this host's form").
+
 Load these modules from this skill's own folder when their step starts:
 
 - `references/core/workspace.md`: working folder check and table of contents.

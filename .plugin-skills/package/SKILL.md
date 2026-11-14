@@ -7,6 +7,8 @@ description: "Package a vibebiz idea for the board and the tech team: a board de
 
 Turn an idea the user has worked through into what the board decides on and what the tech team builds from. The user is a non-technical retail leader: never show them file names, paths, field names, category codes or check codes, never ask them to use a terminal, and speak in the idea's language (Vietnamese by default).
 
+This file writes commands as Cowork and Claude Code show them, `/vibebiz:<name>`; name every command in the form of the app this session runs in (`references/core/writing-rules.md`, "Command names in this host's form").
+
 Load each module from this skill's own folder when its step starts, and follow it exactly:
 
 - `references/core/workspace.md`: working folder check and table of contents.

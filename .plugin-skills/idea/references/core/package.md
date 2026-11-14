@@ -157,6 +157,10 @@ Only for the views where the user chose Google in section 4.
 4. **Later versions**: create a new file for the new version and leave the earlier one in Drive unchanged, so every presented version stays as it was; record the new address. Never delete or overwrite a Google file.
 5. Never change the file's sharing. Record its address in `links.slides` or `links.docs`.
 6. When the connector fails midway, say what was written and what was not, keep the Artifact link as the way to read the view, and leave that link `null` if the file was not created.
+7. **Antigravity: the official `gslides` and `gdocs` skills.** Follow each skill's own setup and sign-in steps and confirm flags with `--help` first. Workspace text never goes on a command line: write it to a scratch file outside the workspace with the file tool, and pass the file. The file title (the idea's title and the version date) goes in as one single-quoted argument, with quotes and line breaks removed.
+   - Slides: `gslides mutate create --title '<title>'`, then one `gslides mutate batch <presentation id> <scratch requests file>` holding the slides, text and tables of `board.slides[]` in order; insert a diagram image only with `insert-image-from-file`, which uploads it privately.
+   - Docs: write the tech view as Markdown (one heading per `tech.sections[]`, in order) to a scratch file, then `gdocs mutate import-md <scratch file> --title '<title>'`.
+   - Read each new file back (`gslides readonly read-all`, `gdocs readonly read`) and check every figure against `data.json` before recording its address. The sharing, deleting and image-by-address commands of both skills stay unused.
 
 ## 10. Links and the final data
 
