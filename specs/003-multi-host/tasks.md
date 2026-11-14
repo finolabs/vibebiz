@@ -74,7 +74,7 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 ## Phase 3: User Story 1 - Install and start an idea on Claude Code (Priority: P1) 🎯 MVP
 
 - [x] T018 [US1] Eval case `evals/workspace/root-install-idea/` with `plugins: ["../../.."]` (the repository root): `/vibebiz:idea` on a fictional idea in an empty folder; graders: scaffold and idea folder exist, the skill read `references/core/workspace.md` (trace), nothing under `.plugin-skills/` changed. Red on `main` before Phase 2 merges, green after.
-- [ ] T019 [US1] Run the local workspace suite once against the repository root and record the scores beside 0.1.4's in `evals/RESULTS.md` (SC-005).
+- [x] T019 [US1] Run the local workspace suite once against the repository root and record the scores beside 0.1.4's in `evals/RESULTS.md` (SC-005).
 - [x] T020 [US1] Duplicate-install note for `docs/`: a user with `vibebiz@synced` who also installs `vibebiz@finolabs` keeps one; which and how to remove the other.
 
 ---
@@ -110,6 +110,7 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 ## Phase 6: User Story 3 - The folder journey in Antigravity (Priority: P1)
 
 - [ ] T032 [US3] With Fio's yes, remove the imported 0.1.2 copy (`agy plugin uninstall vibebiz`); `agy plugin install <clean checkout>`; same run as T030 (through the T006 harness if it works); record the row.
+  - 14/11/2026: Fio's yes (relayed by the coordinator session): `agy plugin uninstall vibebiz` removed the 0.1.2 copy imported from Claude Code (source `claude-code`); `agy plugin list` no longer lists vibebiz, the folder under `~/.gemini/config/plugins/` is gone and `import_manifest.json` no longer names it. Watch whether Antigravity imports it again from Claude Code's synced copy.
 - [ ] T033 [US3] Fix as T031, including the `/help` clash if T005 found one (for example a clearer description so the user reaches vibebiz's help).
 
 ---
