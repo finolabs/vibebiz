@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """Build the distributable plugin: dist/vibebiz/ and dist/vibebiz.plugin.
 
+With --skills, write the tracked .plugin-skills/ instead: the built skills every host manifest points at, so
+the repository root installs as is (specs/003-multi-host/contracts/install-layout.md). test_build.py fails
+when .plugin-skills/ differs from what this script would write.
+
 With --fake-drive, also dist/vibebiz-fakedrive/: an eval-only copy that declares the fake Google
 Drive MCP server from evals/fake-drive/ (evals/README.md "Fake Drive"). It is never shipped.
 
@@ -10,10 +14,13 @@ import argparse
 import json
 import shutil
 import sys
+import tempfile
 import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+SKILLS_SRC = Path("src") / "skills"
+PLUGIN_SKILLS = ".plugin-skills"
 SKILLS = ["idea", "continue", "status", "package", "constitution", "help"]
 CONTENT_DIRS = ["templates", "packs", "docs", "examples"]
 # Development folders (.specify, .claude, specs, evals, scripts) sit at the repository root and are never
@@ -32,6 +39,71 @@ def _copy_tree(src: Path, dst: Path) -> None:
         shutil.copytree(src, dst, ignore=_ignore, dirs_exist_ok=True)
     else:
         dst.mkdir(parents=True, exist_ok=True)
+
+
+def source_guard(skill: str) -> str:
+    """The line right after the frontmatter of src/skills/<skill>/SKILL.md; the build strips it."""
+    return (f"**Source copy, not for use.** Follow this plugin's `.plugin-skills/{skill}/SKILL.md` instead: "
+            "this file under `src/` lacks the `references/` folder it names.")
+
+
+def _strip_guard(doc: Path, skill: str) -> None:
+    """Drop the source guard line from a built SKILL.md."""
+    if not doc.is_file():
+        return
+    text = doc.read_text(encoding="utf-8")
+    doc.write_text(text.replace(source_guard(skill) + "\n", "", 1), encoding="utf-8")
+
+
+def lay_out_skills(dst: Path, root: Path = ROOT) -> None:
+    """Write the six built skills into `dst`: each SKILL.md with its own copy of what it reads."""
+    for skill in SKILLS:
+        _copy_tree(root / SKILLS_SRC / skill, dst / skill)
+        _strip_guard(dst / skill / "SKILL.md", skill)
+        _copy_tree(root / "core", dst / skill / "references" / "core")
+        # Templates too: a skill may only rely on files inside its own folder in Cowork.
+        for shared in ("templates", "packs"):
+            _copy_tree(root / shared, dst / skill / "references" / shared)
+    # help answers only from the shipped docs and shows the example, so it carries its own copy of both.
+    for shared in ("docs", "examples"):
+        _copy_tree(root / shared, dst / "help" / "references" / shared)
+
+
+def write_skills(dst: Path = None, root: Path = ROOT) -> Path:
+    """Replace `dst` (default: <root>/.plugin-skills) whole with a fresh layout; refuse a path outside the repository."""
+    root = root.resolve()
+    dst = (dst or root / PLUGIN_SKILLS).resolve()
+    if dst == root or not dst.is_relative_to(root):
+        raise SystemExit(f"refused: {dst} is not a folder inside {root}")
+    if dst.is_symlink() or (dst.exists() and not dst.is_dir()):
+        raise SystemExit(f"refused: {dst} is not a folder")
+    if dst.exists():
+        shutil.rmtree(dst)
+    dst.mkdir(parents=True)
+    lay_out_skills(dst, root)
+    return dst
+
+
+def _files(folder: Path) -> dict:
+    if not folder.is_dir():
+        return {}
+    return {p.relative_to(folder).as_posix(): p for p in folder.rglob("*")
+            if p.is_file() and not any(part in EXCLUDED_NAMES for part in p.relative_to(folder).parts)}
+
+
+def skills_drift(root: Path = ROOT) -> list:
+    """Name every file under <root>/.plugin-skills that is missing, changed or extra against a fresh layout."""
+    root = root.resolve()
+    with tempfile.TemporaryDirectory() as tmp:
+        fresh = Path(tmp) / "skills"
+        fresh.mkdir()
+        lay_out_skills(fresh, root)
+        want, have = _files(fresh), _files(root / PLUGIN_SKILLS)
+        problems = [f"missing: {PLUGIN_SKILLS}/{rel}" for rel in want.keys() - have.keys()]
+        problems += [f"extra: {PLUGIN_SKILLS}/{rel}" for rel in have.keys() - want.keys()]
+        problems += [f"changed: {PLUGIN_SKILLS}/{rel}" for rel in want.keys() & have.keys()
+                     if want[rel].read_bytes() != have[rel].read_bytes()]
+    return sorted(problems, key=lambda p: (p.split(": ", 1)[1], p))
 
 
 def build(out: Path, root: Path = ROOT, fake_drive: bool = False) -> Path:
@@ -58,17 +130,13 @@ def build(out: Path, root: Path = ROOT, fake_drive: bool = False) -> Path:
     if not manifest.is_file():
         raise SystemExit(f"missing manifest: {manifest}")
     (plugin / ".claude-plugin").mkdir()
-    shutil.copy2(manifest, plugin / ".claude-plugin" / "plugin.json")
+    # The archive keeps its skills in the default skills/ folder, so its manifest drops the repository's
+    # "skills" path (which points at .plugin-skills/).
+    data = json.loads(manifest.read_text(encoding="utf-8"))
+    data.pop("skills", None)
+    (plugin / ".claude-plugin" / "plugin.json").write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
-    for skill in SKILLS:
-        _copy_tree(root / "skills" / skill, plugin / "skills" / skill)
-        _copy_tree(root / "core", plugin / "skills" / skill / "references" / "core")
-        # Templates too: a skill may only rely on files inside its own folder in Cowork.
-        for shared in ("templates", "packs"):
-            _copy_tree(root / shared, plugin / "skills" / skill / "references" / shared)
-    # help answers only from the shipped docs and shows the example, so it carries its own copy of both.
-    for shared in ("docs", "examples"):
-        _copy_tree(root / shared, plugin / "skills" / "help" / "references" / shared)
+    lay_out_skills(plugin / "skills", root)
 
     for name in CONTENT_DIRS:
         _copy_tree(root / name, plugin / name)
@@ -105,7 +173,12 @@ def main(argv=None) -> int:
     parser.add_argument("--out", type=Path, default=ROOT / "dist", help="output directory (default: dist/)")
     parser.add_argument("--fake-drive", action="store_true",
                         help="also write the eval-only build with the fake Google Drive server")
+    parser.add_argument("--skills", action="store_true",
+                        help="write the tracked .plugin-skills/ in the repository instead of dist/")
     args = parser.parse_args(argv)
+    if args.skills:
+        print(f"wrote {write_skills()}")
+        return 0
     out = args.out.resolve()
     archive = build(out, fake_drive=args.fake_drive)
     print(f"built {out / 'vibebiz'} and {archive}")

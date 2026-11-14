@@ -296,6 +296,13 @@ write_case("drive-resume", "Another device, same Drive: continue finds the renam
                llm("resumed-without-asking", "The user's Drive holds exactly one vibebiz workspace, in a folder the user renamed to \"%s\"; its idea (nhắc khách quay lại) has every category clear except two partial ones: non-functional needs and cost, resources and return. PASS if the assistant asks no question about where the workspace is or which folder to use, names the folder it found in at most one short sentence, and goes on with the idea at one of the two partial categories (non-functional needs, or cost and return). FAIL if it asks the user to choose or confirm a folder, or starts the idea over." % RENAMED),
            ], tags=("workspace", "drive", "us2"), mutate=rename_and_edit)
 
+# Spec 003 T051: continue closes like idea, through the router's end-of-run step.
+write_case("drive-continue-toc", "continue ends its run with the round and then the table of contents, as idea does (spec 003 T051).",
+           "one-workspace", RESUME, [
+               *never_share(),
+               llm("round-and-toc-shown", "This is the final message of a vibebiz run that continued an idea saved in the user's Google Drive. PASS if it shows a round of questions about the idea (or says the round was skipped with nobody to answer) and a table of contents of the workspace (an Artifact link or a short table listing the idea with its status and next step), in plain Vietnamese. FAIL if there is no table of contents, or it claims answers the user never gave.", last=True),
+           ], tags=("workspace", "drive", "us2"))
+
 
 _two = fixtures.build("two-workspaces")
 # T034

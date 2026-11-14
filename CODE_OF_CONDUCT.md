@@ -8,7 +8,7 @@ The Contributor Covenant is © its authors and licensed under CC BY 4.0. It appl
 
 ## In short
 
-Be respectful and constructive. No harassment, discrimination, personal attacks, or publishing other people's private information. Disagree with the idea, not the person. Retail leaders and engineers are both welcome here, and a plain-language question is never a bad question.
+Be respectful and constructive. No harassment, discrimination, personal attacks, or publishing other people's private information. Disagree with the idea, not the person. Business leaders and engineers are both welcome here, and a plain-language question is never a bad question.
 
 ## Reporting and enforcement
 

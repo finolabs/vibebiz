@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title id="title">vibebiz — a lowercase b whose bowl is a speech bubble, dark</title>
+  <path d="M36 16 V100" fill="none" stroke="#7FE2CE" stroke-width="10" stroke-linecap="round"/>
+  <path d="M36 74 A28 28 0 1 1 64 102 H36" fill="none" stroke="#7FE2CE" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M84 94 L104 112" fill="none" stroke="#7FE2CE" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="64" cy="74" r="6" fill="#7FE2CE"/>
+</svg>

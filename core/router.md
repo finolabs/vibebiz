@@ -14,7 +14,7 @@ At the start of a session (the first round for this idea in this conversation), 
 
 1. **Re-read** every idea file listed above. The user may have edited them by hand; their edits are authoritative, so work from the current files and never restore an older version.
 2. **Set the depth** (see "Depth"): classify the idea right after intake, before the first round, and revisit the classification whenever the files or the latest answers change what it rests on.
-3. **Check readiness** (see "Readiness"). If ready, offer to package and stop the loop unless the user chooses to keep going.
+3. **Check readiness** (see "Readiness"). If ready, offer to package and stop the loop unless the user chooses to keep going. When the user chooses to package, hand over to the `package` entry skill (or name `/vibebiz:package` when you cannot start it from here); its steps call any Google Slides, Docs or Drive skill.
 4. **Resolve conflicts first**: if the last answers contradict an earlier decision, handle it (see "Contradictions") before anything else.
 5. **Check for two ideas** (see "Two ideas in one") when the intake or the latest answers suggest it.
 6. **Compute the frontier** and **rank** it (below).
@@ -23,6 +23,8 @@ At the start of a session (the first round for this idea in this conversation), 
 9. **Ask the round** through the ask protocol, which writes the answers back.
 10. **Close the round**: increment `budget_rounds_used` by one (an all-skipped round counts too), make sure each category the round touched has its new status and its applied cards in `frameworks`, rebuild the `coverage.md` body table from the frontmatter, write `next_step` (see "Next step"), set `updated` to today, and rebuild the table of contents by the workspace module's rules (`references/core/workspace.md`). Do this after every round, so an abandoned session loses nothing.
 11. **Check the budget** (see "Budget"). If budget remains, go back to step 1.
+
+When the loop stops (readiness, the budget, or nobody to answer), close the run (see "Close the run").
 
 ## Depth
 
@@ -193,6 +195,10 @@ When `budget_rounds_used` reaches the session budget (three rounds by default) o
 - **"Xuất bản nháp"** (draft): an export with every gap labelled "not yet clarified" (in the idea's language). Hand over to the `package` entry skill and say a labelled draft is wanted; if it is not available, tell the user the draft requirement is already saved in the idea folder and offer pause.
 
 Recommend "Hỏi tiếp" when the frontier still has categories scoring 6 or more, otherwise "Tạm dừng". With nobody to answer, choose pause and stop.
+
+## Close the run
+
+This applies to a run that `idea` or `continue` handed here; when `package` sent the idea back, `package` closes. The last message ends with the table of contents, after the round or the note that it was skipped: the Artifact link when one was published, otherwise a short table in the chat with each idea's title, status, points clear and next step (`references/core/workspace.md` §7; in Drive mode `references/core/drive-workspace.md` §5). Ideas and files go by their plain titles ("mục lục", "bản yêu cầu"). Done when the last message shows the round and then the table of contents, in the user's language, with every file named by its plain title.
 
 ## Next step
 

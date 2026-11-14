@@ -37,7 +37,7 @@ evals/<case>/
 
 `evals/results/` is written by each run and is git-ignored.
 
-Because `evals/` sits at the repository root and the plugin under test is `dist/vibebiz/`, every `prompt.md` sets `plugins: ["../../dist/vibebiz"]` so the built plugin is the one loaded (a nested case folder adjusts the relative path). Run `python3 scripts/build_plugin.py` first.
+Because `evals/` sits at the repository root and the plugin under test is `dist/vibebiz/`, every `prompt.md` sets `plugins: ["../../dist/vibebiz"]` so the built plugin is the one loaded (a nested case folder adjusts the relative path). Run `python3 scripts/build_plugin.py` first. The skills are built from their sources in `src/skills/`; `python3 scripts/build_plugin.py --skills` writes `.plugin-skills/`, the tracked copy that the three host manifests point at. A case that tests the install a catalog delivers loads the repository root instead (`plugins: ["../../.."]`, as in `workspace/root-install-idea`), so it runs against `.plugin-skills/`: regenerate it with `--skills` before such a run.
 
 ## Answers are embedded in prompts
 

@@ -1,10 +1,22 @@
 <!--
 Sync Impact Report
-Version change: 1.2.0 → 1.2.1 (PATCH)
-Modified sections: Principle on the workspace (the entry command is renamed /vibebiz:new → /vibebiz:idea; the rule is unchanged)
+Version change: 1.4.0 → 1.4.1 (PATCH)
+Modified sections: Principle I: the audience is founders and business leaders who are not
+technical, with retail as the first supported industry (was retail business leaders). No rule
+changes. Fio approved on 14/11/2026; README pair and manifests changed the same day (156dc27).
+Earlier on 14/11/2026, 1.3.0 → 1.4.0 (MINOR):
+Modified sections: Principle IV and Runtime and Distribution Constraints: Claude Code, Codex and
+Antigravity move from local folder mode only to parity with Cowork through each host's own tools
+(Drive workspace, Google Slides and Docs, the host's preview); vibebiz picks each path by the
+tools present; a host integration that runs its own tools is the user's connector.
+Earlier on 14/11/2026, 1.2.1 → 1.3.0 (MINOR): Principle I (the host's question tool), IV (other
+hosts supported), V (a recorded install and run on every other supported host), Runtime
+constraints.
 Added sections: none
 Removed sections: none
-Follow-up: none (CLAUDE.md, docs and specs renamed in the same change)
+Follow-up: CLAUDE.md "Plugin shape" and "Workspace and outputs" follow in the spec 003
+implementation (tasks T028); README pair, docs and help follow there too. Fio approved both
+amendments on 14/11/2026.
 -->
 # vibebiz Constitution
 
@@ -12,11 +24,13 @@ Follow-up: none (CLAUDE.md, docs and specs renamed in the same change)
 
 ### I. Non-Technical User First
 
-vibebiz serves retail business leaders who do not write code and never open a terminal.
+vibebiz serves founders and business leaders who do not write code and never open a terminal;
+retail is the first supported industry.
 
 - Everything a user reads (questions, outputs, docs, `README.vi.md`) MUST be plain Vietnamese.
   A technical term MUST be explained the first time it appears.
-- Every decision put to the user MUST go through Cowork's native question tool: at most four
+- Every decision put to the user MUST go through the host's native question tool (Cowork's
+  `AskUserQuestion` or its equivalent on another supported host): at most four
   questions per round, two to four mutually exclusive options, the recommended option first,
   and each question understandable without the surrounding text. Only open-ended questions use
   plain text.
@@ -60,10 +74,14 @@ Rationale: the board decides on these documents; an unsupported claim costs real
 
 ### IV. Self-Contained Runtime
 
-The plugin runs in Claude Cowork with nothing but its own files and the user's connectors.
+The plugin runs with nothing but its own files and the user's connectors. Claude Cowork is the
+primary runtime; Claude Code, Codex and Antigravity are supported at parity with it, each
+through its own tools.
 
 - Runtime behavior MUST be instructions and file operations; skills MUST NOT require scripts,
-  hooks or a shell on the user's machine.
+  hooks or a shell on the user's machine. A host integration that runs its own tools (for
+  example Antigravity's Google plugins) is a user connector, used through that host's skills or
+  tools, never shipped or scripted by vibebiz.
 - The plugin MUST NOT depend on, import or reference `finolabs-vibecode` or any of its skills.
 - `diagram-design` is a companion plugin and MUST NOT be copied into this repository. When it is
   absent, exports MUST show a table with a "no diagram" note instead of a substitute drawing.
@@ -81,7 +99,8 @@ Skill behavior is code and is tested like code.
 - Structural properties (question counts, sections, cross-view numbers, index integrity, docs
   coverage) MUST be checked in code. Semantic judgments (claim support, meaning preservation,
   sycophancy) MAY use an approved evaluator such as Jev, never at plugin runtime.
-- Each release MUST pass the agreed eval suites and a manual Cowork smoke test.
+- Each release MUST pass the agreed eval suites and a manual Cowork smoke test, and MUST record
+  a real install from its tag and a run in a local folder on every other supported host.
 
 Rationale: prompt behavior drifts silently; only a failing case proves a fix and guards it.
 
@@ -112,11 +131,20 @@ Rationale: users learn vibebiz from its docs and `help`; stale docs teach the wr
 
 ## Runtime and Distribution Constraints
 
-- Target runtime is Claude Cowork with its native question tool, Claude Artifacts, the Google
+- Primary runtime is Claude Cowork with its native question tool, Claude Artifacts, the Google
   Workspace connectors for Docs and Slides, and the Google Drive connector, which holds the
   workspace when a session has no local folder (Cowork on the web or a phone).
-- Board view exports to an Artifact or Google Slides; tech view exports to an Artifact or Google
-  Docs, always with the `spec.md` snapshot.
+- Claude Code, Codex and Antigravity are supported at parity with Cowork: the same six entry
+  skills and workspace, the local folder and the Google Drive workspace, Google Slides and Docs,
+  and the board and tech views in the host's preview, each through that host's own tools.
+  vibebiz chooses every path by the tools present in the session, not by the host's name. Where
+  a host has no equivalent (a private Claude Artifact), vibebiz uses its nearest one and says
+  what differs; where a feature is not connected, it says how to connect it and offers the
+  alternative.
+- A release tag MUST install as a working plugin on every supported host with no build step on
+  the user's side.
+- Board view exports to an Artifact, the host's preview or Google Slides; tech view exports to an
+  Artifact, the host's preview or Google Docs, always with the `spec.md` snapshot.
 - The user workspace layout and file names defined in `CLAUDE.md` are a public contract. A change
   to the local layout is a breaking change for existing users and MUST bump the plugin's MAJOR
   version. Drive mode is a declared variant of that layout; its differences are listed in
@@ -147,4 +175,4 @@ Rationale: users learn vibebiz from its docs and `help`; stale docs teach the wr
 - Reviews and plans check compliance; a justified exception is recorded in the plan's Complexity
   Tracking with its reason.
 
-**Version**: 1.2.1 | **Ratified**: 2026-11-12 | **Last Amended**: 2026-11-13
+**Version**: 1.4.1 | **Ratified**: 2026-11-12 | **Last Amended**: 2026-11-14

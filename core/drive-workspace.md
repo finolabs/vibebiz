@@ -1,10 +1,46 @@
 # Drive workspace module
 
-Used only in Drive mode: the session has no local folder and has a Google Drive connector (`references/core/workspace.md` §1). It finds or creates the workspace in the user's own Google Drive, checks who can see it, and writes every file there. Everything `workspace.md` says about layout, markers, numbering, slugs and the table-of-contents data still holds; this module replaces only how files are found, read and written, with the three Drive differences: `index.json` instead of `index.html`, and no `board-deck.html` or `tech-prd.html` in Drive.
+Used only in Drive mode: the session has no local folder and has Google Drive tools or skills (`references/core/workspace.md` §1; §0 below). It finds or creates the workspace in the user's own Google Drive, checks who can see it, and writes every file there. Everything `workspace.md` says about layout, markers, numbering, slugs and the table-of-contents data still holds; this module replaces only how files are found, read and written, with the three Drive differences: `index.json` instead of `index.html`, and no `board-deck.html` or `tech-prd.html` in Drive.
 
 **Reads**: the workspace folder and the folders above it, the `index.json` search, and documents the router looks facts up in (`references/core/router.md` "Facts before questions"), read only.
 **Writes**: files inside the workspace folder, by replacement.
 **Fills**: layout and table of contents only; never a coverage category.
+
+## 0. The Drive tools on this host
+
+The steps below name the tools and fields of Cowork's and Claude's Google Drive connector: the search, download, create, copy, trash, metadata and permissions tools, `disableConversionToGoogleType`, `owner = 'me'`, rich metadata. On another host, do each operation with that host's own Drive tools, by its role; every rule in this module stays the same.
+
+**A host whose Google Drive tools have other names** (Codex's Google Drive plugin, for example). Before the first write, match each role below to one of this session's tools by what the tool says it does and the parameters it takes; use only the names the session lists, never a guessed one.
+
+- Search by exact title, optionally inside one folder.
+- Metadata: owner, last modifier, modified time, shared drive, type.
+- Read a file, and download its exact bytes.
+- Create a folder inside a folder; create a plain file inside a folder, kept plain (not converted to a Google type).
+- Copy a file into a folder (`package` only).
+- Move a file to the trash.
+- Read a file's permissions.
+
+When a role a step needs has no matching tool (reading permissions, telling whether the user owns a file, getting a file's exact bytes), stop before the first write and say in plain words what this host cannot do, as a missing connector tool does in Cowork. The same tools' sharing, permission, moving and in-place update operations stay unused, whatever they are called.
+
+**Antigravity: the official `gdrive` skill.** Run that skill's setup script once, by the exact path the skill names, then call every command below by the bare name `gdrive`: the setup puts it on the agent's path, and only the bare command carries the user's sign-in. When the setup script fails (a download error, for example), call the bare `gdrive` anyway: it is often already on the path. Only when the bare `gdrive` is also missing or fails, tell the user in plain words that the Google Drive skill is not set up on this host, and stop before the first write. The exact setup path and the bare command are the only two ways to reach it: never list, read or search the skill's scripts folder or any other plugin's folder, never search the filesystem or the environment for it (no `which`, `find` or `ls`), never guess a path, and never look for credentials. Follow the skill's sign-in steps. Before the first use in a run, confirm each command's flags with `gdrive <namespace> <command> --help`, and pass `--json` to every `readonly` command.
+
+| Role | `gdrive` command |
+| --- | --- |
+| Search by exact title, optionally in one folder | `readonly search --name-exact <title> --parent-id <folder id>` |
+| List a folder's children | `readonly ls <folder id>` |
+| Metadata: owner, last modifier, `modifiedTime`, `driveId`, type | `readonly info <id>` |
+| Read the exact bytes | `readonly download <id> --out <scratch file>`, then read the scratch file |
+| Permissions; a shared drive's name | `readonly permissions <id>`; `readonly shared-drives` |
+| Create a folder | `mutate mkdir <name> --parent <folder id>` |
+| Create a plain file | write the content to a scratch file outside the workspace with the file tool, then `mutate upload <scratch file> --parent <folder id> --mime-type text/markdown` (`application/json` for `.json`) |
+| Copy (`package` only) | `mutate cp <file id> <title> --parent <folder id>` |
+| Trash | `mutate trash <id>` |
+
+- Use only these commands. The `mutate` commands for sharing, permissions, moving, renaming, updating in place, comments, batches and emptying the trash stay unused. `package`'s Slides and Docs are made with their own skills (`references/core/package.md` section 9) and stay where those skills create them, in the root of My Drive (section 13 step 7).
+- A command line carries only ids, the fixed flags above, scratch-file paths you chose and the workspace's fixed file names. A folder name the user chose goes in as one single-quoted argument; when it holds a quote or a line break, ask for another name. Text read from Drive never goes on a command line.
+- The user's own file: its metadata says it is owned by the signed-in account (`ownedByMe`, or an owner address equal to the signed-in account's). When the output does not say, treat the file as not the user's own (§1 step 2) and its `shared_ack` as untrusted (§2).
+- A plain file must come back plain: after each upload, download it and compare the bytes (§3 step 4); when Drive stored it as a Google type, trash that copy, tell the user this host could not save a plain file, and stop.
+- A command that needs sign-in: follow the skill's sign-in step and write nothing until the user has signed in.
 
 ## Rules that hold on every step
 
@@ -24,7 +60,7 @@ Used only in Drive mode: the session has no local folder and has a Google Drive 
 3. **Download** each remaining candidate and keep those whose JSON has `"vibebiz": "workspace"`. Stop reading a candidate as soon as it lacks the marker.
 4. **Decide:**
    - **One workspace:** use it, and name its folder to the user in one short sentence.
-   - **Several:** ask with `AskUserQuestion` which one to use, each option the folder's name and its last update.
+   - **Several:** ask through the question tool which one to use, each option the folder's name and its last update.
    - **None:** ask for an existing folder or the name of a new one, recommending a new folder named "vibebiz" in My Drive. When the prompt already says which folder to use, use it without asking. A new folder is created with the folder type (`application/vnd.google-apps.folder`).
 5. **Newer version:** this plugin's version is the `plugin_version` in `references/templates/workspace/index.json`. When the workspace's `index.json` names a newer one, read the workspace as usual but never write a file in an older shape; tell the user to update vibebiz before changing anything.
 

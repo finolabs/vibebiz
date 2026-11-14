@@ -1,7 +1,6 @@
 {
   "sections": {
     "what-you-get": "What ships",
-    "install": "Install in Cowork",
     "contributing": "Contributing and security"
   },
   "badge_color": "7FE2CE",
@@ -9,5 +8,11 @@
     "repository": "finolabs/plugins",
     "marketplace": "finolabs"
   },
-  "banner_follow_up": "finolabs-social-preview"
+  "banner_follow_up": "finolabs-social-preview",
+  "hosts": [
+    "Claude Cowork",
+    "Claude Code",
+    "Codex",
+    "Antigravity"
+  ]
 }

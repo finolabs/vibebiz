@@ -1,7 +1,7 @@
 """Docs and help map check (T015).
 
-- The skills present in `skills/` (folders holding a `SKILL.md`) are exactly
-  the skills listed in `skills/help/situation-map.md`, `docs/commands.md` and
+- The skills present in `src/skills/` (folders holding a `SKILL.md`) are exactly
+  the skills listed in `src/skills/help/situation-map.md`, `docs/commands.md` and
   the "What ships" sections of `README.md` and `README.vi.md`. A document
   lists a skill by naming its command, `/vibebiz:<name>`.
 - `README.md` and `README.vi.md` have the same section structure (heading
@@ -31,7 +31,7 @@ from frontmatter import FrontmatterError, load  # noqa: E402
 
 FIXTURES = HERE / "fixtures" / "docs_map"
 
-SITUATION_MAP = "skills/help/situation-map.md"
+SITUATION_MAP = "src/skills/help/situation-map.md"
 COMMANDS = "docs/commands.md"
 README_EN = "README.md"
 README_VI = "README.vi.md"
@@ -81,7 +81,7 @@ def listed(text):
 
 
 def shipped_skills(root):
-    folder = Path(root) / "skills"
+    folder = Path(root) / "src" / "skills"
     if not folder.is_dir():
         return set()
     return {p.name for p in folder.iterdir() if p.is_dir() and (p / "SKILL.md").is_file()}
@@ -212,7 +212,7 @@ INVALID = {
         f"{COMMANDS} does not list /vibebiz:continue",
     ),
     "help SKILL.md ships but is not listed": (
-        lambda root: (root / "skills" / "help" / "SKILL.md").write_text("# help\n", encoding="utf-8"),
+        lambda root: (root / "src" / "skills" / "help" / "SKILL.md").write_text("# help\n", encoding="utf-8"),
         f"{SITUATION_MAP} does not list /vibebiz:help",
     ),
     "Vietnamese What ships misses a skill": (
@@ -270,8 +270,8 @@ class Fixtures(unittest.TestCase):
     def test_skills_without_docs(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            (root / "skills" / "idea").mkdir(parents=True)
-            (root / "skills" / "idea" / "SKILL.md").write_text("# idea\n", encoding="utf-8")
+            (root / "src" / "skills" / "idea").mkdir(parents=True)
+            (root / "src" / "skills" / "idea" / "SKILL.md").write_text("# idea\n", encoding="utf-8")
             problems = check_docs_map(root)
             self.assertIn(f"{SITUATION_MAP} is missing", problems)
             self.assertIn(f"{COMMANDS} is missing", problems)

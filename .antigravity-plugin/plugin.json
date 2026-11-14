@@ -1,0 +1,27 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/plugin.json",
+  "name": "vibebiz",
+  "displayName": "vibebiz",
+  "description": "A product owner for founders and business leaders: turns a vague idea for a system, an AI use or an automation into a clear, challenged, measurable PRD.",
+  "logo": "assets/icon.svg",
+  "version": "0.1.5",
+  "skills": "./.plugin-skills/",
+  "author": {
+    "name": "Fioenix"
+  },
+  "homepage": "https://github.com/finolabs/vibebiz",
+  "repository": "https://github.com/finolabs/vibebiz",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "keywords": [
+    "retail",
+    "product-owner",
+    "prd",
+    "interview",
+    "cowork"
+  ],
+  "suggestedPrompts": [
+    "I have an idea: remind past customers to come back to our stores. Help me make it clear and measurable.",
+    "Continue my idea where we stopped and ask the next questions.",
+    "Package my idea as a board deck and a PRD for the tech team."
+  ]
+}

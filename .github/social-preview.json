@@ -1,0 +1,18 @@
+{
+  "name": "vibebiz",
+  "tagline": "You think business.\nvibebiz writes it like\na product owner.",
+  "mark": "../assets/icon-dark.svg",
+  "input": "/vibebiz:idea we should use AI\nto bring lapsed customers back",
+  "output": "title: \"Win back lapsed customers\n        through chat reminders\"\nstatus: packaged\nestimate_status: not-tech-reviewed\nnext_step: \"/vibebiz:continue\"",
+  "footer": [
+    "For **Cowork**, **Claude Code**, **Codex**, **Antigravity**",
+    "Source-available, github.com/finolabs/vibebiz"
+  ],
+  "layout": {
+    "outputX": 800,
+    "outputY": 66,
+    "inputX": 740,
+    "inputY": 440,
+    "markX": 720
+  }
+}

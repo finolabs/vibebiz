@@ -58,11 +58,13 @@ Ask one round, through the question tool, with two questions:
 1. The board view: "Artifact trên Claude (Đề xuất)" or "Google Slides".
 2. The tech view: "Artifact trên Claude (Đề xuất)" or "Google Docs".
 
-Write each option's description so it stands alone: the Artifact opens in Claude and is updated at the same link next time; the Google file is created in the user's own Drive. Both are private until the user shares them. On a re-package, recommend the formats the previous version used (from its links). Skipped, or nobody to answer: Artifact for both.
+Without the Artifact tool, the first option of each is the web page in the idea folder, "Trang web trong thư mục (Đề xuất)", which opens in a browser (section 8, "Artifacts unavailable"). Offer a Google option only when this session has a tool or skill that creates that Google file (Cowork's or Claude's connector, Codex's Google Drive plugin, Antigravity's Google Slides or Docs skill); without one, ask only about the other view, or skip the round when neither has a Google option, and say once, in one sentence, how to turn it on (below).
+
+Write each option's description so it stands alone: the Artifact opens in Claude and is updated at the same link next time; the web page stays in the idea folder; the Google file is created in the user's own Drive. All are private until the user shares them. On a re-package, recommend the formats the previous version used (from its links). Skipped, or nobody to answer: the first option for both (the Artifact, or the web page without the Artifact tool).
 
 The Artifacts are always made, whatever the answer: the Google versions point to them for diagrams, and the HTML files are part of every version. The answer decides whether vibebiz also writes Google files and which link it gives first.
 
-Before writing a Google file, check that Cowork offers the Google Slides or Google Docs connector in this session. If it does not, or it fails, say so in one sentence and offer, in one question, the Artifact for that view (recommended) or stopping so the user can connect Google first. With nobody to answer, take the Artifact.
+Before writing a Google file, check that this session has a tool or skill that creates Google Slides or Google Docs in the user's Drive, whatever the user asked for. If it does not, or it fails, say so in one sentence, say how to turn it on in this app (the host's step from `references/core/workspace.md` §1, "Connecting Google on this host", naming Slides or Docs; in Cowork, its Connectors), and offer, in one question, the other format for that view (the Artifact, or the web page in the idea folder without the Artifact tool; recommended) or stopping so the user can connect Google first. With nobody to answer, take that other format. Never call a tool the session does not have.
 
 ## 5. Diagram briefs
 
@@ -143,18 +145,27 @@ Publish `board-deck.html` and `tech-prd.html` each as a private Artifact.
 
 - **First version**: create each Artifact, private, and record its address in `links` (`board_artifact`, `tech_artifact`).
 - **Later versions**: update the existing Artifact at the address in the previous links, so the link the user already has shows the new version. If the platform cannot update it in place, publish a new private Artifact, record its address, and tell the user in one sentence that the earlier link still shows the previous version.
-- **Artifacts unavailable** in this session: keep the HTML files in the idea folder, leave the two links `null`, and tell the user the views are saved in the idea folder and open in a browser.
+- **Artifacts unavailable** in this session: keep the HTML files in the idea folder, leave the two links `null`, and say where they are in the closing message (section 12).
 
 ## 9. Google Slides and Google Docs
 
 Only for the views where the user chose Google in section 4.
 
-1. Write from `data.json` through Cowork's Google connector, into the user's own Drive: one slide per `board.slides[]` for Slides, one heading per `tech.sections[]` for Docs, in order. Title the file with the idea's title and the version date.
+1. Write from `data.json` through the Google Slides or Docs tool or skill this session has, into the user's own Drive: one slide per `board.slides[]` for Slides, one heading per `tech.sections[]` for Docs, in order. Title the file with the idea's title and the version date.
 2. Show each figure by its value from `numbers[]` with its source, period and measured or assumed label; show the gap label, the estimate label and the draft mark exactly where the HTML views show them.
 3. **Diagrams**: insert an image only when the connector accepts it without a public address. Otherwise put the diagram's table and the link to the board or tech Artifact. Never upload an image to a public place, and never make a Drive file public, to get around this.
 4. **Later versions**: create a new file for the new version and leave the earlier one in Drive unchanged, so every presented version stays as it was; record the new address. Never delete or overwrite a Google file.
 5. Never change the file's sharing. Record its address in `links.slides` or `links.docs`.
 6. When the connector fails midway, say what was written and what was not, keep the Artifact link as the way to read the view, and leave that link `null` if the file was not created.
+7. **Antigravity: the official `gslides` and `gdocs` skills.** Run each skill's setup script once, by the exact path that skill names, then call `gslides` and `gdocs` by those bare names, as `references/core/drive-workspace.md` §0 does for `gdrive`. When a setup script fails (a download error, for example), call the bare command anyway. Only when the bare command is also missing or fails, tell the user in plain words that this Google skill is not set up on this host, and stop before creating anything. Never list, read or search the skill's scripts folder or any other plugin's folder, never search the filesystem or the environment for the command (no `which`, `find` or `ls`), and never guess a path. Follow each skill's sign-in steps and confirm flags with `--help` first. Workspace text never goes on a command line: write it to a scratch file outside the workspace with the file tool, and pass the file. The file title (the idea's title and the version date) goes in as one single-quoted argument, with quotes and line breaks removed.
+   - Slides: `gslides mutate create --title '<title>'`, then one `gslides mutate batch <presentation id> <scratch requests file>` holding the slides, text and tables of `board.slides[]` in order; insert a diagram image only with `insert-image-from-file`, which uploads it privately.
+   - Docs: write the tech view as Markdown (one heading per `tech.sections[]`, in order) to a scratch file, then `gdocs mutate import-md <scratch file> --title '<title>'`.
+   - Read each new file back (`gslides readonly read-all`, `gdocs readonly read`) and check every figure against `data.json` before recording its address. The sharing, deleting and image-by-address commands of both skills stay unused.
+8. **A host whose Google tools have other names** (Codex's Google plugins, for example). Before creating anything, match each role to one of this session's tools by what the tool says it does and the parameters it takes; use only the names the session lists, never a guessed one.
+   - Slides: create a presentation with a title in the user's own Drive; add the slides of `board.slides[]` in order with their text and tables; read the presentation back.
+   - Docs: create a document with a title in the user's own Drive from the tech view's text, one heading per `tech.sections[]` in order; read the document back.
+   - Check every figure read back against `data.json` before recording each address.
+   - When a role has no matching tool, treat it as a missing Google tool (section 4): offer the other format for that view before creating anything. Steps 1 to 6 hold unchanged, and the tools' sharing and permission operations stay unused.
 
 ## 10. Links and the final data
 
@@ -163,7 +174,7 @@ Only for the views where the user chose Google in section 4.
 
 ## 11. Check before handing over
 
-Check the set against these rules, fix what fails, and check again. Never report a set as delivered while a rule fails.
+Check the set against these rules, fix what fails, and check again. Never report a set as delivered while a rule fails. Check from the files as written, not from what you meant to write: read `data.json` back from the idea folder and walk it element by element, and read each view back, on every host.
 
 1. Every slide 1 to 9, the appendix and every tech section listed in section 6 is present, or listed in `gaps`.
 2. Every figure referenced anywhere exists in `numbers[]` once, with source, period and label `measured` or `assumed`; no figure value is typed into text.
@@ -190,8 +201,11 @@ A failure you can fix from the files (a missing id, a stray value in text, a mis
    - that diagrams are tables until diagram-design is added, when that applies;
    - that the previous version is kept in the idea folder, on a re-package;
    - that everything is private and they share it with the board or the tech team themselves.
+   - **Without the Artifact tool**, in place of the links: that the two views are web pages saved in the idea's folder, inside the folder they work in, named by their plain titles ("bản trình bày cho ban lãnh đạo", "tài liệu cho đội kỹ thuật"), and that each opens in a web browser by double-clicking the file or dragging it into the browser window. Give no `file://` link and promise no preview pane or other host feature. When a view could not be written (section 7), say which one and that it was not saved, instead of saying where it is.
 
    Example: "Đã đóng gói xong ý tưởng nhắc khách quay lại. Bản trình bày cho ban lãnh đạo: <link>. Tài liệu cho đội kỹ thuật: <link>. Các con số chi phí đang ghi “chưa qua kỹ thuật thẩm định”. Hai liên kết này chỉ anh/chị xem được; anh/chị tự chia sẻ khi muốn gửi."
+
+Before sending the closing message, read it once against `references/core/writing-rules.md` and fix it in place: every command in this host's form (§2, "Command names in this host's form"); no file name, path or `file://` link, the views named as "bản trình bày" and "tài liệu cho đội kỹ thuật" with where they are kept in plain words; every term in the user's language, explained if new. On every host, the run is done only when this last look and section 11 both pass.
 
 ## 13. Drive mode
 

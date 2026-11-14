@@ -9,11 +9,15 @@ Quy trình tổng quan: từ ý tưởng ban đầu của giám đốc kinh doan
 ## 1. Chuẩn bị
 
 Bạn chỉ cần:
-- **Claude Cowork**: ứng dụng trên máy tính, hoặc bản web và điện thoại.
+- **Một ứng dụng có cài vibebiz.** Ứng dụng chính là **Claude Cowork** (trên máy tính, trên web hoặc điện thoại). vibebiz cũng chạy trong **Claude Code**, **Codex** và **Antigravity**. Cách cài cho từng ứng dụng nằm trong phần "Cài đặt" của tệp giới thiệu (README) trên trang GitHub của vibebiz:
+  - Cowork: tải tệp `vibebiz.plugin` ở bản phát hành mới nhất, rồi vào Cài đặt › Plugin, chọn "Tải plugin lên".
+  - Claude Code: gõ `claude plugin marketplace add finolabs/plugins` rồi `claude plugin install vibebiz@finolabs`. Nếu đang ở trong Claude Code và đã thêm danh mục plugin của FINOLABS, gõ `/plugin install vibebiz@finolabs` cũng được. Nếu danh mục chưa có vibebiz, lệnh cài sẽ báo không tìm thấy. Khi đó, hãy tải tệp `vibebiz.plugin` lên Claude như với Cowork; Claude Code sẽ tự nhận bản này với tên `vibebiz@synced`.
+  - Codex: gõ `codex plugin marketplace add finolabs/plugins` rồi `codex plugin add vibebiz@finolabs`. Nếu danh mục chưa có vibebiz, lệnh cài sẽ báo không tìm thấy; hãy chờ đến khi vibebiz có trong danh mục.
+  - Antigravity: gõ `agy plugin install https://github.com/finolabs/vibebiz`. Nếu cài từ địa chỉ web không được, hãy tải mã nguồn của bản phát hành mới nhất, giải nén, rồi cài thư mục vừa giải nén bằng lệnh `agy plugin install`, kèm đường dẫn tới thư mục đó.
 - Một nơi để vibebiz lưu các tệp ý tưởng, chọn một trong hai:
-  - **Trên máy tính:** mở sẵn một thư mục trong Cowork. Đây là cách nên dùng nếu bạn làm việc chủ yếu trên máy.
-  - **Trên web hoặc điện thoại:** nối Google Drive trong phần kết nối (Connectors) của Cowork. Lần đầu, vibebiz hỏi bạn chọn thư mục Drive nào; sau đó mọi thiết bị dùng chung thư mục ấy. Xem thêm [câu hỏi 12](faq.md#12-tôi-dùng-được-vibebiz-trên-cowork-bản-web-hoặc-điện-thoại-không).
-- Không cần mở cửa sổ dòng lệnh (terminal) và không cần biết lập trình.
+  - **Trên máy tính:** mở sẵn một thư mục trong ứng dụng (trong Cowork là thư mục làm việc; trong Claude Code, Codex hay Antigravity là thư mục dự án bạn đang mở). Đây là cách nên dùng nếu bạn làm việc chủ yếu trên máy.
+  - **Trong Google Drive:** nối Google Drive cho ứng dụng bạn đang dùng. Cowork: vào phần kết nối (Connectors) của Cowork. Claude Code: vào phần kết nối của ứng dụng Claude. Codex: cài plugin Google Drive trong Codex rồi đăng nhập tài khoản Google. Antigravity: cài plugin Google Drive chính thức của Antigravity rồi đăng nhập tài khoản Google. Lần đầu, vibebiz hỏi bạn chọn thư mục Drive nào; sau đó mọi thiết bị và mọi ứng dụng đã nối Drive đều dùng chung thư mục ấy. Xem thêm [câu hỏi 12](faq.md#12-tôi-dùng-được-vibebiz-trên-cowork-bản-web-hoặc-điện-thoại-không) và [câu hỏi 14](faq.md#14-tôi-dùng-vibebiz-trong-claude-code-codex-hoặc-antigravity-được-không).
+- Không cần biết lập trình. Trong Cowork, bạn không phải mở cửa sổ dòng lệnh (terminal); ở các ứng dụng còn lại, bạn chỉ gõ dòng lệnh lúc cài.
 
 ---
 
@@ -24,6 +28,8 @@ Trong cuộc trò chuyện ở Claude Cowork, bạn gõ:
 ```
 /vibebiz:idea
 ```
+
+Claude Code cũng dùng đúng lệnh này. Trong Codex bạn gõ `$idea`, trong Antigravity gõ `/idea`; các lệnh khác trong hướng dẫn này cũng đổi theo cách đó (ví dụ `$continue` trong Codex, `/continue` trong Antigravity).
 
 hoặc chỉ cần nói bằng lời thường: *"Tôi có ý tưởng dùng AI nhắc khách cũ quay lại mua hàng"* hay *"Tôi muốn làm ứng dụng quản lý hàng tồn cho các cửa hàng"*.
 
@@ -45,6 +51,7 @@ Mỗi vòng gồm tối đa bốn câu trắc nghiệm có ngữ cảnh độc l
 - **Tối đa 4 câu hỏi mỗi vòng**: Mỗi câu đều có ngữ cảnh độc lập, giải thích rõ vì sao cần hỏi.
 - **Phương án đề xuất đứng đầu**: Mỗi câu có 2 đến 4 phương án, phương án vibebiz đề xuất luôn ở vị trí đầu tiên kèm lý do ngắn gọn.
 - **Có thể bỏ qua**: Nếu chưa có số liệu hoặc chưa muốn quyết, bạn bấm "Bỏ qua" (Skip). Câu bỏ qua không tính là đã đồng ý và sẽ được hỏi lại khi phù hợp.
+- **Ở ứng dụng khác Cowork**: câu hỏi hiện bằng nút chọn của chính ứng dụng đó. Nếu ứng dụng chỉ nhận ít câu hơn mỗi lần (Codex nhận tối đa ba câu), vibebiz chia vòng thành vài lượt mà không bỏ câu nào. Nếu ứng dụng không có nút chọn, vibebiz hỏi bằng tin nhắn thường, các phương án được đánh số; bạn trả lời bằng số hoặc bằng lời của mình.
 - **Lưu ngay lập tức**: Sau mỗi vòng, mọi câu trả lời được ghi thẳng vào tệp ý tưởng. Bạn có thể tắt máy bất cứ lúc nào mà không lo mất dữ liệu.
 - **Giới hạn 3 vòng mỗi buổi**: Sau 3 vòng câu hỏi, vibebiz dừng lại và hỏi bạn muốn:
   1. *Hỏi tiếp*: nếu bạn còn thời gian và muốn làm rõ thêm.
@@ -96,13 +103,13 @@ Khi ý tưởng đã sẵn sàng (rõ bài toán, mục tiêu định lượng, 
 
 vibebiz sẽ:
 1. Rà soát lại toàn bộ thông tin để đảm bảo không mâu thuẫn hay hổng logic.
-2. Hỏi bạn muốn nhận tài liệu dưới dạng nào: **Artifact trên Claude** (xem trực tiếp, riêng tư) hay **Google Slides / Google Docs** trong Google Drive của bạn.
+2. Hỏi bạn muốn nhận tài liệu dưới dạng nào: **Artifact trên Claude** (xem trực tiếp, riêng tư) hay **Google Slides / Google Docs** trong Google Drive của bạn. Ở ứng dụng không có Artifact (Codex, Antigravity, hoặc Claude Code khi ứng dụng Claude không có), lựa chọn đầu tiên là **trang web trong thư mục ý tưởng**, mở bằng trình duyệt. vibebiz chỉ đề nghị Google Slides và Docs khi ứng dụng đã nối được với chúng.
 3. Tự động vẽ sơ đồ trực quan (nếu cài thêm plugin `diagram-design`).
 4. Xuất hai bộ tài liệu:
    - **Bản trình bày cho ban lãnh đạo**: Thiết kế dạng infographic trực quan, mỗi trang một thông điệp rõ ràng kèm hình ảnh lớn, không rườm rà chữ; nêu bật bài toán kinh doanh, kết quả kỳ vọng, chi phí, rủi ro và lộ trình thử nghiệm.
    - **Tài liệu cho đội kỹ thuật (PRD)**: Đầy đủ tình huống sử dụng, yêu cầu chức năng, tiêu chí nghiệm thu và tệp đặc tả kỹ thuật tương thích chuẩn Spec Kit để kỹ sư phần mềm có thể lên kế hoạch làm ngay mà không phải phỏng vấn lại bạn từ đầu.
 
-Nếu bạn dùng Cowork trên web hay điện thoại, ý tưởng nằm trong Google Drive của bạn: vibebiz lưu dữ liệu, bản sao yêu cầu và danh sách liên kết vào thư mục của ý tưởng trong Drive, còn bản trình bày và tài liệu kỹ thuật được đăng thành Artifact riêng tư (hoặc thành Google Slides và Docs nếu bạn chọn) chứ không lưu thành tệp trang web trong Drive.
+Nếu ý tưởng nằm trong Google Drive của bạn (khi dùng Cowork trên web hay điện thoại, hoặc khi ứng dụng đã nối Drive mà chưa mở thư mục nào), vibebiz lưu dữ liệu, bản sao yêu cầu và danh sách liên kết vào thư mục của ý tưởng trong Drive, còn bản trình bày và tài liệu kỹ thuật được đăng thành Artifact riêng tư (hoặc thành Google Slides và Docs nếu bạn chọn) chứ không lưu thành tệp trang web trong Drive. Ở ứng dụng không có Artifact, hãy chọn Google Slides và Docs để xem hai bản này.
 
 ---
 
@@ -124,3 +131,5 @@ Nếu chưa rõ nên gõ lệnh nào, muốn tìm hiểu một thuật ngữ ho�
 ```
 
 vibebiz sẽ giải thích ngắn gọn, dẫn nguồn từ tài liệu và chỉ đúng lệnh phù hợp với tình huống của bạn.
+
+Trong Codex, bạn gõ `$help`. Trong Antigravity, `/help` mở trợ giúp của chính Antigravity, nên bạn hãy hỏi bằng lời, ví dụ: *"vibebiz dùng thế nào?"*.
