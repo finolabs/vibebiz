@@ -33,8 +33,10 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 
 - [x] T001 Claude Code loads skills from `.plugin-skills/` with no root `skills/` folder (research R2 probe, 14/11/2026).
 - [ ] T002 [P] Codex: in a scratch copy with `.plugin-skills/` and a `.codex-plugin/plugin.json`, add a scratch `local` marketplace, install, and with `codex exec --ephemeral` check that exactly six vibebiz skills load and that a skill can read its own `references/core/workspace.md` without an approval prompt in Auto mode. Remove the scratch marketplace and plugin.
+  - 14/11/2026: waived by Fio ("Chỉ giữ T053"): the Codex install-and-run happens only at T053, after the tag (constitution V).
   - 14/11/2026: partial. Six skills load from `.plugin-skills/` (app-server `skills/list`); the reference-read check waits for Codex's usage limit to reset (17/11/2026 10:16).
 - [ ] T003 [P] Codex harness: drive one turn through `codex app-server` and find out whether a client can answer `request_user_input`; record whether the tool is offered in Default and Plan modes. If a harness works, sketch how the eval cases would run through it.
+  - 14/11/2026: waived by Fio ("Chỉ giữ T053"): the Codex install-and-run happens only at T053, after the tag (constitution V).
   - 14/11/2026: protocol confirmed (Plan mode at turn start; questions answered by id); a live run waits for the usage limit.
 - [ ] T004 Codex Google: with Fio's yes and his connector already connected in Codex, list the `mcp__codex_apps__google_drive_*` tools with their parameters (read only, no file created) and map each Drive operation of `contracts/host-capabilities.md` "Choosing a path" step 2 (search by title and parent, read, download, create with a parent, copy, trash, read permissions) and the Slides and Docs creation paths.
   - 14/11/2026: waived by Fio ("Codex và Antigravity chắc chắn chạy được Google Drive, Docs & Slides nên không cần kiểm"): no real Google run on Codex. The Codex install-and-run stays at T053 (constitution V).
@@ -45,6 +47,7 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 - [x] T008 Claude Code desktop: check whether a plugin skill sees the `Artifact` tool and the Google Drive and Docs connector tools (a scratch skill that lists the tools it can call), so Claude Code follows the same tool-based paths.
   - 14/11/2026: Fio confirmed in the Claude desktop app that a plugin skill sees the `Artifact` tool and the Google Drive connector tools.
 - [ ] T009 Previews: Fio opens one `board-deck.html` in Codex's desktop app (`visualize`, in-app browser) and in Antigravity's app (preview, built-in browser); record what works and the exact way a skill asks for it.
+  - 14/11/2026: waived by Fio ("Giữ trang web, phát hành"): the in-app previews of Codex and Antigravity are not checked; without the Artifact tool the views stay web pages in the idea folder (T042).
 
 **Stop rule**: if a host cannot do a Drive operation that `specs/002-drive-workspace/contracts/drive-workspace.md` requires (for example reading permissions before the first write, or replacing a file), parity in Drive mode on that host is not possible as specified: record it and take it to Fio before Phase 7.
 
@@ -106,7 +109,9 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 ## Phase 5: User Story 2 - The folder journey in Codex (Priority: P1)
 
 - [ ] T030 [US2] Install from a scratch `local` marketplace pointing at a clean checkout of this branch; run the fictional example idea from `idea` through `continue` to `package` in a scratch folder (through the T003 harness if it works, else interactively with Fio); run the package check and the Spec Kit compatibility check; record the row.
+  - 14/11/2026: waived by Fio ("Chỉ giữ T053"): the Codex install-and-run happens only at T053, after the tag (constitution V).
 - [ ] T031 [US2] Fix what the run shows: host-neutral faults from a failing Claude Code eval case first; host-specific faults recorded and taken to Fio if no host-neutral wording fixes them.
+  - 14/11/2026: waived by Fio ("Chỉ giữ T053"): no T030 run to fix from; host-neutral faults found at T053 are fixed then.
 
 ---
 
@@ -126,9 +131,12 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 **Goal**: Drive mode with the same rules on every host with Google Drive.
 
 - [ ] T034 [US4] Fake Drive: add tool-name profiles to `evals/fake-drive/server.py` so the same fixture can expose Cowork's tool names or Codex's `google_drive_*` names (from T004), with tests in `evals/fake-drive/test_server.py`. Antigravity's Drive goes through skills that run a CLI and cannot be faked this way; it is covered by real runs.
+  - 14/11/2026: dropped by Fio ("Ánh xạ theo vai trò"): it depended on T004, which was waived; the Codex mapping is role-based (T036).
 - [ ] T035 [US4] Eval cases (red first): `evals/workspace/drive-codex-names-empty/` and `evals/workspace/drive-codex-names-resume/` run the existing empty and resume scenarios with the Codex tool profile.
+  - 14/11/2026: dropped by Fio ("Ánh xạ theo vai trò"): it depended on T004, which was waived.
 - [ ] T036 [US4] `core/drive-workspace.md`: each Drive operation named by role and mapped to the tools or skills present (contracts/host-capabilities.md "Choosing a path" step 2), every rule unchanged; for Antigravity, the steps to use the `gdrive` skill.
 - [ ] T037 [US4] Rerun T035 and all `evals/workspace/drive-*` cases (Cowork names) one at a time; record.
+  - 14/11/2026: dropped by Fio ("Ánh xạ theo vai trò"): it depended on T035; the Cowork-name Drive regression ran under T036 instead.
 - [ ] T038 [US4] Real runs: start an idea in Drive mode on Codex, continue it on Antigravity, then in Cowork on the web, and the other way round; check the Drive folder against `specs/002-drive-workspace/contracts/drive-workspace.md`; record the rows (SC-003).
   - 14/11/2026: Antigravity leg done: idea started in Drive mode in `vibebiz-uat-agy`, all files private and Fio's own (`evals/RESULTS.md`, 9458e54). Codex leg and the cross-host continuation waived by Fio, 14/11/2026 (no more real Google runs on either host).
 
@@ -138,6 +146,7 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 
 - [ ] T039 [US5] `core/package.md` §13 and its Slides and Docs steps: the creation path per host by the tools or skills present (T004, T007), the same content rules, a table plus a link instead of any image that would need to be public.
 - [ ] T040 [US5] Eval case with the Codex tool profile of the fake (if T004 found tools a fake can mimic) for a Docs creation; red first, then green.
+  - 14/11/2026: dropped by Fio ("Ánh xạ theo vai trò"): it depended on T004, which was waived.
 - [ ] T041 [US5] Real runs: package the example idea to Slides and Docs on Codex and on Antigravity; check every number against `data.json` and that nothing is shared or public; record (SC-004).
   - 14/11/2026: Antigravity leg waived by Fio, not verified headless (`evals/RESULTS.md`, T041 rows); setup-fallback rule kept (a0bb2a6). Codex leg waived by Fio, 14/11/2026.
 
@@ -145,9 +154,10 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 
 ## Phase 9: User Story 6 - Views in the host (Priority: P2)
 
-- [ ] T042 [US6] `core/package.md`: after writing the views, show them by the tools present (Artifact; Codex `visualize` or in-app browser; Antigravity preview or browser, as measured in T009); else give the paths.
-- [ ] T043 [US6] Eval case `evals/package/views-no-artifact/` (red first): no Artifact tool; graders: the paths are given, nothing published.
+- [x] T042 [US6] `core/package.md`: after writing the views, show them by the tools present (Artifact; Codex `visualize` or in-app browser; Antigravity preview or browser, as measured in T009); else give the paths.
+- [x] T043 [US6] Eval case `evals/package/views-no-artifact/` (red first): no Artifact tool; graders: the paths are given, nothing published.
 - [ ] T044 [US6] Real runs on Codex and Antigravity apps: the views appear; record.
+  - 14/11/2026: waived by Fio ("Giữ trang web, phát hành"): the in-app previews of Codex and Antigravity are not checked; without the Artifact tool the views stay web pages in the idea folder (T042).
 
 ---
 
