@@ -149,6 +149,8 @@ Lệnh này chỉ tắt bản đồng bộ trong Claude Code; Cowork vẫn dùng
 | Codex | `codex plugin marketplace add finolabs/plugins` rồi `codex plugin add vibebiz@finolabs` |
 | Antigravity | `agy plugin install https://github.com/finolabs/vibebiz` |
 
+Nếu danh mục chưa có vibebiz, lệnh cài sẽ báo không tìm thấy. Khi đó, hãy tải tệp `vibebiz.plugin` lên Claude như với Cowork; Claude Code sẽ tự nhận bản này với tên `vibebiz@synced`. Ở Codex, hãy chờ đến khi vibebiz có trong danh mục. Ở Antigravity, nếu cài từ địa chỉ web không được, hãy tải mã nguồn của bản phát hành mới nhất, giải nén, rồi gõ `agy plugin install <thư mục vừa giải nén>`.
+
 **Cách gõ lệnh**: Cowork và Claude Code dùng `/vibebiz:idea`; Codex dùng `$idea`; Antigravity dùng `/idea`. Các lệnh khác cũng đổi theo cách đó. Trong Antigravity, `/help` mở trợ giúp của chính Antigravity, nên muốn hỏi vibebiz thì bạn hỏi bằng lời, ví dụ *"vibebiz dùng thế nào?"*. Ở ứng dụng nào bạn cũng có thể kể ý tưởng bằng lời thường thay cho gõ lệnh.
 
 **Nơi lưu ý tưởng**: thư mục đang mở trong ứng dụng (thư mục làm việc của Cowork, thư mục dự án của Claude Code, Codex hay Antigravity). Nếu chưa mở thư mục nào, vibebiz lưu vào Google Drive khi ứng dụng đã nối Drive. Nối Google như sau:
@@ -164,7 +166,7 @@ Nếu chưa mở thư mục nào và cũng chưa nối Drive, vibebiz không ghi
 
 **Xem bản trình bày và PRD ở đâu**: trong Cowork, chúng là Artifact riêng tư (trang chỉ bạn mở được trong Claude). Claude Code cũng vậy nếu ứng dụng Claude có Artifact. Ở Codex, Antigravity, hoặc khi không có Artifact, hai bản này là trang web trong thư mục của ý tưởng, mở bằng trình duyệt. Nếu ứng dụng đã nối Google, bạn còn có thể chọn Google Slides và Google Docs trong Drive của mình.
 
-**Câu hỏi hiện ra thế nào**: mỗi vòng vẫn tối đa bốn câu, mỗi câu hai đến bốn phương án. Ứng dụng có nút chọn thì câu hỏi hiện bằng nút chọn; nếu nút chọn của ứng dụng nhận ít câu hơn (Codex nhận tối đa ba câu, mỗi câu ba phương án), vibebiz chia vòng thành vài lượt và không bỏ câu nào. Không có nút chọn thì vibebiz hỏi bằng tin nhắn thường, các phương án được đánh số; bạn trả lời bằng số hoặc bằng lời của mình.
+**Câu hỏi hiện ra thế nào**: mỗi vòng vẫn tối đa bốn câu, mỗi câu hai đến bốn phương án. Ứng dụng có nút chọn thì câu hỏi hiện bằng nút chọn; nếu nút chọn của ứng dụng nhận ít câu hơn (Codex nhận tối đa ba câu, mỗi câu ba phương án), vibebiz chia vòng thành vài lượt và không bỏ câu nào. Cách vibebiz dùng plugin Google Drive và nút chọn câu hỏi trên Codex dựa theo mô tả của OpenAI; vibebiz chưa được chạy thử ở đó với tài khoản Google thật. Không có nút chọn thì vibebiz hỏi bằng tin nhắn thường, các phương án được đánh số; bạn trả lời bằng số hoặc bằng lời của mình.
 
 ### 15. Nối Google trong Codex hoặc Antigravity, dữ liệu của tôi đi đâu?
 

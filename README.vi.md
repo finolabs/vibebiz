@@ -35,7 +35,7 @@ claude plugin marketplace add finolabs/plugins
 claude plugin install vibebiz@finolabs
 ```
 
-Nếu đang ở trong Claude Code và đã thêm danh mục plugin (marketplace) của FINOLABS, bạn gõ `/plugin install vibebiz@finolabs` cũng được. Sau đó mở thư mục dự án và gõ `/vibebiz:idea`. Nếu mỗi lệnh vibebiz hiện hai lần, nghĩa là máy bạn có cả bản đồng bộ từ tài khoản Claude lẫn bản cài từ danh mục; hãy giữ một bản ([câu hỏi 13](docs/faq.md)).
+Nếu đang ở trong Claude Code và đã thêm danh mục plugin (marketplace) của FINOLABS, bạn gõ `/plugin install vibebiz@finolabs` cũng được. Nếu danh mục chưa có vibebiz, lệnh cài sẽ báo không tìm thấy. Khi đó, hãy tải tệp `vibebiz.plugin` lên Claude như với Cowork; Claude Code sẽ tự nhận bản này với tên `vibebiz@synced`. Sau đó mở thư mục dự án và gõ `/vibebiz:idea`. Nếu mỗi lệnh vibebiz hiện hai lần, nghĩa là máy bạn có cả bản đồng bộ từ tài khoản Claude lẫn bản cài từ danh mục; hãy giữ một bản ([câu hỏi 13](docs/faq.md)).
 
 ### Codex
 
@@ -44,7 +44,7 @@ codex plugin marketplace add finolabs/plugins
 codex plugin add vibebiz@finolabs
 ```
 
-Mở một thư mục làm việc trong Codex rồi gõ `$idea`, hoặc kể ý tưởng bằng lời thường. Codex hiện mọi lệnh vibebiz với dấu `$` ở đầu: `$continue`, `$package`, `$help`, v.v.
+Mở một thư mục làm việc trong Codex rồi gõ `$idea`, hoặc kể ý tưởng bằng lời thường. Codex hiện mọi lệnh vibebiz với dấu `$` ở đầu: `$continue`, `$package`, `$help`, v.v. Nếu danh mục chưa có vibebiz, lệnh cài sẽ báo không tìm thấy; hãy chờ đến khi vibebiz có trong danh mục.
 
 ### Antigravity
 
@@ -52,7 +52,7 @@ Mở một thư mục làm việc trong Codex rồi gõ `$idea`, hoặc kể ý 
 agy plugin install https://github.com/finolabs/vibebiz
 ```
 
-Mở một thư mục làm việc trong Antigravity rồi gõ `/idea`, hoặc kể ý tưởng bằng lời thường. Antigravity hiện các lệnh không kèm phần `vibebiz:`: `/continue`, `/package`, v.v. Riêng phần trợ giúp thì khác: `/help` mở trợ giúp của chính Antigravity, nên bạn hãy hỏi bằng lời ("vibebiz dùng thế nào?"). Antigravity có thể đã tự chép một bản vibebiz cũ từ Claude Code sang; hãy gỡ bản đó trước khi cài ([câu hỏi 16](docs/faq.md)).
+Mở một thư mục làm việc trong Antigravity rồi gõ `/idea`, hoặc kể ý tưởng bằng lời thường. Antigravity hiện các lệnh không kèm phần `vibebiz:`: `/continue`, `/package`, v.v. Riêng phần trợ giúp thì khác: `/help` mở trợ giúp của chính Antigravity, nên bạn hãy hỏi bằng lời ("vibebiz dùng thế nào?"). Antigravity có thể đã tự chép một bản vibebiz cũ từ Claude Code sang; hãy gỡ bản đó trước khi cài ([câu hỏi 16](docs/faq.md)). Nếu cài từ địa chỉ web không được, hãy tải mã nguồn của [bản phát hành](https://github.com/finolabs/vibebiz/releases) mới nhất, giải nén, rồi gõ `agy plugin install <thư mục vừa giải nén>`.
 
 ## Mỗi ứng dụng làm được gì
 
@@ -66,6 +66,8 @@ vibebiz xem ứng dụng bạn đang dùng làm được gì (mở thư mục, v
 | Bản trình bày trên Google Slides, PRD trên Google Docs | kết nối Slides và Docs của Cowork | khi ứng dụng Claude đã nối Slides và Docs | plugin Google Drive của OpenAI | plugin Google Slides và Google Docs chính thức của Antigravity |
 | Xem bản trình bày và PRD ở đâu | Artifact riêng tư (trang chỉ bạn mở được trong Claude) | Artifact riêng tư nếu ứng dụng Claude có; nếu không, trang web trong thư mục ý tưởng | trang web trong thư mục ý tưởng, mở bằng trình duyệt | trang web trong thư mục ý tưởng, mở bằng trình duyệt |
 | Câu hỏi hiện ra thế nào | nút chọn, tối đa bốn câu, mỗi câu tối đa bốn phương án | như Cowork | nút chọn của Codex nếu Codex có (tối đa ba câu mỗi lần, nên một vòng có thể chia làm hai lượt); nếu không, các phương án đánh số trong tin nhắn | nút chọn của Antigravity |
+
+Trên Codex, cách vibebiz dùng plugin Google Drive và nút chọn câu hỏi dựa theo mô tả của OpenAI; vibebiz chưa được chạy thử trên Codex với tài khoản Google thật.
 
 Khi ứng dụng không có nút chọn, vibebiz hỏi đúng vòng đó bằng tin nhắn thường, các phương án được đánh số; bạn trả lời bằng số hoặc bằng lời của mình. Khi chưa mở thư mục nào và cũng chưa nối Google Drive, vibebiz không lưu gì và chỉ bạn hai cách: mở một thư mục làm việc trong ứng dụng, hoặc nối Google Drive.
 

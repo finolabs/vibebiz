@@ -35,7 +35,7 @@ claude plugin marketplace add finolabs/plugins
 claude plugin install vibebiz@finolabs
 ```
 
-Inside Claude Code, once the FINOLABS catalog is added, typing `/plugin install vibebiz@finolabs` does the same. Open your project folder and type `/vibebiz:idea`. If each vibebiz command shows up twice, you have both the copy synced from your Claude account and the catalog copy: keep one ([FAQ 13](docs/faq.md)).
+Inside Claude Code, once the FINOLABS catalog is added, typing `/plugin install vibebiz@finolabs` does the same. If the catalog does not list vibebiz yet, the install stops without finding it: upload `vibebiz.plugin` to Claude as in Cowork instead, and Claude Code picks it up as `vibebiz@synced`. Open your project folder and type `/vibebiz:idea`. If each vibebiz command shows up twice, you have both the copy synced from your Claude account and the catalog copy: keep one ([FAQ 13](docs/faq.md)).
 
 ### Codex
 
@@ -44,7 +44,7 @@ codex plugin marketplace add finolabs/plugins
 codex plugin add vibebiz@finolabs
 ```
 
-Open a workspace folder in Codex and type `$idea`, or describe your idea in plain words. Codex shows every vibebiz command with a `$` in front: `$continue`, `$package`, `$help` and so on.
+Open a workspace folder in Codex and type `$idea`, or describe your idea in plain words. Codex shows every vibebiz command with a `$` in front: `$continue`, `$package`, `$help` and so on. If the catalog does not list vibebiz yet, the install stops without finding it; wait for the listing.
 
 ### Antigravity
 
@@ -52,7 +52,7 @@ Open a workspace folder in Codex and type `$idea`, or describe your idea in plai
 agy plugin install https://github.com/finolabs/vibebiz
 ```
 
-Open a workspace folder in Antigravity and type `/idea`, or describe your idea in plain words. Antigravity shows the commands without the `vibebiz:` part: `/continue`, `/package` and so on. The one exception is help: `/help` opens Antigravity's own help, so ask in words instead ("vibebiz, how do I use this?"). Antigravity may have copied an older vibebiz from Claude Code by itself; remove that copy before installing ([FAQ 16](docs/faq.md)).
+Open a workspace folder in Antigravity and type `/idea`, or describe your idea in plain words. Antigravity shows the commands without the `vibebiz:` part: `/continue`, `/package` and so on. The one exception is help: `/help` opens Antigravity's own help, so ask in words instead ("vibebiz, how do I use this?"). Antigravity may have copied an older vibebiz from Claude Code by itself; remove that copy before installing ([FAQ 16](docs/faq.md)). If installing from the web address fails, download the source of the latest [release](https://github.com/finolabs/vibebiz/releases), unzip it and type `agy plugin install <the unzipped folder>`.
 
 ## What works in each app
 
@@ -66,6 +66,8 @@ vibebiz checks what the app in front of you can do (open a folder, reach Google 
 | Board deck in Google Slides, PRD in Google Docs | Cowork's Slides and Docs connectors | when the Claude app has them connected | OpenAI's Google Drive plugin | Antigravity's official Google Slides and Google Docs plugins |
 | Where you see the board deck and the PRD | a private Artifact (a page only you can open in Claude) | a private Artifact where the Claude app offers one; otherwise web pages in the idea folder | web pages in the idea folder, opened in your browser | web pages in the idea folder, opened in your browser |
 | How questions arrive | answer buttons, up to four questions with up to four choices | the same | Codex's answer buttons where Codex offers them (at most three at a time, so one round may come in two parts); otherwise numbered choices in text | Antigravity's answer buttons |
+
+On Codex, vibebiz follows OpenAI's descriptions of its Google Drive plugin and its question tool; it has not yet been tried there with a real Google account.
 
 Without a question tool, vibebiz asks the same round in plain text with numbered choices, and you answer by number or in your own words. With neither a folder open nor Google Drive connected, vibebiz saves nothing and tells you the two ways forward: open a working folder in the app, or connect Google Drive.
 
