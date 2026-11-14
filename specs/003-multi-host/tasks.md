@@ -148,12 +148,12 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 
 ## Phase 10: Docs and instructions (constitution VII)
 
-- [ ] T045 [P] `README.md` and `README.vi.md`: install per host, skill name forms, how to connect Google on each host, the capability table in plain words.
-- [ ] T046 [P] `docs/quick-start.md`, `docs/commands.md`, `docs/faq.md`, `docs/admin-setup.md`: the same per host, the duplicate-install note (T020), Antigravity's imported copy, privacy wording for Codex's and Antigravity's Google integrations.
-- [ ] T047 [P] `src/skills/help/situation-map.md` and `help`'s answers: "which app can I use", "how do I connect Google here", "where do I see the deck here".
-- [ ] T048 `CLAUDE.md` "Plugin shape" (`src/skills/`, `.plugin-skills/` generated) and "Workspace and outputs" (views and Drive per host); `PRIVACY.md` (data stays in the user's workspace and Google Drive on every host); `evals/README.md` and spec 002 Path Conventions follow the new paths.
-- [ ] T049 Edit the new Vietnamese text with vietnamizer, keeping the original voice, for readers who are not technical.
-- [ ] T050 Regenerate `.plugin-skills/`; run `test_build.py`, `test_docs_map.py`.
+- [x] T045 [P] `README.md` and `README.vi.md`: install per host, skill name forms, how to connect Google on each host, the capability table in plain words.
+- [x] T046 [P] `docs/quick-start.md`, `docs/commands.md`, `docs/faq.md`, `docs/admin-setup.md`: the same per host, the duplicate-install note (T020), Antigravity's imported copy, privacy wording for Codex's and Antigravity's Google integrations.
+- [x] T047 [P] `src/skills/help/situation-map.md` and `help`'s answers: "which app can I use", "how do I connect Google here", "where do I see the deck here".
+- [x] T048 `CLAUDE.md` "Plugin shape" (`src/skills/`, `.plugin-skills/` generated) and "Workspace and outputs" (views and Drive per host); `PRIVACY.md` (data stays in the user's workspace and Google Drive on every host); `evals/README.md` and spec 002 Path Conventions follow the new paths.
+- [x] T049 Edit the new Vietnamese text with vietnamizer, keeping the original voice, for readers who are not technical.
+- [x] T050 Regenerate `.plugin-skills/`; run `test_build.py`, `test_docs_map.py`.
 
 ---
 
