@@ -48,7 +48,7 @@ Say it in one or two sentences, for example: "Đây là một ý tưởng mới,
 ## 3. A situation: route and stop
 
 1. Find the row of `situation-map.md` that matches the user's situation by meaning, not by keyword.
-2. Read the target skill's current instructions before describing it: read `skills/<name>/SKILL.md` (for `/vibebiz:package`, read `skills/package/SKILL.md`). The skill's current file is what the user will actually experience. If you cannot read it, describe the command from `references/docs/commands.md` and keep it to one sentence.
+2. Read the target skill's current instructions before describing it: read the sibling skill's file, `../<name>/SKILL.md` from this skill's folder (for `/vibebiz:package`, read `../package/SKILL.md`). The skill's current file is what the user will actually experience. If you cannot read it, describe the command from `references/docs/commands.md` and keep it to one sentence.
 3. Reply in two or three sentences: the command in code style, why it fits in the user's words, and the first thing it will do. Describe only behavior that both the skill's current instructions and the docs state; leave out anything only one of them says.
 4. Stop. Never run the command, start its steps, or ask its questions. The user types it, or says it in plain words, when ready.
 
