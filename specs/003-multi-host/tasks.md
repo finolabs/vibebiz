@@ -27,7 +27,7 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 
 **Purpose**: confirm the one host behavior the layout depends on before moving files.
 
-- [ ] T001 In a scratch copy of the repository (outside the worktree), add `"skills": "./.plugin-skills/"` to `.claude-plugin/plugin.json`, copy `dist/vibebiz/skills/` to `.plugin-skills/`, delete the root `skills/`, and run `claude plugin validate <copy>` and a headless `claude -p` with `--plugin-dir <copy>` that lists the plugin's skills. Record in `research.md` R2 that exactly the six skills load, with their `references/`. **If they do not load, stop** and take the result to Fio before Phase 2.
+- [x] T001 In a scratch copy of the repository (outside the worktree), add `"skills": "./.plugin-skills/"` to `.claude-plugin/plugin.json`, copy `dist/vibebiz/skills/` to `.plugin-skills/`, delete the root `skills/`, and run `claude plugin validate <copy>` and a headless `claude -p` with `--plugin-dir <copy>` that lists the plugin's skills. Record in `research.md` R2 that exactly the six skills load, with their `references/`. **If they do not load, stop** and take the result to Fio before Phase 2.
 
 **Checkpoint**: Claude Code loads skills from `.plugin-skills/` with no root `skills/` folder.
 
