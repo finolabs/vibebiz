@@ -1,6 +1,6 @@
 # vibebiz
 
-Plugin cho Claude Cowork, đóng vai người phụ trách sản phẩm (product owner) cho lãnh đạo ngành bán lẻ. Bạn mang đến một ý tưởng còn mơ hồ; vibebiz phỏng vấn cho tới khi ý tưởng rõ ràng, được phản biện và đo lường được, rồi đóng gói thành bản PRD (tài liệu yêu cầu sản phẩm) cho hội đồng quản trị và đội kỹ thuật nội bộ.
+Plugin cho Claude Cowork, đóng vai người phụ trách sản phẩm (product owner) cho nhà sáng lập và lãnh đạo doanh nghiệp. Bạn mang đến một ý tưởng còn mơ hồ; vibebiz phỏng vấn cho tới khi ý tưởng rõ ràng, được phản biện và đo lường được, rồi đóng gói thành bản PRD (tài liệu yêu cầu sản phẩm) cho hội đồng quản trị và đội kỹ thuật nội bộ.
 
 English version: [README.md](README.md)
 
@@ -12,7 +12,7 @@ vibebiz không phải công cụ lập trình và không bao giờ bắt bạn m
 
 ## Dành cho ai
 
-Giám đốc kinh doanh và vận hành ngành bán lẻ, bán trực tuyến hay tại cửa hàng (thời trang trước, sau đó là điện máy, đồ gia dụng và các ngành tương tự), đang có một ý tưởng về hệ thống, cách dùng AI hoặc tự động hóa và cần đưa ý tưởng đó ra trước hội đồng quản trị và đội kỹ thuật. Câu hỏi và kết quả dùng đúng ngôn ngữ bạn trao đổi, mặc định là tiếng Việt.
+Nhà sáng lập và lãnh đạo doanh nghiệp vừa và nhỏ (không cần rành kỹ thuật) đang có một ý tưởng về hệ thống, cách dùng AI hoặc tự động hóa và cần đưa ý tưởng đó ra trước hội đồng quản trị và đội kỹ thuật. Ngành bán lẻ được hỗ trợ trước, cả bán trực tuyến lẫn tại cửa hàng (thời trang trước, sau đó là điện máy, đồ gia dụng và các ngành tương tự): các ví dụ và gói kiến thức có sẵn hiện nay đều dành cho ngành bán lẻ. Câu hỏi và kết quả dùng đúng ngôn ngữ bạn trao đổi, mặc định là tiếng Việt.
 
 ## Cài đặt trong Cowork
 

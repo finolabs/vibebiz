@@ -1,6 +1,6 @@
 # vibebiz
 
-A Claude Cowork plugin that works as a product owner for retail leaders. You bring a vague idea; vibebiz interviews you until the idea is clear, challenged and measurable, then packages it as a PRD for your board and for your internal tech team.
+A Claude Cowork plugin that works as a product owner for founders and business leaders. You bring a vague idea; vibebiz interviews you until the idea is clear, challenged and measurable, then packages it as a PRD for your board and for your internal tech team.
 
 Vietnamese version: [README.vi.md](README.vi.md)
 
@@ -12,7 +12,7 @@ vibebiz is not a coding tool and never asks you to open a terminal.
 
 ## Who it is for
 
-Sales and operations directors in retail, online or offline (fashion first; electronics, home appliances and similar next), who own an idea for a system, an AI use or an automation and need to take it to a board and a tech team. Outputs and questions use the language you speak with it, Vietnamese by default.
+Founders and leaders of small and mid-sized businesses who are not technical, who own an idea for a system, an AI use or an automation and need to take it to their board and a tech team. Retail comes first, online or offline (fashion first; electronics, home appliances and similar next): the examples and knowledge packs that ship today are for retail. Outputs and questions use the language you speak with it, Vietnamese by default.
 
 ## Install in Cowork
 
