@@ -8,7 +8,7 @@
 <h1 align="center">vibebiz</h1>
 
 <p align="center"><strong>Bạn nghĩ chuyện kinh doanh, vibebiz viết lại như một người phụ trách sản phẩm.</strong><br>
-Plugin phỏng vấn nhà sáng lập và lãnh đạo doanh nghiệp cho tới khi ý tưởng rõ ràng, được phản biện và đo lường được, rồi đóng gói cho ban lãnh đạo và đội kỹ thuật. vibebiz chạy trong Claude Cowork (ứng dụng chính), Claude Code, Codex và Antigravity. vibebiz chỉ là bộ hướng dẫn để ứng dụng làm theo, không tự chạy chương trình nào; mọi thứ vibebiz viết ra chỉ nằm trong thư mục của bạn hoặc Google Drive của chính bạn.</p>
+vibebiz là plugin phỏng vấn nhà sáng lập và lãnh đạo doanh nghiệp cho tới khi ý tưởng rõ ràng, được phản biện và đo lường được, rồi đóng gói ý tưởng cho ban lãnh đạo và đội kỹ thuật. Plugin chạy trong Claude Cowork (ứng dụng chính), Claude Code, Codex và Antigravity. Bản thân vibebiz chỉ là bộ hướng dẫn để ứng dụng làm theo, không tự chạy chương trình nào; mọi thứ nó viết ra chỉ nằm trong thư mục của bạn hoặc Google Drive của chính bạn.</p>
 
 <p align="center">
   <a href="https://github.com/finolabs/vibebiz/releases/latest"><img src="https://img.shields.io/github/v/release/finolabs/vibebiz" alt="Bản phát hành mới nhất"></a>
@@ -67,7 +67,7 @@ Nhà sáng lập và lãnh đạo doanh nghiệp vừa và nhỏ (không cần r
   agy plugin install https://github.com/finolabs/vibebiz
   ```
 
-Chi tiết, và cách làm khi danh mục chưa có vibebiz: xem [Cài đặt](#cài-đặt).
+Xem chi tiết, và cách làm khi danh mục chưa có vibebiz, ở phần [Cài đặt](#cài-đặt).
 
 ## Bắt đầu từ đây
 
