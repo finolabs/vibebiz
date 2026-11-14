@@ -41,10 +41,25 @@ def _copy_tree(src: Path, dst: Path) -> None:
         dst.mkdir(parents=True, exist_ok=True)
 
 
+def source_guard(skill: str) -> str:
+    """The line right after the frontmatter of src/skills/<skill>/SKILL.md; the build strips it."""
+    return (f"**Source copy, not for use.** Follow this plugin's `.plugin-skills/{skill}/SKILL.md` instead: "
+            "this file under `src/` lacks the `references/` folder it names.")
+
+
+def _strip_guard(doc: Path, skill: str) -> None:
+    """Drop the source guard line from a built SKILL.md."""
+    if not doc.is_file():
+        return
+    text = doc.read_text(encoding="utf-8")
+    doc.write_text(text.replace(source_guard(skill) + "\n", "", 1), encoding="utf-8")
+
+
 def lay_out_skills(dst: Path, root: Path = ROOT) -> None:
     """Write the six built skills into `dst`: each SKILL.md with its own copy of what it reads."""
     for skill in SKILLS:
         _copy_tree(root / SKILLS_SRC / skill, dst / skill)
+        _strip_guard(dst / skill / "SKILL.md", skill)
         _copy_tree(root / "core", dst / skill / "references" / "core")
         # Templates too: a skill may only rely on files inside its own folder in Cowork.
         for shared in ("templates", "packs"):

@@ -2,6 +2,7 @@
 name: idea
 description: "Start a new business idea with vibebiz and interview the user until it is clear and measurable. Use when the user types /vibebiz:idea or describes an idea for a system, an AI use or an automation, for example 'I have an idea', 'brainstorm', 'I want an app for my stores', 'I want AI to remind customers to come back', 'I want to automate stock checks', 'tôi có ý tưởng', 'lên ý tưởng', 'tôi muốn làm một ứng dụng', 'tôi muốn dùng AI để...', 'tôi muốn tự động hóa...'. Not for questions about how to use vibebiz or what it can do (those go to help), and not for an idea already in the workspace (that goes to continue)."
 ---
+**Source copy, not for use.** Follow this plugin's `.plugin-skills/idea/SKILL.md` instead: this file under `src/` lacks the `references/` folder it names.
 
 # vibebiz: new idea
 

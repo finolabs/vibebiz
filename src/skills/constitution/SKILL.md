@@ -2,6 +2,7 @@
 name: constitution
 description: "Record or update the organization's ground rules that vibebiz checks every idea against: this year's priorities, the budget the user approves alone, the retail business they are in, and the steps that always need a person to approve; optionally the company's strategy objectives and OKRs. Use when the user types /vibebiz:constitution or says, for example, 'set our ground rules', 'record our priorities', 'change my approval limit', 'add our OKRs', 'ghi luật chung', 'đặt luật chung cho công ty', 'đổi mức chi tôi tự duyệt', 'thêm OKR của công ty', 'ưu tiên năm nay của công ty là...'. Not for working on one idea (idea, continue), packaging (package) or questions about how to use vibebiz (help)."
 ---
+**Source copy, not for use.** Follow this plugin's `.plugin-skills/constitution/SKILL.md` instead: this file under `src/` lacks the `references/` folder it names.
 
 # vibebiz: ground rules
 

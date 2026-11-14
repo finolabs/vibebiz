@@ -2,6 +2,7 @@
 name: continue
 description: "Resume work on an idea already started with vibebiz: summarize what is settled, where the work stopped and the next question, then carry on the question rounds. Also records what happened to a packaged idea: the board approved, rejected or asked for changes, or the tech team reviewed the estimates. Use when the user types /vibebiz:continue, asks to pick an idea back up ('continue my idea', 'resume the win-back idea', 'làm tiếp ý tưởng', 'quay lại ý tưởng nhắc khách'), reports a board decision ('the board approved it', 'the board wants changes', 'sếp duyệt rồi', 'ban lãnh đạo không duyệt', 'ban giám đốc yêu cầu sửa') or a tech review ('tech reviewed the estimates', 'đội kỹ thuật đã thẩm định chi phí'). Not for a brand-new idea (that goes to idea), a list of all ideas (status) or questions about how to use vibebiz (help)."
 ---
+**Source copy, not for use.** Follow this plugin's `.plugin-skills/continue/SKILL.md` instead: this file under `src/` lacks the `references/` folder it names.
 
 # vibebiz: continue an idea
 

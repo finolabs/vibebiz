@@ -2,6 +2,7 @@
 name: help
 description: "Answer questions about using vibebiz and point the user to the right command for their situation, then stop. Use when the user types /vibebiz:help or asks how vibebiz works, which command to use or what to do next, what a label, status or term in vibebiz means, what vibebiz can do, which app it runs in and how to connect Google or find the deck there, or to see a finished example idea, for example 'how do I use this', 'what next', 'what can vibebiz do', 'show me an example', 'dùng vibebiz thế nào', 'giờ tôi làm gì tiếp', 'vibebiz làm được gì', 'cho xem ý tưởng mẫu', 'dùng trong Codex được không', 'nối Google ở đây thế nào'. Not for describing an idea itself (that goes to idea, or continue when the idea already exists)."
 ---
+**Source copy, not for use.** Follow this plugin's `.plugin-skills/help/SKILL.md` instead: this file under `src/` lacks the `references/` folder it names.
 
 # vibebiz: help
 

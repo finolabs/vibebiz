@@ -220,6 +220,21 @@ class InstallLayoutTest(unittest.TestCase):
                 with self.assertRaises(SystemExit):
                     build_plugin.write_skills(bad, root=root)
 
+    def test_every_source_skill_carries_the_source_guard(self):
+        for skill in sorted(SKILLS):
+            lines = (build_plugin.ROOT / "src" / "skills" / skill / "SKILL.md").read_text(encoding="utf-8").split("\n")
+            end = lines.index("---", 1)
+            self.assertEqual(lines[end + 1], build_plugin.source_guard(skill), skill)
+
+    def test_no_built_skill_carries_the_source_guard(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "dist"
+            build_plugin.build(out)
+            for base in (build_plugin.ROOT / ".plugin-skills", out / "vibebiz" / "skills"):
+                for skill in sorted(SKILLS):
+                    text = (base / skill / "SKILL.md").read_text(encoding="utf-8")
+                    self.assertNotIn("Source copy, not for use", text, f"{base}/{skill}")
+
     def test_no_root_skills_folder(self):
         self.assertFalse((build_plugin.ROOT / "skills").exists(), "a root skills/ folder would load beside .plugin-skills/")
 

@@ -2,6 +2,7 @@
 name: status
 description: "Show where every vibebiz idea in the workspace stands: status, how many points are clear and the next step. Use when the user types /vibebiz:status or asks for an overview, for example 'where are my ideas', 'show my ideas', 'what is the status of my ideas', 'các ý tưởng của tôi đến đâu rồi', 'xem danh sách ý tưởng', 'tình hình các ý tưởng'. Only lists; it never asks questions. Not for working on one idea (continue), starting one (idea) or questions about how to use vibebiz (help)."
 ---
+**Source copy, not for use.** Follow this plugin's `.plugin-skills/status/SKILL.md` instead: this file under `src/` lacks the `references/` folder it names.
 
 # vibebiz: status
 

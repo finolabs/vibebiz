@@ -2,6 +2,7 @@
 name: package
 description: "Package a vibebiz idea for the board and the tech team: a board deck and a requirements document, as private Claude Artifacts or the user's own Google Slides and Docs, plus a requirement file the tech team can use with Spec Kit. Use when the user types /vibebiz:package or asks for the outputs of an idea already in the workspace, Google Slides and Docs included, for example 'make the slides', 'write the PRD', 'package my idea', 'export a draft', 'put it in Google Slides and Docs', 'làm slide', 'viết PRD', 'đóng gói ý tưởng', 'xuất bản nháp', 'làm tài liệu trình ban lãnh đạo', 'đóng gói thành Google Slides và Google Docs'. Open this skill before any Google Slides, Docs or Drive skill: its steps call them. Not for describing a new idea (idea), answering more questions on an idea (continue), listing ideas (status) or questions about how to use vibebiz (help)."
 ---
+**Source copy, not for use.** Follow this plugin's `.plugin-skills/package/SKILL.md` instead: this file under `src/` lacks the `references/` folder it names.
 
 # vibebiz: package an idea
 
