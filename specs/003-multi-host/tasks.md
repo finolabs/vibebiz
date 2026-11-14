@@ -37,6 +37,7 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 - [ ] T003 [P] Codex harness: drive one turn through `codex app-server` and find out whether a client can answer `request_user_input`; record whether the tool is offered in Default and Plan modes. If a harness works, sketch how the eval cases would run through it.
   - 14/11/2026: protocol confirmed (Plan mode at turn start; questions answered by id); a live run waits for the usage limit.
 - [ ] T004 Codex Google: with Fio's yes and his connector already connected in Codex, list the `mcp__codex_apps__google_drive_*` tools with their parameters (read only, no file created) and map each Drive operation of `contracts/host-capabilities.md` "Choosing a path" step 2 (search by title and parent, read, download, create with a parent, copy, trash, read permissions) and the Slides and Docs creation paths.
+  - 14/11/2026: waived by Fio ("Codex và Antigravity chắc chắn chạy được Google Drive, Docs & Slides nên không cần kiểm"): no real Google run on Codex. The Codex install-and-run stays at T053 (constitution V).
 - [x] T005 [P] Antigravity: `agy plugin install <scratch copy>` with `.antigravity-plugin/plugin.json`; check the six skills load as `/idea` and so on, what `/help` opens, and that reading `references/` needs no approval in the Default preset. Record the imported 0.1.2 copy's effect. Uninstall the scratch install.
 - [x] T006 [P] Antigravity harness: find out whether `agy -p --input-format stream-json` or `agy acp` lets a client answer `ask_question`; record its real limits (questions per call, options per question).
   - 14/11/2026: done. stream-json has no answer input; `ask_question` is skipped. Unattended runs put answers in the prompt, as Claude Code evals do.
@@ -129,7 +130,7 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 - [ ] T036 [US4] `core/drive-workspace.md`: each Drive operation named by role and mapped to the tools or skills present (contracts/host-capabilities.md "Choosing a path" step 2), every rule unchanged; for Antigravity, the steps to use the `gdrive` skill.
 - [ ] T037 [US4] Rerun T035 and all `evals/workspace/drive-*` cases (Cowork names) one at a time; record.
 - [ ] T038 [US4] Real runs: start an idea in Drive mode on Codex, continue it on Antigravity, then in Cowork on the web, and the other way round; check the Drive folder against `specs/002-drive-workspace/contracts/drive-workspace.md`; record the rows (SC-003).
-  - 14/11/2026: Antigravity leg done: idea started in Drive mode in `vibebiz-uat-agy`, all files private and Fio's own (`evals/RESULTS.md`, 9458e54). Codex leg waits for 17/11/2026 10:16; continuing across hosts and Cowork on the web still to run.
+  - 14/11/2026: Antigravity leg done: idea started in Drive mode in `vibebiz-uat-agy`, all files private and Fio's own (`evals/RESULTS.md`, 9458e54). Codex leg and the cross-host continuation waived by Fio, 14/11/2026 (no more real Google runs on either host).
 
 ---
 
@@ -138,7 +139,7 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 - [ ] T039 [US5] `core/package.md` §13 and its Slides and Docs steps: the creation path per host by the tools or skills present (T004, T007), the same content rules, a table plus a link instead of any image that would need to be public.
 - [ ] T040 [US5] Eval case with the Codex tool profile of the fake (if T004 found tools a fake can mimic) for a Docs creation; red first, then green.
 - [ ] T041 [US5] Real runs: package the example idea to Slides and Docs on Codex and on Antigravity; check every number against `data.json` and that nothing is shared or public; record (SC-004).
-  - 14/11/2026: Antigravity leg waived by Fio, not verified headless (`evals/RESULTS.md`, T041 rows); setup-fallback rule kept (a0bb2a6). Codex leg waits for 17/11/2026 10:16.
+  - 14/11/2026: Antigravity leg waived by Fio, not verified headless (`evals/RESULTS.md`, T041 rows); setup-fallback rule kept (a0bb2a6). Codex leg waived by Fio, 14/11/2026.
 
 ---
 
