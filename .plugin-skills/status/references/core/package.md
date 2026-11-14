@@ -58,11 +58,13 @@ Ask one round, through the question tool, with two questions:
 1. The board view: "Artifact trên Claude (Đề xuất)" or "Google Slides".
 2. The tech view: "Artifact trên Claude (Đề xuất)" or "Google Docs".
 
-Write each option's description so it stands alone: the Artifact opens in Claude and is updated at the same link next time; the Google file is created in the user's own Drive. Both are private until the user shares them. On a re-package, recommend the formats the previous version used (from its links). Skipped, or nobody to answer: Artifact for both.
+Without the Artifact tool, the first option of each is the web page in the idea folder, "Trang web trong thư mục (Đề xuất)", which opens in a browser (section 8, "Artifacts unavailable"). Offer a Google option only when this session has a tool or skill that creates that Google file (Cowork's or Claude's connector, Codex's Google Drive plugin, Antigravity's Google Slides or Docs skill); without one, ask only about the other view, or skip the round when neither has a Google option, and say once, in one sentence, how to turn it on (below).
+
+Write each option's description so it stands alone: the Artifact opens in Claude and is updated at the same link next time; the web page stays in the idea folder; the Google file is created in the user's own Drive. All are private until the user shares them. On a re-package, recommend the formats the previous version used (from its links). Skipped, or nobody to answer: the first option for both (the Artifact, or the web page without the Artifact tool).
 
 The Artifacts are always made, whatever the answer: the Google versions point to them for diagrams, and the HTML files are part of every version. The answer decides whether vibebiz also writes Google files and which link it gives first.
 
-Before writing a Google file, check that Cowork offers the Google Slides or Google Docs connector in this session. If it does not, or it fails, say so in one sentence and offer, in one question, the Artifact for that view (recommended) or stopping so the user can connect Google first. With nobody to answer, take the Artifact.
+Before writing a Google file, check that this session has a tool or skill that creates Google Slides or Google Docs in the user's Drive, whatever the user asked for. If it does not, or it fails, say so in one sentence, say how to turn it on in this app (the host's step from `references/core/workspace.md` §1, "Connecting Google on this host", naming Slides or Docs; in Cowork, its Connectors), and offer, in one question, the other format for that view (the Artifact, or the web page in the idea folder without the Artifact tool; recommended) or stopping so the user can connect Google first. With nobody to answer, take that other format. Never call a tool the session does not have.
 
 ## 5. Diagram briefs
 
@@ -149,7 +151,7 @@ Publish `board-deck.html` and `tech-prd.html` each as a private Artifact.
 
 Only for the views where the user chose Google in section 4.
 
-1. Write from `data.json` through Cowork's Google connector, into the user's own Drive: one slide per `board.slides[]` for Slides, one heading per `tech.sections[]` for Docs, in order. Title the file with the idea's title and the version date.
+1. Write from `data.json` through the Google Slides or Docs tool or skill this session has, into the user's own Drive: one slide per `board.slides[]` for Slides, one heading per `tech.sections[]` for Docs, in order. Title the file with the idea's title and the version date.
 2. Show each figure by its value from `numbers[]` with its source, period and measured or assumed label; show the gap label, the estimate label and the draft mark exactly where the HTML views show them.
 3. **Diagrams**: insert an image only when the connector accepts it without a public address. Otherwise put the diagram's table and the link to the board or tech Artifact. Never upload an image to a public place, and never make a Drive file public, to get around this.
 4. **Later versions**: create a new file for the new version and leave the earlier one in Drive unchanged, so every presented version stays as it was; record the new address. Never delete or overwrite a Google file.

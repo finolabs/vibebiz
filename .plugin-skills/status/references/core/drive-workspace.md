@@ -24,7 +24,7 @@ Used only in Drive mode: the session has no local folder and has a Google Drive 
 3. **Download** each remaining candidate and keep those whose JSON has `"vibebiz": "workspace"`. Stop reading a candidate as soon as it lacks the marker.
 4. **Decide:**
    - **One workspace:** use it, and name its folder to the user in one short sentence.
-   - **Several:** ask with `AskUserQuestion` which one to use, each option the folder's name and its last update.
+   - **Several:** ask through the question tool which one to use, each option the folder's name and its last update.
    - **None:** ask for an existing folder or the name of a new one, recommending a new folder named "vibebiz" in My Drive. When the prompt already says which folder to use, use it without asking. A new folder is created with the folder type (`application/vnd.google-apps.folder`).
 5. **Newer version:** this plugin's version is the `plugin_version` in `references/templates/workspace/index.json`. When the workspace's `index.json` names a newer one, read the workspace as usual but never write a file in an older shape; tell the user to update vibebiz before changing anything.
 

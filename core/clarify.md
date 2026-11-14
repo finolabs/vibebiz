@@ -53,7 +53,7 @@ An idea whose chosen alternative needs no system (for example "fix the process")
 
 ## 4. Write each question
 
-Spec Kit's `clarify` asks one question at a time in text with a lettered table; vibebiz asks a batch through `AskUserQuestion`. Keep upstream's quality rules and adapt the form:
+Spec Kit's `clarify` asks one question at a time in text with a lettered table; vibebiz asks a batch through the question tool (ask protocol section 0). Keep upstream's quality rules and adapt the form:
 
 - **A real question, not a label.** The `question` text is a full question ending with "?" that makes sense alone. A topic name ("Nguồn dữ liệu khách hàng"), a category code or a requirement id is never a question; the topic goes in `header`.
 - **The stake in the options.** Upstream adds a "why it matters" line; here each option's `description` says what choosing it means for the idea, and the recommended option's description starts with why you recommend it.

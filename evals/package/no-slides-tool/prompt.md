@@ -7,4 +7,4 @@ plugins: ["../../../dist/vibebiz"]
 tags: [package, spec003, host-neutral]
 append_system_prompt: 'This session runs in Google Antigravity, not in Claude Cowork or the Claude app. There is no Artifact tool and no Google Slides, Google Docs or Google Drive tool or skill in this session. Treat this as the real situation.'
 ---
-Đóng gói ý tưởng "Gợi ý size trên website". Tôi chọn Google Slides cho bản hội đồng. Nếu không làm được thì hỏi tôi, tôi chưa quyết.
+Dùng vibebiz đóng gói ý tưởng "Gợi ý size trên website". Tôi chọn Google Slides cho bản hội đồng. Nếu không làm được thì hỏi tôi, tôi chưa quyết.

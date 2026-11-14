@@ -14,11 +14,25 @@ Messages to the user follow `references/core/writing-rules.md`, including how to
 
 Pick the storage mode once, at the start of the skill, in this order, and keep it for the whole run. A session never uses both modes.
 
-1. **Local mode.** Look for the folder the user opened in Cowork: a user-chosen folder you can read and write with your file tools. A scratch or temporary location the platform gave you is not a working folder. When there is one, use it and continue at §2. Write nothing to Google Drive for the rest of the run: on the desktop the local folder wins and the two workspaces are never synced. Reading documents to look facts up (`references/core/router.md` "Facts before questions") is allowed, read only; only `package` writes to Drive in local mode, and only the Slides or Docs the user asked for.
-2. **Drive mode.** Without a local folder, check whether the session has a Google Drive connector: tools that search the user's Drive and create files in it. When it does, continue at §1a.
-3. **Neither.** Say so plainly and stop. Write nothing, ask nothing else, do not continue partway. This happens in claude.ai chat, and in a Cowork session started on the web or in the mobile app without Google Drive connected: those run on Anthropic's servers, cannot reach a folder on the user's computer, and the files such a session keeps are not a folder the user chose. Give this message as written, in the user's language (Vietnamese by default), changing only the form of address that `references/core/writing-rules.md` sets. Add nothing before or after it: no summary of the idea, no preview of the questions to come. It names both ways forward and names the desktop app rather than "Cowork", since the user may already be in Cowork:
+1. **Local mode.** Look for the folder the user opened: the folder chosen for a Cowork session, or the project or workspace folder a Claude Code, Codex or Antigravity session runs in; a user-chosen folder you can read and write with your file tools. A scratch or temporary location the platform gave you is not a working folder. When there is one, use it and continue at §2. Write nothing to Google Drive for the rest of the run: on the desktop the local folder wins and the two workspaces are never synced. Reading documents to look facts up (`references/core/router.md` "Facts before questions") is allowed, read only; only `package` writes to Drive in local mode, and only the Slides or Docs the user asked for.
+2. **Drive mode.** Without a local folder, check whether the session has Google Drive tools or skills that search the user's Drive and create files in it (Cowork's or Claude's Drive connector, Codex's Google Drive tools, Antigravity's Google Drive skill; "Connecting Google on this host" below). When it does, continue at §1a.
+3. **Neither.** Say so plainly and stop. Write nothing, ask nothing else, do not continue partway. Give the message for this session's host as written, in the user's language (Vietnamese by default), changing only the form of address that `references/core/writing-rules.md` sets. Add nothing before or after it: no summary of the idea, no preview of the questions to come. Each message names both ways forward.
+
+   **Cowork and claude.ai chat.** This happens in claude.ai chat, and in a Cowork session started on the web or in the mobile app without Google Drive connected: those run on Anthropic's servers, cannot reach a folder on the user's computer, and the files such a session keeps are not a folder the user chose. The message names the desktop app rather than "Cowork", since the user may already be in Cowork:
    - Vietnamese: "Phiên này không mở được thư mục nào trên máy tính của anh/chị và chưa nối Google Drive, nên em chưa ghi gì. Anh/chị chọn một trong hai cách rồi gõ lại lệnh này nhé: nối Google Drive trong phần kết nối (Connectors) của Cowork, để ý tưởng được lưu trong một thư mục Drive anh/chị chọn; hoặc mở ứng dụng Claude trên máy tính, vào Cowork và chọn một thư mục làm việc."
    - English: "This session cannot open a folder on your computer and Google Drive is not connected, so nothing was saved. Choose one of two ways, then run this command again: connect Google Drive in Cowork's Connectors, so your ideas are kept in a Drive folder you choose; or open the Claude desktop app, go to Cowork and choose a working folder."
+
+   **Claude Code, Codex, Antigravity.** No folder is open in this session. Put this host's Drive step from the table below in place of `<Drive step>`:
+   - Vietnamese: "Phiên này chưa mở thư mục làm việc nào và chưa nối Google Drive, nên em chưa ghi gì. Anh/chị chọn một trong hai cách rồi gõ lại lệnh này nhé: mở một thư mục làm việc trong ứng dụng đang dùng; hoặc <Drive step>, để ý tưởng được lưu trong một thư mục Drive anh/chị chọn."
+   - English: "No working folder is open in this session and Google Drive is not connected, so nothing was saved. Choose one of two ways, then run this command again: open a working folder in this app; or <Drive step>, so your ideas are kept in a Drive folder you choose."
+
+   **Connecting Google on this host.** The single source for how a user turns on Google Drive, Slides or Docs; `references/core/package.md` uses the same steps, naming Slides or Docs in place of Drive.
+
+   | Host | Drive step (Vietnamese) | Drive step (English) |
+   | --- | --- | --- |
+   | Claude Code | nối Google Drive trong phần kết nối (Connectors) của ứng dụng Claude | connect Google Drive in the Claude app's Connectors |
+   | Codex | cài plugin Google Drive trong Codex rồi đăng nhập tài khoản Google | install the Google Drive plugin in Codex and sign in with your Google account |
+   | Antigravity | cài plugin Google Drive chính thức của Antigravity rồi đăng nhập tài khoản Google | install Antigravity's official Google Drive plugin and sign in with your Google account |
 4. The skills that work without a workspace (`help` answering a documentation question) skip this section and write nothing.
 
 Why: an entry skill that runs without a place to save would lose every answer when the session ends; the user would not know why.
@@ -56,7 +70,7 @@ A file with a required name that does not match its marker is the user's own fil
 
 Unrelated files may sit beside a workspace; they never change a Complete or Partial state. If a required name is taken by the user's own file (for example their own `index.html`), treat the folder as Unrelated and ask.
 
-**Ask for Unrelated files** with `AskUserQuestion` (ask-protocol module): one question, two options, recommended first: a `vibebiz/` subfolder (recommended: keeps the user's files untouched) or this folder. Word it without folder jargon, for example "Thư mục này đang có sẵn tệp khác. Em lập không gian làm việc ở đâu?" with "Thư mục con mới tên vibebiz (Đề xuất)" and "Ngay trong thư mục này". Skipped or nobody to answer: use the `vibebiz/` subfolder and record that as an assumption in the idea's `assumptions.md` once the idea exists.
+**Ask for Unrelated files** through the question tool (ask-protocol module): one question, two options, recommended first: a `vibebiz/` subfolder (recommended: keeps the user's files untouched) or this folder. Word it without folder jargon, for example "Thư mục này đang có sẵn tệp khác. Em lập không gian làm việc ở đâu?" with "Thư mục con mới tên vibebiz (Đề xuất)" and "Ngay trong thư mục này". Skipped or nobody to answer: use the `vibebiz/` subfolder and record that as an assumption in the idea's `assumptions.md` once the idea exists.
 
 ## 4. Scaffold
 

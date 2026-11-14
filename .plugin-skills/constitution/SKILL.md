@@ -43,7 +43,7 @@ Decide the mode:
 
 ## 4. The round: at most four questions
 
-One round, at most four questions in total, asked under the ask protocol's rules: self-contained questions naming what the rule is for, a short header, two to four exclusive options with the recommended one first and marked, no "None" or "Other" option (the tool has Skip and a free-text box). The round is not counted against any idea's question budget. Send the tool questions in one `AskUserQuestion` call and the open question after it. Drop a question whose answer is already on file or in the user's message; ask only what is left.
+One round, at most four questions in total, asked under the ask protocol's rules: self-contained questions naming what the rule is for, a short header, two to four exclusive options with the recommended one first and marked, no "None" or "Other" option (the tool has Skip and a free-text box). The round is not counted against any idea's question budget. Send the tool questions in one question-tool call (split as the ask protocol says when the tool takes fewer) and the open question after it. Drop a question whose answer is already on file or in the user's message; ask only what is left.
 
 1. **Business** (`vertical`), single select: two to four kinds of retail built from the user's words and the ideas on file, for example thời trang, điện máy và điện tử, đồ gia dụng, mỹ phẩm. Recommend the one their words point to, or fashion when nothing does, saying why in the description: vibebiz's question pack in this version is written for fashion, and other businesses get general retail questions. On update, the current value is the recommended option.
 2. **Budget the user approves alone** (`approval_ceiling`), single select: two to four example amounts in the user's currency (Vietnamese đồng by default), each said to be an example and not a figure about their business; the free-text box takes their exact amount. Offer amounts rather than ranges, because a check needs one figure. With nothing to go on, recommend the lowest amount, because a low limit flags more ideas for someone above the user to approve, which is the safer mistake. On update, the current amount is the recommended option.
@@ -80,7 +80,7 @@ These are optional and never become questions of their own: the round stays at f
 Never overwrite a value the user gave earlier without their yes.
 
 - **First recording** (every field was deferred or empty): no confirmation; go to section 7.
-- **Update**: when at least one given value would change or be removed, show the changes as "before → after" lines in plain words, then ask one `AskUserQuestion` confirmation with two options, "Lưu thay đổi" and "Giữ như cũ", neutral, with neither marked recommended, because the user is choosing between their own two values. On "Lưu thay đổi", write. On "Giữ như cũ" or Skip, write nothing, and say in one sentence that the rules are unchanged. Adding to an empty field needs no confirmation.
+- **Update**: when at least one given value would change or be removed, show the changes as "before → after" lines in plain words, then ask one confirmation through the question tool with two options, "Lưu thay đổi" and "Giữ như cũ", neutral, with neither marked recommended, because the user is choosing between their own two values. On "Lưu thay đổi", write. On "Giữ như cũ" or Skip, write nothing, and say in one sentence that the rules are unchanged. Adding to an empty field needs no confirmation.
 
 Example: "Mức chi anh/chị tự duyệt: 50 triệu đồng → 300 triệu đồng. Việc luôn cần người duyệt: thêm 'Hoàn tiền cho khách'."
 
@@ -96,7 +96,7 @@ Re-read the file just before writing; a hand edit since section 3 wins over your
 
 ## 8. Nobody to answer
 
-When nobody can answer (an unattended or evaluation run, or the question tool fails): if the prompt already carries the answers, use them exactly. Otherwise ask nothing further, leave `constitution.md` unchanged (a deferred file stays deferred), invent no rule, and end with one sentence saying the ground rules still need a person to set them. Ground rules are the user's own decisions; a guessed approval limit would mislead every plan checked against it.
+When nobody can answer (an unattended or evaluation run; a missing or failing question tool is not this case, since the ask protocol then asks in plain text): if the prompt already carries the answers, use them exactly. Otherwise ask nothing further, leave `constitution.md` unchanged (a deferred file stays deferred), invent no rule, and end with one sentence saying the ground rules still need a person to set them. Ground rules are the user's own decisions; a guessed approval limit would mislead every plan checked against it.
 
 ## 9. Tell the user
 

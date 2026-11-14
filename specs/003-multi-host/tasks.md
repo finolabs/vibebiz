@@ -95,10 +95,10 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 
 ### Implementation
 
-- [ ] T026 `core/ask-protocol.md`: the host's question tool by role (`AskUserQuestion`, `request_user_input`, `ask_question`), vibebiz's limits kept, rounds split to the tool's limits, plain text with numbered choices without a tool; replace bare `AskUserQuestion` mentions in `core/` and `src/skills/` where the rule is host-neutral.
-- [ ] T027 `core/workspace.md` §1: storage by the tools present; "the folder the user opened"; a "Neither" message per host family (Cowork keeps its message; others: open a folder, or connect the host's Google integration).
-- [ ] T028 `core/package.md`: Artifacts, Slides and Docs by the tools present; when missing, how to connect them on this host and the HTML views as the alternative.
-- [ ] T029 Rerun T021–T024 and the cases covering the changed modules (`evals/ask-protocol/*`, `evals/workspace/no-folder-chat`, `evals/workspace/drive-no-connector-*`, `evals/package/*`) one at a time; record in `evals/RESULTS.md`.
+- [x] T026 `core/ask-protocol.md`: the host's question tool by role (`AskUserQuestion`, `request_user_input`, `ask_question`), vibebiz's limits kept, rounds split to the tool's limits, plain text with numbered choices without a tool; replace bare `AskUserQuestion` mentions in `core/` and `src/skills/` where the rule is host-neutral.
+- [x] T027 `core/workspace.md` §1: storage by the tools present; "the folder the user opened"; a "Neither" message per host family (Cowork keeps its message; others: open a folder, or connect the host's Google integration).
+- [x] T028 `core/package.md`: Artifacts, Slides and Docs by the tools present; when missing, how to connect them on this host and the HTML views as the alternative.
+- [x] T029 Rerun T021–T024 and the cases covering the changed modules (`evals/ask-protocol/*`, `evals/workspace/no-folder-chat`, `evals/workspace/drive-no-connector-*`, `evals/package/*`) one at a time; record in `evals/RESULTS.md`.
 
 ---
 

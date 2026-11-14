@@ -115,7 +115,7 @@ Point to it from the risk or cost line in `## Cost & Risk`, and repeat it in the
 
 The router tells you how many of the round's four slots are yours and which categories they serve. Within those slots:
 
-1. Rank your candidates by impact times uncertainty, as the router does, and draft them as `AskUserQuestion` entries by the ask protocol's rules: a self-contained question naming the idea, a short header, two to four mutually exclusive options, the recommended option first with the marker, no "None"/"Other"/"Không có"/"Khác" option.
+1. Rank your candidates by impact times uncertainty, as the router does, and draft them as question-tool entries by the ask protocol's rules: a self-contained question naming the idea, a short header, two to four mutually exclusive options, the recommended option first with the marker, no "None"/"Other"/"Không có"/"Khác" option.
 2. At most one of your slots may be the round's open plain-text question, and only if the router gives it to you. Use it for something that already happened ("Lần gần nhất cửa hàng thử làm cách tương tự mà không thành là khi nào?").
 3. Make sure at least one of your questions carries a concrete failure reason (rule 1.2).
 4. **The alternatives question.** Once all four options are written in `## Alternatives`, ask which one to take. Options: do nothing, fix the process, buy, build (two to four of them; drop one only when the files already rule it out, and say why in `## Alternatives`). Recommend honestly: the cheapest option that plausibly reaches the outcome target; when the evidence is equal, the one cheapest to reverse. Recommend build only when the files show the other three cannot reach the target. Example:

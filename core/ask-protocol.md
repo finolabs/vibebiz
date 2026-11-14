@@ -9,6 +9,14 @@ Rules for every question vibebiz puts to the user. Every module that asks follow
 
 Why these rules exist: the user is a sales director who is not technical and has little patience. A long, jargon-heavy or confusing round makes them abandon the idea, and an answer vibebiz invents misleads the board. Every rule below protects one of those two things.
 
+## 0. The question tool
+
+The **question tool** is whichever tool this session offers for asking the user questions with options: `AskUserQuestion` (Cowork, Claude Code), `request_user_input` (Codex), `ask_question` (Antigravity). Use the one present; the rules below are written for any of them, and the field names in section 3 and the example in section 11 are `AskUserQuestion`'s; map each to the present tool's own field (header, question, options, and an option's label and description).
+
+- **vibebiz's limits hold on every host**: one to four questions per round, two to four options per question. When the tool takes fewer per call (its own description or the session says so), the round still holds the same questions: send them in consecutive calls, in rank order, as one round. A question with more options than the tool takes goes in plain text with its choices numbered (section 5a); keep every option the question needs.
+- **A rule the tool cannot carry moves to plain text**: a `multiSelect` question on a tool without multi-select, a preview on a tool without previews, an option description on a tool whose options are bare labels (put "label: description" in the option text when the tool allows a sentence, otherwise ask in plain text).
+- **No question tool, or the call fails**: the user is still there. Ask the round in plain text (section 5a) and read their reply as the answers. Only section 10 decides when nobody can answer.
+
 ## 1. Before asking: look facts up
 
 - Ask the user only for **decisions** and for things only they know (their judgment, their priorities, what happened to them). Find **facts** yourself first: in the idea's files, in `constitution.md`, in the vertical pack, and in documents the user has connected to Cowork.
@@ -18,13 +26,13 @@ Why these rules exist: the user is a sales director who is not technical and has
 ## 2. What a round is
 
 - A **round** is one set of questions asked together: the current frontier the router hands you, meaning only questions whose prerequisite categories (the router's frontier table) are `clear` or `deferred`. Never add a question whose answer depends on another question that is still open; hold it for a later round.
-- A round has **one to four questions in total**: at most four tool questions sent in **one** `AskUserQuestion` call, plus at most one open question in plain text (section 5), and the total of both never exceeds four.
+- A round has **one to four questions in total**: at most four tool questions sent in **one** question-tool call (or consecutive calls when the tool takes fewer, section 0), plus at most one open question in plain text (section 5), and the total of both never exceeds four.
 - Order the questions as the router ranked them (highest impact times uncertainty first).
 - The intake question (`references/core/specify.md`), the ground-rules round (`constitution`), the format round (`package`) and the budget offer (section 8) are asked with these rules but are not counted against the question budget.
 
 ## 3. How to write a tool question
 
-Each entry in the `AskUserQuestion` call's `questions` list follows all of these rules:
+Each question sent through the question tool follows all of these rules:
 
 1. **Self-contained.** The `question` text is one full question ending with "?" that a person can answer without reading anything else: name the idea's subject in it ("ý tưởng nhắc khách quay lại mua"), never "như trên", "câu trước" or "phương án đã nói". Never use a category code (A–O), a requirement id (FR-###, SC-###, D-###), a file name, a path or a technical term the user has not been taught; follow `references/core/writing-rules.md`.
 2. **Short header.** `header` is a two- or three-word topic tag of at most 12 characters ("Lý do", "Khách mục tiêu"). It labels the question; it never replaces it.
@@ -33,7 +41,7 @@ Each entry in the `AskUserQuestion` call's `questions` list follows all of these
 5. **Recommended option first and labelled.** Put the option you recommend first and end its `label` with the marker in the idea's language: `(Đề xuất)` in Vietnamese, `(Recommended)` in English, the natural equivalent in any other language. Exactly one option per question carries the marker. Start its `description` with the reason in half a sentence (the ground rules, the vertical pack, an earlier answer, or common retail practice). Recommend honestly: if the evidence favors none, recommend the option that is cheapest to reverse and say so.
 6. **`multiSelect` only when options are not exclusive** (for example "which channels do you use today", where several can be true). The options must still be distinct and the recommended option still comes first with its marker. Never use `multiSelect` to dodge a choice the user must make between alternatives.
 7. **Previews for drafts.** When the options are draft texts the user should compare (an outcome statement, a user story, a step-by-step flow, a slide message), put each draft in the option's `preview` field as short Markdown and keep the `label` a short name for it. Use previews only on single-select questions.
-8. **Never add a "None", "Other", "Không có", "Khác", "Không biết" or "Bỏ qua" option**, in any language or wording. The tool already gives the user a Skip button and a free-text box; an extra escape option hides a real gap behind a fake answer. The same holds when the tool is missing and the round is asked as text: the user can already answer in their own words or skip, so say that once in the session, before the first text round, and list only real options.
+8. **Never add a "None", "Other", "Không có", "Khác", "Không biết" or "Bỏ qua" option**, in any language or wording. The tool already gives the user a Skip button and a free-text box; an extra escape option hides a real gap behind a fake answer. The same holds in a plain-text round (section 5a): list only real options.
 9. **Ask for a decision, not a quiz.** Each question must change scope, cost, the success measure or the board's decision depending on the answer. If every answer leads to the same next step, do not ask it.
 10. **Numbers in ranges.** When the decision is a number (a target, a time window, a budget), offer two to four ranges or values built from the vertical pack or the user's own figures, label any figure you supply as an estimate, and let the free-text box take an exact value.
 
@@ -48,6 +56,10 @@ Some questions have no sensible options: "Lần gần nhất chuyện này xảy
 - At most one open question per round, sent after the tool call has returned, and counted in the round's limit of four.
 - Ask about something real that already happened, not a hypothetical.
 - If the user does not reply to it and moves on, treat it as skipped.
+
+## 5a. A round in plain text
+
+When section 0 sends a round or a question to plain text, write one message holding the round's questions, at most four, in rank order. Each multiple-choice question follows section 3 as a tool question does (self-contained, two to four exclusive choices, exactly one recommended and first with its marker and half-sentence reason, no escape choice such as "chưa biết", ranges for numbers) and lists its choices numbered `1.`, `2.`, …; the choices are exclusive unless the question says several may apply. Before the first text round of the session, say once that the user can answer by number or in their own words, or skip a question. Then wait for the reply and read it as section 6 says: a number or a choice's words selects that choice, a question the reply leaves out is skipped.
 
 ## 6. Reading the answers
 
@@ -77,7 +89,7 @@ Then tell the user in one or two plain sentences what was recorded and what come
 ## 8. Question budget
 
 - The budget is **three counted rounds per session** by default (`budget_rounds_used` in `coverage.md`, reset to `0` when a session starts). The router counts the rounds and decides when the budget is reached; this section fixes how the offer is asked.
-- When a round's write-back brings the count to the budget (or to its next multiple) and the idea is not ready, stop asking lens questions and offer, in one `AskUserQuestion` question with exactly these three choices in the idea's language:
+- When a round's write-back brings the count to the budget (or to its next multiple) and the idea is not ready, stop asking lens questions and offer, in one question through the question tool, with exactly these three choices in the idea's language:
   - continue with more questions now ("Hỏi tiếp"),
   - pause and keep everything saved for later ("Tạm dừng"),
   - export a draft with every gap labelled ("Xuất bản nháp").
@@ -90,11 +102,11 @@ When the user skips every question in a round (tool questions and the open quest
 
 - Write the round back anyway: each question as a `- Skipped:` line, no decisions, no status changes.
 - Do not ask the same questions again in this session.
-- Offer, in one `AskUserQuestion` question, to pause ("Tạm dừng", recommended) or to export a draft with the gaps labelled ("Xuất bản nháp"). If that is skipped too, pause.
+- Offer, in one question through the question tool, to pause ("Tạm dừng", recommended) or to export a draft with the gaps labelled ("Xuất bản nháp"). If that is skipped too, pause.
 
 ## 10. Nobody to answer
 
-When nobody can answer (an unattended or evaluation run, the question tool fails or is unavailable, or the user said to proceed without them):
+When nobody can answer (an unattended or evaluation run, a host that skips every question by itself, or the user said to proceed without them). A missing or failing question tool is not this case: section 0 asks in plain text instead.
 
 - If the prompt already carries answers for these questions, use them exactly as the user's answers; that is not inventing.
 - Otherwise never pick an option on the user's behalf and never write an invented answer as decided. For each question, proceed on the option you would recommend as an **assumption**: append an A-### to `assumptions.md` with `tested: no`, `evidence: none yet`, `source: no-answer-run`, and a Q-### to `open-questions.md` with `status: open` and the owner who must confirm it.
@@ -105,7 +117,7 @@ When nobody can answer (an unattended or evaluation run, the question tool fails
 
 Fictional idea: chuỗi thời trang "Áo Mây" (fictional) muốn "dùng AI nhắc khách cũ quay lại mua". Intake is done; categories A (problem) and N (terminology) have no prerequisites, so they form the first frontier. The router hands over two A questions, one N question and one open A question.
 
-The `AskUserQuestion` call:
+The `AskUserQuestion` call (on another host, the same questions in its own tool's fields, section 0):
 
 ```json
 {

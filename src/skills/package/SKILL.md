@@ -33,7 +33,7 @@ Run `references/core/package.md` from its first section to its last, in order. I
 
 1. Readiness: below it, list what is missing and offer to keep answering questions (recommended) or to export a labelled draft. A request for a draft goes straight to the draft path.
 2. The plan, the readiness checklists and the consistency analysis. Findings that need the user's decision go back to the question rounds; nothing is packaged until the analysis is clear, unless the user chose a draft.
-3. One round for formats: board view as an Artifact or Google Slides, tech view as an Artifact or Google Docs. When the Google connector is not available, offer the Artifact instead.
+3. One round for formats (package module section 4): board view as an Artifact or Google Slides, tech view as an Artifact or Google Docs, each offered only when this session has its tool or skill. Without a Google tool or skill, say how to turn it on in this app and offer the Artifact, or the web page in the idea folder when there is no Artifact tool.
 4. Diagram briefs, drawn by the diagram-design companion when it is installed; without it, tables with a "no diagram" note.
 5. One data file for every view, the previous version moved to the idea's history, the two views filled from the fixed templates, and a copy of the requirement. In Drive mode the history is copied, and the two views are built in the session and never saved to Drive (`references/core/package.md` section 13).
 6. Private Artifacts (updated at the same link on a later version), the Google files the user chose, and the links file.
