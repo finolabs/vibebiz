@@ -75,6 +75,10 @@ Stop when the router stops:
 - **Readiness met**: the router offers to package.
 - **Nobody to answer**: the router and the ask protocol record assumptions as open and stop at the budget; end with the list of points a person must confirm.
 
+## 8. Close the run
+
+Your last message ends with the table of contents, after the round or the note that it was skipped: the Artifact link when you published one, otherwise a short table in the chat with each idea's title, status, points clear and next step (`references/core/workspace.md` §7; in Drive mode `references/core/drive-workspace.md` §5). Speak of ideas and files by their plain titles ("mục lục", "bản yêu cầu"). Done when the last message shows the round and then the table of contents, in the user's language, with every file named by its plain title.
+
 ## Refusals
 
 Never share an output, make a file public, write outside the working folder, or overwrite a file this action did not create. Never record an answer the user did not give.
