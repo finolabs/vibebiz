@@ -1,0 +1,36 @@
+{
+  "name": "vibebiz",
+  "version": "0.1.4",
+  "description": "A product owner for retail leaders: turns a vague idea for a system, an AI use or an automation into a clear, challenged, measurable PRD.",
+  "author": {
+    "name": "Fioenix"
+  },
+  "homepage": "https://github.com/finolabs/vibebiz",
+  "repository": "https://github.com/finolabs/vibebiz",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "keywords": [
+    "retail",
+    "product-owner",
+    "prd",
+    "interview",
+    "cowork"
+  ],
+  "skills": "./.plugin-skills/",
+  "interface": {
+    "displayName": "vibebiz",
+    "shortDescription": "Turn retail ideas into PRDs",
+    "developerName": "Fioenix",
+    "longDescription": "A product owner for retail leaders who are not technical. Describe a vague idea for a system, an AI use or an automation; vibebiz interviews you in short rounds until the idea is clear, challenged and measurable, then packages it as a board deck and a requirements document for your tech team, plus a requirement file compatible with Spec Kit. Everything stays in your workspace folder or your own Google Drive; vibebiz sends your business data nowhere else and never shares a file. Vietnamese by default. Source-available under PolyForm Noncommercial 1.0.0; businesses need a commercial license.",
+    "category": "Productivity",
+    "capabilities": [],
+    "websiteURL": "https://github.com/finolabs/vibebiz",
+    "supportURL": "https://github.com/finolabs/vibebiz/issues",
+    "privacyPolicyURL": "https://github.com/finolabs/vibebiz/blob/main/PRIVACY.md",
+    "termsOfServiceURL": "https://github.com/finolabs/vibebiz/blob/main/TERMS.md",
+    "defaultPrompt": [
+      "I have an idea: remind past customers to come back to our stores. Help me make it clear and measurable.",
+      "Continue my idea where we stopped and ask the next questions.",
+      "Package my idea as a board deck and a PRD for the tech team."
+    ]
+  }
+}

@@ -170,5 +170,81 @@ class FakeDriveBuildTest(unittest.TestCase):
             self.assertFalse((out / "vibebiz-fakedrive").exists())
 
 
+MANIFESTS = (".claude-plugin/plugin.json", ".codex-plugin/plugin.json", ".antigravity-plugin/plugin.json")
+SHARED_FIELDS = ("name", "version", "description", "keywords", "license", "skills")
+
+
+def _mini_repo(root: Path) -> Path:
+    """A fictional repository with one source skill and one core module, for drift tests."""
+    (root / ".claude-plugin").mkdir(parents=True)
+    (root / ".claude-plugin" / "plugin.json").write_text("{}")
+    (root / "src" / "skills" / "idea").mkdir(parents=True)
+    (root / "src" / "skills" / "idea" / "SKILL.md").write_text("# idea\n")
+    (root / "core").mkdir()
+    (root / "core" / "workspace.md").write_text("# workspace\n")
+    return root
+
+
+class InstallLayoutTest(unittest.TestCase):
+    """The repository root is the installable plugin (specs/003-multi-host/contracts/install-layout.md)."""
+
+    def test_plugin_skills_is_current(self):
+        self.assertEqual(build_plugin.skills_drift(), [], "regenerate with: python3 scripts/build_plugin.py --skills")
+
+    def test_drift_names_missing_changed_and_extra_files(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = _mini_repo(Path(tmp) / "repo")
+            build_plugin.write_skills(root=root)
+            self.assertEqual(build_plugin.skills_drift(root), [])
+            copy = root / ".plugin-skills"
+            (copy / "idea" / "references" / "core" / "workspace.md").unlink()
+            (copy / "idea" / "SKILL.md").write_text("# stale\n")
+            (copy / "idea" / "extra.md").write_text("x")
+            self.assertEqual(build_plugin.skills_drift(root), [
+                "changed: .plugin-skills/idea/SKILL.md",
+                "extra: .plugin-skills/idea/extra.md",
+                "missing: .plugin-skills/idea/references/core/workspace.md",
+            ])
+
+    def test_source_change_without_regenerating_is_stale(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = _mini_repo(Path(tmp) / "repo")
+            build_plugin.write_skills(root=root)
+            (root / "core" / "workspace.md").write_text("# workspace, edited\n")
+            self.assertIn("changed: .plugin-skills/idea/references/core/workspace.md", build_plugin.skills_drift(root))
+
+    def test_write_skills_refuses_a_path_outside_the_repository(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = _mini_repo(Path(tmp) / "repo")
+            for bad in (Path(tmp) / "elsewhere", root, root.parent):
+                with self.assertRaises(SystemExit):
+                    build_plugin.write_skills(bad, root=root)
+
+    def test_no_root_skills_folder(self):
+        self.assertFalse((build_plugin.ROOT / "skills").exists(), "a root skills/ folder would load beside .plugin-skills/")
+
+    def test_manifests_agree(self):
+        manifests = {}
+        for rel in MANIFESTS:
+            path = build_plugin.ROOT / rel
+            self.assertTrue(path.is_file(), f"missing {rel}")
+            manifests[rel] = json.loads(path.read_text(encoding="utf-8"))
+        first = manifests[MANIFESTS[0]]
+        for rel, data in manifests.items():
+            self.assertEqual(data.get("skills"), "./.plugin-skills/", rel)
+            for field in SHARED_FIELDS:
+                self.assertEqual(data.get(field), first.get(field), f"{rel}: {field} differs from {MANIFESTS[0]}")
+        self.assertTrue(120 <= len(first["description"]) <= 160, len(first["description"]))
+        template = json.loads((build_plugin.ROOT / "templates" / "workspace" / "index.json").read_text(encoding="utf-8"))
+        self.assertEqual(template["plugin_version"], first["version"])
+
+    def test_archive_manifest_uses_the_default_skills_folder(self):
+        # dist/vibebiz/ holds its skills in skills/, so its manifest must not point at .plugin-skills/.
+        with tempfile.TemporaryDirectory() as tmp:
+            build_plugin.build(Path(tmp) / "dist")
+            data = json.loads((Path(tmp) / "dist" / "vibebiz" / ".claude-plugin" / "plugin.json").read_text(encoding="utf-8"))
+            self.assertNotIn("skills", data)
+
+
 if __name__ == "__main__":
     unittest.main()

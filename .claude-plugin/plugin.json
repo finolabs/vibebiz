@@ -14,5 +14,6 @@
     "prd",
     "interview",
     "cowork"
-  ]
+  ],
+  "skills": "./.plugin-skills/"
 }

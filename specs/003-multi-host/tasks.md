@@ -57,14 +57,15 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 
 **Independent Test**: change one line in a `core/` module without regenerating; `scripts/checks/test_build.py` fails and names the stale files; regenerate; it passes.
 
-- [ ] T010 [US7] Add tests to `scripts/checks/test_build.py` (contracts/install-layout.md "Check"): `.plugin-skills/` equals the generator's output (missing, changed and extra files each fail, named); the three manifests agree on name, version, description, keywords, license and `skills`; the description is 120–160 characters; no root `skills/` folder; the manifests' version equals `templates/workspace/index.json`. Run it and record the red result in the pull request.
-- [ ] T011 [US7] Refactor `scripts/build_plugin.py` so one function lays out a skill tree from `src/skills/`, `core/`, `templates/`, `packs/`, `docs/` and `examples/`; add `--skills` to write `.plugin-skills/` (replacing it whole, refusing a path outside the repository); keep `dist/vibebiz/`, `vibebiz.plugin` and `--fake-drive`.
-- [ ] T012 [US7] `git mv skills src/skills`; update every consumer found by `git grep -n 'skills/'`: `scripts/build_plugin.py`, `scripts/checks/test_docs_map.py`, `scripts/checks/test_build.py`, and `src/skills/help/SKILL.md` line 51 (read a sibling skill as `../<name>/SKILL.md`).
-- [ ] T013 [US7] Generate `.plugin-skills/` and commit it in its own commit; add `.plugin-skills/** linguist-generated=true` to `.gitattributes`.
-- [ ] T014 [P] [US7] Add `"skills": "./.plugin-skills/"` to `.claude-plugin/plugin.json`.
-- [ ] T015 [P] [US7] Create `.codex-plugin/plugin.json`: shared fields, `"skills": "./.plugin-skills/"`, an `interface` block (`displayName` and `shortDescription` within 30 characters, `longDescription`, category, website, support, privacy and terms URLs, `defaultPrompt`), modeled on finolabs-vibecode's.
-- [ ] T016 [P] [US7] Create `.antigravity-plugin/plugin.json`: `$schema`, shared fields, `displayName`, `logo`, `author`, `suggestedPrompts` (at most 3), `"skills": "./.plugin-skills/"`; run `agy plugin validate --strict .`.
-- [ ] T017 [US7] Run `test_build.py` (green), `test_docs_map.py`, `claude plugin validate .`, and the stale-copy demonstration in quickstart.md step 1.
+- [x] T010 [US7] Add tests to `scripts/checks/test_build.py` (contracts/install-layout.md "Check"): `.plugin-skills/` equals the generator's output (missing, changed and extra files each fail, named); the three manifests agree on name, version, description, keywords, license and `skills`; the description is 120–160 characters; no root `skills/` folder; the manifests' version equals `templates/workspace/index.json`. Run it and record the red result in the pull request.
+- [x] T011 [US7] Refactor `scripts/build_plugin.py` so one function lays out a skill tree from `src/skills/`, `core/`, `templates/`, `packs/`, `docs/` and `examples/`; add `--skills` to write `.plugin-skills/` (replacing it whole, refusing a path outside the repository); keep `dist/vibebiz/`, `vibebiz.plugin` and `--fake-drive`.
+- [x] T012 [US7] `git mv skills src/skills`; update every consumer found by `git grep -n 'skills/'`: `scripts/build_plugin.py`, `scripts/checks/test_docs_map.py`, `scripts/checks/test_build.py`, and `src/skills/help/SKILL.md` line 51 (read a sibling skill as `../<name>/SKILL.md`).
+- [x] T013 [US7] Generate `.plugin-skills/` and commit it in its own commit; add `.plugin-skills/** linguist-generated=true` to `.gitattributes`.
+- [x] T014 [P] [US7] Add `"skills": "./.plugin-skills/"` to `.claude-plugin/plugin.json`.
+- [x] T015 [P] [US7] Create `.codex-plugin/plugin.json`: shared fields, `"skills": "./.plugin-skills/"`, an `interface` block (`displayName` and `shortDescription` within 30 characters, `longDescription`, category, website, support, privacy and terms URLs, `defaultPrompt`), modeled on finolabs-vibecode's.
+- [x] T016 [P] [US7] Create `.antigravity-plugin/plugin.json`: `$schema`, shared fields, `displayName`, `logo`, `author`, `suggestedPrompts` (at most 3), `"skills": "./.plugin-skills/"`; run `agy plugin validate --strict .`.
+  - 14/11/2026: no `logo` yet: the repository has no icon. Both validators note it; the icon waits for Fio (before the catalog, T055).
+- [x] T017 [US7] Run `test_build.py` (green), `test_docs_map.py`, `claude plugin validate .`, and the stale-copy demonstration in quickstart.md step 1.
 
 **Checkpoint**: the repository root validates on all three hosts; the checks guard the copy and the manifests.
 
