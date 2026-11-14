@@ -1,6 +1,10 @@
 <!--
 Sync Impact Report
-Version change: 1.3.0 → 1.4.0 (MINOR)
+Version change: 1.4.0 → 1.4.1 (PATCH)
+Modified sections: Principle I: the audience is founders and business leaders who are not
+technical, with retail as the first supported industry (was retail business leaders). No rule
+changes. Fio approved on 14/11/2026; README pair and manifests changed the same day (156dc27).
+Earlier on 14/11/2026, 1.3.0 → 1.4.0 (MINOR):
 Modified sections: Principle IV and Runtime and Distribution Constraints: Claude Code, Codex and
 Antigravity move from local folder mode only to parity with Cowork through each host's own tools
 (Drive workspace, Google Slides and Docs, the host's preview); vibebiz picks each path by the
@@ -20,7 +24,8 @@ amendments on 14/11/2026.
 
 ### I. Non-Technical User First
 
-vibebiz serves retail business leaders who do not write code and never open a terminal.
+vibebiz serves founders and business leaders who do not write code and never open a terminal;
+retail is the first supported industry.
 
 - Everything a user reads (questions, outputs, docs, `README.vi.md`) MUST be plain Vietnamese.
   A technical term MUST be explained the first time it appears.
@@ -170,4 +175,4 @@ Rationale: users learn vibebiz from its docs and `help`; stale docs teach the wr
 - Reviews and plans check compliance; a justified exception is recorded in the plan's Complexity
   Tracking with its reason.
 
-**Version**: 1.4.0 | **Ratified**: 2026-11-12 | **Last Amended**: 2026-11-14
+**Version**: 1.4.1 | **Ratified**: 2026-11-12 | **Last Amended**: 2026-11-14

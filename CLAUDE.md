@@ -1,6 +1,6 @@
 # vibebiz — project instructions
 
-vibebiz is a plugin for Claude Cowork (the primary runtime) and, at parity through each host's own tools, for Claude Code, Codex and Antigravity (Fio, 14/11/2026, constitution 1.4.0). It works as a product owner for non-technical retail leaders. A sales director (online or offline; fashion, electronics, home appliances and similar retail) starts from a vague idea about a system, an AI use or an automation; vibebiz interviews them until the idea is clear, challenged and measurable, and packages it as a PRD for the board and for the internal tech team.
+vibebiz is a plugin for Claude Cowork (the primary runtime) and, at parity through each host's own tools, for Claude Code, Codex and Antigravity (Fio, 14/11/2026, constitution 1.4.0). It works as a product owner for founders and business leaders who are not technical, with retail as the first supported industry (Fio, 14/11/2026). A founder or a sales director (in retail: online or offline; fashion, electronics, home appliances and similar) starts from a vague idea about a system, an AI use or an automation; vibebiz interviews them until the idea is clear, challenged and measurable, and packages it as a PRD for the board and for the internal tech team.
 
 The constitution at `.specify/memory/constitution.md` is the governing law of this repository; this file holds the repository-wide rules and must not contradict it. When the two conflict, raise the conflict and resolve it by amendment instead of picking one.
 
