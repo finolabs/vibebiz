@@ -149,7 +149,7 @@ Lệnh này chỉ tắt bản đồng bộ trong Claude Code; Cowork vẫn dùng
 | Codex | `codex plugin marketplace add finolabs/plugins` rồi `codex plugin add vibebiz@finolabs` |
 | Antigravity | `agy plugin install https://github.com/finolabs/vibebiz` |
 
-Nếu danh mục chưa có vibebiz, lệnh cài sẽ báo không tìm thấy. Khi đó, hãy tải tệp `vibebiz.plugin` lên Claude như với Cowork; Claude Code sẽ tự nhận bản này với tên `vibebiz@synced`. Ở Codex, hãy chờ đến khi vibebiz có trong danh mục. Ở Antigravity, nếu cài từ địa chỉ web không được, hãy tải mã nguồn của bản phát hành mới nhất, giải nén, rồi gõ `agy plugin install <thư mục vừa giải nén>`.
+Nếu danh mục chưa có vibebiz, lệnh cài sẽ báo không tìm thấy. Khi đó, hãy tải tệp `vibebiz.plugin` lên Claude như với Cowork; Claude Code sẽ tự nhận bản này với tên `vibebiz@synced`. Ở Codex, hãy chờ đến khi vibebiz có trong danh mục. Ở Antigravity, nếu cài từ địa chỉ web không được, hãy tải mã nguồn của bản phát hành mới nhất, giải nén, rồi cài thư mục vừa giải nén bằng lệnh `agy plugin install`, kèm đường dẫn tới thư mục đó.
 
 **Cách gõ lệnh**: Cowork và Claude Code dùng `/vibebiz:idea`; Codex dùng `$idea`; Antigravity dùng `/idea`. Các lệnh khác cũng đổi theo cách đó. Trong Antigravity, `/help` mở trợ giúp của chính Antigravity, nên muốn hỏi vibebiz thì bạn hỏi bằng lời, ví dụ *"vibebiz dùng thế nào?"*. Ở ứng dụng nào bạn cũng có thể kể ý tưởng bằng lời thường thay cho gõ lệnh.
 

@@ -1,8 +1,38 @@
-# vibebiz
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/icon-dark.png">
+    <img src="assets/icon.png" alt="Biểu tượng vibebiz" width="88">
+  </picture>
+</p>
 
-Plugin đóng vai người phụ trách sản phẩm (product owner) cho nhà sáng lập và lãnh đạo doanh nghiệp. Ứng dụng chính là Claude Cowork; vibebiz cũng chạy trong Claude Code, Codex và Antigravity với đủ sáu lệnh như nhau. Bạn mang đến một ý tưởng còn mơ hồ; vibebiz phỏng vấn cho tới khi ý tưởng rõ ràng, được phản biện và đo lường được, rồi đóng gói thành bản PRD (tài liệu yêu cầu sản phẩm) cho hội đồng quản trị và đội kỹ thuật nội bộ.
+<h1 align="center">vibebiz</h1>
+
+<p align="center"><strong>Bạn nghĩ chuyện kinh doanh, vibebiz viết lại như một người phụ trách sản phẩm.</strong><br>
+Plugin phỏng vấn nhà sáng lập và lãnh đạo doanh nghiệp cho tới khi ý tưởng rõ ràng, được phản biện và đo lường được, rồi đóng gói cho ban lãnh đạo và đội kỹ thuật. vibebiz chạy trong Claude Cowork (ứng dụng chính), Claude Code, Codex và Antigravity. vibebiz chỉ là bộ hướng dẫn để ứng dụng làm theo, không tự chạy chương trình nào; mọi thứ vibebiz viết ra chỉ nằm trong thư mục của bạn hoặc Google Drive của chính bạn.</p>
+
+<p align="center">
+  <a href="https://github.com/finolabs/vibebiz/releases/latest"><img src="https://img.shields.io/github/v/release/finolabs/vibebiz" alt="Bản phát hành mới nhất"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-PolyForm%20Noncommercial%201.0.0-7FE2CE" alt="Giấy phép: PolyForm Noncommercial 1.0.0"></a>
+  <a href="#cowork-ứng-dụng-chính"><img src="https://img.shields.io/badge/Claude%20Cowork-plugin-7FE2CE" alt="Plugin cho Claude Cowork"></a>
+  <a href="#claude-code"><img src="https://img.shields.io/badge/Claude%20Code-plugin-7FE2CE" alt="Plugin cho Claude Code"></a>
+  <a href="#codex"><img src="https://img.shields.io/badge/Codex-plugin-7FE2CE" alt="Plugin cho Codex"></a>
+  <a href="#antigravity"><img src="https://img.shields.io/badge/Antigravity-plugin-7FE2CE" alt="Plugin cho Antigravity"></a>
+</p>
 
 English version: [README.md](README.md)
+
+## Có gì trong bản phát hành
+
+vibebiz có sáu kỹ năng. Mỗi lệnh là một kỹ năng (skill) cùng tên; bạn cũng có thể chỉ cần nói điều mình muốn bằng lời thường. Các lệnh dưới đây được viết như Cowork và Claude Code hiển thị; trong Codex bạn gõ `$idea`, trong Antigravity gõ `/idea`, các lệnh khác cũng vậy.
+
+- `/vibebiz:idea`: bắt đầu một ý tưởng mới. vibebiz chuẩn bị thư mục làm việc nếu cần, hỏi về một tình huống thật gần đây, viết bản nháp yêu cầu đầu tiên với mọi chỗ còn thiếu được đánh dấu, rồi hỏi bạn từng vòng ngắn (tối đa bốn câu trắc nghiệm, phương án nên chọn đứng đầu) và lưu lại mọi câu trả lời.
+- `/vibebiz:continue`: làm tiếp một ý tưởng. vibebiz đọc lại các tệp (phần bạn tự sửa được giữ nguyên), tóm tắt trong ba dòng điều gì đã rõ, lần trước dừng ở đâu và câu hỏi tiếp theo, rồi hỏi tiếp. Lệnh này cũng ghi nhận kết quả phê duyệt của ban lãnh đạo (duyệt, không duyệt, cần sửa) và kết quả thẩm định chi phí của đội kỹ thuật.
+- `/vibebiz:package`: đóng gói một ý tưởng đã rõ để trình ban lãnh đạo và gửi đội kỹ thuật. vibebiz kiểm tra ý tưởng đã đủ điều kiện chưa (hoặc đề nghị bản nháp có ghi rõ chỗ thiếu), lập kế hoạch, soát chỗ thiếu và chỗ mâu thuẫn, rồi tạo bản trình bày và tài liệu yêu cầu dưới dạng Artifact riêng tư trên Claude (ở ứng dụng không có Artifact thì là trang web trong thư mục ý tưởng) hoặc Google Slides, Google Docs của chính bạn, kèm một tệp yêu cầu dùng được với Spec Kit. Mọi con số giống nhau ở mọi bản và có nguồn. vibebiz giữ lại các phiên bản cũ, không chia sẻ và không để công khai tài liệu nào.
+- `/vibebiz:status`: liệt kê mọi ý tưởng với trạng thái, số điểm đã rõ trên 15 điểm và bước tiếp theo. Lệnh này không hỏi gì.
+- `/vibebiz:constitution`: ghi hoặc sửa luật chung của công ty trong một vòng tối đa bốn câu hỏi: ưu tiên năm nay, mức chi bạn tự duyệt, ngành hàng và những việc luôn cần người duyệt; có thể thêm mục tiêu chiến lược và OKR nếu công ty đã có. Bỏ qua thì luật chung được để sau. Khi phản biện và lập kế hoạch, vibebiz đối chiếu từng ý tưởng với các luật này; chỗ nào vượt luật được ghi rõ trong kế hoạch và bản trình bày. Khi sửa luật đã ghi, vibebiz cho bạn xem phần thay đổi và hỏi trước khi lưu.
+- `/vibebiz:help`: hướng dẫn chọn đúng lệnh phù hợp với tình huống của bạn và giải đáp thắc mắc từ tài liệu đi kèm có dẫn nguồn. Lệnh này đọc hướng dẫn hiện tại của kỹ năng trước khi mô tả, giới thiệu ý tưởng mẫu (`examples/`) khi bạn muốn xem, và không ghi bất kỳ tệp nào vào thư mục làm việc.
+
+Chi tiết các lệnh: [docs/commands.md](docs/commands.md).
 
 ## vibebiz là gì
 
@@ -13,6 +43,77 @@ vibebiz không phải công cụ lập trình. Trong Cowork, bạn không bao gi
 ## Dành cho ai
 
 Nhà sáng lập và lãnh đạo doanh nghiệp vừa và nhỏ (không cần rành kỹ thuật) đang có một ý tưởng về hệ thống, cách dùng AI hoặc tự động hóa và cần đưa ý tưởng đó ra trước hội đồng quản trị và đội kỹ thuật. Ngành bán lẻ được hỗ trợ trước, cả bán trực tuyến lẫn tại cửa hàng (thời trang trước, sau đó là điện máy, đồ gia dụng và các ngành tương tự): các ví dụ và gói kiến thức có sẵn hiện nay đều dành cho ngành bán lẻ. Câu hỏi và kết quả dùng đúng ngôn ngữ bạn trao đổi, mặc định là tiếng Việt.
+
+## Cài nhanh
+
+- **Cowork**: tải tệp `vibebiz.plugin` ở [bản phát hành](https://github.com/finolabs/vibebiz/releases) mới nhất, rồi trong Cowork mở Cài đặt › Plugin › "Tải plugin lên". Không cần cửa sổ dòng lệnh.
+- **Claude Code**, gõ trong cửa sổ dòng lệnh (terminal):
+
+  ```bash
+  claude plugin marketplace add finolabs/plugins
+  claude plugin install vibebiz@finolabs
+  ```
+
+- **Codex**, gõ trong cửa sổ dòng lệnh:
+
+  ```bash
+  codex plugin marketplace add finolabs/plugins
+  codex plugin add vibebiz@finolabs
+  ```
+
+- **Antigravity**, gõ trong cửa sổ dòng lệnh:
+
+  ```bash
+  agy plugin install https://github.com/finolabs/vibebiz
+  ```
+
+Chi tiết, và cách làm khi danh mục chưa có vibebiz: xem [Cài đặt](#cài-đặt).
+
+## Bắt đầu từ đây
+
+1. Nhờ trợ lý AI cài vibebiz giúp bạn, hoặc làm theo phần [Cài nhanh](#cài-nhanh).
+2. Mở một thư mục trống trong ứng dụng. Nếu ứng dụng không mở được thư mục (Cowork trên web hoặc điện thoại), hãy nối Google Drive.
+3. Gõ `/vibebiz:idea` (Codex: `$idea`; Antigravity: `/idea`), hoặc chỉ cần kể ý tưởng bằng lời thường.
+4. Bạn biết đã cài xong khi vibebiz hỏi về một tình huống thật gần đây dẫn đến ý tưởng, và thư mục có thêm mục lục.
+
+## Dành cho trợ lý AI
+
+1. Xác định ứng dụng bạn đang chạy: Claude Cowork, Claude Code, Codex hay Antigravity.
+2. Hỏi người dùng có muốn cài vibebiz vào ứng dụng đó không.
+3. Kiểm tra bản đã cài: `claude plugin list` (tìm `vibebiz@synced` hoặc `vibebiz@finolabs`), `codex plugin list` hoặc `agy plugin list`. Chỉ giữ một bản ([câu hỏi 13](docs/faq.md), [câu hỏi 16](docs/faq.md)).
+4. Cài bằng lệnh của ứng dụng đó trong phần [Cài đặt](#cài-đặt). Với Cowork, người dùng tự tải tệp `vibebiz.plugin` lên.
+5. Dùng lại lệnh liệt kê để xác nhận `vibebiz` đã bật và sáu kỹ năng `idea`, `continue`, `status`, `package`, `constitution`, `help` đã được nạp.
+6. Bàn giao: cho người dùng biết lệnh đầu tiên theo cách ứng dụng hiển thị (`/vibebiz:idea`, `$idea` hoặc `/idea`).
+
+Xong khi lệnh liệt kê chỉ hiện một bản `vibebiz` đang bật và người dùng biết lệnh đầu tiên cần gõ.
+
+## Nền tảng hỗ trợ
+
+vibebiz không tự chạy chương trình nào, nên dùng được ở mọi nơi ứng dụng của nó chạy: Cowork trong ứng dụng Claude trên máy tính (macOS và Windows), trên web và trong ứng dụng điện thoại; Claude Code, Codex và Antigravity trên các hệ điều hành mà từng ứng dụng hỗ trợ.
+
+vibebiz xem ứng dụng bạn đang dùng làm được gì (mở thư mục, vào Google Drive, hiện trang xem) rồi dùng đúng cách đó; thiếu thứ gì, vibebiz chỉ bạn cách bật và đề nghị cách khác.
+
+| | Cowork | Claude Code | Codex | Antigravity |
+|---|---|---|---|---|
+| Cách gõ lệnh | `/vibebiz:idea` | `/vibebiz:idea` | `$idea` | `/idea`; muốn trợ giúp thì hỏi bằng lời |
+| Lưu ý tưởng trong thư mục trên máy | thư mục bạn mở (ứng dụng trên máy tính) | thư mục dự án | thư mục làm việc | thư mục làm việc |
+| Lưu ý tưởng trong Google Drive | kết nối Google Drive của Cowork | kết nối Google Drive của ứng dụng Claude | plugin Google Drive của OpenAI | plugin Google Drive chính thức của Antigravity |
+| Bản trình bày trên Google Slides, PRD trên Google Docs | kết nối Slides và Docs của Cowork | khi ứng dụng Claude đã nối Slides và Docs | plugin Google Drive của OpenAI | plugin Google Slides và Google Docs chính thức của Antigravity |
+| Xem bản trình bày và PRD ở đâu | Artifact riêng tư (trang chỉ bạn mở được trong Claude) | Artifact riêng tư nếu ứng dụng Claude có; nếu không, trang web trong thư mục ý tưởng | trang web trong thư mục ý tưởng, mở bằng trình duyệt | trang web trong thư mục ý tưởng, mở bằng trình duyệt |
+| Câu hỏi hiện ra thế nào | nút chọn, tối đa bốn câu, mỗi câu tối đa bốn phương án | như Cowork | nút chọn của Codex nếu Codex có (tối đa ba câu mỗi lần, nên một vòng có thể chia làm hai lượt); nếu không, các phương án đánh số trong tin nhắn | nút chọn của Antigravity |
+
+Trên Codex, cách vibebiz dùng plugin Google Drive và nút chọn câu hỏi dựa theo mô tả của OpenAI; vibebiz chưa được chạy thử trên Codex với tài khoản Google thật.
+
+Khi ứng dụng không có nút chọn, vibebiz hỏi đúng vòng đó bằng tin nhắn thường, các phương án được đánh số; bạn trả lời bằng số hoặc bằng lời của mình. Khi chưa mở thư mục nào và cũng chưa nối Google Drive, vibebiz không lưu gì và chỉ bạn hai cách: mở một thư mục làm việc trong ứng dụng, hoặc nối Google Drive.
+
+### Nối Google
+
+- **Cowork**: mở phần kết nối (Connectors) và nối Google Drive (thêm Google Slides và Docs nếu muốn có bản trình bày và PRD trên Google).
+- **Claude Code**: nối Google Drive trong phần kết nối (Connectors) của ứng dụng Claude.
+- **Codex**: cài plugin Google Drive trong Codex rồi đăng nhập tài khoản Google; plugin này dùng được cho cả Docs và Slides.
+- **Antigravity**: cài plugin Google Drive chính thức của Antigravity (thêm plugin Google Slides và Google Docs để đóng gói) rồi đăng nhập tài khoản Google. Các plugin này cần kết nối mạng và lần đầu sẽ tự tải một chương trình nhỏ đi kèm; bản thân vibebiz không chạy chương trình nào.
+
+Ở ứng dụng nào, tệp cũng chỉ nằm trong thư mục của bạn hoặc Google Drive của chính bạn, ở chế độ riêng tư; vibebiz không bao giờ chia sẻ hay công khai tệp nào.
 
 ## Cài đặt
 
@@ -52,46 +153,19 @@ Mở một thư mục làm việc trong Codex rồi gõ `$idea`, hoặc kể ý 
 agy plugin install https://github.com/finolabs/vibebiz
 ```
 
-Mở một thư mục làm việc trong Antigravity rồi gõ `/idea`, hoặc kể ý tưởng bằng lời thường. Antigravity hiện các lệnh không kèm phần `vibebiz:`: `/continue`, `/package`, v.v. Riêng phần trợ giúp thì khác: `/help` mở trợ giúp của chính Antigravity, nên bạn hãy hỏi bằng lời ("vibebiz dùng thế nào?"). Antigravity có thể đã tự chép một bản vibebiz cũ từ Claude Code sang; hãy gỡ bản đó trước khi cài ([câu hỏi 16](docs/faq.md)). Nếu cài từ địa chỉ web không được, hãy tải mã nguồn của [bản phát hành](https://github.com/finolabs/vibebiz/releases) mới nhất, giải nén, rồi gõ `agy plugin install <thư mục vừa giải nén>`.
+Mở một thư mục làm việc trong Antigravity rồi gõ `/idea`, hoặc kể ý tưởng bằng lời thường. Antigravity hiện các lệnh không kèm phần `vibebiz:`: `/continue`, `/package`, v.v. Riêng phần trợ giúp thì khác: `/help` mở trợ giúp của chính Antigravity, nên bạn hãy hỏi bằng lời ("vibebiz dùng thế nào?"). Antigravity có thể đã tự chép một bản vibebiz cũ từ Claude Code sang; hãy gỡ bản đó trước khi cài ([câu hỏi 16](docs/faq.md)). Nếu cài từ địa chỉ web không được, hãy tải mã nguồn của [bản phát hành](https://github.com/finolabs/vibebiz/releases) mới nhất, giải nén, rồi cài thư mục vừa giải nén bằng lệnh `agy plugin install`, kèm đường dẫn tới thư mục đó.
 
-## Mỗi ứng dụng làm được gì
+## Plugin đi kèm: diagram-design
 
-vibebiz xem ứng dụng bạn đang dùng làm được gì (mở thư mục, vào Google Drive, hiện trang xem) rồi dùng đúng cách đó; thiếu thứ gì, vibebiz chỉ bạn cách bật và đề nghị cách khác.
+vibebiz viết bản mô tả sơ đồ; plugin riêng [diagram-design](https://github.com/cathrynlavery/diagram-design) (MIT) vẽ chúng. Plugin này không nằm trong kho mã này. Khi không có nó, kết quả hiển thị một bảng kèm ghi chú "chưa có sơ đồ".
 
-| | Cowork | Claude Code | Codex | Antigravity |
-|---|---|---|---|---|
-| Cách gõ lệnh | `/vibebiz:idea` | `/vibebiz:idea` | `$idea` | `/idea`; muốn trợ giúp thì hỏi bằng lời |
-| Lưu ý tưởng trong thư mục trên máy | thư mục bạn mở (ứng dụng trên máy tính) | thư mục dự án | thư mục làm việc | thư mục làm việc |
-| Lưu ý tưởng trong Google Drive | kết nối Google Drive của Cowork | kết nối Google Drive của ứng dụng Claude | plugin Google Drive của OpenAI | plugin Google Drive chính thức của Antigravity |
-| Bản trình bày trên Google Slides, PRD trên Google Docs | kết nối Slides và Docs của Cowork | khi ứng dụng Claude đã nối Slides và Docs | plugin Google Drive của OpenAI | plugin Google Slides và Google Docs chính thức của Antigravity |
-| Xem bản trình bày và PRD ở đâu | Artifact riêng tư (trang chỉ bạn mở được trong Claude) | Artifact riêng tư nếu ứng dụng Claude có; nếu không, trang web trong thư mục ý tưởng | trang web trong thư mục ý tưởng, mở bằng trình duyệt | trang web trong thư mục ý tưởng, mở bằng trình duyệt |
-| Câu hỏi hiện ra thế nào | nút chọn, tối đa bốn câu, mỗi câu tối đa bốn phương án | như Cowork | nút chọn của Codex nếu Codex có (tối đa ba câu mỗi lần, nên một vòng có thể chia làm hai lượt); nếu không, các phương án đánh số trong tin nhắn | nút chọn của Antigravity |
+## Quyền riêng tư
 
-Trên Codex, cách vibebiz dùng plugin Google Drive và nút chọn câu hỏi dựa theo mô tả của OpenAI; vibebiz chưa được chạy thử trên Codex với tài khoản Google thật.
+Ở mọi ứng dụng, dữ liệu kinh doanh của bạn nằm trong thư mục làm việc và Google Drive của bạn; vibebiz không gửi nó đi đâu khác. Trong Codex và Antigravity, vibebiz chỉ vào Google qua tích hợp Google chính thức của chính ứng dụng đó. Artifact được đăng ở chế độ riêng tư; vibebiz không bao giờ tự chia sẻ kết quả thay bạn hay công khai tệp nào. Chi tiết: [PRIVACY.md](PRIVACY.md).
 
-Khi ứng dụng không có nút chọn, vibebiz hỏi đúng vòng đó bằng tin nhắn thường, các phương án được đánh số; bạn trả lời bằng số hoặc bằng lời của mình. Khi chưa mở thư mục nào và cũng chưa nối Google Drive, vibebiz không lưu gì và chỉ bạn hai cách: mở một thư mục làm việc trong ứng dụng, hoặc nối Google Drive.
+## Đóng góp và bảo mật
 
-### Nối Google
-
-- **Cowork**: mở phần kết nối (Connectors) và nối Google Drive (thêm Google Slides và Docs nếu muốn có bản trình bày và PRD trên Google).
-- **Claude Code**: nối Google Drive trong phần kết nối (Connectors) của ứng dụng Claude.
-- **Codex**: cài plugin Google Drive trong Codex rồi đăng nhập tài khoản Google; plugin này dùng được cho cả Docs và Slides.
-- **Antigravity**: cài plugin Google Drive chính thức của Antigravity (thêm plugin Google Slides và Google Docs để đóng gói) rồi đăng nhập tài khoản Google. Các plugin này cần kết nối mạng và lần đầu sẽ tự tải một chương trình nhỏ đi kèm; bản thân vibebiz không chạy chương trình nào.
-
-Ở ứng dụng nào, tệp cũng chỉ nằm trong thư mục của bạn hoặc Google Drive của chính bạn, ở chế độ riêng tư; vibebiz không bao giờ chia sẻ hay công khai tệp nào.
-
-## Có gì trong bản phát hành
-
-vibebiz có sáu kỹ năng. Mỗi lệnh là một kỹ năng (skill) cùng tên; bạn cũng có thể chỉ cần nói điều mình muốn bằng lời thường. Các lệnh dưới đây được viết như Cowork và Claude Code hiển thị; trong Codex bạn gõ `$idea`, trong Antigravity gõ `/idea`, các lệnh khác cũng vậy.
-
-- `/vibebiz:idea`: bắt đầu một ý tưởng mới. vibebiz chuẩn bị thư mục làm việc nếu cần, hỏi về một tình huống thật gần đây, viết bản nháp yêu cầu đầu tiên với mọi chỗ còn thiếu được đánh dấu, rồi hỏi bạn từng vòng ngắn (tối đa bốn câu trắc nghiệm, phương án nên chọn đứng đầu) và lưu lại mọi câu trả lời.
-- `/vibebiz:continue`: làm tiếp một ý tưởng. vibebiz đọc lại các tệp (phần bạn tự sửa được giữ nguyên), tóm tắt trong ba dòng điều gì đã rõ, lần trước dừng ở đâu và câu hỏi tiếp theo, rồi hỏi tiếp. Lệnh này cũng ghi nhận kết quả phê duyệt của ban lãnh đạo (duyệt, không duyệt, cần sửa) và kết quả thẩm định chi phí của đội kỹ thuật.
-- `/vibebiz:package`: đóng gói một ý tưởng đã rõ để trình ban lãnh đạo và gửi đội kỹ thuật. vibebiz kiểm tra ý tưởng đã đủ điều kiện chưa (hoặc đề nghị bản nháp có ghi rõ chỗ thiếu), lập kế hoạch, soát chỗ thiếu và chỗ mâu thuẫn, rồi tạo bản trình bày và tài liệu yêu cầu dưới dạng Artifact riêng tư trên Claude (ở ứng dụng không có Artifact thì là trang web trong thư mục ý tưởng) hoặc Google Slides, Google Docs của chính bạn, kèm một tệp yêu cầu dùng được với Spec Kit. Mọi con số giống nhau ở mọi bản và có nguồn. vibebiz giữ lại các phiên bản cũ, không chia sẻ và không để công khai tài liệu nào.
-- `/vibebiz:status`: liệt kê mọi ý tưởng với trạng thái, số điểm đã rõ trên 15 điểm và bước tiếp theo. Lệnh này không hỏi gì.
-- `/vibebiz:constitution`: ghi hoặc sửa luật chung của công ty trong một vòng tối đa bốn câu hỏi: ưu tiên năm nay, mức chi bạn tự duyệt, ngành hàng và những việc luôn cần người duyệt; có thể thêm mục tiêu chiến lược và OKR nếu công ty đã có. Bỏ qua thì luật chung được để sau. Khi phản biện và lập kế hoạch, vibebiz đối chiếu từng ý tưởng với các luật này; chỗ nào vượt luật được ghi rõ trong kế hoạch và bản trình bày. Khi sửa luật đã ghi, vibebiz cho bạn xem phần thay đổi và hỏi trước khi lưu.
-- `/vibebiz:help`: hướng dẫn chọn đúng lệnh phù hợp với tình huống của bạn và giải đáp thắc mắc từ tài liệu đi kèm có dẫn nguồn. Lệnh này đọc hướng dẫn hiện tại của kỹ năng trước khi mô tả, giới thiệu ý tưởng mẫu (`examples/`) khi bạn muốn xem, và không ghi bất kỳ tệp nào vào thư mục làm việc.
-
-Chi tiết các lệnh: [docs/commands.md](docs/commands.md).
+[CONTRIBUTING.md](CONTRIBUTING.md), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md), [SECURITY.md](SECURITY.md), [CHANGELOG.md](CHANGELOG.md).
 
 ## Giấy phép
 
@@ -106,18 +180,6 @@ vibebiz là phần mềm **công khai mã nguồn có điều kiện (source-ava
 
 Xem thêm [TERMS.md](TERMS.md).
 
-## Quyền riêng tư
-
-Ở mọi ứng dụng, dữ liệu kinh doanh của bạn nằm trong thư mục làm việc và Google Drive của bạn; vibebiz không gửi nó đi đâu khác. Trong Codex và Antigravity, vibebiz chỉ vào Google qua tích hợp Google chính thức của chính ứng dụng đó. Artifact được đăng ở chế độ riêng tư; vibebiz không bao giờ tự chia sẻ kết quả thay bạn hay công khai tệp nào. Chi tiết: [PRIVACY.md](PRIVACY.md).
-
-## Plugin đi kèm: diagram-design
-
-vibebiz viết bản mô tả sơ đồ; plugin riêng [diagram-design](https://github.com/cathrynlavery/diagram-design) (MIT) vẽ chúng. Plugin này không nằm trong kho mã này. Khi không có nó, kết quả hiển thị một bảng kèm ghi chú "chưa có sơ đồ".
-
-## Spec Kit
+## Ghi nhận
 
 vibebiz tương thích với Spec Kit 1.4.0. Phần nào được chuyển từ upstream và phần nào là của riêng vibebiz nằm trong [UPSTREAM.md](UPSTREAM.md); thông báo bên thứ ba nằm trong [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
-
-## Đóng góp và bảo mật
-
-[CONTRIBUTING.md](CONTRIBUTING.md), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md), [SECURITY.md](SECURITY.md), [CHANGELOG.md](CHANGELOG.md).
