@@ -134,7 +134,8 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
   - 14/11/2026: dropped by Fio ("Ánh xạ theo vai trò"): it depended on T004, which was waived; the Codex mapping is role-based (T036).
 - [ ] T035 [US4] Eval cases (red first): `evals/workspace/drive-codex-names-empty/` and `evals/workspace/drive-codex-names-resume/` run the existing empty and resume scenarios with the Codex tool profile.
   - 14/11/2026: dropped by Fio ("Ánh xạ theo vai trò"): it depended on T004, which was waived.
-- [ ] T036 [US4] `core/drive-workspace.md`: each Drive operation named by role and mapped to the tools or skills present (contracts/host-capabilities.md "Choosing a path" step 2), every rule unchanged; for Antigravity, the steps to use the `gdrive` skill.
+- [x] T036 [US4] `core/drive-workspace.md`: each Drive operation named by role and mapped to the tools or skills present (contracts/host-capabilities.md "Choosing a path" step 2), every rule unchanged; for Antigravity, the steps to use the `gdrive` skill.
+  - 15/11/2026: done; the Codex part is role-based (Fio, "Ánh xạ theo vai trò") and not run against real Google. Drive regression on the fake (Cowork names): drive-empty, drive-resume, drive-shared-folder 3/3.
 - [ ] T037 [US4] Rerun T035 and all `evals/workspace/drive-*` cases (Cowork names) one at a time; record.
   - 14/11/2026: dropped by Fio ("Ánh xạ theo vai trò"): it depended on T035; the Cowork-name Drive regression ran under T036 instead.
 - [ ] T038 [US4] Real runs: start an idea in Drive mode on Codex, continue it on Antigravity, then in Cowork on the web, and the other way round; check the Drive folder against `specs/002-drive-workspace/contracts/drive-workspace.md`; record the rows (SC-003).
@@ -144,7 +145,8 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 
 ## Phase 8: User Story 5 - Slides and Docs on Codex and Antigravity (Priority: P2)
 
-- [ ] T039 [US5] `core/package.md` §13 and its Slides and Docs steps: the creation path per host by the tools or skills present (T004, T007), the same content rules, a table plus a link instead of any image that would need to be public.
+- [x] T039 [US5] `core/package.md` §13 and its Slides and Docs steps: the creation path per host by the tools or skills present (T004, T007), the same content rules, a table plus a link instead of any image that would need to be public.
+  - 15/11/2026: done; the Codex part is role-based (Fio, "Ánh xạ theo vai trò") and not run against real Google. Drive regression on the fake (Cowork names): drive-empty, drive-resume, drive-shared-folder 3/3.
 - [ ] T040 [US5] Eval case with the Codex tool profile of the fake (if T004 found tools a fake can mimic) for a Docs creation; red first, then green.
   - 14/11/2026: dropped by Fio ("Ánh xạ theo vai trò"): it depended on T004, which was waived.
 - [ ] T041 [US5] Real runs: package the example idea to Slides and Docs on Codex and on Antigravity; check every number against `data.json` and that nothing is shared or public; record (SC-004).
