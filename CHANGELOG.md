@@ -8,7 +8,7 @@ All notable changes to vibebiz are recorded here. The format follows [Keep a Cha
 
 ### Changed
 
-- The plugin description is shorter (137 characters), so vibebiz can be listed in the `finolabs/plugins` catalog for Claude.
+- The plugin description is shorter (137 characters), within the 120-160 characters the `finolabs/plugins` catalog takes. vibebiz is not in that catalog yet; install it from the latest release.
 
 ## [0.1.3] - 2026-11-14
 

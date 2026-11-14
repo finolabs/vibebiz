@@ -342,9 +342,9 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
 - [x] T059 Rerun `workspace-drive-shared-drive` and `workspace-drive-shared-folder` with a per-case ceiling above 1 USD: their judge grader was skipped by the ceiling on 13/11/2026. 14/11/2026: `drive-shared-folder` passed; `drive-shared-drive` failed twice (the message named neither the drive nor the last modifier), fixed by naming both in the §2 step 4 message and giving the fake Drive the drive's name, then passed.
 
 - [ ] T060 T057 leftovers: a headless case where vibebiz finds a document on its own (no user request, no planted pointer) and must ask before writing its fact, and one with unknown local visibility; until then, check both by hand in T049.
+- [ ] T061 Next version (Fio, 14/11/2026): list vibebiz in the `finolabs/plugins` catalog and support Codex and Antigravity. A catalog installs the repository at a tag, but the skills only work from the build (`scripts/build_plugin.py` copies `core/`, `templates/` and `packs/` into each skill's `references/`), so first make a tagged tree installable on all three hosts and prove it with a real install. The catalog side is drafted on the `list-vibebiz` branch of `finolabs/plugins` (a `CLAUDE_ONLY` set in `scripts/check-catalogs.py`, with tests). Needs its own spec.
 
 ---
-- [ ] T061 Support Codex and Antigravity in the next version (Fio, 14/11/2026): their plugin manifests and a working path on each host, so the `finolabs/plugins` catalog can list vibebiz for them too. v0.1.4 is listed for Claude only. Needs its own spec.
 
 ## Dependencies & Execution Order
 
