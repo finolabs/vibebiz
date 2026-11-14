@@ -1,11 +1,13 @@
 ---
 name: help
-description: "Answer questions about using vibebiz and point the user to the right command for their situation, then stop. Use when the user types /vibebiz:help or asks how vibebiz works, which command to use or what to do next, what a label, status or term in vibebiz means, what vibebiz can do, or to see a finished example idea, for example 'how do I use this', 'what next', 'what can vibebiz do', 'show me an example', 'dùng vibebiz thế nào', 'giờ tôi làm gì tiếp', 'vibebiz làm được gì', 'cho xem ý tưởng mẫu'. Not for describing an idea itself (that goes to idea, or continue when the idea already exists)."
+description: "Answer questions about using vibebiz and point the user to the right command for their situation, then stop. Use when the user types /vibebiz:help or asks how vibebiz works, which command to use or what to do next, what a label, status or term in vibebiz means, what vibebiz can do, which app it runs in and how to connect Google or find the deck there, or to see a finished example idea, for example 'how do I use this', 'what next', 'what can vibebiz do', 'show me an example', 'dùng vibebiz thế nào', 'giờ tôi làm gì tiếp', 'vibebiz làm được gì', 'cho xem ý tưởng mẫu', 'dùng trong Codex được không', 'nối Google ở đây thế nào'. Not for describing an idea itself (that goes to idea, or continue when the idea already exists)."
 ---
 
 # vibebiz: help
 
-Help is a signpost: it points to the one command that fits the user's situation and stops, and it answers questions about vibebiz only from the shipped docs. The user is a non-technical retail leader: never show them file names, paths, field names or codes, never ask them to use a terminal, and speak in the language they write in (Vietnamese by default).
+Help is a signpost: it points to the one command that fits the user's situation and stops, and it answers questions about vibebiz only from the shipped docs. The user is a founder or business leader who is not technical: never show them file names, paths, field names or codes, never ask them to use a terminal, and speak in the language they write in (Vietnamese by default). The one exception is a line the docs give the user to type in their app (an install or remove line), quoted as the docs give it when the user asks how to install or remove vibebiz.
+
+This file writes commands as Cowork and Claude Code show them, `/vibebiz:<name>`; name every command in the form of the app this session runs in (`references/core/writing-rules.md`, "Command names in this host's form").
 
 Load these when a step needs them:
 
@@ -15,7 +17,7 @@ Load these when a step needs them:
   - `references/docs/commands.md` ("Các lệnh của vibebiz"): what each command does, idea statuses, post-board and tech review flows.
   - `references/docs/workflow.md` ("vibebiz hỏi ý tưởng của bạn như thế nào"): 15 points, dependency tree, lenses, frameworks, depth, readiness criteria.
   - `references/docs/reading-outputs.md` ("Đọc các tài liệu vibebiz tạo ra"): board deck, tech document, labels, numbers, formats, history.
-  - `references/docs/faq.md` ("Câu hỏi thường gặp"): common questions, alternatives, privacy, sharing.
+  - `references/docs/faq.md` ("Câu hỏi thường gặp"): common questions, alternatives, privacy, sharing; the apps vibebiz runs in, connecting Google in each, where the views appear (questions 12 to 16).
   - `references/docs/glossary.md` ("Thuật ngữ"): retail, AI, and vibebiz terminology.
 - `references/examples/`: the fictional example idea (`000-<slug>`), showing finished outputs.
 - `references/core/writing-rules.md`: wording of everything the user reads, including how to address the user.
@@ -62,6 +64,8 @@ When no row fits, say plainly that this version of vibebiz does not cover that s
 2. If the answer describes what a command does, read that skill's current `SKILL.md` as in step 3 and keep only what both say.
 3. Answer in a few plain sentences in the user's language, then cite the source on its own line by the doc's title and the section heading, for example: "(Nguồn: Đọc các tài liệu vibebiz tạo ra › Các nhãn bạn sẽ gặp)". When the answer points to a next action, name its command.
 4. When no doc section answers it, say so plainly and do not fill the gap from general knowledge about Claude, Cowork or business practice, for example: "Tài liệu của vibebiz chưa nói tới việc này, nên em không trả lời chắc được." If a documented feature is close to what the user wants, name it with its source; otherwise stop there.
+
+**Questions about the app** ("which app can I use", "how do I connect Google here", "where do I see the deck here") are answered from `references/docs/faq.md` questions 14 to 16 (and 12 for Cowork on the web or a phone), for the app this session runs in: Cowork, Claude Code, Codex or Antigravity. Tell the app from what the session shows, its tools and how its commands are written; when you cannot tell, give the answer for each of the four apps in one line each. "Where do I see the deck" also depends on this run: a private Artifact when this session has the Artifact tool, otherwise the web pages in the idea folder, opened in a browser, or the Google Slides and Docs the user chose. Give this app's own step as the doc gives it, never another app's.
 
 A question about a feature vibebiz does not have (such as exporting to a spreadsheet, sending messages directly to customers, or connecting live to a point-of-sale system) is a docs gap: answer that this version does not do it, citing the section that says what it does do when one exists. A business question that is not about using vibebiz ("làm sao để tăng tỷ lệ chuyển đổi?") is outside help: say help only answers about using vibebiz, and that working an idea through starts with `/vibebiz:idea`.
 

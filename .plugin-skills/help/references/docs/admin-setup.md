@@ -35,6 +35,17 @@ vibebiz keeps the business data in the user's folder and Google Drive and publis
 
 Trên web và điện thoại, vibebiz lưu ý tưởng qua connector Google Drive của chính nhân viên. Cowork có thể hỏi nhân viên duyệt từng lần gọi connector. Nếu Cowork cho chọn "Always allow" theo từng công cụ, chỉ nên bật cho các công cụ chỉ đọc: tìm, đọc, tải nội dung, xem thông tin tệp và xem quyền truy cập. Giữ bước duyệt từng lần cho các công cụ ghi (tạo, sao chép, chuyển vào thùng rác), và không bao giờ bật cho công cụ chia sẻ tệp hay công cụ cập nhật tệp (đổi tên, chuyển thư mục); vibebiz không dùng hai công cụ này. Lý do: vibebiz đọc tài liệu trong Drive để tra số liệu, và một tài liệu người khác chia sẻ có thể cài sẵn một dòng chữ xúi Claude chép dữ liệu sang thư mục khác, xoá tệp hoặc chia sẻ tệp. Khi các công cụ ghi vẫn cần bấm duyệt, nhân viên thấy và chặn được việc đó trước khi nó xảy ra.
 
+## Codex và Antigravity
+
+Đoạn hướng dẫn chung ở trên dành cho Claude (Cowork và các ứng dụng Claude). Nhân viên dùng Codex hoặc Antigravity tự cài vibebiz theo phần "Cài đặt" trong tệp giới thiệu (README) của vibebiz; trang này chưa hướng dẫn phần cài đặt chung cho tổ chức trên hai ứng dụng đó.
+
+Về dữ liệu, vibebiz giữ đúng các nguyên tắc như trong Cowork:
+
+- Ý tưởng chỉ nằm trong thư mục làm việc của nhân viên hoặc trong Google Drive của chính họ.
+- Codex vào Google qua plugin Google Drive của OpenAI; Antigravity vào Google qua các plugin Google Drive, Google Slides và Google Docs chính thức của Antigravity. vibebiz không có kết nối riêng tới Google và chỉ dùng tích hợp nhân viên đã cài và đăng nhập.
+- vibebiz không bao giờ chia sẻ tệp, đổi quyền xem hay để công khai tệp nào trên Drive. Khi một thư mục Drive đang được chia sẻ, vibebiz báo cho nhân viên biết trước khi ghi.
+- Nội dung đi qua Codex hoặc Antigravity được OpenAI hoặc Google xử lý theo điều khoản của họ. Nếu tổ chức có quy định về việc đưa dữ liệu kinh doanh vào các dịch vụ này, hãy nhắc nhân viên trước khi họ cài.
+
 ## Khi nào cần cập nhật
 
 Danh sách lệnh trong đoạn trên phải khớp với các lệnh của bản vibebiz đang cài. Mỗi khi cập nhật vibebiz, hãy so lại với trang [Các lệnh](commands.md) và sửa đoạn trong Org Instruction nếu có lệnh mới.
