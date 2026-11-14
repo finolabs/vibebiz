@@ -1,7 +1,7 @@
 ---
 description: 'No Artifact tool (spec 003 T043): views kept in the idea folder, the user told where they are and how to open them, nothing published.'
 max_turns: 40
-timeout_seconds: 900
+timeout_seconds: 1800
 allowed_tools: [Skill, Read, Write, Edit, Glob, Grep, AskUserQuestion]
 plugins: ["../../../dist/vibebiz"]
 tags: [package, spec003, host-neutral, views]

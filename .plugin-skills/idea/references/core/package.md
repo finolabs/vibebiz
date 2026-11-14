@@ -145,7 +145,7 @@ Publish `board-deck.html` and `tech-prd.html` each as a private Artifact.
 
 - **First version**: create each Artifact, private, and record its address in `links` (`board_artifact`, `tech_artifact`).
 - **Later versions**: update the existing Artifact at the address in the previous links, so the link the user already has shows the new version. If the platform cannot update it in place, publish a new private Artifact, record its address, and tell the user in one sentence that the earlier link still shows the previous version.
-- **Artifacts unavailable** in this session: keep the HTML files in the idea folder, leave the two links `null`, and tell the user the views are saved in the idea folder and open in a browser.
+- **Artifacts unavailable** in this session: keep the HTML files in the idea folder, leave the two links `null`, and say where they are in the closing message (section 12).
 
 ## 9. Google Slides and Google Docs
 
@@ -196,6 +196,7 @@ A failure you can fix from the files (a missing id, a stray value in text, a mis
    - that diagrams are tables until diagram-design is added, when that applies;
    - that the previous version is kept in the idea folder, on a re-package;
    - that everything is private and they share it with the board or the tech team themselves.
+   - **Without the Artifact tool**, in place of the links: that the two views are web pages saved in the idea's folder, inside the folder they work in, named by their plain titles ("bản trình bày cho ban lãnh đạo", "tài liệu cho đội kỹ thuật"), and that each opens in a web browser by double-clicking the file or dragging it into the browser window. Give no `file://` link and promise no preview pane or other host feature. When a view could not be written (section 7), say which one and that it was not saved, instead of saying where it is.
 
    Example: "Đã đóng gói xong ý tưởng nhắc khách quay lại. Bản trình bày cho ban lãnh đạo: <link>. Tài liệu cho đội kỹ thuật: <link>. Các con số chi phí đang ghi “chưa qua kỹ thuật thẩm định”. Hai liên kết này chỉ anh/chị xem được; anh/chị tự chia sẻ khi muốn gửi."
 
