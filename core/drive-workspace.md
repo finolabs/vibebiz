@@ -8,7 +8,19 @@ Used only in Drive mode: the session has no local folder and has Google Drive to
 
 ## 0. The Drive tools on this host
 
-The steps below name the tools and fields of Cowork's and Claude's Google Drive connector: the search, download, create, copy, trash, metadata and permissions tools, `disableConversionToGoogleType`, `owner = 'me'`, rich metadata. On another host, do each operation with that host's own Drive tools, by its role; every rule in this module stays the same. When the host has no way to do an operation a step needs (reading permissions, telling whether the user owns a file, getting a file's exact bytes), stop before the first write and say what is missing, as a missing connector tool does in Cowork.
+The steps below name the tools and fields of Cowork's and Claude's Google Drive connector: the search, download, create, copy, trash, metadata and permissions tools, `disableConversionToGoogleType`, `owner = 'me'`, rich metadata. On another host, do each operation with that host's own Drive tools, by its role; every rule in this module stays the same.
+
+**A host whose Google Drive tools have other names** (Codex's Google Drive plugin, for example). Before the first write, match each role below to one of this session's tools by what the tool says it does and the parameters it takes; use only the names the session lists, never a guessed one.
+
+- Search by exact title, optionally inside one folder.
+- Metadata: owner, last modifier, modified time, shared drive, type.
+- Read a file, and download its exact bytes.
+- Create a folder inside a folder; create a plain file inside a folder, kept plain (not converted to a Google type).
+- Copy a file into a folder (`package` only).
+- Move a file to the trash.
+- Read a file's permissions.
+
+When a role a step needs has no matching tool (reading permissions, telling whether the user owns a file, getting a file's exact bytes), stop before the first write and say in plain words what this host cannot do, as a missing connector tool does in Cowork. The same tools' sharing, permission, moving and in-place update operations stay unused, whatever they are called.
 
 **Antigravity: the official `gdrive` skill.** Run that skill's setup script once, by the exact path the skill names, then call every command below by the bare name `gdrive`: the setup puts it on the agent's path, and only the bare command carries the user's sign-in. When the setup script fails (a download error, for example), call the bare `gdrive` anyway: it is often already on the path. Only when the bare `gdrive` is also missing or fails, tell the user in plain words that the Google Drive skill is not set up on this host, and stop before the first write. The exact setup path and the bare command are the only two ways to reach it: never list, read or search the skill's scripts folder or any other plugin's folder, never search the filesystem or the environment for it (no `which`, `find` or `ls`), never guess a path, and never look for credentials. Follow the skill's sign-in steps. Before the first use in a run, confirm each command's flags with `gdrive <namespace> <command> --help`, and pass `--json` to every `readonly` command.
 

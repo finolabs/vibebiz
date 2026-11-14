@@ -161,6 +161,11 @@ Only for the views where the user chose Google in section 4.
    - Slides: `gslides mutate create --title '<title>'`, then one `gslides mutate batch <presentation id> <scratch requests file>` holding the slides, text and tables of `board.slides[]` in order; insert a diagram image only with `insert-image-from-file`, which uploads it privately.
    - Docs: write the tech view as Markdown (one heading per `tech.sections[]`, in order) to a scratch file, then `gdocs mutate import-md <scratch file> --title '<title>'`.
    - Read each new file back (`gslides readonly read-all`, `gdocs readonly read`) and check every figure against `data.json` before recording its address. The sharing, deleting and image-by-address commands of both skills stay unused.
+8. **A host whose Google tools have other names** (Codex's Google plugins, for example). Before creating anything, match each role to one of this session's tools by what the tool says it does and the parameters it takes; use only the names the session lists, never a guessed one.
+   - Slides: create a presentation with a title in the user's own Drive; add the slides of `board.slides[]` in order with their text and tables; read the presentation back.
+   - Docs: create a document with a title in the user's own Drive from the tech view's text, one heading per `tech.sections[]` in order; read the document back.
+   - Check every figure read back against `data.json` before recording each address.
+   - When a role has no matching tool, treat it as a missing Google tool (section 4): offer the other format for that view before creating anything. Steps 1 to 6 hold unchanged, and the tools' sharing and permission operations stay unused.
 
 ## 10. Links and the final data
 
