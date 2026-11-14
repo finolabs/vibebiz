@@ -129,6 +129,7 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 - [ ] T036 [US4] `core/drive-workspace.md`: each Drive operation named by role and mapped to the tools or skills present (contracts/host-capabilities.md "Choosing a path" step 2), every rule unchanged; for Antigravity, the steps to use the `gdrive` skill.
 - [ ] T037 [US4] Rerun T035 and all `evals/workspace/drive-*` cases (Cowork names) one at a time; record.
 - [ ] T038 [US4] Real runs: start an idea in Drive mode on Codex, continue it on Antigravity, then in Cowork on the web, and the other way round; check the Drive folder against `specs/002-drive-workspace/contracts/drive-workspace.md`; record the rows (SC-003).
+  - 14/11/2026: Antigravity leg done: idea started in Drive mode in `vibebiz-uat-agy`, all files private and Fio's own (`evals/RESULTS.md`, 9458e54). Codex leg waits for 17/11/2026 10:16; continuing across hosts and Cowork on the web still to run.
 
 ---
 
@@ -137,6 +138,7 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 - [ ] T039 [US5] `core/package.md` §13 and its Slides and Docs steps: the creation path per host by the tools or skills present (T004, T007), the same content rules, a table plus a link instead of any image that would need to be public.
 - [ ] T040 [US5] Eval case with the Codex tool profile of the fake (if T004 found tools a fake can mimic) for a Docs creation; red first, then green.
 - [ ] T041 [US5] Real runs: package the example idea to Slides and Docs on Codex and on Antigravity; check every number against `data.json` and that nothing is shared or public; record (SC-004).
+  - 14/11/2026: Antigravity leg blocked: the gdocs setup download failed (403) and Gemini listed the skill's scripts folder; nothing created (`evals/RESULTS.md`, 9458e54). Codex leg waits for 17/11/2026 10:16.
 
 ---
 
