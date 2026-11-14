@@ -1,0 +1,18 @@
+{
+  "name": "vibebiz",
+  "tagline": "A product owner\nfor retail leaders.",
+  "mark": "../assets/icon-dark.svg",
+  "input": "/vibebiz:idea we should use AI\nto bring lapsed customers back",
+  "output": "title: \"Nhắc khách quay lại\n        cửa hàng qua ứng dụng chat\"\nstatus: packaged\nestimate_status: not-tech-reviewed\nnext_step: \"/vibebiz:continue\"",
+  "footer": [
+    "For **Cowork**, **Claude Code**, **Codex**, **Antigravity**",
+    "Source-available, github.com/finolabs/vibebiz"
+  ],
+  "layout": {
+    "outputX": 800,
+    "outputY": 66,
+    "inputX": 740,
+    "inputY": 440,
+    "markX": 720
+  }
+}
