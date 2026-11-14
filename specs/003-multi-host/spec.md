@@ -15,9 +15,10 @@
 - **Release**: a compatible change, so it ships as **v0.1.5**, staying on 0.1.x as Fio decided for 0.1.2. The workspace layout and file names do not change.
 - **Constitution** (Fio approved, 14/11/2026): amended to 1.3.0 on this branch. Cowork stays the primary runtime, and Claude Code, Codex and Antigravity are supported in local folder mode (Principles I, IV, V and "Runtime and Distribution Constraints"). The matching `CLAUDE.md` lines were updated in the same change.
 
+- **Install layout** (Fio, 14/11/2026): as vietnamizer does. The built skills are tracked in `.plugin-skills/`, every host manifest points there, and the source skills move out of `skills/`. Every install also copies the development folders, which stay inert (`research.md` R2, R3).
+
 ## Open Decisions
 
-- **How a tagged tree becomes installable** (owner: plan, then Fio's yes): commit the build output so the repository root is the plugin, commit it in a separate folder that the catalog points to, or publish it elsewhere. Each changes the repository's shape and size (the build is about 6.5 MB and 425 files today). Unblocked by the plan's research on what each host can install from (repository root, a sub-folder, a release archive).
 - **The catalog side** (owner: Fio): the `list-vibebiz` branch of `finolabs/plugins` (commit `c549f7d`, not reviewed after its last fix) lists vibebiz for Claude only through a `CLAUDE_ONLY` set. Once vibebiz ships all three manifests, that set is no longer needed, and the catalog change becomes a plain new entry in both catalogs. Unblocked when this feature is released.
 
 ## User Scenarios & Testing *(mandatory)*
@@ -34,7 +35,7 @@ A sales director's analyst who uses Claude Code adds the FINOLABS catalog, insta
 
 1. **Given** the catalog is added, **When** the user installs `vibebiz@finolabs`, **Then** the install succeeds from the pinned tag with no build step, and the six entry skills are available.
 2. **Given** vibebiz is installed this way, **When** any entry skill runs, **Then** every instruction, template and pack it refers to is present in the installed copy.
-3. **Given** an installed copy, **When** the user lists its files, **Then** it holds what the release ships and no development folders (`evals/`, `specs/`, `scripts/`, the Spec Kit development skills).
+3. **Given** an installed copy, **When** the host lists the plugin's skills, **Then** it shows exactly the six entry skills, never an unbuilt copy or a Spec Kit development skill.
 
 ---
 
@@ -112,7 +113,7 @@ The maintainer changes a module in `core/` and opens a pull request. A check fai
 ### Functional Requirements
 
 - **FR-001**: A release tag of the repository MUST install as a working plugin on Claude Code, Codex and Antigravity with no build step on the user's side.
-- **FR-002**: An installed copy MUST contain every file the six entry skills refer to, and MUST NOT contain the development folders (`evals/`, `specs/`, `scripts/`, the Spec Kit development skills).
+- **FR-002**: An installed copy MUST contain every file the six entry skills refer to, and the host MUST load exactly those six skills; development folders that land in the install folder MUST be inert (no skills, hooks or servers loaded from them).
 - **FR-003**: The repository MUST ship a plugin manifest for each of the three hosts, with the same name, version, description and keywords; the description MUST be 120 to 160 characters (the `finolabs/plugins` listing standard).
 - **FR-004**: The repository's checks MUST fail when the installable copy differs from its sources, and when the three manifests disagree.
 - **FR-005**: On Claude Code, Codex and Antigravity, all six entry skills MUST work in local folder mode with the same workspace layout and file names as Cowork desktop.
