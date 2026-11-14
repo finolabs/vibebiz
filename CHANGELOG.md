@@ -20,7 +20,8 @@ All notable changes to vibebiz are recorded here. The format follows [Keep a Cha
 - Where ideas are kept is chosen by what the app can reach: the open folder first, then Google Drive through the app's own Google integration (the Claude connector, OpenAI's Google Drive plugin in Codex, Antigravity's official Google plugins). With neither, vibebiz writes nothing and says how to open a folder or connect Google in that app.
 - The board deck and the PRD are private Artifacts where the app has them, your own Google Slides and Docs when those are connected, and otherwise web pages in the idea folder; the closing message says where they are and how to open them. On Codex the Google paths follow OpenAI's documentation and were not tried with a real Google account.
 - Requests such as "make the slides" or "put it in Google Docs" now go through `package` first, so the Google tools are used only from its steps.
-- `idea` always ends with the round and then the table of contents, with every file named by its plain title.
+- `idea` and `continue` always end with the round and then the table of contents, with every file named by its plain title.
+- The README pair now opens with install-at-a-glance commands, first steps for a person, steps for an AI agent asked to install vibebiz, and the supported platforms, then the full install per app.
 - The installed skills live in `.plugin-skills/`, built from `src/skills/`, and all three manifests point there; the Cowork archive holds the same tree. The FAQ explains what to do when Claude Code shows each command twice (a synced copy and a catalog copy), or when Antigravity already holds an older vibebiz copied from Claude Code.
 
 ### Fixed
