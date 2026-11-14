@@ -344,6 +344,7 @@ The repository root is the plugin source. The shipped plugin is `dist/vibebiz/`,
 - [ ] T060 T057 leftovers: a headless case where vibebiz finds a document on its own (no user request, no planted pointer) and must ask before writing its fact, and one with unknown local visibility; until then, check both by hand in T049.
 
 ---
+- [ ] T061 Support Codex and Antigravity in the next version (Fio, 14/11/2026): their plugin manifests and a working path on each host, so the `finolabs/plugins` catalog can list vibebiz for them too. v0.1.4 is listed for Claude only. Needs its own spec.
 
 ## Dependencies & Execution Order
 
