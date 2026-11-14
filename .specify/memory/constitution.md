@@ -1,10 +1,14 @@
 <!--
 Sync Impact Report
-Version change: 1.2.0 → 1.2.1 (PATCH)
-Modified sections: Principle on the workspace (the entry command is renamed /vibebiz:new → /vibebiz:idea; the rule is unchanged)
+Version change: 1.2.1 → 1.3.0 (MINOR)
+Modified sections: Principle I (the host's question tool, not only Cowork's); Principle IV
+(Cowork is the primary runtime; Claude Code, Codex and Antigravity run in local folder mode);
+Principle V (each release also records an install and run on every other supported host);
+Runtime and Distribution Constraints (supported hosts and what each offers)
 Added sections: none
 Removed sections: none
-Follow-up: none (CLAUDE.md, docs and specs renamed in the same change)
+Follow-up: CLAUDE.md opening line and "Plugin shape" updated in the same change (Fio approved
+14/11/2026); README pair, docs and help follow in the spec 003 implementation
 -->
 # vibebiz Constitution
 
@@ -16,7 +20,8 @@ vibebiz serves retail business leaders who do not write code and never open a te
 
 - Everything a user reads (questions, outputs, docs, `README.vi.md`) MUST be plain Vietnamese.
   A technical term MUST be explained the first time it appears.
-- Every decision put to the user MUST go through Cowork's native question tool: at most four
+- Every decision put to the user MUST go through the host's native question tool (Cowork's
+  `AskUserQuestion` or its equivalent on another supported host): at most four
   questions per round, two to four mutually exclusive options, the recommended option first,
   and each question understandable without the surrounding text. Only open-ended questions use
   plain text.
@@ -60,7 +65,8 @@ Rationale: the board decides on these documents; an unsupported claim costs real
 
 ### IV. Self-Contained Runtime
 
-The plugin runs in Claude Cowork with nothing but its own files and the user's connectors.
+The plugin runs with nothing but its own files and the user's connectors. Claude Cowork is the
+primary runtime; Claude Code, Codex and Antigravity are supported in local folder mode.
 
 - Runtime behavior MUST be instructions and file operations; skills MUST NOT require scripts,
   hooks or a shell on the user's machine.
@@ -81,7 +87,8 @@ Skill behavior is code and is tested like code.
 - Structural properties (question counts, sections, cross-view numbers, index integrity, docs
   coverage) MUST be checked in code. Semantic judgments (claim support, meaning preservation,
   sycophancy) MAY use an approved evaluator such as Jev, never at plugin runtime.
-- Each release MUST pass the agreed eval suites and a manual Cowork smoke test.
+- Each release MUST pass the agreed eval suites and a manual Cowork smoke test, and MUST record
+  a real install from its tag and a run in a local folder on every other supported host.
 
 Rationale: prompt behavior drifts silently; only a failing case proves a fix and guards it.
 
@@ -112,9 +119,15 @@ Rationale: users learn vibebiz from its docs and `help`; stale docs teach the wr
 
 ## Runtime and Distribution Constraints
 
-- Target runtime is Claude Cowork with its native question tool, Claude Artifacts, the Google
+- Primary runtime is Claude Cowork with its native question tool, Claude Artifacts, the Google
   Workspace connectors for Docs and Slides, and the Google Drive connector, which holds the
   workspace when a session has no local folder (Cowork on the web or a phone).
+- Claude Code, Codex and Antigravity are supported in local folder mode only: the same six entry
+  skills and workspace, questions through the host's own question tool, and the board and tech
+  views as the local HTML files. Drive mode, Artifacts and Google Slides and Docs are Cowork
+  features; on another host vibebiz says so and offers the local alternative.
+- A release tag MUST install as a working plugin on every supported host with no build step on
+  the user's side.
 - Board view exports to an Artifact or Google Slides; tech view exports to an Artifact or Google
   Docs, always with the `spec.md` snapshot.
 - The user workspace layout and file names defined in `CLAUDE.md` are a public contract. A change
@@ -147,4 +160,4 @@ Rationale: users learn vibebiz from its docs and `help`; stale docs teach the wr
 - Reviews and plans check compliance; a justified exception is recorded in the plan's Complexity
   Tracking with its reason.
 
-**Version**: 1.2.1 | **Ratified**: 2026-11-12 | **Last Amended**: 2026-11-13
+**Version**: 1.3.0 | **Ratified**: 2026-11-12 | **Last Amended**: 2026-11-14

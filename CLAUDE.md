@@ -1,6 +1,6 @@
 # vibebiz — project instructions
 
-vibebiz is a Claude Cowork plugin that works as a product owner for non-technical retail leaders. A sales director (online or offline; fashion, electronics, home appliances and similar retail) starts from a vague idea about a system, an AI use or an automation; vibebiz interviews them until the idea is clear, challenged and measurable, and packages it as a PRD for the board and for the internal tech team.
+vibebiz is a plugin for Claude Cowork (the primary runtime) and, in local folder mode, for Claude Code, Codex and Antigravity (Fio, 14/11/2026, constitution 1.3.0). It works as a product owner for non-technical retail leaders. A sales director (online or offline; fashion, electronics, home appliances and similar retail) starts from a vague idea about a system, an AI use or an automation; vibebiz interviews them until the idea is clear, challenged and measurable, and packages it as a PRD for the board and for the internal tech team.
 
 The constitution at `.specify/memory/constitution.md` is the governing law of this repository; this file holds the repository-wide rules and must not contradict it. When the two conflict, raise the conflict and resolve it by amendment instead of picking one.
 
@@ -24,8 +24,9 @@ These rules record the design decisions Fio settled on 12/11/2026. A rule here c
 - Plugin name `vibebiz`, skills-only. **Exactly six skills**, the entry points, written as `skills/*/SKILL.md` and never as legacy `commands/`: `idea`, `continue`, `status`, `package`, `constitution`, `help` (Fio, 12/11/2026). Everything else (router, ask protocol, clarify, specify, the four lenses, plan, checklist, analyze, package, workspace, export guidelines, writing rules, anti-sycophancy) is a **module** in `core/`, never a skill (`contracts/modules.md`).
 - The build copies `core/` into each skill's `references/`; a `SKILL.md` refers only to files inside its own folder. Keep `SKILL.md` bodies under 3,000 words.
 - Write and edit every `SKILL.md`, `core/` module and framework card with the `writing-for-agents` skill (Fio, 13/11/2026): the description is a context pointer, steps end on completion criteria, detail moves into references, and no-ops and duplicates are pruned.
+- On Claude Code, Codex and Antigravity only local folder mode is supported; Drive mode, Artifacts and Google Slides and Docs are Cowork features (`specs/003-multi-host/spec.md`).
 - Installed plugins also load in claude.ai chat and in Cowork on the web or a phone, which have no local folder. Every entry skill picks its storage first: a local folder, then Google Drive through Cowork's connector, otherwise it writes nothing and names both ways forward (`core/workspace.md` §1).
-- Questions follow the interview protocol (spec Appendix B) through Cowork's `AskUserQuestion`: never add "None" or "Other" (the tool has Skip and free text), a skip leaves the category unchanged, and with nobody to answer proceed on recorded assumptions without inventing answers.
+- Questions follow the interview protocol (spec Appendix B) through the host's question tool (Cowork's `AskUserQuestion`, or its equivalent on another supported host): never add "None" or "Other" (the tool has Skip and free text), a skip leaves the category unchanged, and with nobody to answer proceed on recorded assumptions without inventing answers.
 - First-release content: `packs/retail-fashion`, `packs/ai-patterns-retail`, and the fifteen framework cards in `packs/frameworks/` (spec Appendix F). Frameworks are applied only to fill an open coverage gap, at most two per lens per idea.
 
 ## Workspace and outputs
