@@ -169,7 +169,7 @@ Only for the views where the user chose Google in section 4.
 
 ## 11. Check before handing over
 
-Check the set against these rules, fix what fails, and check again. Never report a set as delivered while a rule fails.
+Check the set against these rules, fix what fails, and check again. Never report a set as delivered while a rule fails. Check from the files as written, not from what you meant to write: read `data.json` back from the idea folder and walk it element by element, and read each view back, on every host.
 
 1. Every slide 1 to 9, the appendix and every tech section listed in section 6 is present, or listed in `gaps`.
 2. Every figure referenced anywhere exists in `numbers[]` once, with source, period and label `measured` or `assumed`; no figure value is typed into text.
@@ -198,6 +198,8 @@ A failure you can fix from the files (a missing id, a stray value in text, a mis
    - that everything is private and they share it with the board or the tech team themselves.
 
    Example: "Đã đóng gói xong ý tưởng nhắc khách quay lại. Bản trình bày cho ban lãnh đạo: <link>. Tài liệu cho đội kỹ thuật: <link>. Các con số chi phí đang ghi “chưa qua kỹ thuật thẩm định”. Hai liên kết này chỉ anh/chị xem được; anh/chị tự chia sẻ khi muốn gửi."
+
+Before sending the closing message, read it once against `references/core/writing-rules.md` and fix it in place: every command in this host's form (§2, "Command names in this host's form"); no file name, path or `file://` link, the views named as "bản trình bày" and "tài liệu cho đội kỹ thuật" with where they are kept in plain words; every term in the user's language, explained if new. On every host, the run is done only when this last look and section 11 both pass.
 
 ## 13. Drive mode
 
