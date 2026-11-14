@@ -122,3 +122,15 @@ Một vài điều cần biết:
 - Bản trình bày cho ban lãnh đạo và bản PRD cho đội kỹ thuật được đăng thành Artifact riêng tư, hoặc nếu bạn chọn, thành Google Slides và Docs riêng tư; hai bản xem dạng trang web (`board-deck.html`, `tech-prd.html`) không được lưu vào Drive.
 
 Nếu chưa nối Drive và cũng chưa mở thư mục nào, vibebiz không ghi gì và chỉ cho bạn hai cách: nối Google Drive, hoặc mở ứng dụng Claude trên máy tính, vào Cowork và chọn một thư mục.
+
+### 13. Tôi thấy mỗi lệnh vibebiz hiện hai lần trong Claude Code. Phải làm sao?
+
+Đó là vì máy bạn đang có hai bản vibebiz. Bản thứ nhất là bản bạn (hoặc tổ chức của bạn) đã tải lên Claude: Claude Code tự đồng bộ bản này về và hiện với tên `vibebiz@synced`. Bản thứ hai là bản bạn cài từ danh mục plugin của FINOLABS, tên `vibebiz@finolabs`. Hai bản cùng trả lời một lệnh nên dễ lẫn, nhất là khi chúng khác phiên bản.
+
+Hãy giữ bản `vibebiz@finolabs`, vì bản này được cập nhật theo từng phiên bản phát hành. Trong Claude Code, tắt bản đồng bộ bằng lệnh:
+
+```bash
+claude plugin disable vibebiz@synced
+```
+
+Lệnh này chỉ tắt bản đồng bộ trong Claude Code; Cowork vẫn dùng bản bạn đã tải lên. Kiểm tra lại bằng `claude plugin list`: chỉ còn `vibebiz@finolabs` được bật.

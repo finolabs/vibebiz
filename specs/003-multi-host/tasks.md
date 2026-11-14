@@ -75,7 +75,7 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 
 - [x] T018 [US1] Eval case `evals/workspace/root-install-idea/` with `plugins: ["../../.."]` (the repository root): `/vibebiz:idea` on a fictional idea in an empty folder; graders: scaffold and idea folder exist, the skill read `references/core/workspace.md` (trace), nothing under `.plugin-skills/` changed. Red on `main` before Phase 2 merges, green after.
 - [ ] T019 [US1] Run the local workspace suite once against the repository root and record the scores beside 0.1.4's in `evals/RESULTS.md` (SC-005).
-- [ ] T020 [US1] Duplicate-install note for `docs/`: a user with `vibebiz@synced` who also installs `vibebiz@finolabs` keeps one; which and how to remove the other.
+- [x] T020 [US1] Duplicate-install note for `docs/`: a user with `vibebiz@synced` who also installs `vibebiz@finolabs` keeps one; which and how to remove the other.
 
 ---
 
