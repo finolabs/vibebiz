@@ -14,7 +14,7 @@ At the start of a session (the first round for this idea in this conversation), 
 
 1. **Re-read** every idea file listed above. The user may have edited them by hand; their edits are authoritative, so work from the current files and never restore an older version.
 2. **Set the depth** (see "Depth"): classify the idea right after intake, before the first round, and revisit the classification whenever the files or the latest answers change what it rests on.
-3. **Check readiness** (see "Readiness"). If ready, offer to package and stop the loop unless the user chooses to keep going.
+3. **Check readiness** (see "Readiness"). If ready, offer to package and stop the loop unless the user chooses to keep going. When the user chooses to package, hand over to the `package` entry skill (or name `/vibebiz:package` when you cannot start it from here); its steps call any Google Slides, Docs or Drive skill.
 4. **Resolve conflicts first**: if the last answers contradict an earlier decision, handle it (see "Contradictions") before anything else.
 5. **Check for two ideas** (see "Two ideas in one") when the intake or the latest answers suggest it.
 6. **Compute the frontier** and **rank** it (below).

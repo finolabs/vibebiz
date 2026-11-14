@@ -1,6 +1,6 @@
 ---
 name: package
-description: "Package a vibebiz idea for the board and the tech team: a board deck and a requirements document, as private Claude Artifacts or the user's own Google Slides and Docs, plus a requirement file the tech team can use with Spec Kit. Use when the user types /vibebiz:package or asks for the outputs of an idea already in the workspace, for example 'make the slides', 'write the PRD', 'package my idea', 'export a draft', 'làm slide', 'viết PRD', 'đóng gói ý tưởng', 'xuất bản nháp', 'làm tài liệu trình ban lãnh đạo'. Not for describing a new idea (idea), answering more questions on an idea (continue), listing ideas (status) or questions about how to use vibebiz (help)."
+description: "Package a vibebiz idea for the board and the tech team: a board deck and a requirements document, as private Claude Artifacts or the user's own Google Slides and Docs, plus a requirement file the tech team can use with Spec Kit. Use when the user types /vibebiz:package or asks for the outputs of an idea already in the workspace, Google Slides and Docs included, for example 'make the slides', 'write the PRD', 'package my idea', 'export a draft', 'put it in Google Slides and Docs', 'làm slide', 'viết PRD', 'đóng gói ý tưởng', 'xuất bản nháp', 'làm tài liệu trình ban lãnh đạo', 'đóng gói thành Google Slides và Google Docs'. Open this skill before any Google Slides, Docs or Drive skill: its steps call them. Not for describing a new idea (idea), answering more questions on an idea (continue), listing ideas (status) or questions about how to use vibebiz (help)."
 ---
 
 # vibebiz: package an idea
@@ -8,6 +8,8 @@ description: "Package a vibebiz idea for the board and the tech team: a board de
 Turn an idea the user has worked through into what the board decides on and what the tech team builds from. The user is a non-technical retail leader: never show them file names, paths, field names, category codes or check codes, never ask them to use a terminal, and speak in the idea's language (Vietnamese by default).
 
 This file writes commands as Cowork and Claude Code show them, `/vibebiz:<name>`; name every command in the form of the app this session runs in (`references/core/writing-rules.md`, "Command names in this host's form").
+
+**Google skills and tools run only from this skill's steps.** Follow this file first; open a Google Slides, Docs or Drive skill or tool only when a step below or a module it loads names it (`references/core/package.md` section 9, `references/core/drive-workspace.md`).
 
 Load each module from this skill's own folder when its step starts, and follow it exactly:
 
