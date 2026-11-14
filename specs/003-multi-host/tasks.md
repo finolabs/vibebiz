@@ -8,6 +8,8 @@
 
 **Docs**: constitution VII. Each phase's pull request carries the docs for the behavior it changes; Phase 10 reviews them all against what ships.
 
+**Priority** (Fio, 14/11/2026): finish Antigravity first, Codex after. Order: Phase 2 → Phase 3 → Phase 4 → Phase 6 → the Antigravity parts of Phases 7–9 → Codex (Phase 5, T002–T004, and the Codex parts of Phases 7–9) once its usage limit resets (17/11/2026 10:16).
+
 **Organization**: Phase 1 measures what research R7 left unverified, because the Drive and Slides design depends on it. Then US7 (every tag installable, foundational), US1 (Claude Code), the host-neutral instruction changes, US2 and US3 (folder journeys on Codex and Antigravity), US4 (Drive), US5 (Slides and Docs), US6 (views). v0.1.5 is cut in Phase 11 after every host row is recorded.
 
 **Heavy jobs**: eval runs and host sessions go one at a time, with the one-minute load average at or below 25 (Fio's machine rule); targeted modules only, never more than two per command.
@@ -39,7 +41,8 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 - [x] T006 [P] Antigravity harness: find out whether `agy -p --input-format stream-json` or `agy acp` lets a client answer `ask_question`; record its real limits (questions per call, options per question).
   - 14/11/2026: done. stream-json has no answer input; `ask_question` is skipped. Unattended runs put answers in the prompt, as Claude Code evals do.
 - [x] T007 Antigravity Google: read the official `gdrive`, `gdocs` and `gslides` plugins' skills in the local cache (`~/.gemini/config/plugins/` or the marketplace cache) and map the same operations as T004; record what needs a shell, network and sign-in.
-- [ ] T008 Claude Code desktop: check whether a plugin skill sees the `Artifact` tool and the Google Drive and Docs connector tools (a scratch skill that lists the tools it can call), so Claude Code follows the same tool-based paths.
+- [x] T008 Claude Code desktop: check whether a plugin skill sees the `Artifact` tool and the Google Drive and Docs connector tools (a scratch skill that lists the tools it can call), so Claude Code follows the same tool-based paths.
+  - 14/11/2026: Fio confirmed in the Claude desktop app that a plugin skill sees the `Artifact` tool and the Google Drive connector tools.
 - [ ] T009 Previews: Fio opens one `board-deck.html` in Codex's desktop app (`visualize`, in-app browser) and in Antigravity's app (preview, built-in browser); record what works and the exact way a skill asks for it.
 
 **Stop rule**: if a host cannot do a Drive operation that `specs/002-drive-workspace/contracts/drive-workspace.md` requires (for example reading permissions before the first write, or replacing a file), parity in Drive mode on that host is not possible as specified: record it and take it to Fio before Phase 7.
