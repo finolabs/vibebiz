@@ -1,5 +1,5 @@
 ---
-description: 'Not Cowork, no folder, no Google Drive (spec 003 FR-006): nothing written; the ways forward on this host, not Cowork Connectors.'
+description: 'Not Cowork, no folder, no Google Drive (spec 003 FR-010): nothing written; the ways forward on this host, not Cowork Connectors.'
 max_turns: 25
 timeout_seconds: 600
 allowed_tools: [Skill, Read]

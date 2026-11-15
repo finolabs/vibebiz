@@ -19,7 +19,7 @@ The **question tool** is whichever tool this session offers for asking the user 
 
 ## 1. Before asking: look facts up
 
-- Ask the user only for **decisions** and for things only they know (their judgment, their priorities, what happened to them). Find **facts** yourself first: in the idea's files, in `constitution.md`, in the vertical pack, and in documents the user has connected to Cowork.
+- Ask the user only for **decisions** and for things only they know (their judgment, their priorities, what happened to them). Find **facts** yourself first: in the idea's files, in `constitution.md`, in the vertical pack, and in documents the user has connected to this app (Cowork's connectors, or the Google Drive tools of Claude Code, Codex or Antigravity).
 - When you found a fact, state it in the question as a fact with its source in plain words ("Theo báo cáo doanh số quý 3 trong Drive của anh/chị, …") and ask only for the decision it leads to.
 - Never ask again what the idea's files already answer. Re-read the files before every round: the user may have edited them by hand, and their edits win.
 

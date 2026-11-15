@@ -351,6 +351,14 @@ cat > 'specs/001-goi-y-size-tren-website/assumptions.md' <<'VIBEBIZ_SEED_6'
 - evidence: chưa có
 - riskiest: false
 - source: stated
+
+## A-003
+
+- text: Chạy thử hết khoảng 250 triệu đồng năm đầu (ước tính chưa được đội kỹ thuật xem xét).
+- tested: no
+- evidence: chưa có
+- riskiest: false
+- source: stated
 VIBEBIZ_SEED_6
 mkdir -p "$(dirname 'specs/001-goi-y-size-tren-website/open-questions.md')"
 cat > 'specs/001-goi-y-size-tren-website/open-questions.md' <<'VIBEBIZ_SEED_7'
