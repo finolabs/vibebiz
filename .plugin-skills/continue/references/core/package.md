@@ -174,13 +174,13 @@ Only for the views where the user chose Google in section 4.
 
 ## 11. Check before handing over
 
-Check the set against these rules, fix what fails, and check again. Never report a set as delivered while a rule fails. Check from the files as written, not from what you meant to write: read `data.json` back from the idea folder and walk it element by element, and read each view back, on every host.
+Check the set against these rules, fix what fails, and check again. Never report a set as delivered while a rule fails. Check from the files as written, not from what you meant to write: read `data.json` back from the idea folder and walk it element by element, and read each view back, on every host. Looking at how a view renders is not this check: rules 1 to 6 and 10 run on `data.json`, for every slide, the appendix and every tech section, before you report anything. Never close with a part of the set left unchecked.
 
 1. Every slide 1 to 9, the appendix and every tech section listed in section 6 is present, or listed in `gaps`.
 2. Every figure referenced anywhere exists in `numbers[]` once, with source, period and label `measured` or `assumed`; no figure value is typed into text.
 3. Every slide has a non-empty title that states the takeaway and one message of one sentence, within the export guidelines' word limits.
 4. Every chart names its source and period.
-5. While `not-tech-reviewed`, every element that shows an estimate carries `estimate_label: "not tech-reviewed"` (section 6 rule 2: walk each slide and section, then each of its blocks, including the appendix); once `tech-reviewed`, none does.
+5. While `not-tech-reviewed`, every element that shows an estimate carries `estimate_label: "not tech-reviewed"` (section 6 rule 2); once `tech-reviewed`, none does. Do it as a search, not a skim: first list the ids of every figure in `numbers[]` with `estimate: true`; then, for every slide 1 to 9, the appendix and every tech section, search its whole JSON (title, message, every block, and every item, side, lane and cell inside a block) for each of those ids, as a `{{id}}` token or a reference field. Each hit is labelled by its block, or by its slide or section. Estimates most often hide in the appendix's lists of assumptions and open questions, in table cells and in timeline bars.
 6. Every `FR-###` and `SC-###` the tech view names exists in `spec.md`, and every slide, the appendix and every tech section has a non-empty `source_fields` (section 6 rule 6).
 7. `links.md` lists exactly the addresses in `links`, and no address anywhere is a public or sharing link.
 8. `exports/spec.md` is identical to the idea's `spec.md`, and its Spec Kit headings are in place.

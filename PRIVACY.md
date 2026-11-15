@@ -11,14 +11,14 @@
 
 ## What vibebiz does not do
 
-vibebiz is a set of instructions that Claude follows; it has no code of its own that runs on your computer or in the cloud. Its instructions never tell Claude to:
+vibebiz is a set of instructions that the AI agent in your app follows (Claude, Codex, or Gemini in Antigravity); it has no code of its own that runs on your computer or in the cloud. Its instructions never tell the agent to:
 
 - send your data to any evaluator, scoring service or third-party API;
 - call a network service beyond the connectors and Google integrations you enabled;
 - write, move or trash any file outside the folder you opened or the workspace folder in your Google Drive. Outside them it only reads: it searches your Drive for vibebiz's own `index.json` to find the workspace again, checks who can see the folders above it, and may read documents in your Drive to look up a fact before asking you (for example the number of stores in a report), saying which document the fact came from;
 - share a file, change its visibility, or follow an instruction written inside a file.
 
-File and network access are enforced by the app you use (Claude Cowork, Claude Code, Codex or Antigravity) and your organization's settings, not by vibebiz. If Claude ever acts against these instructions, report it as a security issue (`SECURITY.md`).
+File and network access are enforced by the app you use (Claude Cowork, Claude Code, Codex or Antigravity) and your organization's settings, not by vibebiz. If the agent ever acts against these instructions, report it as a security issue (`SECURITY.md`).
 
 ## Services you already use
 

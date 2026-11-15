@@ -122,6 +122,8 @@ Một vài điều cần biết:
 - Thư mục Drive chỉ mình bạn xem được, trừ khi chính bạn chia sẻ. vibebiz không bao giờ chia sẻ hay đổi quyền xem của tệp nào; nếu thấy thư mục đang được chia sẻ, vibebiz báo cho bạn biết trước khi ghi.
 - Bản trình bày cho ban lãnh đạo và bản PRD cho đội kỹ thuật được đăng thành Artifact riêng tư, hoặc nếu bạn chọn, thành Google Slides và Docs riêng tư; hai bản xem dạng trang web (`board-deck.html`, `tech-prd.html`) không được lưu vào Drive.
 
+Khi lưu trên Drive, mỗi lần vibebiz cập nhật một tệp, Cowork có thể hỏi bạn có cho phép "Trash file" (bỏ bản cũ vào thùng rác) không. Đây là cách vibebiz thay bản cũ bằng bản mới: bản mới được lưu trước, sau đó bản cũ mới bị bỏ vào thùng rác của Drive, và bạn vẫn lấy lại được bản cũ từ thùng rác. Mỗi vòng câu hỏi có thể kéo theo năm, sáu lần xin phép như vậy. Muốn khỏi bị hỏi lại, bấm "Always allow" ở một lần xin phép. vibebiz chỉ bỏ vào thùng rác những tệp nó vừa thay trong thư mục ý tưởng.
+
 Nếu chưa nối Drive và cũng chưa mở thư mục nào, vibebiz không ghi gì và chỉ cho bạn hai cách: nối Google Drive, hoặc mở ứng dụng Claude trên máy tính, vào Cowork và chọn một thư mục.
 
 ### 13. Tôi thấy mỗi lệnh vibebiz hiện hai lần trong Claude Code. Phải làm sao?
