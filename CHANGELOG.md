@@ -12,10 +12,11 @@ All notable changes to vibebiz are recorded here. The format follows [Keep a Cha
 - Messages shown while vibebiz works no longer mention file names, file sizes or checks on files.
 - vibebiz reads files from Google Drive as UTF-8 and reads a file again when its Vietnamese letters come out garbled, before quoting it in a question.
 - The privacy notice and the question rules name the agent and documents of every supported app, not only Claude and Cowork.
+- The privacy notice now names the one exception to writing only in your folders: the Google Slides and Docs vibebiz creates in the root of your My Drive when you ask for them.
 
 ### Added
 
-- The FAQ explains why Cowork may ask before each "Trash file" when ideas are kept in Google Drive, and how to allow it once.
+- The FAQ explains why Cowork may ask before each "Trash file" when ideas are kept in Google Drive, and advises approving each one, because "Always allow" also covers files outside the idea folder.
 
 ## [0.1.5] - 2026-11-15
 

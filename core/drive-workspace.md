@@ -92,7 +92,7 @@ Every change to the content of a workspace file is a replacement:
 5. **Check `modifiedTime`** of the old file again. If it changed since T0, someone else edited it: keep both, trash nothing, tell the user, and ask which version to keep.
 6. **Trash** the old file.
 
-These steps are silent: say nothing to the user about reading back, comparing or trashing files unless a step stops the run. Trashing asks the user's permission in some apps (Cowork asks before each "Trash file" by default); `docs/faq.md` tells them how to allow it once for all.
+These steps are silent: say nothing to the user about reading back, comparing or trashing files unless a step stops the run. Trashing asks the user's permission in some apps (Cowork asks before each "Trash file" by default); `docs/faq.md` explains why and advises approving each one, since a standing allow covers every trash through the connector. Never ask the user to allow trashing for all files.
 
 A new file (nothing to replace) is steps 3 and 4 only. Before creating any file, search its folder for the title: if it exists, follow the rules above instead of creating a second one.
 
