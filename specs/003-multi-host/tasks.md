@@ -191,10 +191,11 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 
 - [x] T057 `core/package.md` section 11: the estimate-label check is a search of every slide, the appendix and every tech section down to block items, and a rendered view is not the check (smoke test 15/11: appendix list items showed N-08 to N-10 unlabelled while the closing message said slides 1–8 were checked). The `ready-data-json-passes-check` fixture gets an estimate in its assumptions and a grader for it.
 - [x] T058 `core/writing-rules.md` and `core/drive-workspace.md` §3: no file names, sizes or byte checks in progress lines; replacement steps are silent (smoke test: "Coverage khớp 5399 byte").
-- [x] T059 `docs/faq.md` question 12: Cowork may ask before each "Trash file"; how to allow it once for all.
+- [x] T059 `docs/faq.md` question 12: Cowork may ask before each "Trash file"; approve each one, since "Always allow" also covers files outside the idea folder (PR 19 security review round 1 replaced the first wording, which advised allowing it once for all).
 - [x] T060 `core/drive-workspace.md` "Reading": decode workspace files as UTF-8 by name and re-read text that shows mis-decoded letters (smoke test: a question showed "AI ·ªü"; cause not traced to one command).
 - [x] T061 PR 17 LOW findings: drop the vacuous regex grader in `evals/ask-protocol/no-question-tool`; FR-006 citations in four eval files point to FR-009 and FR-010; `PRIVACY.md` lines 14 and 21 name the agent of any host; `core/ask-protocol.md` §1 names each host's documents; home paths in `evals/RESULTS.md` become `~`.
-- [ ] T062 Release 0.1.6: manifests and `templates/workspace/index.json`, `CHANGELOG.md` `[0.1.6]`, `.plugin-skills/`; pull request with code and security reviews; tag and GitHub Release on Fio's go.
+- [x] T062 Release 0.1.6: manifests and `templates/workspace/index.json`, `CHANGELOG.md` `[0.1.6]`, `.plugin-skills/`; pull request with code and security reviews; tag and GitHub Release on Fio's go. Done 15/11/2026: PR 19 merged at bdf2be7 after two review rounds (Antigravity Gemini 3.8 Flash), tag `v0.1.6`, release with `vibebiz.plugin`.
+- [ ] T063 PR 19 code review LOW: `evals/package/ready-data-json-passes-check/graders/estimate-labels-in-appendix.md` accepts `estimate_label` on a block item itself, while `package_check.py` accepts it only on the block or the slide; narrow the grader to the block, slide or section.
 
 ---
 
