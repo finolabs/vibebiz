@@ -4,6 +4,19 @@ All notable changes to vibebiz are recorded here. The format follows [Keep a Cha
 
 ## [Unreleased]
 
+## [0.1.6] - 2026-11-15
+
+### Fixed
+
+- Before it hands over a package, vibebiz now searches every slide, the appendix and every section of the tech document for estimates, down to each line of a list, so no estimate goes out without the "not tech-reviewed" label. Checking how a view looks no longer counts as the check.
+- Messages shown while vibebiz works no longer mention file names, file sizes or checks on files.
+- vibebiz reads files from Google Drive as UTF-8 and reads a file again when its Vietnamese letters come out garbled, before quoting it in a question.
+- The privacy notice and the question rules name the agent and documents of every supported app, not only Claude and Cowork.
+
+### Added
+
+- The FAQ explains why Cowork may ask before each "Trash file" when ideas are kept in Google Drive, and how to allow it once.
+
 ## [0.1.5] - 2026-11-15
 
 ### Added
