@@ -204,12 +204,12 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 The release carries T063 from Phase 12 and the tasks below. Codex is out of quota until 17/11/2026 10:16; host sessions run one at a time on this machine.
 
 - [ ] T064 After the Codex quota resets: run T053 and the Codex leg of T056. One pull request ticks T053 and T056, adds their rows to `evals/RESULTS.md` and fixes T063. Then a `finolabs/plugins` pull request updates the README note on which pins were checked against an install (Claude Code on 15/11/2026, Codex on the day it runs).
-- [ ] T065 Recheck T057 in Cowork: package the example idea and confirm that every estimate on the slides, in the appendix and in each tech section carries the "not tech-reviewed" label; record the row (the headless eval of 15/11 was inconclusive).
+- [ ] T065 Recheck T057 in Cowork: package the example idea and confirm that every estimate on the slides, in the appendix and in each tech section carries the "not tech-reviewed" label; record the row (the headless eval of 15/11 was inconclusive). In the same session, check spec 002's T060 by hand: (a) vibebiz finds a document on its own, with no request from the user and no pointer planted in a file, and asks before writing its fact; (b) a local folder whose visibility vibebiz cannot tell, where it also asks first (fail closed). Record one row per case; the headless cases stay in T060 (Fio, 16/11/2026).
 - [ ] T066 T054 step 5: Fio runs the desktop app with the local folder `~/vibebiz-uat-local`; record the row.
 - [ ] T067 Codex parity: T002 and T003, then T004 with Fio's yes and his connector already connected, then T030 and T031.
 - [ ] T068 Release 0.1.7: manifests and `templates/workspace/index.json`, `CHANGELOG.md` `[0.1.7]`, `.plugin-skills/`; pull request with code and security reviews; tag and GitHub Release on Fio's go; then move the catalog pin (versioning "Release notes").
 
-**Later, outside 0.1.7 unless Fio pulls them in**: T009, T034–T041 and T044 here (Drive, Slides, Docs and views on Codex and Antigravity); T060 in spec 002; in spec 001 the eval reruns T037, T059, T073, T080, T089, T095 and T098, the persona harness T097, the help suite T082, the diagrams T086 and the Vietnamese pass T099.
+**Later, outside 0.1.7 unless Fio pulls them in**: T009, T034–T041 and T044 here (Drive, Slides, Docs and views on Codex and Antigravity); the headless cases of T060 in spec 002 (its hand check is in T065); in spec 001 the eval reruns T037, T059, T073, T080, T089, T095 and T098, the persona harness T097, the help suite T082, the diagrams T086 and the Vietnamese pass T099.
 
 ---
 
