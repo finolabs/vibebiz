@@ -33,7 +33,7 @@ Three ways to get a capability: make it, purchase a ready product, or work with 
 
 ## Questions
 
-Never invent figures. When the user does not know, record a range and a gap.
+Never invent figures. Cost and return scenarios follow the ask protocol's rule 10 (ranges labelled as estimates); a figure nobody knows today, such as the current value of the return driver, follows its rule 5 (measure it, name who knows it, or record an open question).
 
 1. "Anh/chị đã biết có sản phẩm nào có sẵn trên thị trường làm được việc này chưa, hay đối tác nào có thể làm cùng?"
 2. "Mỗi hướng ước tính tốn bao nhiêu lúc đầu và bao nhiêu mỗi năm? Anh/chị cho một khoảng thấp, vừa, cao."
