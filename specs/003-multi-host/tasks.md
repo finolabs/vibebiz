@@ -179,11 +179,13 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 - [x] T051 Bump the three manifests and `templates/workspace/index.json` to 0.1.5, regenerate `.plugin-skills/`, `CHANGELOG.md` `[0.1.5]`; release review per `CLAUDE.md`; pull request with code and security reviews (Drive and Google integrations trigger the security gate); merge on `MERGE OK`.
   - 15/11/2026: Fio's decisions on the release review (relayed by the coordinator session): the closing-message rule moves into the router so `continue` closes like `idea` (red and green in `evals/RESULTS.md`); the README pair follows the plugin-packaging README standard in 0.1.5; no note on Antigravity Slides and Docs; after the tag, a small pull request bumps main to 0.1.6-dev.
 - [x] T052 Tag `v0.1.5` on the merge commit; build `vibebiz.plugin` from a fresh clone; validate, `test_build`, package check on the example; publish the GitHub Release with the archive and its sha256.
-- [ ] T053 From the tag, per quickstart.md: install on Claude Code (scratch `github` marketplace at the tag), Codex (scratch marketplace at the tag), Antigravity (`agy plugin install https://github.com/finolabs/vibebiz`, with `--ref` if supported; else a clone at the tag, recorded); one row per host in `evals/RESULTS.md` (FR-015), committed by a follow-up pull request.
+- [x] T053 From the tag, per quickstart.md: install on Claude Code (scratch `github` marketplace at the tag), Codex (scratch marketplace at the tag), Antigravity (`agy plugin install https://github.com/finolabs/vibebiz`, with `--ref` if supported; else a clone at the tag, recorded); one row per host in `evals/RESULTS.md` (FR-015), committed by a follow-up pull request.
+  - 17/11/2026: rows in `evals/RESULTS.md`. Claude Code and Codex pass from the tag (Codex through a scratch marketplace with `ref`); Antigravity installed from a clone at the tag, but its example run is not done (Gemini quota, reset about 21/11).
 - [ ] T054 Cowork smoke test with the release archive; Fio runs it (spec 002's T049 checklist still applies).
   - 15/11/2026: web legs run by the coordinator on claude.ai with 0.1.5 and the Google Drive connector (Fio: "test y như thật"): steps 1, 2, 3, 4 and 6 pass; step 3's package check found appendix estimates without the label (T057). Step 5 (desktop with a local folder) waits for Fio: the desktop app hosts the coordinator and cannot be driven by computer use.
-- [ ] T055 In `finolabs/plugins`: a new branch from `main` adding vibebiz to both catalogs (Claude Code pinned to `v0.1.5`) and the README table; `scripts/check-catalogs.py --remote` passes; pull request with code and security reviews; merge with Fio's go. Ask Fio whether to delete the superseded `list-vibebiz` branch.
-- [ ] T056 After the catalog merge, install `vibebiz@finolabs` on Claude Code and Codex from the catalog itself and record; update the catalog README's note on which pins were checked against an install.
+- [x] T055 In `finolabs/plugins`: a new branch from `main` adding vibebiz to both catalogs (Claude Code pinned to `v0.1.5`) and the README table; `scripts/check-catalogs.py --remote` passes; pull request with code and security reviews; merge with Fio's go. Ask Fio whether to delete the superseded `list-vibebiz` branch. Done 15/11/2026: finolabs/plugins PR 36 merged at c838498, pinned to `v0.1.6` (the README's joining rule now takes a stated source-available license, Fio's choice); the catalog branch and worktree were removed.
+- [x] T056 After the catalog merge, install `vibebiz@finolabs` on Claude Code and Codex from the catalog itself and record; update the catalog README's note on which pins were checked against an install.
+  - 17/11/2026: Codex installs main from the catalog (no `ref` on Codex); Claude Code installs the pinned tag. The README note goes in a `finolabs/plugins` pull request (T064).
 
 ---
 
@@ -195,7 +197,20 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 - [x] T060 `core/drive-workspace.md` "Reading": decode workspace files as UTF-8 by name and re-read text that shows mis-decoded letters (smoke test: a question showed "AI ·ªü"; cause not traced to one command).
 - [x] T061 PR 17 LOW findings: drop the vacuous regex grader in `evals/ask-protocol/no-question-tool`; FR-006 citations in four eval files point to FR-009 and FR-010; `PRIVACY.md` lines 14 and 21 name the agent of any host; `core/ask-protocol.md` §1 names each host's documents; home paths in `evals/RESULTS.md` become `~`.
 - [x] T062 Release 0.1.6: manifests and `templates/workspace/index.json`, `CHANGELOG.md` `[0.1.6]`, `.plugin-skills/`; pull request with code and security reviews; tag and GitHub Release on Fio's go. Done 15/11/2026: PR 19 merged at bdf2be7 after two review rounds (Antigravity Gemini 3.8 Flash), tag `v0.1.6`, release with `vibebiz.plugin`.
-- [ ] T063 PR 19 code review LOW: `evals/package/ready-data-json-passes-check/graders/estimate-labels-in-appendix.md` accepts `estimate_label` on a block item itself, while `package_check.py` accepts it only on the block or the slide; narrow the grader to the block, slide or section.
+- [x] T063 PR 19 code review LOW: `evals/package/ready-data-json-passes-check/graders/estimate-labels-in-appendix.md` accepts `estimate_label` on a block item itself, while `package_check.py` accepts it only on the block or the slide; narrow the grader to the block, slide or section. Done 17/11/2026: the grader now counts a label only on the block, slide or section; the eval case was not rerun.
+
+---
+
+## Phase 13: Release 0.1.7 (backlog gathered 16/11/2026)
+
+The release carries T063 from Phase 12 and the tasks below. Codex is out of quota until 17/11/2026 10:16; host sessions run one at a time on this machine.
+
+- [ ] T064 After the Codex quota resets: run T053 and the Codex leg of T056. One pull request ticks T053 and T056, adds their rows to `evals/RESULTS.md` and fixes T063. Then a `finolabs/plugins` pull request updates the README note on which pins were checked against an install (Claude Code on 15/11/2026, Codex on the day it runs).
+- [ ] T065 Recheck T057 in Cowork: package the example idea and confirm that every estimate on the slides, in the appendix and in each tech section carries the "not tech-reviewed" label; record the row (the headless eval of 15/11 was inconclusive). In the same session, check spec 002's T060 by hand: (a) vibebiz finds a document on its own, with no request from the user and no pointer planted in a file, and asks before writing its fact; (b) a local folder whose visibility vibebiz cannot tell, where it also asks first (fail closed). Record one row per case; the headless cases stay in T060 (Fio, 16/11/2026).
+- [ ] T066 T054 step 5: Fio runs the desktop app with the local folder `~/vibebiz-uat-local`; record the row.
+- [ ] T067 Release 0.1.7: manifests and `templates/workspace/index.json`, `CHANGELOG.md` `[0.1.7]`, `.plugin-skills/`; pull request with code and security reviews; tag and GitHub Release on Fio's go; then move the catalog pin (versioning "Release notes").
+
+**Later, outside 0.1.7 unless Fio pulls them in** (the open Codex and multi-host tasks of this spec, T002–T004, T009, T030, T031, T034, T035, T037, T038, T040, T041 and T044, were waived or dropped by Fio on 14/11/2026 and stay out): the headless cases of T060 in spec 002 (its hand check is in T065); in spec 001 the eval reruns T037, T059, T073, T080, T089, T095 and T098, the persona harness T097, the help suite T082, the diagrams T086 and the Vietnamese pass T099. Also: a gap-only tech section (nothing on file, listed in `gaps[]`) has empty `source_fields`, which `package_check` rejects; `core/package.md` should say which source such a section names (found at T053, 17/11/2026). Antigravity's T053 example run, after its quota resets.
 
 ---
 
@@ -206,6 +221,7 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 - Phase 3 and Phase 4 can run in parallel after Phase 2.
 - Phases 5 and 6 need Phase 4. Phase 7 needs Phase 4 and T004/T007. Phase 8 needs Phase 7's mapping. Phase 9 needs T009.
 - Phase 10 needs Phases 3–9. Phase 11 needs everything; T055 needs T053's rows; T056 needs T055 merged.
+- Phase 13: T064 needs the Codex quota (17/11/2026 10:16). T067 needs T063 and T064; T065 and T066 go in when done, otherwise Fio decides whether they move to the next release.
 
 ### Parallel opportunities
 
