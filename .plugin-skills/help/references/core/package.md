@@ -127,7 +127,7 @@ Rules for the content:
 3. **Charts.** Every `chart` block names a non-empty `source` and a `period`, and plots only figures from `numbers[]`.
 4. **Frameworks where their category feeds.** For every card id in a category's `frameworks` in `coverage.md`, and every planning card the plan applied, add `{id, name, result}` to `frameworks[]` of the slide that category feeds in the slide map, with `name` from the card and the card's origin credited in the result line as the card states it. A card whose categories feed no slide goes into the content of the tech section it feeds instead. Never name a framework that was not applied.
 5. **Gaps shown.** Every element with nothing on file is a `gap` block naming the field, and is listed in `gaps[]`. Every gap analyze listed for the outputs appears.
-6. **Sources named.** Every slide and section lists its `source_fields` by section heading or record id (`Outcome`, `FR-003`, `D-007`).
+6. **Sources named.** Every slide and section lists its `source_fields` by section heading or record id (`Outcome`, `FR-003`, `D-007`). A slide or section with nothing on file names the place it would be filled from, the same field its `gaps[]` entry names: the `spec.md` heading (`Key Entities`) or the record file (`open-questions.md`). The list is never empty, and it never cites a record id that is not on file.
 7. **Decisions shown are business decisions.** Leave out the address-form decision (section 1, rule 4); show a superseded decision only as history, never as current.
 8. **Presentation hints.** Fill optional presentation fields (such as a slide's layout hint) only when the template's header documents them; they never carry facts.
 
