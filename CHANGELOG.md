@@ -4,6 +4,12 @@ All notable changes to vibebiz are recorded here. The format follows [Keep a Cha
 
 ## [Unreleased]
 
+## [0.1.7] - 2026-11-17
+
+### Fixed
+
+- When vibebiz asks whether to write a figure it found in one of your documents outside the idea folder, it records only the document's name and your decision, never the figure or the document's text, so a figure you declined does not reach a shared folder through the record of the question.
+
 ## [0.1.6] - 2026-11-15
 
 ### Fixed
