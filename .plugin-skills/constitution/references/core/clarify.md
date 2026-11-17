@@ -58,7 +58,7 @@ Spec Kit's `clarify` asks one question at a time in text with a lettered table; 
 - **A real question, not a label.** The `question` text is a full question ending with "?" that makes sense alone. A topic name ("Nguồn dữ liệu khách hàng"), a category code or a requirement id is never a question; the topic goes in `header`.
 - **The stake in the options.** Upstream adds a "why it matters" line; here each option's `description` says what choosing it means for the idea, and the recommended option's description starts with why you recommend it.
 - **Recommended first.** Choose the recommendation from the ground rules, the vertical pack, earlier answers and common retail practice, and put it first with the marker the ask protocol defines.
-- **Short answers become options or open text.** Where upstream would ask for a short free answer, offer two to four likely values or ranges and let the free-text box take anything else. Where no sensible options exist ("Ai đang giữ danh sách khách thành viên?"), use the round's one open question in plain text.
+- **Short answers become options or open text.** Where upstream would ask for a short free answer, offer two to four options under ask protocol rules 5 and 10 and let the free-text box take anything else. Where no sensible options exist ("Ai đang giữ danh sách khách thành viên?"), use the round's one open question in plain text.
 - **Everyday words.** No "API", "schema", "entity", "đồng bộ dữ liệu" or similar unless explained in the same sentence. Say "máy bán hàng ở cửa hàng" rather than "POS", "danh sách khách hàng" rather than "bảng khách hàng".
 
 Examples of good questions in this module:

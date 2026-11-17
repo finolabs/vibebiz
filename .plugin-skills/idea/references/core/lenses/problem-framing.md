@@ -58,7 +58,7 @@ State what the problem costs today in a figure the board can compare with the co
   - time: hours lost per person per period × number of people × hourly wage;
   - lost orders: orders lost per period × average order value;
   - lost customers: customers lost per period × what one customer buys in a year.
-- Look the inputs up first (the idea's files, `constitution.md`, other ideas in the workspace, documents the user connected). Ask only for what is missing, with ranges as options (ask protocol, numbers in ranges).
+- Look the inputs up first (the idea's files, `constitution.md`, other ideas in the workspace, documents the user connected). Ask only for what is missing, following ask protocol rule 5 for unknown current or past figures.
 - Do the arithmetic yourself and write the result with each input's source and period, labelled measured or assumed. A figure the user estimates is `assumed`, with the source "ước tính của anh/chị" and the date. Never round a result into a different claim.
 - When nobody can estimate it, do not supply a number. Write a short measurement plan instead (what to count, where the number comes from, for how long, who counts it) and add an open question with that person as owner. The cost item then counts as answered by the plan.
 
@@ -90,7 +90,7 @@ The router tells you which of A and B are in the round and how many question slo
 3. Rank the candidates by impact × uncertainty and return the top ones within your slots, highest first. Hold any question that depends on an answer not yet given (the next "why", the problem statement before the cause is known, the cost before the frequency).
 4. Hand the questions to the router; the router asks the round.
 
-Example round (A, fictional chain "Áo Mây"): one tool question on frequency ("Trong một tháng bình thường, Áo Mây có khoảng bao nhiêu đơn online bị bỏ dở vì khách chờ trả lời về cỡ?", options as ranges built from the user's figures), one tool question on why now ("Vì sao anh/chị muốn giải quyết chuyện khách chờ trả lời về cỡ ngay trong năm nay?"), and the open question about the last real occurrence.
+Example round (A, fictional chain "Áo Mây"): one tool question on frequency ("Trong một tháng bình thường, Áo Mây có khoảng bao nhiêu đơn online bị bỏ dở vì khách chờ trả lời về cỡ?", options following ask protocol rule 5), one tool question on why now ("Vì sao anh/chị muốn giải quyết chuyện khách chờ trả lời về cỡ ngay trong năm nay?"), and the open question about the last real occurrence.
 
 ## 8. After the answers
 
