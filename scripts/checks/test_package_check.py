@@ -60,6 +60,19 @@ class ValidFixtures(unittest.TestCase):
     def test_gap_listed_omission_is_valid(self):
         self.assertEqual(package_check.check_path(FIX / "valid_gap_listed.json"), [])
 
+    def test_gap_section_names_its_spec_heading(self):
+        # core/package.md section 6 rule 6: a gap-only section names where it would be filled from.
+        self.assertEqual(package_check.check_path(FIX / "valid_gap_section.json"), [])
+
+    def test_gap_section_with_empty_sources_is_untraceable(self):
+        # The shape T053 produced: guards the valid case above.
+        data = json.loads((FIX / "valid_gap_section.json").read_text())
+        for section in data["tech"]["sections"]:
+            if section["id"] == "key-entities":
+                section["source_fields"] = []
+        self.assertIn("untraceable: section key-entities has no source_fields",
+                      package_check.check_data(data))
+
     def test_tech_reviewed_without_labels_is_valid(self):
         self.assertEqual(package_check.check_path(FIX / "valid_tech_reviewed.json"), [])
 
