@@ -213,7 +213,7 @@ The release carries T063 from Phase 12 and the tasks below. Codex is out of quot
 - [x] T066 T054 step 5: Fio runs the desktop app with the local folder `~/vibebiz-uat-local`; record the row.
   - 17/11/2026: waived by Fio ("bypass đi"): no desktop Cowork run; computer use cannot drive the desktop app.
 - [x] T067 Release 0.1.7: manifests and `templates/workspace/index.json`, `CHANGELOG.md` `[0.1.7]`, `.plugin-skills/`; pull request with code and security reviews; tag and GitHub Release on Fio's go; then move the catalog pin (versioning "Release notes").
-  - 17/11/2026: PR 26 merged; tag `v0.1.7` on 53b9097 and its GitHub Release with `vibebiz.plugin`; catalog pin in finolabs/plugins PR 41. Not yet: the claude.ai upload, and the claude.ai run that would prove T068.
+  - 17/11/2026: PR 26 merged; tag `v0.1.7` on 53b9097 and its GitHub Release with `vibebiz.plugin`; catalog pin in finolabs/plugins PR 41. The release archive was uploaded to claude.ai the same day, and a claude.ai run in a shared Drive workspace proved T068 (`evals/RESULTS.md`).
 - [x] T068 Fix the clarification log so a declined outside fact never reaches the workspace: when the user declines writing a fact found outside the workspace (`core/router.md` "Facts before questions"), the question recorded in `spec.md` Clarifications names the source and the decision but not the figures or other accounts' names (T065, 17/11/2026). Add a regression eval case.
   - 17/11/2026: rule in `core/ask-protocol.md` §7 (source and decision only, in every record of that question); case `evals/workspace/drive-declined-lookup` guards against regression but cannot reach the ask-and-record path headless, so a claude.ai run is still needed to prove the fix (`evals/RESULTS.md`).
 
