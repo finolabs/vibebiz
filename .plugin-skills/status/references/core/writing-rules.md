@@ -50,7 +50,7 @@ The list shows the common cases, not every one. Treat any similar word the same 
 **What to do when one appears**
 
 1. Say in plain words why you are asking ("Em cần một con số để ban lãnh đạo kiểm tra được: 'nhanh' là bao lâu?"). Do not lecture.
-2. Ask through the ask-protocol module: a multiple-choice question with realistic values as options, the recommended one first, when you can offer sensible ranges (for example "trong 1 phút / trong 15 phút / trong 1 giờ"); plain text when the user must supply their own number.
+2. Ask through the ask-protocol module: a multiple-choice question with realistic values as options, the recommended one first, when you can offer sensible ranges (for example "trong 1 phút / trong 15 phút / trong 1 giờ"); a value for the future follows the ask protocol's rule 10, and a value describing today follows its rule 5; plain text when the user must supply their own number.
 3. When the user gives a value, record the requirement with the value, its unit, its source and whether it is measured or assumed.
 4. When the user skips, says they do not know, or nobody can answer: do not record the sentence as a requirement and do not choose a number yourself. Add an open question naming the term and the thing it describes, and mark the category `partial`.
 5. Keep the user's original words where they describe the problem (the Problem & Why section may quote "khách phàn nàn giao chậm" as their words). The rule applies to requirements, outcomes, success criteria, acceptance scenarios and any claim in a board or tech output.
