@@ -195,7 +195,7 @@ After Phase 2 the source skills live in `src/skills/`; the built skills are trac
 - [x] T060 `core/drive-workspace.md` "Reading": decode workspace files as UTF-8 by name and re-read text that shows mis-decoded letters (smoke test: a question showed "AI ·ªü"; cause not traced to one command).
 - [x] T061 PR 17 LOW findings: drop the vacuous regex grader in `evals/ask-protocol/no-question-tool`; FR-006 citations in four eval files point to FR-009 and FR-010; `PRIVACY.md` lines 14 and 21 name the agent of any host; `core/ask-protocol.md` §1 names each host's documents; home paths in `evals/RESULTS.md` become `~`.
 - [x] T062 Release 0.1.6: manifests and `templates/workspace/index.json`, `CHANGELOG.md` `[0.1.6]`, `.plugin-skills/`; pull request with code and security reviews; tag and GitHub Release on Fio's go. Done 15/11/2026: PR 19 merged at bdf2be7 after two review rounds (Antigravity Gemini 3.8 Flash), tag `v0.1.6`, release with `vibebiz.plugin`.
-- [ ] T063 PR 19 code review LOW: `evals/package/ready-data-json-passes-check/graders/estimate-labels-in-appendix.md` accepts `estimate_label` on a block item itself, while `package_check.py` accepts it only on the block or the slide; narrow the grader to the block, slide or section.
+- [x] T063 PR 19 code review LOW: `evals/package/ready-data-json-passes-check/graders/estimate-labels-in-appendix.md` accepts `estimate_label` on a block item itself, while `package_check.py` accepts it only on the block or the slide; narrow the grader to the block, slide or section. Done 17/11/2026: the grader now counts a label only on the block, slide or section; the eval case was not rerun.
 
 ---
 
