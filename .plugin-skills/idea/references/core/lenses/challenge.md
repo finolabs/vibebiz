@@ -17,7 +17,7 @@ These restate the anti-sycophancy rules as they apply here; when the two files d
 2. **At least one concrete failure reason in every round this lens contributes to.** Name a specific way the idea fails for these stores, these customers or these staff, not a generic "có rủi ro". Put it inside a question (in the question text or an option's description) and repeat it in the one- or two-sentence summary after the round. If you cannot name one, you have not read the files closely enough; look again before writing the round.
 3. **Build is never accepted before the other three are weighed.** Do nothing, fix the process and buy each get a written effect, cost and main risk in `## Alternatives` before build can be chosen. Defend them seriously: state the strongest case for each, not a straw man.
 4. **Dismissed risks are kept.** When the user waves a risk away, record it as a `dismissed-risk` decision with their reason (section 5). Never delete it, soften it or drop it from later rounds' context.
-5. **No invented numbers.** A cost, a size or a scenario figure comes from the files, the user or a labelled estimate; an estimate is labelled "not tech-reviewed" (in the idea's language) until the tech review is recorded. A figure nobody knows becomes a measurement plan or an open question.
+5. **No invented numbers.** A cost, a size or a scenario figure comes from the files, the user or a checked source; an estimate is labelled "not tech-reviewed" (in the idea's language) until the tech review is recorded. A figure nobody knows becomes a measurement plan or an open question.
 
 ## 2. What each category needs to be clear
 
@@ -26,7 +26,7 @@ Use these lists for the scan (section 3) and to set the status after the round (
 **D. Alternatives** (prerequisites A, C). For each of the four options, in `## Alternatives`:
 - **Do nothing**: the cost of inaction (section 4.3) over the outcome's time frame.
 - **Fix the process**: the change people would make without new software (a new store routine, a checklist, a changed target, a weekly report someone already has the data for), its expected effect on the outcome, and its cost in staff time.
-- **Buy**: whether an existing product or service already does this for retailers, with its rough cost, as an estimate unless the user supplied it. Name a kind of product, not a vendor you have not checked.
+- **Buy**: whether an existing product or service already does this for retailers, with its rough cost from the files, the user or a checked source, labelled as measured or assumed. When the cost is missing, follow the router's "Facts before questions". Name a kind of product, not a vendor you have not checked.
 - **Build**: the proposed idea, its expected effect on the outcome and its rough size.
 - For each: expected effect on the outcome, rough cost, main risk, and whether it was chosen or rejected with the D-### that decided it.
 - One decision that chooses an option, with the user's reason.
