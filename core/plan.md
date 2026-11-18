@@ -46,6 +46,8 @@ Example in Vietnamese: "Đề nghị duyệt 120 triệu đồng (phương án c
 
 ### 4.2 Size and scenarios
 
+This section is the three-scenarios method (low, base, high), built into the plan rather than a card: say so once in the section's lead line in the user's language (for example "ba kịch bản: thấp, cơ sở, cao"), and never add it to `frameworks`.
+
 1. The size first: small, medium or large, as `## Cost & Risk` records it, in the user's terms of money and time.
 2. The table, one row per scenario (low, base, high): **Cost** (one-time and per year when both exist), **Resources** (staff time, the tech team, outside help, number of stores or systems touched), **Return** (the driver from `## Outcome`, such as extra revenue, saved hours or fewer returns), **Time frame**. Every cell holds a figure with source, period, label and the estimate label, or `chưa làm rõ`.
 3. **Payback**, when the one-time cost and the yearly net return are both on file for a scenario: one-time cost divided by yearly net return, in months, one line under the table per scenario, naming the two figures it comes from and labelled as an estimate. Leave it as `chưa làm rõ` when the return is unknown or not positive.
@@ -114,10 +116,12 @@ The planning cards (`lens: plan`) are applied here at packaging, never by the ro
 
 - one of the categories in its `fills` is `missing` or `partial`;
 - its "When not to use" does not match the idea's files;
-- fewer than two planning cards are already applied to this idea (count the distinct ids of `lens: plan` cards in the `frameworks` of every category); never apply a third;
+- it is not already listed in that category's `frameworks`, and no other planning card is applied to the same category in this pass; there is no limit on how many planning cards an idea uses;
 - or the user asked for it by name (noted in `## Clarifications`) and the first three conditions still hold. If one fails, say why in one plain sentence.
 
-The two cards this module normally uses:
+When several planning cards fit one category, choose by "When to use" against the idea and write why in one English line under the category's `framework_reasons`, keyed by the card id.
+
+The two cards this module most often uses:
 
 - **`build-buy-partner-roi`** (fills D, M): when M is `partial` because the scenarios, resources or payback are missing, or because only the build cost was counted. Use its questions in plain words to collect the figures for section 4.2: one-time and yearly cost per route, the main return driver and today's value, the team needed. Count running cost, training and store staff time, not only the purchase or build. Every cost and return scenario in low, base and high, labelled as an estimate; today's value of the return driver, when nobody knows it, follows the ask protocol's rule 5 instead.
 - **`adkar`** (fills L): when L is `missing` or `partial` and the work of store staff, supervisors or back-office teams changes. Ask its questions for the group whose work changes most, record the step where that group is stuck as the place the plan starts, and write training, support, KPI changes and owners. Guessing how staff feel is not allowed: an answer nobody present can give becomes an assumption to test in the pilot or an open question.

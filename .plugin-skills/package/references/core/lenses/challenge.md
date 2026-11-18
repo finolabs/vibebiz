@@ -166,7 +166,7 @@ The router may hand this lens one framework card for an open category; it never 
 
 - Ask the card's questions in plain words, through the ask protocol, without making the user learn the framework; name it only if the user asked for it by name.
 - Write its result where the card's "Writes to" says, within this lens's sections.
-- At most two cards per lens per idea: the router counts them and records the applied card ids in the category's `frameworks` field; report to it which handed-over card had at least one question answered. Never apply a third.
+- The router decides how many cards this lens uses: one new card per open category per round, never one already applied there, with no limit per lens. It records the applied card ids in the category's `frameworks` field; report to it which handed-over card had at least one question answered.
 - Without a card, sections 4.1–4.5 still run in their plain form; they are this lens's own steps.
 
 ## 8. Update coverage and hand back

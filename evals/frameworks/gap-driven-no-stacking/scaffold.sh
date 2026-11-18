@@ -16,11 +16,11 @@ mkdir -p "$(dirname 'index.html')"
 cat > 'index.html' <<'VIBEBIZ_SEED_1'
 <!doctype html><html><head><meta charset="utf-8"><title>vibebiz</title></head><body><script type="application/json" id="vibebiz-data">{"workspace":{"updated":"2026-11-12","ground_rules_status":"deferred"},"ideas":[],"examples":[]}</script></body></html>
 VIBEBIZ_SEED_1
-mkdir -p "$(dirname 'specs/001-cap-two-per-lens/coverage.md')"
-cat > 'specs/001-cap-two-per-lens/coverage.md' <<'VIBEBIZ_SEED_2'
+mkdir -p "$(dirname 'specs/001-gap-driven-no-stacking/coverage.md')"
+cat > 'specs/001-gap-driven-no-stacking/coverage.md' <<'VIBEBIZ_SEED_2'
 ---
 id: "001"
-slug: cap-two-per-lens
+slug: gap-driven-no-stacking
 title: "Giảm thiếu size cuối tuần"
 language: vi
 vertical: fashion
@@ -162,8 +162,8 @@ categories:
 
 **Clear**: 0 of 15
 VIBEBIZ_SEED_2
-mkdir -p "$(dirname 'specs/001-cap-two-per-lens/spec.md')"
-cat > 'specs/001-cap-two-per-lens/spec.md' <<'VIBEBIZ_SEED_3'
+mkdir -p "$(dirname 'specs/001-gap-driven-no-stacking/spec.md')"
+cat > 'specs/001-gap-driven-no-stacking/spec.md' <<'VIBEBIZ_SEED_3'
 # Feature Specification: Giảm thiếu size cuối tuần
 
 ## Problem & Why
@@ -176,35 +176,35 @@ Thiếu size cuối tuần ở 12 cửa hàng. Đã dùng hai khung nguyên nhâ
 
 - Q: Điều gì khiến bạn làm việc này? → A: Khách bỏ về vì hết size.
 VIBEBIZ_SEED_3
-mkdir -p "$(dirname 'specs/001-cap-two-per-lens/plan.md')"
-cat > 'specs/001-cap-two-per-lens/plan.md' <<'VIBEBIZ_SEED_4'
+mkdir -p "$(dirname 'specs/001-gap-driven-no-stacking/plan.md')"
+cat > 'specs/001-gap-driven-no-stacking/plan.md' <<'VIBEBIZ_SEED_4'
 # Plan: Giảm thiếu size cuối tuần
 VIBEBIZ_SEED_4
-mkdir -p "$(dirname 'specs/001-cap-two-per-lens/decisions.md')"
-cat > 'specs/001-cap-two-per-lens/decisions.md' <<'VIBEBIZ_SEED_5'
+mkdir -p "$(dirname 'specs/001-gap-driven-no-stacking/decisions.md')"
+cat > 'specs/001-gap-driven-no-stacking/decisions.md' <<'VIBEBIZ_SEED_5'
 # Decisions: Giảm thiếu size cuối tuần
 VIBEBIZ_SEED_5
-mkdir -p "$(dirname 'specs/001-cap-two-per-lens/assumptions.md')"
-cat > 'specs/001-cap-two-per-lens/assumptions.md' <<'VIBEBIZ_SEED_6'
+mkdir -p "$(dirname 'specs/001-gap-driven-no-stacking/assumptions.md')"
+cat > 'specs/001-gap-driven-no-stacking/assumptions.md' <<'VIBEBIZ_SEED_6'
 # Assumptions: Giảm thiếu size cuối tuần
 VIBEBIZ_SEED_6
-mkdir -p "$(dirname 'specs/001-cap-two-per-lens/open-questions.md')"
-cat > 'specs/001-cap-two-per-lens/open-questions.md' <<'VIBEBIZ_SEED_7'
+mkdir -p "$(dirname 'specs/001-gap-driven-no-stacking/open-questions.md')"
+cat > 'specs/001-gap-driven-no-stacking/open-questions.md' <<'VIBEBIZ_SEED_7'
 # Open questions: Giảm thiếu size cuối tuần
 VIBEBIZ_SEED_7
-mkdir -p "$(dirname 'specs/001-cap-two-per-lens/glossary.md')"
-cat > 'specs/001-cap-two-per-lens/glossary.md' <<'VIBEBIZ_SEED_8'
+mkdir -p "$(dirname 'specs/001-gap-driven-no-stacking/glossary.md')"
+cat > 'specs/001-gap-driven-no-stacking/glossary.md' <<'VIBEBIZ_SEED_8'
 # Glossary: Giảm thiếu size cuối tuần
 VIBEBIZ_SEED_8
-mkdir -p "$(dirname 'specs/001-cap-two-per-lens/checklists/board.md')"
-cat > 'specs/001-cap-two-per-lens/checklists/board.md' <<'VIBEBIZ_SEED_9'
+mkdir -p "$(dirname 'specs/001-gap-driven-no-stacking/checklists/board.md')"
+cat > 'specs/001-gap-driven-no-stacking/checklists/board.md' <<'VIBEBIZ_SEED_9'
 # Definition of Ready: board
 VIBEBIZ_SEED_9
-mkdir -p "$(dirname 'specs/001-cap-two-per-lens/checklists/tech.md')"
-cat > 'specs/001-cap-two-per-lens/checklists/tech.md' <<'VIBEBIZ_SEED_10'
+mkdir -p "$(dirname 'specs/001-gap-driven-no-stacking/checklists/tech.md')"
+cat > 'specs/001-gap-driven-no-stacking/checklists/tech.md' <<'VIBEBIZ_SEED_10'
 # Definition of Ready: tech
 VIBEBIZ_SEED_10
-mkdir -p "$(dirname 'specs/001-cap-two-per-lens/diagrams/.keep')"
-: > 'specs/001-cap-two-per-lens/diagrams/.keep'
-mkdir -p "$(dirname 'specs/001-cap-two-per-lens/exports/.keep')"
-: > 'specs/001-cap-two-per-lens/exports/.keep'
+mkdir -p "$(dirname 'specs/001-gap-driven-no-stacking/diagrams/.keep')"
+: > 'specs/001-gap-driven-no-stacking/diagrams/.keep'
+mkdir -p "$(dirname 'specs/001-gap-driven-no-stacking/exports/.keep')"
+: > 'specs/001-gap-driven-no-stacking/exports/.keep'

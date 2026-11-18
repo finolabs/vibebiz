@@ -1,5 +1,5 @@
 ---
-description: 'Framework selection for open gap B: Giảm thiếu size cuối tuần.'
+description: 'Gap-driven framework selection: a third problem-framing card for open gap B, none applied twice.'
 max_turns: 25
 timeout_seconds: 600
 allowed_tools: [Skill, Read, Write, Edit, Glob, Grep, AskUserQuestion]

@@ -23,8 +23,8 @@
 
 **Purpose**: a baseline to compare against, and shared fixtures.
 
-- [ ] T001 Run the existing framework suite (`evals/frameworks/`, 12 cases) on main efb0e99. Record the scores in `evals/RESULTS.md` as the spec 004 baseline (SC-002 regression reference).
-- [ ] T002 [P] Add one fictional coverage record per lens to `evals/fixtures/frameworks/`: problem-framing, outcome, challenge, solution-sketch and plan. Each has one open category and one category already filled by a card, so the fit and skip cases can share them.
+- [x] T001 Run the existing framework suite (`evals/frameworks/`, 12 cases) on main efb0e99. Record the scores in `evals/RESULTS.md` as the spec 004 baseline (SC-002 regression reference).
+- [x] T002 [P] ~~Add one fictional coverage record per lens to `evals/fixtures/frameworks/`: problem-framing, outcome, challenge, solution-sketch and plan. Each has one open category and one category already filled by a card, so the fit and skip cases can share them.~~ Dropped 19/11/2026: every case seeds its own record in `scaffold.sh`, so a shared fixture would add a second copy to keep in step.
 
 ---
 
@@ -34,13 +34,13 @@
 
 **⚠️ CRITICAL**: no card work starts before this phase passes.
 
-- [ ] T003 Add the code check `scripts/checks/framework_names.py` and its test `scripts/checks/test_framework_names.py`. It reads an eval run's question-tool calls and fails when a question, option, description or preview contains a card's `name` or `id`, or asks the user to choose a method (SC-001). The test runs fixtures that pass and fail, red first.
-- [ ] T004 [US2] Replace `evals/frameworks/cap-two-per-lens/` with `evals/frameworks/gap-driven-no-stacking/`. Two problem-framing cards are applied and A is still `partial`, so a third fitting card is handed over; a category already `clear` gets none. Run it on the current build: it must fail, because the current router stops at two.
-- [ ] T005 [US2] In `core/router.md` "Frameworks", replace rule 2 with the gap-driven rule (contract "When a card is handed over"). Add the `framework_reasons` line to rule 3, and edit the by-name "does not fit" reason (contract "By name").
-- [ ] T006 [P] [US2] In `core/lenses/challenge.md` and `core/lenses/solution-sketch.md`, replace "At most two cards per lens per idea" with the gap-driven rule's one line, pointing to the router.
-- [ ] T007 [P] [US2] In `core/plan.md` §6, replace "fewer than two planning cards" with the gap-driven conditions, and name "three scenarios" where the module writes M (research R6).
-- [ ] T008 [P] [US2] In `templates/idea/coverage.md`, update the comment and document the optional `framework_reasons`. Update `specs/001-idea-to-prd/data-model.md` "Category" to match data-model.md. Run `python3 -m unittest scripts/checks/test_workspace.py` to confirm a workspace with and without the field is valid.
-- [ ] T009 [P] In `scripts/checks/test_cards.py`, add the lens check (data-model "Validation"), with a fixture card whose lens is wrong, red first.
+- [x] T003 Add `scripts/checks/framework_names.py` and its test `scripts/checks/test_framework_names.py`. It reads an eval run's question-tool calls and fails when a question, option, description or preview contains a card's `name` or `id`, or asks the user to choose a method (SC-001). The test runs fixtures that pass and fail, red first. Done as generated graders instead of a log reader: `framework_names.py --write` puts `no-framework-name.md` (`tool_used` on `AskUserQuestion`, `max: 0`) and `no-framework-name-in-text.md` (the final message, since headless runs show the round as text) in every framework case, and `test_framework_names.py` fails when one is missing or stale.
+- [x] T004 [US2] Replace `evals/frameworks/cap-two-per-lens/` with `evals/frameworks/gap-driven-no-stacking/`. Two problem-framing cards are applied and A is still `partial`, so a third fitting card is handed over; a category already `clear` gets none. Run it on the current build: it must fail, because the current router stops at two.
+- [x] T005 [US2] In `core/router.md` "Frameworks", replace rule 2 with the gap-driven rule (contract "When a card is handed over"). Add the `framework_reasons` line to rule 3, and edit the by-name "does not fit" reason (contract "By name").
+- [x] T006 [P] [US2] In `core/lenses/challenge.md` and `core/lenses/solution-sketch.md`, replace "At most two cards per lens per idea" with the gap-driven rule's one line, pointing to the router.
+- [x] T007 [P] [US2] In `core/plan.md` §6, replace "fewer than two planning cards" with the gap-driven conditions, and name "three scenarios" where the module writes M (research R6).
+- [x] T008 [P] [US2] In `templates/idea/coverage.md`, update the comment and document the optional `framework_reasons`. Update `specs/001-idea-to-prd/data-model.md` "Category" to match data-model.md. Run `python3 -m unittest scripts/checks/test_workspace.py` to confirm a workspace with and without the field is valid.
+- [x] T009 [P] In `scripts/checks/test_cards.py`, add the lens check (data-model "Validation"), with a fixture card whose lens is wrong, red first.
 - [ ] T010 Rebuild with `python3 scripts/build_plugin.py --skills`. T004 now passes. Rerun `by-name-fits-swot` and `by-name-mismatch-bsc` and the nine `gap-*` cases, which must still pass. Run T003's check over these runs.
 
 **Checkpoint**: the router hands cards by gap with no per-lens count, and the name check runs.

@@ -37,6 +37,7 @@ REQUIRED_SECTIONS = (
     "Fashion example",
 )
 CATEGORY_CODES = set("ABCDEFGHIJKLMNO")
+LENSES = ("problem-framing", "outcome", "challenge", "solution-sketch", "plan", "router")
 CORE_COUNT = 15
 
 _HEADING_RE = re.compile(r"^#{2,6}\s+(.+?)\s*#*\s*$", re.MULTILINE)
@@ -72,6 +73,10 @@ def check_card(path) -> list[str]:
         fills = data["fills"]
         if not isinstance(fills, list) or any(not isinstance(c, str) or c not in CATEGORY_CODES for c in fills):
             problems.append(f"{name}: 'fills' must be a list of category codes A to O")
+
+    lens = data.get("lens")
+    if lens not in (None, "") and lens not in LENSES:
+        problems.append(f"{name}: 'lens' must be one of {', '.join(LENSES)}")
 
     if "core" in data and data["core"] is not None and not isinstance(data["core"], bool):
         problems.append(f"{name}: 'core' must be true or false")
@@ -118,6 +123,7 @@ class CardFixtures(unittest.TestCase):
         "invalid-id-mismatch.md": "does not match the file name",
         "invalid-no-frontmatter.md": "does not start with a '---'",
         "invalid-empty-value.md": "frontmatter key 'name' is empty",
+        "invalid-lens.md": "'lens' must be one of",
     }
 
     def test_every_invalid_fixture_is_covered(self):
