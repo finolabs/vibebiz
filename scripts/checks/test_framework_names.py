@@ -54,5 +54,12 @@ class Graders(unittest.TestCase):
                 self.assertEqual(text.read_text(encoding="utf-8"), fn.text_grader_text(fn.pattern()), "stale grader; run framework_names.py --write")
 
 
+    def test_by_name_cases_carry_no_name_grader(self):
+        for case in sorted(fn.CASES_DIR.glob(fn.BY_NAME_PREFIX + "*")):
+            with self.subTest(case.name):
+                self.assertFalse((case / "graders" / fn.GRADER_NAME).exists())
+                self.assertFalse((case / "graders" / fn.TEXT_GRADER_NAME).exists())
+
+
 if __name__ == "__main__":
     unittest.main()

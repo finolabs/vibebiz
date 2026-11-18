@@ -102,8 +102,16 @@ def text_grader_text(pat: str) -> str:
     )
 
 
+BY_NAME_PREFIX = "by-name-"
+
+
 def case_dirs(cases_dir: Path = CASES_DIR) -> list[Path]:
-    return sorted(p for p in cases_dir.iterdir() if p.is_dir() and (p / "prompt.md").is_file())
+    """Framework cases that get the graders. A by-name case is left out: there the user names the
+    framework first, so naming it back is allowed (spec 004 FR-001)."""
+    return sorted(
+        p for p in cases_dir.iterdir()
+        if p.is_dir() and (p / "prompt.md").is_file() and not p.name.startswith(BY_NAME_PREFIX)
+    )
 
 
 def main(argv: list[str] | None = None) -> int:

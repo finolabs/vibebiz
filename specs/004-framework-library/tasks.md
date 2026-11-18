@@ -41,7 +41,7 @@
 - [x] T007 [P] [US2] In `core/plan.md` §6, replace "fewer than two planning cards" with the gap-driven conditions, and name "three scenarios" where the module writes M (research R6).
 - [x] T008 [P] [US2] In `templates/idea/coverage.md`, update the comment and document the optional `framework_reasons`. Update `specs/001-idea-to-prd/data-model.md` "Category" to match data-model.md. Run `python3 -m unittest scripts/checks/test_workspace.py` to confirm a workspace with and without the field is valid.
 - [x] T009 [P] In `scripts/checks/test_cards.py`, add the lens check (data-model "Validation"), with a fixture card whose lens is wrong, red first.
-- [ ] T010 Rebuild with `python3 scripts/build_plugin.py --skills`. T004 now passes. Rerun `by-name-fits-swot` and `by-name-mismatch-bsc` and the nine `gap-*` cases, which must still pass. Run T003's check over these runs.
+- [x] T010 Rebuild with `python3 scripts/build_plugin.py --skills`. T004 now passes. Rerun `by-name-fits-swot` and `by-name-mismatch-bsc` and the nine `gap-*` cases, which must still pass. Run T003's check over these runs.
 
 **Checkpoint**: the router hands cards by gap with no per-lens count, and the name check runs.
 
