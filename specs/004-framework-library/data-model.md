@@ -11,7 +11,7 @@ Changes to spec 001 `data-model.md` only. Everything not named here is unchanged
 
 ## Framework card (`packs/frameworks/<id>.md`)
 
-The frontmatter and body sections are unchanged (spec 001 FR-036). `core: true` stays on exactly the 15 first-release cards. New cards carry `core: false`. The library holds 42 cards, or 41 if Fio folds "three scenarios" into the plan module (research R6).
+The frontmatter and body sections are unchanged (spec 001 FR-036). `core: true` stays on exactly the 15 first-release cards. New cards carry `core: false`. The library holds 41 cards. "Three scenarios" stays built into the plan module (Fio, 18/11/2026, research R6).
 
 ## New cards
 
@@ -41,11 +41,10 @@ Lens and `fills` follow research R7. "Neighbours" are the cards whose "When not 
 | 20 | `value-effort` | Value-effort matrix | plan | E | quadrant | rice-ice, moscow | 3 |
 | 21 | `tco` | Total cost of ownership | plan | M | bar | build-buy-partner-roi, npv | 3 |
 | 22 | `npv` | NPV and payback | plan | M | bar | tco, build-buy-partner-roi | 3 |
-| 23 | `three-scenarios` | Three scenarios | plan | M | bar | build-buy-partner-roi | 3 (only if Fio keeps it as a card) |
-| 24 | `stage-gate` | Stage-gate rollout | plan | M, L | timeline | test-and-control-pilot | 3 |
-| 25 | `raci` | RACI | plan | B, L | none | adkar | 3 |
-| 26 | `kotter` | Kotter's eight steps | plan | L | timeline | adkar, mckinsey-7s | 3 |
-| 27 | `mckinsey-7s` | McKinsey 7S | plan | L | none | adkar, kotter | 3 |
+| 23 | `stage-gate` | Stage-gate rollout | plan | M, L | timeline | test-and-control-pilot | 3 |
+| 24 | `raci` | RACI | plan | B, L | none | adkar | 3 |
+| 25 | `kotter` | Kotter's eight steps | plan | L | timeline | adkar, mckinsey-7s | 3 |
+| 26 | `mckinsey-7s` | McKinsey 7S | plan | L | none | adkar, kotter | 3 |
 
 Diagram types are those in spec 001 Appendix E. `radar` and `flowchart` are listed there ("quadrant or radar", "decision flowchart"). `timeline` covers "timeline or Gantt".
 
@@ -53,5 +52,5 @@ Diagram types are those in spec 001 Appendix E. `radar` and `flowchart` are list
 
 - `id` equals the file name without `.md`, and `fills` uses codes A to O (unchanged checks).
 - `lens` is one of `problem-framing`, `outcome`, `challenge`, `solution-sketch`, `plan`, `router` (new check).
-- Exactly 15 cards have `core: true`, and the total is 42, or 41 (new count check).
-- Cards that handle money (`cost-of-inaction`, `tco`, `npv`, `bcg-matrix`, and `three-scenarios` if kept) follow ask-protocol rules 5 and 10: no invented current figure, and estimates are labelled "not tech-reviewed".
+- Exactly 15 cards have `core: true`, and the total is 41 (new count check).
+- Cards that handle money (`cost-of-inaction`, `tco`, `npv`, `bcg-matrix`) follow ask-protocol rules 5 and 10: no invented current figure, and estimates are labelled "not tech-reviewed".

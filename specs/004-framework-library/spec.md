@@ -14,13 +14,13 @@
 - **Several frameworks per package** (Fio, 18/11/2026). One deck or document may show the results of several frameworks at once, each on the slide or section its category feeds. This already holds today (`core/package.md` step 4). This spec widens the choice behind it.
 - **SIPOC with a Requirements column** (Fio asked for "SIPOC (SIRPOC)"). One card covers both. Its rows are Suppliers, Inputs, Process, Outputs and Customers. A Requirements column says what each customer needs from each output, which is what users of the SIRPOC variant add. The card names both forms in its `origin`.
 - **A user who names a framework** keeps the current behavior (spec 001 FR-038): vibebiz applies it when it fills an open gap and otherwise says why. This is the only path where a framework name comes from the user.
-- **The whole catalog ships** (Fio, 18/11/2026, Q1). Besides SIPOC, this release adds every framework that spec 001 Appendix F lists for later releases, 26 cards:
+- **The whole catalog ships** (Fio, 18/11/2026, Q1). Besides SIPOC, this release adds every framework that spec 001 Appendix F lists for later releases except three scenarios, 25 cards:
   - problem-framing: issue tree (MECE), Porter value chain;
   - outcome: North Star metric, OKR, SMART, leading vs lagging indicators;
   - challenge: Porter Five Forces, PESTEL, cost of inaction, Six Thinking Hats, Theory of Constraints;
   - solution-sketch: Value Proposition Canvas, Kano, Lean / DMAIC;
-  - plan: STP, Ansoff, BCG matrix, RICE / ICE, value-effort matrix, TCO, NPV, three scenarios, stage-gate, RACI, Kotter, McKinsey 7S.
-  The library grows from 15 to 42 cards. Pyramid principle / SCQA stays a rule of the board view's export guidelines, not a card.
+  - plan: STP, Ansoff, BCG matrix, RICE / ICE, value-effort matrix, TCO, NPV, stage-gate, RACI, Kotter, McKinsey 7S.
+  The library grows from 15 to 41 cards: SIPOC plus these 25. Two catalog entries stay built into modules instead of becoming cards (Fio, 18/11/2026). Pyramid principle / SCQA stays a rule of the board view's export guidelines. Three scenarios (low, base and high) stays the way the plan module writes category M. The outputs name both when they shape a slide or section.
 - **Gap-driven limit** (Fio, 18/11/2026, Q2). "At most two cards per lens per idea" is removed. A new card is applied only when it fills an open category that no applied card has filled, one new card per category per round, inside the interview's round budget, which does not change.
 
 - **No constitution amendment.** The constitution sets no limit on frameworks. The `CLAUDE.md` lines "the fifteen framework cards" and "at most two per lens per idea" change in the same pull request as the implementation, with Fio's yes on this spec.
@@ -65,7 +65,7 @@ A maintainer adds a new card in vibebiz's own words, with its lens, the categori
 
 **Why this priority**: the catalog in spec 001 Appendix F lists about thirty more frameworks for later releases. Each should cost a card and its eval, not a redesign.
 
-**Independent Test**: add the 26 catalog cards. Run the framework eval suite and the help eval. Every new card is chosen in at least one case where it fits and passed over in a case where it does not. The docs name exactly the cards that ship.
+**Independent Test**: add the 25 catalog cards. Run the framework eval suite and the help eval. Every new card is chosen in at least one case where it fits and passed over in a case where it does not. The docs name exactly the cards that ship.
 
 **Acceptance Scenarios**:
 
@@ -82,7 +82,7 @@ A maintainer adds a new card in vibebiz's own words, with its lens, the categori
 - A card that fills a category another module owns, for example SIPOC touching data sources (G) and integrations (H), which the clarify module fills. The plan settles which module asks the card's questions.
 - A user who answers "I don't know" to a card's question. The ask protocol's rule 5 applies. The card's result shows the gap as not yet clarified and invents nothing.
 - The organization already records its OKRs in the ground rules. The outcome lens keeps mapping the idea to them, as today. The OKR card is used only to draft the idea's own objective and key results when the ground rules hold none.
-- Two new cards that overlap, such as RICE / ICE and the value-effort matrix, or TCO, NPV and three scenarios. The router applies one per open category and never stacks overlapping cards on the same gap.
+- Two new cards that overlap, such as RICE / ICE and the value-effort matrix, or TCO, NPV and the plan module's three scenarios. The router applies one per open category and never stacks overlapping cards on the same gap.
 - Many frameworks on one slide. The board deck stays readable: each slide shows at most the results its layout fixes, and the rest go to the appendix.
 
 ## Requirements *(mandatory)*
@@ -94,7 +94,7 @@ A maintainer adds a new card in vibebiz's own words, with its lens, the categori
 - **FR-003**: vibebiz MUST ship a SIPOC card with the fields of spec 001 FR-036. It is written in vibebiz's own words, with a fictional retail example and its origin, covering both the five-column form and the Requirements column.
 - **FR-004**: The router MUST choose SIPOC only for an idea that changes an existing process with hand-offs between people, teams or systems, and only while a category the card fills is open.
 - **FR-005**: The router MUST replace spec 001 FR-037's "at most two per lens per idea" with the gap-driven rule (Settled Decisions). It keeps "only to fill an open gap" and "one new card per category per round".
-- **FR-006**: vibebiz MUST ship the 26 catalog cards listed in Settled Decisions, each with the fields of spec 001 FR-036. Third-party frameworks are described in vibebiz's own words and credited.
+- **FR-006**: vibebiz MUST ship the 25 catalog cards listed in Settled Decisions, each with the fields of spec 001 FR-036. Third-party frameworks are described in vibebiz's own words and credited.
 - **FR-007**: When several cards fit one open category, the router MUST pick by the card's "When to use" against the idea and its Cynefin depth. It MUST record the chosen card and a one-line reason in `coverage.md`.
 - **FR-008**: The package MUST name every applied card and place its result on the slide or section its category feeds. Results that do not fit a slide's fixed layout go to the appendix.
 - **FR-009**: Adding a card MUST need no change to the router or the lens modules: lens, category codes, `When to use` and `When not to use` in the card are enough for it to be chosen.
@@ -122,5 +122,5 @@ A maintainer adds a new card in vibebiz's own words, with its lens, the categori
 - Each card stays a single file in `packs/frameworks/`, read by the router through the build's `references/`.
 - The interview's round budget and the four-questions-per-round limit do not change, so more cards can mean more rounds only within the existing budget.
 - New cards are described from public knowledge in vibebiz's own words. No framework text, layout or artwork is copied, as `CLAUDE.md` requires.
-- Eval cost grows with the library: SC-003 needs at least two cases per new card, about 54 cases. Cases may share fixtures, and the suite runs per changed card, as the plugin-packaging trigger rule does.
+- Eval cost grows with the library: SC-003 needs at least two cases per new card, about 52 cases. Cases may share fixtures, and the suite runs per changed card, as the plugin-packaging trigger rule does.
 - The release is 0.1.x, a compatible change: the workspace layout and file names stay the same.

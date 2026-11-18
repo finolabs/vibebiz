@@ -6,16 +6,16 @@
 
 ## Summary
 
-The work adds SIPOC and the catalog cards from spec 001 Appendix F, which takes the library from 15 to 42 cards, or 41 cards (see Open Decisions). It also replaces the two-cards-per-lens limit with a gap-driven rule, and makes "the user never chooses a framework" a rule that evals check. Today's router design already chooses cards by coverage gap and asks their questions in plain words (research R2). So the change is:
+The work adds SIPOC and the catalog cards from spec 001 Appendix F, which takes the library from 15 to 41 cards. It also replaces the two-cards-per-lens limit with a gap-driven rule, and makes "the user never chooses a framework" a rule that evals check. Today's router design already chooses cards by coverage gap and asks their questions in plain words (research R2). So the change is:
 - one rule in the router and three modules;
 - an optional `framework_reasons` field in `coverage.md`;
 - new card files;
 - their eval cases;
 - the docs that describe the library.
 
-## Open Decisions
+## Settled Decisions
 
-- **Three scenarios as a card** (research R6): low, base and high scenarios are already how category M is written by the plan module and the build-buy-partner card. Recommendation: fold it into the plan module like pyramid / SCQA and ship 26 new cards, not 27. Owner: Fio. Until he decides, batch 3 leaves it to last.
+- **Three scenarios is built in, not a card** (Fio, 18/11/2026, research R6). It stays the plan module's way of writing category M, like pyramid / SCQA in the export guidelines, so there are 26 new cards. `core/plan.md` names it "three scenarios" where it writes M, so the outputs can name it.
 
 ## Technical Context
 
@@ -46,8 +46,8 @@ The work adds SIPOC and the catalog cards from spec 001 Appendix F, which takes 
 - `SKILL.md` bodies are unchanged.
 
 **Scale/Scope**:
-- 26 or 27 new cards.
-- About 54 new eval cases.
+- 26 new cards.
+- About 52 new eval cases.
 - Edits to 5 modules, 1 template, the data model, the docs and the evals README.
 
 ## Constitution Check
@@ -87,10 +87,10 @@ specs/004-framework-library/
 ```text
 core/
 ├── router.md                      # "Frameworks" rule 2 and the by-name branch (R1, R3); framework_reasons (R4)
-├── plan.md                        # §6 planning-card limit (R1)
+├── plan.md                        # §6 planning-card limit (R1); name "three scenarios" for M (R6)
 ├── export-guidelines.md           # name "pyramid principle / SCQA" (R6)
 └── lenses/{challenge,solution-sketch}.md   # drop "at most two" lines (R1)
-packs/frameworks/                  # 26 or 27 new cards, core: false (data-model)
+packs/frameworks/                  # 26 new cards, core: false (data-model)
 templates/idea/coverage.md         # comment line, framework_reasons
 scripts/checks/test_cards.py       # TOTAL_COUNT, lens check (R5)
 evals/frameworks/                  # gap-driven-no-stacking (replaces cap-two-per-lens), fit-/skip- cases, name grader (R9)
@@ -120,7 +120,7 @@ So `/speckit-tasks` comes next. It orders the work in four phases:
 2. **Cards**, in three parallel delegated runs by batch (data-model "batch"). Each run covers its cards with `fit-`/`skip-` cases written red first. The reviews come from another family.
    - batch 1: SIPOC, problem-framing and outcome, 7 cards;
    - batch 2: challenge and solution-sketch, 8 cards;
-   - batch 3: plan, 11 or 12 cards.
+   - batch 3: plan, 11 cards.
 3. **Language**: one `vietnamizer` pass over every new card's questions and example.
 4. **Docs and release review**: FR-010; the CLAUDE.md line; the spec 001 pointers; the whole framework suite once; the simulated sessions; the Cowork smoke test.
 

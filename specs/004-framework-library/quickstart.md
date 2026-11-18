@@ -10,7 +10,7 @@ python3 -m unittest scripts/checks/test_cards.py scripts/checks/test_build.py
 
 Expected:
 - all tests pass;
-- 42 cards, 15 of them `core: true` (41 if "three scenarios" is folded);
+- 41 cards, 15 of them `core: true`;
 - the build test sees every card in each skill that reads cards.
 
 ```bash

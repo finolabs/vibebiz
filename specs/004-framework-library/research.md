@@ -54,7 +54,7 @@ There is no count per lens. The interview's round budget (`budget_rounds_used`) 
 
 ## R5. The `core` flag and the card checker
 
-**Decision**: the 27 new cards carry `core: false`. `scripts/checks/test_cards.py` keeps `CORE_COUNT = 15` (the first-release set) and adds `TOTAL_COUNT = 42`, so a missing or extra card fails. The checker also rejects a `lens` outside the six used today (`problem-framing`, `outcome`, `challenge`, `solution-sketch`, `plan`, `router`).
+**Decision**: the 26 new cards carry `core: false`. `scripts/checks/test_cards.py` keeps `CORE_COUNT = 15` (the first-release set) and adds `TOTAL_COUNT = 41`, so a missing or extra card fails. The checker also rejects a `lens` outside the six used today (`problem-framing`, `outcome`, `challenge`, `solution-sketch`, `plan`, `router`).
 
 **Rationale**: `core` already means "first-release fashion set" in spec 001 Appendix F. The build copies every card in `packs/frameworks/`, so no build change is needed. This needs confirming in the build test.
 
@@ -65,7 +65,7 @@ There is no count per lens. The interview's round budget (`budget_rounds_used`) 
 - **Three scenarios**: already how category M is written: "S/M/L size, three scenarios" in spec 001 Appendix A, plus the plan module's cost table and the build-buy-partner card's low, base and high. A separate card would fill M with a duplicate of what the plan module writes anyway.
 - **OKR**: spec 001 says organization OKRs live in the ground rules, not in a card. The new OKR card is for drafting the idea's own objective and key results when the ground rules hold none (spec 004 Edge Cases).
 
-**Open for Fio**: ship "three scenarios" as a card or fold it into the plan module like SCQA. The recommendation is to fold it, which makes 26 new cards instead of 27, because a card that never changes what is asked or written is a no-op that still costs two eval cases. Recorded in `plan.md` "Open Decisions".
+**Settled by Fio, 18/11/2026**: "three scenarios" is folded into the plan module like SCQA, so there are 26 new cards. A card that never changes what is asked or written would be a no-op that still costs two eval cases. `core/plan.md` names it where it writes M.
 
 ## R7. Lens and categories for each new card
 
@@ -96,7 +96,7 @@ Each card's "When not to use" names its neighbours and says when the neighbour f
 - **Replace one case:** `evals/frameworks/cap-two-per-lens` becomes `gap-driven-no-stacking`, where a category already filled by a card gets no second card while another open category does.
 - **Add two cases per new card under `evals/frameworks/`:** `fit-<id>` where the card fits and `skip-<id>` where a neighbour fits better or no card fits. They share fixtures by lens.
 - **Add one grader to every framework case:** no question, option or preview names a framework or asks the user to pick one (SC-001). This grader runs in code over the run log, not as a model judgment.
-- **Cost:** about 54 new cases at roughly $0.15 to $0.30 a run on `sonnet` with `--runs 1`, so $10 to $16 for the whole suite. Per the plugin-packaging rule, run per changed card during work and the whole suite once before the release.
+- **Cost:** about 52 new cases at roughly $0.15 to $0.30 a run on `sonnet` with `--runs 1`, so $10 to $16 for the whole suite. Per the plugin-packaging rule, run per changed card during work and the whole suite once before the release.
 
 **Rationale**: constitution Principle V requires a red case first and code checks for structure.
 
@@ -106,6 +106,6 @@ Each card's "When not to use" names its neighbours and says when the neighbour f
 
 ## R11. Delegation shape
 
-**Decision**: the foundation (R1, R3, R4, R5, the grader and the replaced case) is done first in this session. It is one seam and every other task depends on it. The 26 or 27 cards then go to three parallel delegated runs, one per batch in `plan.md`. Each run gets a complete brief: the card template from an existing card, the mapping row, the two eval cases and `test_cards.py`. Reviews go to another family. Docs and the release review come last.
+**Decision**: the foundation (R1, R3, R4, R5, the grader and the replaced case) is done first in this session. It is one seam and every other task depends on it. The 26 cards then go to three parallel delegated runs, one per batch in `plan.md`. Each run gets a complete brief: the card template from an existing card, the mapping row, the two eval cases and `test_cards.py`. Reviews go to another family. Docs and the release review come last.
 
 **Rationale**: the cards are independent files with clear acceptance tests, so `delegate` "Keep or hand off" fits.
