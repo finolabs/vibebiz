@@ -118,7 +118,7 @@ So `/speckit-tasks` comes next. It orders the work in four phases:
    - the `test_cards.py` counts and lens check;
    - the build.
 2. **Cards**, in three parallel delegated runs by batch (data-model "batch"). Each run covers its cards with `fit-`/`skip-` cases written red first. The reviews come from another family.
-   - batch 1: SIPOC, problem-framing and outcome, 7 cards;
+   - SIPOC first, in this session (tasks Phase 3); then batch 1: problem-framing and outcome, 6 cards;
    - batch 2: challenge and solution-sketch, 8 cards;
    - batch 3: plan, 11 cards.
 3. **Language**: one `vietnamizer` pass over every new card's questions and example.

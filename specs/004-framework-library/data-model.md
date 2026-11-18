@@ -19,7 +19,7 @@ Lens and `fills` follow research R7. "Neighbours" are the cards whose "When not 
 
 | # | id | name | lens | fills | diagram_type | neighbours | batch |
 |---|---|---|---|---|---|---|---|
-| 1 | `sipoc` | SIPOC (with a Requirements column) | solution-sketch | E, J | none | journey-map-service-blueprint, lean-dmaic | 1 |
+| 1 | `sipoc` | SIPOC (with a Requirements column) | solution-sketch | E, J | none | journey-map-service-blueprint, lean-dmaic | US1 (this session) |
 | 2 | `issue-tree` | Issue tree (MECE) | problem-framing | A | tree | five-whys, fishbone | 1 |
 | 3 | `value-chain` | Porter value chain | problem-framing | A, B | none | sipoc | 1 |
 | 4 | `north-star-metric` | North Star metric | outcome | C | tree | driver-tree | 1 |

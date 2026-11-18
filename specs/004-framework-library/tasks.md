@@ -1,0 +1,169 @@
+# Tasks: A wider framework library that vibebiz chooses from on its own
+
+**Input**: Design documents from `specs/004-framework-library/`
+
+**Prerequisites**: [plan.md](plan.md), [spec.md](spec.md), [research.md](research.md), [data-model.md](data-model.md), [contracts/framework-selection.md](contracts/framework-selection.md), [quickstart.md](quickstart.md)
+
+**Tests**: required by constitution V. Every instruction change starts from an eval case or a check that fails for the reason the change addresses, and ends with it passing. Structure is checked in code (`scripts/checks/`).
+
+**Docs**: required by constitution VII. Phase 7 updates everything that describes the library, in the same pull request as the behavior.
+
+**Heavy jobs**: eval runs go one at a time, at a one-minute load of 25 or less. Run targeted modules only, never more than two per command.
+
+**Delegation**: Phases 1 to 4 stay in this session, because they form the seam that every card depends on. In Phase 5 the three batches go to parallel delegated runs, following `delegate`. Reviews go to another family.
+
+## Format: `[ID] [P?] [Story] Description`
+
+- **[P]**: can run in parallel: a different file, with no dependency on an unfinished task.
+- **[Story]**: the user story in spec.md.
+
+---
+
+## Phase 1: Setup
+
+**Purpose**: a baseline to compare against, and shared fixtures.
+
+- [ ] T001 Run the existing framework suite (`evals/frameworks/`, 12 cases) on main efb0e99. Record the scores in `evals/RESULTS.md` as the spec 004 baseline (SC-002 regression reference).
+- [ ] T002 [P] Add one fictional coverage record per lens to `evals/fixtures/frameworks/`: problem-framing, outcome, challenge, solution-sketch and plan. Each has one open category and one category already filled by a card, so the fit and skip cases can share them.
+
+---
+
+## Phase 2: Foundational (blocking)
+
+**Purpose**: the gap-driven rule and the checks every card relies on.
+
+**⚠️ CRITICAL**: no card work starts before this phase passes.
+
+- [ ] T003 Add the code check `scripts/checks/framework_names.py` and its test `scripts/checks/test_framework_names.py`. It reads an eval run's question-tool calls and fails when a question, option, description or preview contains a card's `name` or `id`, or asks the user to choose a method (SC-001). The test runs fixtures that pass and fail, red first.
+- [ ] T004 [US2] Replace `evals/frameworks/cap-two-per-lens/` with `evals/frameworks/gap-driven-no-stacking/`. Two problem-framing cards are applied and A is still `partial`, so a third fitting card is handed over; a category already `clear` gets none. Run it on the current build: it must fail, because the current router stops at two.
+- [ ] T005 [US2] In `core/router.md` "Frameworks", replace rule 2 with the gap-driven rule (contract "When a card is handed over"). Add the `framework_reasons` line to rule 3, and edit the by-name "does not fit" reason (contract "By name").
+- [ ] T006 [P] [US2] In `core/lenses/challenge.md` and `core/lenses/solution-sketch.md`, replace "At most two cards per lens per idea" with the gap-driven rule's one line, pointing to the router.
+- [ ] T007 [P] [US2] In `core/plan.md` §6, replace "fewer than two planning cards" with the gap-driven conditions, and name "three scenarios" where the module writes M (research R6).
+- [ ] T008 [P] [US2] In `templates/idea/coverage.md`, update the comment and document the optional `framework_reasons`. Update `specs/001-idea-to-prd/data-model.md` "Category" to match data-model.md. Run `python3 -m unittest scripts/checks/test_workspace.py` to confirm a workspace with and without the field is valid.
+- [ ] T009 [P] In `scripts/checks/test_cards.py`, add the lens check (data-model "Validation"), with a fixture card whose lens is wrong, red first.
+- [ ] T010 Rebuild with `python3 scripts/build_plugin.py --skills`. T004 now passes. Rerun `by-name-fits-swot` and `by-name-mismatch-bsc` and the nine `gap-*` cases, which must still pass. Run T003's check over these runs.
+
+**Checkpoint**: the router hands cards by gap with no per-lens count, and the name check runs.
+
+---
+
+## Phase 3: User Story 1 - SIPOC without the word (Priority: P1) 🎯 MVP
+
+**Goal**: a process-automation idea is framed with SIPOC through plain questions, and its result shows in the outputs.
+
+**Independent Test**: `fit-sipoc` and `skip-sipoc` pass, and T003's check passes on both.
+
+- [ ] T011 [US1] Write `evals/frameworks/fit-sipoc/` and `evals/frameworks/skip-sipoc/`, red first:
+  - `fit-sipoc`: a warehouse-to-store replenishment idea with E open. SIPOC's questions are asked without its name.
+  - `skip-sipoc`: a customer journey idea with no internal hand-off. The journey-map card is chosen instead.
+- [ ] T012 [US1] Write `packs/frameworks/sipoc.md` (data-model row 1, `core: false`). Use the seven sections and the Requirements column, describe both forms in `origin`, and name journey-map-service-blueprint and lean-dmaic in "When not to use". Write it in vibebiz's own words with a fictional fashion example. Follow the `writing-for-agents` skill.
+- [ ] T013 [US1] Rebuild, then run T011's two cases and T003's check. Run `python3 -m unittest scripts/checks/test_cards.py`.
+
+**Checkpoint**: SIPOC works on its own and the MVP can be shown.
+
+---
+
+## Phase 4: User Story 2 - Several frameworks for one idea (Priority: P1)
+
+**Goal**: cards are combined across lenses, with a reason for each, and all of them are named in the package.
+
+**Independent Test**: `combine-across-lenses` passes, and the package check flags a missing framework name.
+
+- [ ] T014 [US2] Write `evals/frameworks/combine-across-lenses/`, red first. It is a fixed coverage record with A, C, D and E open over several rounds. The expected cards are handed over, each with one line in `framework_reasons`, and no card goes to a `clear` category.
+- [ ] T015 [P] [US2] Add a `scripts/checks/fixtures/package/` case with four applied cards, one of them missing from `frameworks[]` of its slide. `python3 -m unittest scripts/checks/test_package_check.py` must flag it (SC-004). Add a passing twin.
+- [ ] T016 [US2] In `core/export-guidelines.md`, name "pyramid principle / SCQA" in the board rule at line 24, and add the rule that a framework result which does not fit the slide's fixed layout goes to the appendix (FR-008).
+- [ ] T017 [US2] Rebuild, then run T014, T015 and T003's check.
+
+**Checkpoint**: the gap-driven rule and multi-framework packages are proven before the library grows.
+
+---
+
+## Phase 5: User Story 3 - The library grows by cards (Priority: P2)
+
+**Goal**: the 25 catalog cards ship with no router change (FR-009).
+
+**Independent Test**: every `fit-<id>` and `skip-<id>` case passes, `test_cards.py` counts 41 cards, and T003's check passes on all of them.
+
+- [ ] T018 [US3] In `scripts/checks/test_cards.py`, set `TOTAL_COUNT = 41` and keep `CORE_COUNT = 15`. The check stays red until T021 to T045 land.
+- [ ] T019 [US3] Dispatch the three batches below as parallel runs through `delegate`, one per run, each in its own worktree. Each brief carries:
+  - an existing card as the template;
+  - the data-model rows of its batch;
+  - its lens fixture from T002;
+  - the red-first rule;
+  - `writing-for-agents`;
+  - "own words, fictional example, no invented figures (ask-protocol rules 5 and 10)";
+  - the tests to run: `test_cards.py` and the batch's eval cases one at a time.
+- [ ] T020 [US3] Accept each batch through `checks`. Merge it into the feature branch, rebuild, and get a code and a security review from another family.
+
+### Batch 1: problem-framing and outcome (6 cards)
+
+- [ ] T021 [P] [US3] `issue-tree` (problem-framing, fills A): red `evals/frameworks/fit-issue-tree/` and `evals/frameworks/skip-issue-tree/` first, then `packs/frameworks/issue-tree.md` (`core: false`, data-model row), neighbours named in "When not to use"; both cases pass
+- [ ] T022 [P] [US3] `value-chain` (problem-framing, fills A, B): red `evals/frameworks/fit-value-chain/` and `evals/frameworks/skip-value-chain/` first, then `packs/frameworks/value-chain.md` (`core: false`, data-model row), neighbours named in "When not to use"; both cases pass
+- [ ] T023 [P] [US3] `north-star-metric` (outcome, fills C): red `evals/frameworks/fit-north-star-metric/` and `evals/frameworks/skip-north-star-metric/` first, then `packs/frameworks/north-star-metric.md` (`core: false`, data-model row), neighbours named in "When not to use"; both cases pass
+- [ ] T024 [P] [US3] `okr` (outcome, fills C, O): red `evals/frameworks/fit-okr/` and `evals/frameworks/skip-okr/` first, then `packs/frameworks/okr.md` (`core: false`, data-model row), neighbours named in "When not to use"; both cases pass
+- [ ] T025 [P] [US3] `smart` (outcome, fills C, O): red `evals/frameworks/fit-smart/` and `evals/frameworks/skip-smart/` first, then `packs/frameworks/smart.md` (`core: false`, data-model row), neighbours named in "When not to use"; both cases pass
+- [ ] T026 [P] [US3] `leading-lagging` (outcome, fills C): red `evals/frameworks/fit-leading-lagging/` and `evals/frameworks/skip-leading-lagging/` first, then `packs/frameworks/leading-lagging.md` (`core: false`, data-model row), neighbours named in "When not to use"; both cases pass
+
+### Batch 2: challenge and solution-sketch (8 cards)
+
+- [ ] T027 [P] [US3] `five-forces` (challenge, fills D, K): red `evals/frameworks/fit-five-forces/` and `evals/frameworks/skip-five-forces/` first, then `packs/frameworks/five-forces.md` (`core: false`, data-model row), neighbours named in "When not to use"; both cases pass
+- [ ] T028 [P] [US3] `pestel` (challenge, fills K): red `evals/frameworks/fit-pestel/` and `evals/frameworks/skip-pestel/` first, then `packs/frameworks/pestel.md` (`core: false`, data-model row), neighbours named in "When not to use"; both cases pass
+- [ ] T029 [P] [US3] `cost-of-inaction` (challenge, fills D, M): red `evals/frameworks/fit-cost-of-inaction/` and `evals/frameworks/skip-cost-of-inaction/` first, then `packs/frameworks/cost-of-inaction.md` (`core: false`, data-model row), neighbours named in "When not to use"; both cases pass
+- [ ] T030 [P] [US3] `six-thinking-hats` (challenge, fills D, K): red `evals/frameworks/fit-six-thinking-hats/` and `evals/frameworks/skip-six-thinking-hats/` first, then `packs/frameworks/six-thinking-hats.md` (`core: false`, data-model row), neighbours named in "When not to use"; both cases pass
+- [ ] T031 [P] [US3] `theory-of-constraints` (challenge, fills D): red `evals/frameworks/fit-theory-of-constraints/` and `evals/frameworks/skip-theory-of-constraints/` first, then `packs/frameworks/theory-of-constraints.md` (`core: false`, data-model row), neighbours named in "When not to use"; both cases pass
+- [ ] T032 [P] [US3] `value-proposition-canvas` (solution-sketch, fills E): red `evals/frameworks/fit-value-proposition-canvas/` and `evals/frameworks/skip-value-proposition-canvas/` first, then `packs/frameworks/value-proposition-canvas.md` (`core: false`, data-model row), neighbours named in "When not to use"; both cases pass
+- [ ] T033 [P] [US3] `kano` (solution-sketch, fills E): red `evals/frameworks/fit-kano/` and `evals/frameworks/skip-kano/` first, then `packs/frameworks/kano.md` (`core: false`, data-model row), neighbours named in "When not to use"; both cases pass
+- [ ] T034 [P] [US3] `lean-dmaic` (solution-sketch, fills E, J): red `evals/frameworks/fit-lean-dmaic/` and `evals/frameworks/skip-lean-dmaic/` first, then `packs/frameworks/lean-dmaic.md` (`core: false`, data-model row), neighbours named in "When not to use"; both cases pass
+
+### Batch 3: plan (11 cards)
+
+- [ ] T035 [P] [US3] `stp` (plan, fills B, E): red `evals/frameworks/fit-stp/` and `evals/frameworks/skip-stp/` first, then `packs/frameworks/stp.md` (`core: false`, data-model row), neighbours named in "When not to use"; both cases pass
+- [ ] T036 [P] [US3] `ansoff` (plan, fills D): red `evals/frameworks/fit-ansoff/` and `evals/frameworks/skip-ansoff/` first, then `packs/frameworks/ansoff.md` (`core: false`, data-model row), neighbours named in "When not to use"; both cases pass
+- [ ] T037 [P] [US3] `bcg-matrix` (plan, fills D, M): red `evals/frameworks/fit-bcg-matrix/` and `evals/frameworks/skip-bcg-matrix/` first, then `packs/frameworks/bcg-matrix.md` (`core: false`, data-model row), neighbours named in "When not to use"; both cases pass
+- [ ] T038 [P] [US3] `rice-ice` (plan, fills E): red `evals/frameworks/fit-rice-ice/` and `evals/frameworks/skip-rice-ice/` first, then `packs/frameworks/rice-ice.md` (`core: false`, data-model row), neighbours named in "When not to use"; both cases pass
+- [ ] T039 [P] [US3] `value-effort` (plan, fills E): red `evals/frameworks/fit-value-effort/` and `evals/frameworks/skip-value-effort/` first, then `packs/frameworks/value-effort.md` (`core: false`, data-model row), neighbours named in "When not to use"; both cases pass
+- [ ] T040 [P] [US3] `tco` (plan, fills M): red `evals/frameworks/fit-tco/` and `evals/frameworks/skip-tco/` first, then `packs/frameworks/tco.md` (`core: false`, data-model row), neighbours named in "When not to use"; both cases pass
+- [ ] T041 [P] [US3] `npv` (plan, fills M): red `evals/frameworks/fit-npv/` and `evals/frameworks/skip-npv/` first, then `packs/frameworks/npv.md` (`core: false`, data-model row), neighbours named in "When not to use"; both cases pass
+- [ ] T042 [P] [US3] `stage-gate` (plan, fills M, L): red `evals/frameworks/fit-stage-gate/` and `evals/frameworks/skip-stage-gate/` first, then `packs/frameworks/stage-gate.md` (`core: false`, data-model row), neighbours named in "When not to use"; both cases pass
+- [ ] T043 [P] [US3] `raci` (plan, fills B, L): red `evals/frameworks/fit-raci/` and `evals/frameworks/skip-raci/` first, then `packs/frameworks/raci.md` (`core: false`, data-model row), neighbours named in "When not to use"; both cases pass
+- [ ] T044 [P] [US3] `kotter` (plan, fills L): red `evals/frameworks/fit-kotter/` and `evals/frameworks/skip-kotter/` first, then `packs/frameworks/kotter.md` (`core: false`, data-model row), neighbours named in "When not to use"; both cases pass
+- [ ] T045 [P] [US3] `mckinsey-7s` (plan, fills L): red `evals/frameworks/fit-mckinsey-7s/` and `evals/frameworks/skip-mckinsey-7s/` first, then `packs/frameworks/mckinsey-7s.md` (`core: false`, data-model row), neighbours named in "When not to use"; both cases pass
+
+- [ ] T046 [US3] With every batch merged, rebuild. `test_cards.py` passes at 41 cards. Run T003's check over all `fit-` and `skip-` runs.
+
+**Checkpoint**: 41 cards and every new card proven where it fits and where it does not.
+
+---
+
+## Phase 6: Language
+
+- [ ] T047 Run one `vietnamizer` pass over the "Questions" and "Fashion example" sections of the 26 new cards (research R10). Change only wording, never meaning. Rerun `test_cards.py`.
+
+---
+
+## Phase 7: Docs, records and release review
+
+- [ ] T048 [P] Update `docs/workflow.md` ("15 phương pháp" → the library as shipped, chosen by vibebiz), `docs/glossary.md`, `src/skills/help/situation-map.md` and the README pair (FR-010). Edit the Vietnamese with `vietnamizer`.
+- [ ] T049 Run `python3 -m unittest scripts/checks/test_docs_map.py`.
+- [ ] T050 [P] Update the suite 10 rows in `evals/README.md`: `gap-driven-no-stacking`, the `fit-`/`skip-` cases, `combine-across-lenses` and the name check.
+- [ ] T051 [P] Update `CLAUDE.md` line 30 to "the framework library in `packs/frameworks/` (spec 004); a card is applied only while its category is open and not already filled by a card", with Fio's yes on this spec.
+- [ ] T052 [P] Add one-line pointers to spec 004 in `specs/001-idea-to-prd/spec.md`: FR-037, SC-011, Appendix F, and the Appendix I row 10 (research R1).
+- [ ] T053 Run the whole framework suite once on the final build, and record it in `evals/RESULTS.md`. SC-001 must be 100%, SC-002 at least 90%, and SC-003 met for every new card.
+- [ ] T054 Run the simulated-session suite (SC-005): rounds to readiness at four sessions or fewer, key facts at 85% or more. Record the result.
+- [ ] T055 Fio runs the Cowork smoke test (`specs/001-idea-to-prd/quickstart.md`) on the release candidate, as constitution §V requires.
+- [ ] T056 Open the pull request with the `fnl-router` line (depth NORMAL, trigger consumers) and get the two posted reviews. Merge on Fio's go. Release 0.1.9 follows `versioning`, with tag, GitHub Release and catalog pin, each on Fio's go.
+
+---
+
+## Dependencies
+
+- Phase 1 → Phase 2 → Phases 3 and 4. Phases 3 and 4 can run in either order; both need T010.
+- Phase 5 needs Phases 2 to 4. T021 to T045 run in parallel inside their batch, and the three batches run in parallel.
+- Phase 6 needs T046. Phase 7 needs Phase 6, except T050 to T052, which can start after Phase 4.
+
+## Implementation strategy
+
+- **MVP**: Phases 1 to 3 (SIPOC on the gap-driven rule).
+- **Next**: Phase 4 proves that combining frameworks works before the library triples.
+- **Then**: Phase 5 adds the cards in three parallel batches.
+- **Last**: Phases 6 and 7 finish the language and the docs, and cut the release.
