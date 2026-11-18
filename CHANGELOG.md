@@ -4,6 +4,13 @@ All notable changes to vibebiz are recorded here. The format follows [Keep a Cha
 
 ## [Unreleased]
 
+## [0.1.8] - 2026-11-18
+
+### Fixed
+
+- When you do not know a figure about today or the past (for example how many customers come back), vibebiz no longer offers a guess of its own as an answer. It recommends a way to get the figure: measure it, ask the person who knows, or note it as an open question. Ranges appear only when they come from your own figures or the industry pack, never as the recommended choice.
+- A slide or section of the package with nothing on file yet now names where it will be filled from, so the package check no longer rejects it.
+
 ## [0.1.7] - 2026-11-17
 
 ### Fixed
