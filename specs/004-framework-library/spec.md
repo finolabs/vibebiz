@@ -23,6 +23,12 @@
   The library grows from 15 to 41 cards: SIPOC plus these 25. Two catalog entries stay built into modules instead of becoming cards (Fio, 18/11/2026). Pyramid principle / SCQA stays a rule of the board view's export guidelines. Three scenarios (low, base and high) stays the way the plan module writes category M. The outputs name both when they shape a slide or section.
 - **Gap-driven limit** (Fio, 18/11/2026, Q2). "At most two cards per lens per idea" is removed. A new card is applied only when it fills an open category that no applied card has filled, one new card per category per round, inside the interview's round budget, which does not change.
 
+- **Cards are linked into a routing map** (Fio, 19/11/2026). vibebiz is long-lifecycle brainstorming. It helps a user clarify the strategic picture in their head over many sessions and packages it as a deck and documents. A larger library alone is not enough: the cards are linked so the router knows what each card's result enriches next. Each card declares four kinds of link in its own frontmatter:
+  - `needs`: a hard prerequisite;
+  - `feeds`: a named result passed to another card, which also sets the preferred order;
+  - `instead_of`: cards that fill the same gap, of which one is chosen;
+  - `revisit_when`: when the card is redone over the idea's life, together with the cards it feeds.
+  Gaps still decide what is asked; the map only sets preference, context and revisits. The map is part of this spec, done before the 26 new cards, and the 15 existing cards get links too (Fio, 19/11/2026).
 - **No constitution amendment.** The constitution sets no limit on frameworks. The `CLAUDE.md` lines "the fifteen framework cards" and "at most two per lens per idea" change in the same pull request as the implementation, with Fio's yes on this spec.
 
 ## User Scenarios & Testing *(mandatory)*
@@ -59,13 +65,38 @@ A sales director describes a vague loyalty idea. Across the rounds vibebiz uses,
 
 ---
 
-### User Story 3 - The library grows by cards, not by changes to the router (Priority: P2)
+### User Story 3 - Each framework builds on the last (Priority: P1)
+
+A sales director comes back to an idea over several weeks. The first week, vibebiz found the cause of falling repeat visits through 5 Whys. When the target comes up, the driver tree starts from that cause and does not ask about it again. When the costs come up later, NPV waits until the cost of ownership or the build-or-buy comparison is on file. When the board asks for a lower budget, vibebiz redoes the cost card and then the return card that reads from it, and asks only about what changed. The director sees one conversation that deepens, not a series of unrelated questionnaires.
+
+**Why this priority**: this is what makes vibebiz a long-lifecycle brainstorming partner rather than a form. Without links, more cards only means a bigger pile to pick from (Fio, 19/11/2026).
+
+**Independent Test**:
+- Run the map eval cases on fixed coverage records:
+  - one card fed by an applied card is preferred over an equal fit;
+  - a fed card's questions do not re-ask the passed result;
+  - a card whose `needs` are unmet is not handed over;
+  - only one card from an `instead_of` group is applied;
+  - a changed fact triggers the revisit of the card and the applied cards it feeds.
+- The link check in code passes on all 41 cards.
+
+**Acceptance Scenarios**:
+
+1. **Given** two cards fit an open category equally, and an applied card `feeds` one of them, **When** the router chooses, **Then** it picks the fed card and says so in `framework_reasons`.
+2. **Given** a card is handed over and an applied card feeds it a named result, **When** the lens writes the round's questions, **Then** it reads that result from the files and asks only about what is still missing.
+3. **Given** a card whose `needs` lists cards none of which is applied, and whose categories are not yet clear by other means, **When** the router plans the round, **Then** it does not hand that card over.
+4. **Given** one card of an `instead_of` group is applied for a category, **When** the category is still open, **Then** the router does not hand over another card of that group for it.
+5. **Given** a fact in a category listed in an applied card's `revisit_when` is superseded, or the board asks for changes, **When** the user continues the idea, **Then** the router redoes that card in the next round, asking only about the change. It then redoes the applied cards it feeds, in order, inside the round budget.
+
+---
+
+### User Story 4 - The library grows by cards, not by changes to the router (Priority: P2)
 
 A maintainer adds a new card in vibebiz's own words, with its lens, the categories it fills and when to use it. The router can choose it on the next idea with no change to the router or the lenses. The help skill and the docs list what ships, and nothing more.
 
 **Why this priority**: the catalog in spec 001 Appendix F lists about thirty more frameworks for later releases. Each should cost a card and its eval, not a redesign.
 
-**Independent Test**: add the 25 catalog cards. Run the framework eval suite and the help eval. Every new card is chosen in at least one case where it fits and passed over in a case where it does not. The docs name exactly the cards that ship.
+**Independent Test**: add the 25 catalog cards, each with its links. Run the framework eval suite and the help eval. Every new card is chosen in at least one case where it fits and passed over in a case where it does not. The docs name exactly the cards that ship.
 
 **Acceptance Scenarios**:
 
@@ -83,6 +114,9 @@ A maintainer adds a new card in vibebiz's own words, with its lens, the categori
 - A user who answers "I don't know" to a card's question. The ask protocol's rule 5 applies. The card's result shows the gap as not yet clarified and invents nothing.
 - The organization already records its OKRs in the ground rules. The outcome lens keeps mapping the idea to them, as today. The OKR card is used only to draft the idea's own objective and key results when the ground rules hold none.
 - Two new cards that overlap, such as RICE / ICE and the value-effort matrix, or TCO, NPV and the plan module's three scenarios. The router applies one per open category and never stacks overlapping cards on the same gap.
+- A `feeds` chain longer than the round budget allows. The router follows the chain only while categories stay open and rounds remain; the rest waits for the next session, which `continue` picks up from the map.
+- A link that points to a card that does not ship, or `needs` that loop. The link check in code fails the build; nothing reaches a user.
+- A revisit whose change does not alter the card's result. The card is marked done again without new questions, and the chain stops there.
 - Many frameworks on one slide. The board deck stays readable: each slide shows at most the results its layout fixes, and the rest go to the appendix.
 
 ## Requirements *(mandatory)*
@@ -101,9 +135,22 @@ A maintainer adds a new card in vibebiz's own words, with its lens, the categori
 - **FR-010**: `help`'s situation map, `docs/` and both READMEs MUST describe the framework library as it ships. They say vibebiz chooses the frameworks, and they never list a framework that does not ship.
 - **FR-011**: The board view MUST follow the pyramid principle / SCQA through the export guidelines, as spec 001 Appendix F says. If the guidelines do not yet carry it, this release adds it there, not as a card.
 
+- **FR-012**: Every card MUST declare its links in its frontmatter: `needs` (card ids, satisfied when one of them is applied or every category it fills is clear), `feeds` (each a target card id and the named result passed), `instead_of` (card ids, declared on both sides) and `revisit_when` (category codes and the events `board-changes` and `tech-review`). Empty lists are allowed.
+- **FR-013**: The router MUST NOT hand over a card whose `needs` are unmet, and MUST NOT apply a second card from an `instead_of` group to the same category.
+- **FR-014**: When several cards fit, the router MUST prefer one that an applied card `feeds`, before comparing "When to use".
+- **FR-015**: When a fed card is handed over, the lens MUST read the passed results from the idea's files and MUST NOT ask again what they already answer (spec 001 "facts before questions").
+- **FR-016**: When a fact in a category listed in an applied card's `revisit_when` changes (a `supersede` in `decisions.md`, or a board or tech review recorded by `continue`), the router MUST redo that card and then the applied cards it feeds, in feed order, inside the round budget, asking only about what changed.
+- **FR-017**: A check in code MUST verify the map:
+  - every link names a shipped card;
+  - `instead_of` is declared on both sides;
+  - `needs` has no cycle;
+  - `revisit_when` uses only codes A to O and the two events.
+  The build MUST generate a readable table of the map into `docs/`, for `help`.
+
 ### Key Entities
 
 - **Framework card**: unchanged from spec 001 (FR-036). The router may now choose among more cards per lens.
+- **Card link**: one of `needs`, `feeds`, `instead_of`, `revisit_when` in a card's frontmatter. Together the links of all cards form the routing map.
 - **Applied framework record**: the card id in a category's `frameworks` list in `coverage.md`, now with a one-line reason for the choice.
 
 ## Success Criteria *(mandatory)*
@@ -115,6 +162,8 @@ A maintainer adds a new card in vibebiz's own words, with its lens, the categori
 - **SC-003**: Every new card, SIPOC included, is chosen in at least one eval case where it fits and passed over in at least one where it does not.
 - **SC-004**: In the package check, 100% of applied cards appear in the outputs where their category feeds.
 - **SC-005**: The simulated-session suite does not get worse: rounds to readiness stay at four sessions or fewer, and key facts preserved stay at 85% or more.
+- **SC-006**: In the map eval cases, the router follows `needs`, `instead_of` and the `feeds` preference in 100% of cases, and a fed card re-asks a passed result in none of them.
+- **SC-007**: In a revisit case, only the changed card and the applied cards it feeds are redone, and every question asked is about the change.
 
 ## Assumptions
 

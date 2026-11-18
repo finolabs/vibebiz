@@ -109,3 +109,42 @@ Each card's "When not to use" names its neighbours and says when the neighbour f
 **Decision**: the foundation (R1, R3, R4, R5, the grader and the replaced case) is done first in this session. It is one seam and every other task depends on it. The 26 cards then go to three parallel delegated runs, one per batch in `plan.md`. Each run gets a complete brief: the card template from an existing card, the mapping row, the two eval cases and `test_cards.py`. Reviews go to another family. Docs and the release review come last.
 
 **Rationale**: the cards are independent files with clear acceptance tests, so `delegate` "Keep or hand off" fits.
+
+## R12. Where the links live and what they mean
+
+**Decision**: the links are frontmatter keys on each card (data-model "Card links"), not a separate map file. Spec FR-009 still holds: a new card brings its own links, and the router reads them.
+- **`needs`** is any-of. It is satisfied when one listed card is applied, or every category that card fills is already `clear` through other answers. A user who states the yearly cost outright needs no TCO card before NPV.
+- **`feeds`** names the passed result in plain words. That lets the lens find it in the idea's files, because cards already say where they write in "Writes to".
+
+**Alternatives**:
+- One `packs/frameworks/map.md`: rejected. Every new card would need an edit in two places, and the map would drift from the cards.
+- Typed weights or scores on links: rejected as more than the router needs. Preference is binary: fed or not fed.
+
+## R13. Feeding context to the next card
+
+**Decision**: when the router hands over a card that an applied card feeds, the hand-off names the feeding card and its `passes` text. The lens finds that result where the feeding card's "Writes to" put it, then drops every question of the new card that the result already answers.
+
+**Rationale**: spec 001 "Facts before questions" in the router already says to look before asking. The link tells the lens exactly where to look.
+
+## R14. Revisits over the idea's life
+
+**Decision**: a revisit has three triggers:
+- a `supersede` entry in `decisions.md` for a category listed in an applied card's `revisit_when`;
+- a board decision "changes" recorded by `continue`, for the event `board-changes`;
+- a tech review of the estimates, for the event `tech-review`.
+
+When one fires, the router sets the card's category back to `partial` with the reason "revisit: <card id>" and hands the card over again in the next round, with the change as context. The applied cards it feeds follow in feed order, each only when its own result would change. The round budget bounds the chain, and `continue` picks up the rest in a later session.
+
+**Rationale**: it reuses statuses and entries that already exist. The only new value is the reason text, so the workspace contract is unchanged.
+
+**Alternatives**: a separate revisit queue in `coverage.md`. Rejected as a new field that duplicates the status.
+
+## R15. The map in the docs
+
+**Decision**: add `scripts/checks/framework_map.py` with two modes:
+- `check` validates the links (spec FR-017);
+- `render` writes `docs/framework-map.md`, a Vietnamese table of each card's links in plain words.
+
+`test_docs_map.py`, or a new test, fails when the rendered file differs from the cards. The build already copies `docs/` into `help`, so help can answer "how do the methods connect" from shipped docs.
+
+**Rationale**: constitution VII and VII's help rule. A diagram of 41 linked cards would need `diagram-design`, so the docs ship a table and no drawn diagram (`CLAUDE.md` "Independence").

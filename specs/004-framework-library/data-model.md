@@ -48,9 +48,69 @@ Lens and `fills` follow research R7. "Neighbours" are the cards whose "When not 
 
 Diagram types are those in spec 001 Appendix E. `radar` and `flowchart` are listed there ("quadrant or radar", "decision flowchart"). `timeline` covers "timeline or Gantt".
 
+## Card links (routing map)
+
+**New frontmatter keys on every card** (spec FR-012). Each may be an empty list.
+
+```yaml
+needs: [tco, build-buy-partner-roi]        # any one applied, or every category that card fills is clear
+feeds:
+  - to: npv
+    passes: yearly cost of the chosen route   # a named result in the idea's files
+instead_of: [value-effort]                    # same gap, choose one; declared on both sides
+revisit_when: [M, board-changes, tech-review] # codes A–O, or the two events
+```
+
+**Draft map.** Each card task finalizes its own row. The rows of the 15 existing cards are added in tasks Phase 5.
+
+| Card | needs | feeds → (passes) | instead_of | revisit_when |
+|---|---|---|---|---|
+| five-whys | | issue-tree (root cause); driver-tree (the cause the target must move) | fishbone | A |
+| fishbone | | issue-tree (grouped causes); pre-mortem (operational causes) | five-whys | A |
+| issue-tree | | driver-tree (the branch to move) | | A |
+| jobs-to-be-done | | value-proposition-canvas (jobs, pains, gains); journey-map-service-blueprint (steps of the job); stp (who has the job) | | A, B |
+| value-chain | | sipoc (the activity the idea touches); five-forces (where margin is made) | | A |
+| driver-tree | | north-star-metric (top of the tree); leading-lagging (drivers); test-and-control-pilot (the metric to test); npv (the driver change to value) | | C |
+| north-star-metric | | okr (the objective); leading-lagging (inputs to the star) | | C |
+| leading-lagging | | test-and-control-pilot (the early signal); stage-gate (gate metrics) | | C |
+| balanced-scorecard | | okr (the perspective the idea moves) | | C |
+| okr | | smart (key results to sharpen) | | C, board-changes |
+| smart | | | | C, O |
+| pestel | | swot (external opportunities and threats) | | K |
+| five-forces | | swot (threats); ansoff (market position) | | D, K |
+| swot | | pre-mortem (weaknesses and threats) | six-thinking-hats | D, K |
+| six-thinking-hats | | pre-mortem (the caution view) | swot | D, K |
+| pre-mortem | | assumption-map (failure causes as beliefs) | | E, K |
+| assumption-map | | test-and-control-pilot (the riskiest belief) | | C, E |
+| cost-of-inaction | | build-buy-partner-roi (do-nothing as a route); npv (cost of waiting) | | D, M, board-changes |
+| theory-of-constraints | | lean-dmaic (the bottleneck to improve) | | D |
+| test-and-control-pilot | assumption-map, driver-tree | stage-gate (the pilot result as the first gate) | | C, E |
+| sipoc | | lean-dmaic (the process map for Define); journey-map-service-blueprint (hand-offs that reach the customer); raci (owner of each step) | | E, J |
+| journey-map-service-blueprint | | kano (features at each step); moscow (journeys to cut); raci (lanes); adkar (staff whose work changes) | | E, J, L |
+| value-proposition-canvas | | kano (gain creators to classify); moscow (pain relievers to keep) | | E |
+| kano | | moscow (must-haves); rice-ice (features to score) | | E |
+| lean-dmaic | sipoc | test-and-control-pilot (the improvement to prove); stage-gate (control step) | | E, J |
+| stp | | marketing-mix-4p-7p (target segment and position) | | B, E |
+| marketing-mix-4p-7p | | | | E, M |
+| ansoff | | | bcg-matrix | D |
+| bcg-matrix | | | ansoff | D, M |
+| rice-ice | | moscow (scored list to cut) | value-effort | E, board-changes |
+| value-effort | | moscow (the quick wins and big bets) | rice-ice | E, board-changes |
+| moscow | | stage-gate (what ships first) | | E, board-changes |
+| build-buy-partner-roi | | tco (the chosen route); npv (cost and return per route) | | D, M, board-changes, tech-review |
+| tco | | npv (yearly cost of the chosen route) | | M, board-changes, tech-review |
+| npv | tco, build-buy-partner-roi | | | C, M, board-changes, tech-review |
+| stage-gate | | | | E, M, board-changes |
+| raci | | adkar (who must adopt); kotter (who leads the change) | | B, L |
+| mckinsey-7s | | adkar (the misaligned elements); kotter (the misaligned elements) | | L |
+| adkar | | | kotter | L |
+| kotter | | | adkar | L |
+| cynefin | | | | |
+
 ## Validation
 
 - `id` equals the file name without `.md`, and `fills` uses codes A to O (unchanged checks).
+- The links pass the map check (spec FR-017): targets exist, `instead_of` on both sides, no cycle in `needs`, valid `revisit_when` values.
 - `lens` is one of `problem-framing`, `outcome`, `challenge`, `solution-sketch`, `plan`, `router` (new check).
 - Exactly 15 cards have `core: true`, and the total is 41 (new count check).
 - Cards that handle money (`cost-of-inaction`, `tco`, `npv`, `bcg-matrix`) follow ask-protocol rules 5 and 10: no invented current figure, and estimates are labelled "not tech-reviewed".

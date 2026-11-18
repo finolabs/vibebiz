@@ -7,6 +7,7 @@
 ## Summary
 
 The work adds SIPOC and the catalog cards from spec 001 Appendix F, which takes the library from 15 to 41 cards. It also replaces the two-cards-per-lens limit with a gap-driven rule, and makes "the user never chooses a framework" a rule that evals check. Today's router design already chooses cards by coverage gap and asks their questions in plain words (research R2). So the change is:
+- links between cards (`needs`, `feeds`, `instead_of`, `revisit_when`) that form a routing map, used by the router to order cards, pass context and redo work when facts change (research R12–R15);
 - one rule in the router and three modules;
 - an optional `framework_reasons` field in `coverage.md`;
 - new card files;
@@ -90,7 +91,9 @@ core/
 ├── plan.md                        # §6 planning-card limit (R1); name "three scenarios" for M (R6)
 ├── export-guidelines.md           # name "pyramid principle / SCQA" (R6)
 └── lenses/{challenge,solution-sketch}.md   # drop "at most two" lines (R1)
-packs/frameworks/                  # 26 new cards, core: false (data-model)
+packs/frameworks/                  # 26 new cards, core: false; links on all 41 cards (data-model)
+scripts/checks/framework_map.py    # link check and the rendered docs/framework-map.md (R15)
+docs/framework-map.md              # generated table of the map, for help
 templates/idea/coverage.md         # comment line, framework_reasons
 scripts/checks/test_cards.py       # TOTAL_COUNT, lens check (R5)
 evals/frameworks/                  # gap-driven-no-stacking (replaces cap-two-per-lens), fit-/skip- cases, name grader (R9)
@@ -110,19 +113,25 @@ The depth gate does not allow direct implementation:
 - the cards split into parallel batches;
 - the foundation must land before them.
 
-So `/speckit-tasks` comes next. It orders the work in four phases:
+`tasks.md` orders the work in these phases:
 
 1. **Foundation** (this session, one seam):
    - the red case `gap-driven-no-stacking` and the no-framework-name grader;
    - the router, plan, lens, template and data-model edits;
    - the `test_cards.py` counts and lens check;
    - the build.
-2. **Cards**, in three parallel delegated runs by batch (data-model "batch"). Each run covers its cards with `fit-`/`skip-` cases written red first. The reviews come from another family.
+2. **SIPOC** (US1) and **combining** (US2), in this session.
+3. **The routing map** (US3), in this session:
+   - the map check;
+   - the router's use of `needs`, `instead_of`, feeds preference, context and revisits;
+   - links on the 15 existing cards and SIPOC;
+   - the map eval cases, red first.
+4. **Cards**, in three parallel delegated runs by batch (data-model "batch"). Each run covers its cards with `fit-`/`skip-` cases written red first. The reviews come from another family.
    - SIPOC first, in this session (tasks Phase 3); then batch 1: problem-framing and outcome, 6 cards;
    - batch 2: challenge and solution-sketch, 8 cards;
    - batch 3: plan, 11 cards.
-3. **Language**: one `vietnamizer` pass over every new card's questions and example.
-4. **Docs and release review**: FR-010; the CLAUDE.md line; the spec 001 pointers; the whole framework suite once; the simulated sessions; the Cowork smoke test.
+5. **Language**: one `vietnamizer` pass over every new card's questions and example.
+6. **Docs and release review**: FR-010; the CLAUDE.md line; the spec 001 pointers; the whole framework suite once; the simulated sessions; the Cowork smoke test.
 
 ## Complexity Tracking
 
