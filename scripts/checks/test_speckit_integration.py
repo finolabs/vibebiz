@@ -29,11 +29,19 @@ def listing():
     return sorted(p.relative_to(ROOT).as_posix() for p in (ROOT / ".specify").rglob("*"))
 
 
+def feature_state():
+    """The repository's own `.specify/feature.json` bytes, or None. Spec Kit leaves this ignored file in a checkout
+    where it ran, so the test checks that a run leaves it as it was, not that it is absent."""
+    path = ROOT / ".specify" / "feature.json"
+    return path.read_bytes() if path.is_file() else None
+
+
 class Integration(unittest.TestCase):
     def setUp(self):
         self.parent = Path(tempfile.mkdtemp(prefix="vibebiz-test-"))
         self.addCleanup(shutil.rmtree, self.parent, ignore_errors=True)
         self.before = listing()
+        self.feature_before = feature_state()
 
     def test_valid_snapshot_builds_scratch_project(self):
         snap = FIXTURES / "valid_full.md"
@@ -76,7 +84,7 @@ class Integration(unittest.TestCase):
     def test_repository_specify_untouched(self):
         run(str(FIXTURES / "valid_full.md"), "--parent", str(self.parent))
         self.assertEqual(self.before, listing())
-        self.assertFalse((ROOT / ".specify" / "feature.json").exists())
+        self.assertEqual(feature_state(), self.feature_before)
 
     def test_slugify(self):
         self.assertEqual(si.slugify("Nhắc khách cũ quay lại"), "nhac-khach-cu-quay-lai")
