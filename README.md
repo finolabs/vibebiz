@@ -44,6 +44,16 @@ vibebiz is not a coding tool. In Cowork you never need a terminal; in Claude Cod
 
 Founders and leaders of small and mid-sized businesses who are not technical, who own an idea for a system, an AI use or an automation and need to take it to their board and a tech team. Retail comes first, online or offline (fashion first; electronics, home appliances and similar next): the examples and knowledge packs that ship today are for retail. Outputs and questions use the language you speak with it, Vietnamese by default.
 
+## What the outputs look like
+
+Six fictional examples, three board decks and three documents, each on a different business question and built with a different mix of frameworks. They show the output style vibebiz follows: slide titles that state the conclusion, every figure with its source, period and a measured or assumed label, estimates marked "chưa qua kỹ thuật thẩm định" (not tech-reviewed) and gaps marked "chưa làm rõ" (not yet clarified). They were made as Google Slides and Docs for this README, not recorded from a vibebiz run, and some of the frameworks they use are not in the current release yet. Every company and figure in them is made up. Click an image to open the PDF.
+
+| Board decks | Documents |
+|---|---|
+| [![Gió Nam deck: driver tree slide](assets/demos/deck-gio-nam.png)](assets/demos/deck-gio-nam.pdf)<br>**Gió Nam**, fashion chain: a 12-week pilot to move stock between stores. Five Whys, driver tree, value–effort, test-and-control pilot. | [![Hạt Sương document: first page](assets/demos/doc-hat-suong.png)](assets/demos/doc-hat-suong.pdf)<br>**Hạt Sương**, cosmetics chain: requirements for a skincare membership. Jobs to be Done, Value Proposition Canvas, Kano, RICE. |
+| [![Sao Khuê deck: Five Forces slide](assets/demos/deck-sao-khue.png)](assets/demos/deck-sao-khue.pdf)<br>**Sao Khuê**, electronics chain: where to grow in 2027–2029. Five Forces, BCG matrix, Ansoff matrix, NPV, assumption map. | [![Phố Nhỏ document: first page](assets/demos/doc-pho-nho.png)](assets/demos/doc-pho-nho.pdf)<br>**Phố Nhỏ**, convenience stores: rolling out automatic ordering to 120 stores. McKinsey 7S, Kotter's eight steps, ADKAR, RACI. |
+| [![Bến Lúa deck: bottleneck slide](assets/demos/deck-ben-lua.png)](assets/demos/deck-ben-lua.pdf)<br>**Bến Lúa**, distributor: why deliveries run late at the central warehouse. SIPOC, Theory of Constraints, fishbone, TCO, stage-gate. | [![Thực Đơn Mây document: first page](assets/demos/doc-thuc-don-may.png)](assets/demos/doc-thuc-don-may.pdf)<br>**Thực Đơn Mây**, restaurant software: whether to enter a new city. Issue tree, PESTEL, STP, cost of inaction, North Star and OKRs, pre-mortem. |
+
 ## Install at a glance
 
 - **Cowork**: download `vibebiz.plugin` from the latest [release](https://github.com/finolabs/vibebiz/releases), then in Cowork open Settings › Plugins › "Upload plugin". No terminal.
