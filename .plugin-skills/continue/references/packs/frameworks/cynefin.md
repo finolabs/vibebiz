@@ -6,6 +6,10 @@ fills: []
 core: true
 diagram_type: none
 origin: "Dave Snowden (Cognitive Edge, now The Cynefin Company); summarized for managers in D. J. Snowden and M. E. Boone, \"A Leader's Framework for Decision Making\", Harvard Business Review, November 2007. Described here in vibebiz's own words."
+needs: []
+feeds: []
+instead_of: []
+revisit_when: []
 ---
 
 # Cynefin

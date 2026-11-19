@@ -6,6 +6,16 @@ fills: [C]
 core: true
 diagram_type: tree
 origin: General management-accounting practice; no single originator
+needs: []
+feeds:
+  - to: assumption-map
+    passes: the drivers that rest on beliefs
+  - to: pre-mortem
+    passes: the target that could be missed
+  - to: test-and-control-pilot
+    passes: the metric to test
+instead_of: []
+revisit_when: [C]
 ---
 
 # Driver tree (KPI tree)

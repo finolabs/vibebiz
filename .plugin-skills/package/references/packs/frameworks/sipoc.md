@@ -6,6 +6,14 @@ fills: [E, J]
 core: false
 diagram_type: none
 origin: SIPOC from the quality-management and Six Sigma practice (Suppliers, Inputs, Process, Outputs, Customers); the Requirements column follows the SIRPOC variant used in process improvement
+needs: []
+feeds:
+  - to: journey-map-service-blueprint
+    passes: the hand-offs that reach the customer
+  - to: driver-tree
+    passes: the step whose delay to measure
+instead_of: []
+revisit_when: [E, J]
 ---
 
 # SIPOC (with a Requirements column)

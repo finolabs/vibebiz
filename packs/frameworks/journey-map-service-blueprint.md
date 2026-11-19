@@ -6,6 +6,14 @@ fills: [E, J, L]
 core: true
 diagram_type: swimlane
 origin: Service blueprint by G. Lynn Shostack; journey mapping from service-design practice
+needs: []
+feeds:
+  - to: moscow
+    passes: the journeys to cut
+  - to: adkar
+    passes: the staff whose work changes
+instead_of: []
+revisit_when: [E, J, L]
 ---
 
 # Customer journey map and service blueprint

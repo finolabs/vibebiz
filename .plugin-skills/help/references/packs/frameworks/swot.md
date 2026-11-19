@@ -6,6 +6,14 @@ fills: [D, K]
 core: true
 diagram_type: quadrant
 origin: Commonly attributed to Albert Humphrey (Stanford Research Institute)
+needs: []
+feeds:
+  - to: pre-mortem
+    passes: the weaknesses and threats
+  - to: driver-tree
+    passes: the opportunity to measure
+instead_of: []
+revisit_when: [D, K]
 ---
 
 # SWOT

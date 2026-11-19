@@ -6,6 +6,16 @@ fills: [K]
 core: true
 diagram_type: quadrant
 origin: Gary Klein
+needs: []
+feeds:
+  - to: assumption-map
+    passes: the failure causes as beliefs
+  - to: build-buy-partner-roi
+    passes: the risks each route must cover
+  - to: moscow
+    passes: what to leave out of the first release
+instead_of: []
+revisit_when: [E, K]
 ---
 
 # Pre-mortem

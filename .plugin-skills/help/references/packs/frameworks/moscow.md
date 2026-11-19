@@ -6,6 +6,12 @@ fills: [E]
 core: true
 diagram_type: none
 origin: Dai Clegg, from the DSDM method
+needs: []
+feeds:
+  - to: adkar
+    passes: what ships first and who uses it
+instead_of: []
+revisit_when: [E, board-changes]
 ---
 
 # MoSCoW
