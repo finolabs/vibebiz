@@ -14,3 +14,7 @@ Editable sources are icon.svg and icon-dark.svg. The two PNG files are transpare
 ## Social preview
 
 `.github/social-preview.json` renders the 1280×640 GitHub social preview with the FINOLABS social-preview template and `icon-dark.svg`. Its input is the README's example idea and its output is an excerpt of the fictional example's `coverage.md` (`examples/000-giu-chan-khach-cu`). GitHub has no API for it: upload the PNG under the repository's Settings, General, Social preview.
+
+## README demos
+
+`demos/` holds six fictional example outputs shown in the README: three board decks and three documents, made as Google Slides and Google Docs on 19/11/2026 and exported to PDF, with one PNG screenshot each rendered from the PDF. Every company, person and figure in them is made up. They show the output style; they are not recorded runs of the plugin. The PDFs embed subsets of Be Vietnam Pro, which is licensed under the SIL Open Font License 1.1. The build does not copy `assets/` into the plugin.
