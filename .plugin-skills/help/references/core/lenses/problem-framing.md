@@ -70,6 +70,7 @@ State what the problem costs today in a figure the board can compare with the co
 ## 6. Framework cards
 
 The router chooses cards and hands this lens at most one new card per category per round; the lens never picks one itself. Use a card only when it was handed over, its `lens` is `problem-framing`, and its `fills` includes a category of yours that is still `missing` or `partial`. The router keeps the limit of two cards per lens per idea. Read the card from `references/packs/frameworks/<id>.md` and ask its questions in plain words; never make the user learn the framework's name or vocabulary. The problem-framing cards:
+- When the hand-off names a feeding card and its result, read that result from the idea's files first and drop every question of this card that it already answers (spec 004 FR-015); a revisit hand-off asks only about the change it names.
 
 | Card id | Fits when |
 |---|---|

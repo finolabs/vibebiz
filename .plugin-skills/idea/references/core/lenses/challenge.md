@@ -163,6 +163,7 @@ Rules for every edit: replace the "not yet clarified" text the answer settles; l
 ## 7. Framework cards
 
 The router may hand this lens one framework card for an open category; it never picks one itself. Use a card only when it was handed over, its `lens` is `challenge`, and its `fills` includes a category of yours that is still `missing` or `partial`. The challenge cards are `swot`, `pre-mortem`, `assumption-map` and `test-and-control-pilot`, loaded from `references/packs/frameworks/<id>.md`.
+- When the hand-off names a feeding card and its result, read that result from the idea's files first and drop every question of this card that it already answers (spec 004 FR-015); a revisit hand-off asks only about the change it names.
 
 - Ask the card's questions in plain words, through the ask protocol, without making the user learn the framework; name it only if the user asked for it by name.
 - Write its result where the card's "Writes to" says, within this lens's sections.
