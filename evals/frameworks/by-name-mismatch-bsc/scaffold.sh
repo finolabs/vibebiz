@@ -168,7 +168,25 @@ cat > 'specs/001-by-name-mismatch-bsc/spec.md' <<'VIBEBIZ_SEED_3'
 
 ## Problem & Why
 
-Nhân viên quầy phải thêm một bước mỗi lần thanh toán.
+Nhân viên quầy phải thêm một bước mỗi lần thanh toán. Người chịu thiệt: nhân viên quầy và khách xếp hàng. Tần suất: mỗi lần thanh toán có khách tích điểm. Chi phí hiện nay: thêm khoảng 20 giây mỗi đơn (bấm giờ ở 2 cửa hàng, tháng 10/2026, đo). Nguyên nhân gốc: phải nhập số điện thoại khách bằng tay. Vì sao làm bây giờ: chương trình tích điểm mới bắt đầu tháng 11
+
+**Người liên quan**: nhân viên quầy; khách thành viên; quản lý cửa hàng; trưởng phòng bán lẻ duyệt
+
+## Outcome
+
+Giảm thời gian thêm mỗi đơn từ 20 giây xuống 5 giây trong 2 tháng (số 20 giây: bấm giờ tháng 10/2026, đo). Giới hạn: tỷ lệ đơn có tích điểm không giảm.
+
+## Alternatives
+
+- Không làm gì: giữ nhập tay.
+- Sửa quy trình: khách đọc số khi xếp hàng. Đã thử, vẫn chậm.
+- **Đã chọn**: quét mã thành viên trên ứng dụng của khách.
+
+## User Scenarios & Testing
+
+### User Story 1 - Quét mã tích điểm khi thanh toán (Priority: P1)
+
+Nhân viên quầy quét mã trên điện thoại khách để tích điểm, không nhập số điện thoại.
 
 ## Clarifications
 

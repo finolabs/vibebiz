@@ -168,7 +168,13 @@ cat > 'specs/001-gap-d-how-it-fails/spec.md' <<'VIBEBIZ_SEED_3'
 
 ## Problem & Why
 
-Muốn quét mã tích điểm ở quầy tất cả 34 cửa hàng.
+Muốn quét mã tích điểm ở quầy tất cả 34 cửa hàng. Người chịu thiệt: nhân viên quầy và khách xếp hàng giờ đông. Tần suất: mỗi lần thanh toán có khách tích điểm. Chi phí hiện nay: thêm khoảng 20 giây mỗi đơn (bấm giờ ở 2 cửa hàng, tháng 10/2026, đo). Nguyên nhân gốc: phải nhập số điện thoại khách bằng tay. Vì sao làm bây giờ: chương trình tích điểm mới mở rộng ra cả chuỗi tháng 12
+
+**Người liên quan**: nhân viên quầy; khách thành viên; quản lý 34 cửa hàng; trưởng phòng bán lẻ duyệt
+
+## Outcome
+
+Giảm thời gian thêm mỗi đơn từ 20 giây xuống 5 giây ở cả 34 cửa hàng trong 3 tháng (số 20 giây: bấm giờ tháng 10/2026, đo). Giới hạn: tỷ lệ đơn có tích điểm không giảm.
 
 ## Clarifications
 

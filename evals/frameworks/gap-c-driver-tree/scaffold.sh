@@ -168,7 +168,9 @@ cat > 'specs/001-gap-c-driver-tree/spec.md' <<'VIBEBIZ_SEED_3'
 
 ## Problem & Why
 
-Doanh thu trung bình mỗi cửa hàng trung tâm là 1,8 tỉ đồng mỗi tháng, muốn tăng.
+Doanh thu trung bình mỗi cửa hàng trung tâm là 1,8 tỉ đồng mỗi tháng, muốn tăng. Người chịu thiệt: chuỗi, vì 8 cửa hàng trung tâm gánh phần lớn chi phí mặt bằng. Tần suất: hằng tháng. Chi phí hiện nay: tiền thuê mặt bằng tăng 10% từ tháng 1/2027 (hợp đồng thuê, đo). Nguyên nhân gốc: lượt khách vào cửa hàng ổn định nhưng tỷ lệ mua thấp. Vì sao làm bây giờ: hợp đồng thuê mới bắt đầu tháng 1/2027
+
+**Người liên quan**: quản lý 8 cửa hàng trung tâm; nhân viên bán hàng; giám đốc vận hành duyệt
 
 ## Clarifications
 

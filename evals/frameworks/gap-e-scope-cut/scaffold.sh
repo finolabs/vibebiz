@@ -168,7 +168,19 @@ cat > 'specs/001-gap-e-scope-cut/spec.md' <<'VIBEBIZ_SEED_3'
 
 ## Problem & Why
 
-Danh sách mong muốn gồm 14 tính năng, nhưng ngân sách chỉ đủ cho phiên bản đầu nhỏ.
+Danh sách mong muốn gồm 14 tính năng, nhưng ngân sách chỉ đủ cho phiên bản đầu nhỏ. Người chịu thiệt: quản lý cửa hàng không nhớ khách quen và sở thích của họ. Tần suất: mỗi ngày. Chi phí hiện nay: chưa đo. Nguyên nhân gốc: thông tin khách nằm rải rác trong sổ tay và điện thoại của nhân viên. Vì sao làm bây giờ: ngân sách quý 1/2027 đã được duyệt cho một phiên bản đầu
+
+**Người liên quan**: khách quen; nhân viên bán hàng; quản lý cửa hàng; giám đốc kinh doanh duyệt
+
+## Outcome
+
+Tăng số lần mua lại của khách quen từ 2 lên 3 lần mỗi năm trong 6 tháng (số 2 lần: báo cáo bán hàng 2026, đo). Giới hạn: không thêm việc nhập liệu quá 1 phút mỗi khách.
+
+## Alternatives
+
+- Không làm gì: tiếp tục ghi sổ tay.
+- Sửa quy trình: một bảng tính chung. Đã thử, nhân viên ít cập nhật.
+- **Đã chọn**: tự làm một ứng dụng nhỏ cho nhân viên.
 
 ## Clarifications
 

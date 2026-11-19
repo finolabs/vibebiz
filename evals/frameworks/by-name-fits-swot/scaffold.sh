@@ -168,7 +168,13 @@ cat > 'specs/001-by-name-fits-swot/spec.md' <<'VIBEBIZ_SEED_3'
 
 ## Problem & Why
 
-Muốn mở góc đồ trẻ em ở 6 cửa hàng lớn.
+Muốn mở góc đồ trẻ em ở 6 cửa hàng lớn. Người chịu thiệt: khách là phụ huynh đi mua đồ người lớn nhưng không tìm được đồ cho con. Tần suất: mỗi cuối tuần. Chi phí hiện nay: chưa đo; ước tính nội bộ chưa có. Nguyên nhân gốc: chuỗi chưa bán đồ trẻ em nên khách mua ở nơi khác. Vì sao làm bây giờ: mùa tựu trường tới và mặt bằng 6 cửa hàng lớn còn trống một góc
+
+**Người liên quan**: phụ huynh mua sắm; quản lý 6 cửa hàng; phòng mua hàng; giám đốc kinh doanh duyệt
+
+## Outcome
+
+Doanh thu góc đồ trẻ em đạt 5% doanh thu của 6 cửa hàng trong 6 tháng đầu (mục tiêu do giám đốc kinh doanh đặt, giả định). Giới hạn: doanh thu đồ người lớn ở 6 cửa hàng không giảm.
 
 ## Clarifications
 
