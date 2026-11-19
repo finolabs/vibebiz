@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vibebiz route next</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--paper:#F7F7FB;--ink:#0B0B17;--muted:#5B5B79}
+body{font-family:'Space Grotesk', sans-serif;background:var(--paper);color:var(--ink);padding:3rem 2rem;display:flex;justify-content:center}
+.frame{max-width:1200px;width:100%}
+.eyebrow{font-family:'JetBrains Mono', monospace;font-size:.66rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+h1{font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:-.01em;font-size:1.75rem;line-height:1.15;margin-bottom:.5rem}
+.sub{color:var(--muted);font-size:.9rem;margin-bottom:1.5rem;max-width:56rem}
+.wrap{overflow-x:auto}
+svg{width:100%;min-width:900px;display:block}
+footer{margin-top:1.5rem;padding-top:.75rem;border-top:1px solid rgba(11,11,23,0.12);font-family:'JetBrains Mono', monospace;font-size:.62rem;color:var(--muted);letter-spacing:.06em}
+</style>
+</head>
+<body><div class="frame">
+<p class="eyebrow">Decision tree · phần 2</p>
+<h1>Đi tiếp thế nào</h1>
+<p class="sub">Từ Driver tree, agent dựa vào ngữ cảnh đã ghi trong hồ sơ ý tưởng để rẽ nhánh: thử nghiệm hay lường trước rủi ro, mua hay tự làm, rồi chuẩn bị con người trước khi triển khai theo từng cổng.</p>
+<div class="wrap">
+<svg viewBox="0 0 1100 880" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="vibebiz-route-next-title vibebiz-route-next-desc">
+<title id="vibebiz-route-next-title">Đi tiếp thế nào</title>
+<desc id="vibebiz-route-next-desc">Decision flowchart from the driver tree: test assumptions with a pilot or run a pre-mortem, compare build, buy or partner or cut scope, then prepare people and roll out through stage gates.</desc>
+<defs>
+<marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#5B5B79"/></marker>
+<marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4B1E73"/></marker>
+</defs>
+<rect width="100%" height="100%" fill="#F7F7FB"/>
+<path d="M 540 104 L 540 132" fill="none" stroke="#5B5B79" stroke-width="1" marker-end="url(#arrow)"/>
+<path d="M 660 176 L 760 176" fill="none" stroke="#5B5B79" stroke-width="1" marker-end="url(#arrow)"/>
+<rect x="700" y="156" width="20" height="12" rx="2" fill="#F7F7FB"/>
+<text x="710" y="165" fill="#8B8BA6" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.06em">CÓ</text>
+<path d="M 540 220 L 540 260" fill="none" stroke="#5B5B79" stroke-width="1" marker-end="url(#arrow)"/>
+<rect x="552" y="228" width="38" height="12" rx="2" fill="#F7F7FB"/>
+<text x="556" y="237" fill="#8B8BA6" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="start" letter-spacing="0.06em">KHÔNG</text>
+<path d="M 540 324 L 540 340" fill="none" stroke="#5B5B79" stroke-width="1"/>
+<path d="M 900 208 L 900 332 Q 900 340 892 340 L 544 340" fill="none" stroke="#5B5B79" stroke-width="1"/>
+<path d="M 540 340 L 540 352" fill="none" stroke="#5B5B79" stroke-width="1" marker-end="url(#arrow)"/>
+<path d="M 660 396 L 760 396" fill="none" stroke="#5B5B79" stroke-width="1" marker-end="url(#arrow)"/>
+<rect x="700" y="376" width="20" height="12" rx="2" fill="#F7F7FB"/>
+<text x="710" y="385" fill="#8B8BA6" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.06em">CÓ</text>
+<path d="M 540 440 L 540 480" fill="none" stroke="#5B5B79" stroke-width="1" marker-end="url(#arrow)"/>
+<rect x="552" y="448" width="38" height="12" rx="2" fill="#F7F7FB"/>
+<text x="556" y="457" fill="#8B8BA6" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="start" letter-spacing="0.06em">KHÔNG</text>
+<path d="M 540 544 L 540 576" fill="none" stroke="#5B5B79" stroke-width="1"/>
+<path d="M 900 428 L 900 568 Q 900 576 892 576 L 544 576" fill="none" stroke="#5B5B79" stroke-width="1"/>
+<path d="M 540 576 L 540 600" fill="none" stroke="#5B5B79" stroke-width="1" marker-end="url(#arrow)"/>
+<path d="M 540 664 L 540 704" fill="none" stroke="#4B1E73" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+<circle cx="540" cy="340" r="4" fill="#0B0B17"/>
+<circle cx="540" cy="576" r="4" fill="#0B0B17"/>
+<rect x="420" y="40" width="240" height="64" rx="8" fill="#F7F7FB"/>
+<rect x="420" y="40" width="240" height="64" rx="8" fill="#EDDFF7" stroke="#4B1E73" stroke-width="1.2"/>
+<text x="540" y="70" fill="#0B0B17" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Driver tree</text>
+<text x="540" y="86" fill="#5B5B79" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">chỉ số chính và các nhánh</text>
+<polygon points="540,132 660,176 540,220 420,176" fill="#F7F7FB"/>
+<polygon points="540,132 660,176 540,220 420,176" fill="#ffffff" stroke="#0B0B17" stroke-width="1"/>
+<text x="540" y="180" fill="#0B0B17" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Còn tùy phản ứng của người?</text>
+<rect x="760" y="144" width="280" height="64" rx="8" fill="#F7F7FB"/>
+<rect x="760" y="144" width="280" height="64" rx="8" fill="#ffffff" stroke="#0B0B17" stroke-width="1"/>
+<text x="900" y="174" fill="#0B0B17" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Assumption map → Pilot</text>
+<text x="900" y="190" fill="#5B5B79" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">thử có đối chứng ở vài cửa hàng</text>
+<rect x="420" y="260" width="240" height="64" rx="8" fill="#F7F7FB"/>
+<rect x="420" y="260" width="240" height="64" rx="8" fill="#ffffff" stroke="#0B0B17" stroke-width="1"/>
+<text x="540" y="290" fill="#0B0B17" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Pre-mortem</text>
+<text x="540" y="306" fill="#5B5B79" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">hình dung thất bại trước</text>
+<polygon points="540,352 660,396 540,440 420,396" fill="#F7F7FB"/>
+<polygon points="540,352 660,396 540,440 420,396" fill="#ffffff" stroke="#0B0B17" stroke-width="1"/>
+<text x="540" y="400" fill="#0B0B17" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Có sản phẩm bán sẵn?</text>
+<rect x="760" y="364" width="280" height="64" rx="8" fill="#F7F7FB"/>
+<rect x="760" y="364" width="280" height="64" rx="8" fill="#ffffff" stroke="#0B0B17" stroke-width="1"/>
+<text x="900" y="394" fill="#0B0B17" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Build · buy · partner → TCO → NPV</text>
+<text x="900" y="410" fill="#5B5B79" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">so ba đường, tiền theo năm</text>
+<rect x="420" y="480" width="240" height="64" rx="8" fill="#F7F7FB"/>
+<rect x="420" y="480" width="240" height="64" rx="8" fill="#ffffff" stroke="#0B0B17" stroke-width="1"/>
+<text x="540" y="510" fill="#0B0B17" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">MoSCoW hoặc RICE</text>
+<text x="540" y="526" fill="#5B5B79" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">cắt phạm vi bản đầu</text>
+<rect x="420" y="600" width="240" height="64" rx="8" fill="#F7F7FB"/>
+<rect x="420" y="600" width="240" height="64" rx="8" fill="#ffffff" stroke="#0B0B17" stroke-width="1"/>
+<text x="540" y="630" fill="#0B0B17" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">ADKAR hoặc Kotter</text>
+<text x="540" y="646" fill="#5B5B79" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">một nhóm đổi việc · cả chuỗi</text>
+<rect x="420" y="704" width="240" height="48" rx="24" fill="#F7F7FB"/>
+<rect x="420" y="704" width="240" height="48" rx="24" fill="#ffffff" stroke="#0B0B17" stroke-width="1"/>
+<text x="540" y="732" fill="#0B0B17" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Stage-gate</text>
+<text x="40" y="640" fill="#5B5B79" font-size="14" font-style="italic" font-family="'Newsreader', serif">Mỗi nhánh đọc kết quả card trước:</text>
+<text x="40" y="660" fill="#5B5B79" font-size="14" font-style="italic" font-family="'Newsreader', serif">Pilot đo đúng chỉ số của Driver tree,</text>
+<text x="40" y="680" fill="#5B5B79" font-size="14" font-style="italic" font-family="'Newsreader', serif">NPV dùng chi phí của TCO.</text>
+<line x1="40" y1="804" x2="1060" y2="804" stroke="rgba(11,11,23,0.12)" stroke-width="0.8"/>
+<text x="40" y="824" fill="#5B5B79" font-size="8" font-family="'JetBrains Mono', monospace" letter-spacing="0.14em">CHÚ GIẢI</text>
+<rect x="140" y="816" width="24" height="12" rx="3" fill="#EDDFF7" stroke="#4B1E73" stroke-width="1.2"/>
+<text x="172" y="826" fill="#5B5B79" font-size="9" font-family="'JetBrains Mono', monospace">điểm vào</text>
+<polygon points="272,814 284,822 272,830 260,822" fill="#ffffff" stroke="#0B0B17"/>
+<text x="292" y="826" fill="#5B5B79" font-size="9" font-family="'JetBrains Mono', monospace">ngữ cảnh quyết định</text>
+<rect x="446" y="816" width="24" height="12" rx="3" fill="#ffffff" stroke="#0B0B17"/>
+<text x="478" y="826" fill="#5B5B79" font-size="9" font-family="'JetBrains Mono', monospace">framework</text>
+<rect x="572" y="816" width="24" height="12" rx="6" fill="#ffffff" stroke="#0B0B17"/>
+<text x="604" y="826" fill="#5B5B79" font-size="9" font-family="'JetBrains Mono', monospace">kết thúc</text>
+</svg>
+</div>
+<footer>vibebiz · nhánh chọn theo dữ kiện trong hồ sơ, không hỏi người dùng chọn framework</footer>
+</div></body></html>

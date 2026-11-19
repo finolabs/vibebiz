@@ -40,6 +40,20 @@ You start with something like "we should use AI to bring lapsed customers back".
 
 vibebiz is not a coding tool. In Cowork you never need a terminal; in Claude Code, Codex and Antigravity, installing it takes one or two typed lines, and after that you work in plain conversation.
 
+## How it works
+
+vibebiz works in rounds: each round picks one gap in the idea, asks about it in plain words and writes the answers to your files, until the idea is clear enough to package.
+
+![vibebiz workflow, from a vague idea to the board and tech package](assets/diagrams/workflow.en.png)
+
+Behind each round, vibebiz picks the management frameworks itself. You never choose one. What you bring decides where it starts, and the result of each framework decides which one comes next.
+
+![Where to start: four starting situations, each routed through two frameworks to the driver tree](assets/diagrams/route-start.en.png)
+
+![What comes next: from the driver tree, the context on file decides between a pilot or a pre-mortem, buy or build, and how to prepare people](assets/diagrams/route-next.en.png)
+
+![How vibebiz picks a framework each round: open gap, filter, prefer a card fed by the last one, ask only what is missing](assets/diagrams/card-selection.en.png)
+
 ## Who it is for
 
 Founders and leaders of small and mid-sized businesses who are not technical, who own an idea for a system, an AI use or an automation and need to take it to their board and a tech team. Retail comes first, online or offline (fashion first; electronics, home appliances and similar next): the examples and knowledge packs that ship today are for retail. Outputs and questions use the language you speak with it, Vietnamese by default.
