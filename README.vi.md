@@ -42,7 +42,7 @@ vibebiz không phải công cụ lập trình. Trong Cowork, bạn không bao gi
 
 ## vibebiz làm việc thế nào
 
-vibebiz làm theo từng vòng: mỗi vòng chọn một chỗ còn trống của ý tưởng, hỏi bằng lời thường rồi ghi câu trả lời vào tệp của bạn, cho tới khi ý tưởng đủ rõ để đóng gói.
+vibebiz làm theo từng vòng: mỗi vòng chọn một chỗ còn trống của ý tưởng, hỏi bằng lời dễ hiểu rồi ghi câu trả lời vào tệp của bạn, cho tới khi ý tưởng đủ rõ để đóng gói.
 
 ![Quy trình vibebiz, từ ý tưởng mơ hồ đến bộ tài liệu cho ban lãnh đạo và đội kỹ thuật](assets/diagrams/workflow.vi.png)
 
@@ -52,7 +52,7 @@ Trong mỗi vòng, vibebiz tự chọn phương pháp phân tích (framework), b
 
 ![Đi tiếp thế nào: từ cây chỉ số, dữ kiện trong hồ sơ quyết định chạy thử hay lường trước rủi ro, mua hay tự làm, và chuẩn bị con người ra sao](assets/diagrams/route-next.vi.png)
 
-![Mỗi vòng vibebiz chọn phương pháp thế nào: chỗ còn trống, lọc, ưu tiên phương pháp nối tiếp kết quả trước, chỉ hỏi phần còn thiếu](assets/diagrams/card-selection.vi.png)
+![Mỗi vòng vibebiz chọn phương pháp thế nào: chỗ còn trống, lọc, ưu tiên phương pháp dùng được kết quả của bước trước, chỉ hỏi phần còn thiếu](assets/diagrams/card-selection.vi.png)
 
 ## Dành cho ai
 
