@@ -174,13 +174,15 @@ Muốn quét mã tích điểm ở quầy tất cả 34 cửa hàng. Người ch
 
 ## Outcome
 
-Giảm thời gian thêm mỗi đơn từ 20 giây xuống 5 giây ở cả 34 cửa hàng trong 3 tháng (số 20 giây: bấm giờ tháng 10/2026, đo). Giới hạn: tỷ lệ đơn có tích điểm không giảm.
+Giảm thời gian thêm mỗi đơn từ 20 giây xuống 5 giây ở cả 34 cửa hàng trong 3 tháng (số 20 giây: bấm giờ tháng 10/2026, đo). Giới hạn: tỷ lệ đơn có tích điểm không giảm. Điều kiện dừng: sau 4 tuần thử ở 3 cửa hàng, nếu thời gian thêm mỗi đơn chưa xuống dưới 10 giây thì dừng.
+
+Cây con số: thời gian thêm mỗi đơn = thời gian khách đưa mã + thời gian máy đọc mã + thời gian nhân viên xác nhận. Ý tưởng tác động vào nhánh khách đưa mã và nhánh máy đọc mã. Hai nhánh này đang dựa trên niềm tin chưa kiểm chứng: khách thành viên sẽ mở sẵn mã trên điện thoại khi tới quầy (giả định), và máy bán hàng ở cả 34 cửa hàng đọc được mã (giả định; chuỗi đang dùng 3 loại máy bán hàng khác nhau, chưa kiểm tra loại nào đọc được).
 
 ## Clarifications
 
 ### Session 2026-11-12
 
-- Q: Điều gì khiến bạn làm việc này? → A: Khách quen mua lại ít.
+- Q: Điều gì khiến bạn làm việc này? → A: Khách xếp hàng lâu ở quầy giờ đông vì nhân viên phải gõ số điện thoại.
 VIBEBIZ_SEED_3
 mkdir -p "$(dirname 'specs/001-map-feeds-preferred/plan.md')"
 cat > 'specs/001-map-feeds-preferred/plan.md' <<'VIBEBIZ_SEED_4'

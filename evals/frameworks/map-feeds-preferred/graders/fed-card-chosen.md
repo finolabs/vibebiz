@@ -1,6 +1,6 @@
 ---
 type: llm
-focus: 'trace'
+focus: 'last_message'
 ---
 
-Categories A to C are clear; C lists driver-tree in its `frameworks`. Category D is the open gap. Framework cards live in the plugin under references/packs/frameworks/<id>.md: both swot and assumption-map fill D, and driver-tree declares `feeds: assumption-map` (the drivers that rest on beliefs). PASS if the router hands assumption-map over for D and its framework_reasons line or hand-off mentions that driver-tree feeds it, and the questions start from the driver tree's result instead of asking it again. FAIL if swot or another card is handed for D instead, or no card.
+Categories A to C are clear and C's driver tree is on file: two of its drivers rest on untested beliefs (members open their code before reaching the counter; the three POS models can read the code). Category D is open, and the fed card asks which beliefs the idea rests on and which to test first. PASS if the round's questions about the alternatives start from those two beliefs already on file (for example how to check them, or which to test first) and do not ask the user to break the per-order time into parts again. FAIL if the round asks for the outcome's drivers again, or its questions ignore both beliefs.
