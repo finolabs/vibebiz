@@ -42,6 +42,13 @@ conventions" lists them.
 * A tech section holds its blocks in `content` (an array of blocks or a plain
   string); a board slide holds them in `blocks`.
 * `links` keys: board_artifact, tech_artifact, slides, docs.
+* Applied cards (spec 004 SC-004): when the idea folder holds `coverage.md`,
+  every card id in a category's `frameworks` is named in `frameworks[]` of a
+  slide that category feeds (CATEGORY_SLIDES, from the export guidelines'
+  slide map), or of the appendix; a category that feeds no slide names it in
+  a tech section. An entry names a card by its `id`, or by a name whose
+  lower-case words start with the id's words ("Driver tree (KPI tree)" names
+  `driver-tree`).
 """
 
 import datetime
@@ -49,6 +56,9 @@ import json
 import re
 import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import frontmatter  # noqa: E402
 
 SLIDES = [str(n) for n in range(1, 10)] + ["appendix"]
 TECH_SECTIONS = [
@@ -68,6 +78,11 @@ STATUSES = ("not-tech-reviewed", "tech-reviewed")
 LABELS = ("measured", "assumed")
 ESTIMATE_LABEL = "not tech-reviewed"
 LINK_KEYS = ["board_artifact", "tech_artifact", "slides", "docs"]
+# Which board slides each coverage category feeds (core/export-guidelines.md "Slide map").
+CATEGORY_SLIDES = {
+    "A": {"2"}, "B": {"2"}, "C": {"3"}, "O": {"3"}, "D": {"4"}, "E": {"5", "6"},
+    "F": {"5"}, "K": {"8"}, "M": {"1", "7", "8"}, "L": {"9"},
+}
 
 _FIG_TOKEN = re.compile(r"\{\{([A-Za-z0-9._-]+)\}\}")
 _SPEC_ID = re.compile(r"\b(?:FR|SC)-[A-Za-z0-9]+\b")
@@ -422,6 +437,48 @@ def _refs_in_with_values(node):
             yield from _refs_in_with_values(item)
 
 
+def _slug(text):
+    return re.sub(r"[^a-z0-9]+", "-", str(text).lower()).strip("-")
+
+
+def _names_card(entry, card):
+    if isinstance(entry, dict):
+        if entry.get("id") == card:
+            return True
+        entry = entry.get("name")
+    return isinstance(entry, str) and (_slug(entry) + "-").startswith(card + "-")
+
+
+def check_applied_cards(data, coverage):
+    """Problems for applied cards in coverage.md that no output names (SC-004)."""
+    problems = []
+    categories = coverage.get("categories") if isinstance(coverage, dict) else None
+    if not isinstance(categories, dict):
+        return problems
+    board = data.get("board") if isinstance(data.get("board"), dict) else {}
+    tech = data.get("tech") if isinstance(data.get("tech"), dict) else {}
+    slides = {str(s.get("n")).lower(): s for s in board.get("slides") or [] if isinstance(s, dict)}
+    sections = [s for s in tech.get("sections") or [] if isinstance(s, dict)]
+    for code, category in categories.items():
+        cards = category.get("frameworks") if isinstance(category, dict) else None
+        for card in cards if isinstance(cards, list) else []:
+            if code in CATEGORY_SLIDES:
+                places = [slides.get(n) for n in sorted(CATEGORY_SLIDES[code] | {"appendix"})]
+                where = "its slide"
+            else:
+                places = sections
+                where = "a tech section"
+            named = any(
+                _names_card(entry, str(card))
+                for place in places if isinstance(place, dict)
+                for entry in place.get("frameworks") or []
+            )
+            if not named:
+                problems.append(f"unnamed-applied-card: {card} (category {code}) is applied "
+                                f"but not named in frameworks[] of {where}")
+    return problems
+
+
 def check_path(path):
     """Check an idea folder or a data.json file; return the problem list."""
     path = Path(path)
@@ -448,6 +505,13 @@ def check_path(path):
             links_md = links_file.read_text(encoding="utf-8")
         else:
             return check_data(data, spec_text, None) + ["links-mismatch: exports/links.md is missing"]
+        coverage_file = path / "coverage.md"
+        if coverage_file.exists():
+            try:
+                coverage, _ = frontmatter.parse_frontmatter(coverage_file.read_text(encoding="utf-8"))
+            except frontmatter.FrontmatterError as err:
+                return [f"unreadable: {coverage_file} has bad frontmatter ({err})"]
+            return check_data(data, spec_text, links_md) + check_applied_cards(data, coverage)
     return check_data(data, spec_text, links_md)
 
 
