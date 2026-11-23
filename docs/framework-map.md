@@ -25,3 +25,4 @@ vibebiz tự chọn phương pháp phân tích (framework) theo phần còn tr�
 | SWOT | — | Pre-mortem, Driver tree (KPI tree) | Six Thinking Hats | mục D đổi, mục K đổi |
 | Test-and-control pilot | Assumption map, Driver tree (KPI tree) | Build, buy or partner with return and payback | — | mục C đổi, mục E đổi |
 | Theory of Constraints | — | — | — | mục D đổi |
+| Value Proposition Canvas | — | MoSCoW | — | mục E đổi |
