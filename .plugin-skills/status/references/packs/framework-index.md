@@ -19,7 +19,7 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | L | plan | adkar |
 | L | solution-sketch | journey-map-service-blueprint |
 | M | challenge | test-and-control-pilot |
-| M | plan | bcg-matrix, build-buy-partner-roi, marketing-mix-4p-7p |
+| M | plan | bcg-matrix, build-buy-partner-roi, marketing-mix-4p-7p, tco |
 
 ## Cards
 
@@ -44,5 +44,6 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | sipoc | solution-sketch | E, J | — | — | journey-map-service-blueprint, driver-tree | — |
 | stp | plan | B, E | — | — | marketing-mix-4p-7p | — |
 | swot | challenge | D, K | — | — | pre-mortem, driver-tree | — |
+| tco | plan | M | — | — | — | — |
 | test-and-control-pilot | challenge | M, K | assumption-map, driver-tree | — | build-buy-partner-roi | assumption-map (the riskiest belief); driver-tree (the metric to test) |
 | value-effort | plan | E | — | rice-ice | moscow | — |
