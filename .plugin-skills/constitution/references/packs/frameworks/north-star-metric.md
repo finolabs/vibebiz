@@ -10,6 +10,8 @@ needs: []
 feeds:
   - to: okr
     passes: the objective
+  - to: leading-lagging
+    passes: the inputs to the star
 instead_of: []
 revisit_when: [C]
 ---
