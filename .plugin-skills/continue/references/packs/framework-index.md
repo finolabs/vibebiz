@@ -9,12 +9,12 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | A | problem-framing | fishbone, five-whys, jobs-to-be-done |
 | B | problem-framing | jobs-to-be-done |
 | C | outcome | balanced-scorecard, driver-tree |
-| D | challenge | assumption-map, swot |
+| D | challenge | assumption-map, five-forces, swot |
 | D | plan | build-buy-partner-roi |
 | E | plan | marketing-mix-4p-7p, moscow |
 | E | solution-sketch | journey-map-service-blueprint, sipoc |
 | J | solution-sketch | journey-map-service-blueprint, sipoc |
-| K | challenge | assumption-map, pre-mortem, swot, test-and-control-pilot |
+| K | challenge | assumption-map, five-forces, pre-mortem, swot, test-and-control-pilot |
 | L | plan | adkar |
 | L | solution-sketch | journey-map-service-blueprint |
 | M | challenge | test-and-control-pilot |
@@ -31,6 +31,7 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | cynefin | router | — | — | — | — | — |
 | driver-tree | outcome | C | — | — | assumption-map, pre-mortem, test-and-control-pilot | balanced-scorecard (the perspective the idea moves); five-whys (the cause the target must move); jobs-to-be-done (the outcome the customer wants); sipoc (the step whose delay to measure); swot (the opportunity to measure) |
 | fishbone | problem-framing | A | — | five-whys | pre-mortem | — |
+| five-forces | challenge | D, K | — | — | swot | — |
 | five-whys | problem-framing | A | — | fishbone | driver-tree | — |
 | jobs-to-be-done | problem-framing | A, B | — | — | journey-map-service-blueprint, driver-tree | — |
 | journey-map-service-blueprint | solution-sketch | E, J, L | — | — | moscow, adkar | jobs-to-be-done (the steps of the job); sipoc (the hand-offs that reach the customer) |
@@ -38,5 +39,5 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | moscow | plan | E | — | — | adkar | journey-map-service-blueprint (the journeys to cut); pre-mortem (what to leave out of the first release) |
 | pre-mortem | challenge | K | — | — | assumption-map, build-buy-partner-roi, moscow | driver-tree (the target that could be missed); fishbone (the operational causes); swot (the weaknesses and threats) |
 | sipoc | solution-sketch | E, J | — | — | journey-map-service-blueprint, driver-tree | — |
-| swot | challenge | D, K | — | — | pre-mortem, driver-tree | — |
+| swot | challenge | D, K | — | — | pre-mortem, driver-tree | five-forces (the threats from rivals, suppliers, buyers, substitutes and new entrants) |
 | test-and-control-pilot | challenge | M, K | assumption-map, driver-tree | — | build-buy-partner-roi | assumption-map (the riskiest belief); driver-tree (the metric to test) |
