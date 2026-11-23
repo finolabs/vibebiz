@@ -10,6 +10,8 @@ needs: []
 feeds:
   - to: test-and-control-pilot
     passes: the early signal
+  - to: stage-gate
+    passes: gate metrics
 instead_of: []
 revisit_when: [C]
 ---

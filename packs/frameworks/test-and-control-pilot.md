@@ -10,6 +10,8 @@ needs: [assumption-map, driver-tree]
 feeds:
   - to: build-buy-partner-roi
     passes: the pilot result
+  - to: stage-gate
+    passes: the pilot result as the first gate
 instead_of: []
 revisit_when: [C, E]
 ---

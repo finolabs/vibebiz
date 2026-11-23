@@ -10,6 +10,10 @@ needs: []
 feeds:
   - to: adkar
     passes: the chosen route and whose work it changes
+  - to: tco
+    passes: the chosen route
+  - to: npv
+    passes: cost and return per route
 instead_of: []
 revisit_when: [D, M, board-changes, tech-review]
 ---
