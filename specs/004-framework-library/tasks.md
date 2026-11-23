@@ -84,25 +84,26 @@
 
 **Independent Test**: the five map cases pass, `framework_map.py check` passes on every shipped card, and `docs/framework-map.md` matches the cards.
 
-- [ ] T018 [US3] Write `scripts/checks/framework_map.py` with `check` and `render` (research R15), and its test `scripts/checks/test_framework_map.py` with fixture cards, red first:
+- [x] T018 [US3] Write `scripts/checks/framework_map.py` with `check` and `render` (research R15), and its test `scripts/checks/test_framework_map.py` with fixture cards, red first:
   - a link to a missing card;
   - `instead_of` declared on one side only;
   - a `needs` cycle;
   - a bad `revisit_when` value;
   - a passing set.
-- [ ] T019 [US3] Extend `scripts/checks/test_cards.py` to require the four link keys on every card (lists may be empty).
-- [ ] T020 [P] [US3] Write the five map cases under `evals/frameworks/`, red first:
+- [x] T019 [US3] Extend `scripts/checks/test_cards.py` to require the four link keys on every card (lists may be empty). Done 23/11/2026 with the fixture `invalid-missing-link-key.md`, red first.
+- [x] T020 [P] [US3] Write the five map cases under `evals/frameworks/`, red first:
   - `map-feeds-preferred`: two cards fit E equally, and an applied card feeds one;
   - `map-context-carryover`: the fed card's questions do not re-ask the passed result;
   - `map-needs-gate`: `npv` is not handed over before `tco` or `build-buy-partner-roi`, or before M is clear;
   - `map-instead-of`: `swot` is applied, so `six-thinking-hats` is not added for D;
   - `map-revisit`: a superseded baseline in C sends `driver-tree` back, then `test-and-control-pilot`, which it feeds, and every question is about the change.
-- [ ] T021 [US3] In `core/router.md` "Frameworks", add rule 6 (`needs`), rule 7 (`instead_of`), the feeds preference in rule 3 and the context hand-off. Add the revisit triggers under "Frameworks" and in the round-planning steps (contract "Context passed on" and "Revisits").
-- [ ] T022 [P] [US3] In the four lens files under `core/lenses/` and in `core/plan.md` §6, add the line "read the passed results named in the hand-off before asking, and drop the questions they answer" (FR-015).
-- [ ] T023 [P] [US3] In `src/skills/continue/SKILL.md`, after recording a board decision "changes" or a tech review, tell the router which event to fire (`board-changes`, `tech-review`), so FR-016 can redo the cards. Keep the body under 3,000 words.
-- [ ] T024 [US3] Add the four link keys to the 15 existing cards and to `packs/frameworks/sipoc.md`, from the data-model draft map. Fix any row the map check rejects. The route diagrams in `assets/diagrams/src/route-start.*.html` and `route-next.*.html` (README "How it works", Fio 19/11/2026) are the canonical entry routes and branches: make the draft map's `feeds` and "When to use" match them (for example value-proposition-canvas, theory-of-constraints and swot each lead to driver-tree; driver-tree to assumption-map or pre-mortem by whether the result depends on how people react), or change the diagrams in the same pull request.
-- [ ] T025 [US3] Run `framework_map.py render` to write `docs/framework-map.md` in plain Vietnamese. Add a test that fails when it is stale.
-- [ ] T026 [US3] Rebuild, then run T018, T019, T025's test, the five T020 cases and T003's check. Rerun `gap-driven-no-stacking` and `combine-across-lenses`, which must still pass.
+  - Done 23/11/2026. Until `npv` and `tco` ship, `map-needs-gate` checks `test-and-control-pilot` (needs `assumption-map` or `driver-tree`) with C deferred. The last three cases were written after the router rules, so they were not red first.
+- [x] T021 [US3] In `core/router.md` "Frameworks", add rule 6 (`needs`), rule 7 (`instead_of`), the feeds preference in rule 3 and the context hand-off. Add the revisit triggers under "Frameworks" and in the round-planning steps (contract "Context passed on" and "Revisits").
+- [x] T022 [P] [US3] In the four lens files under `core/lenses/` and in `core/plan.md` §6, add the line "read the passed results named in the hand-off before asking, and drop the questions they answer" (FR-015).
+- [x] T023 [P] [US3] In `src/skills/continue/SKILL.md`, after recording a board decision "changes" or a tech review, tell the router which event to fire (`board-changes`, `tech-review`), so FR-016 can redo the cards. Keep the body under 3,000 words.
+- [x] T024 [US3] Add the four link keys to the 15 existing cards and to `packs/frameworks/sipoc.md`, from the data-model draft map. Fix any row the map check rejects. The route diagrams in `assets/diagrams/src/route-start.*.html` and `route-next.*.html` (README "How it works", Fio 19/11/2026) are the canonical entry routes and branches: make the draft map's `feeds` and "When to use" match them (for example value-proposition-canvas, theory-of-constraints and swot each lead to driver-tree; driver-tree to assumption-map or pre-mortem by whether the result depends on how people react), or change the diagrams in the same pull request.
+- [x] T025 [US3] Run `framework_map.py render` to write `docs/framework-map.md` in plain Vietnamese. Add a test that fails when it is stale.
+- [ ] T026 [US3] Rebuild, then run T018, T019, T025's test, the five T020 cases and T003's check. Rerun `gap-driven-no-stacking` and `combine-across-lenses`, which must still pass. **Open (23/11/2026):** the tests pass; map-revisit, map-feeds-preferred, map-needs-gate and combine-across-lenses pass; map-context-carryover 1/2 (the `fed by` prefix), gap-driven-no-stacking 2/3 and map-instead-of 0.80, each red run skipping a card read or rule after reading the index (`evals/RESULTS.md`).
 
 **Checkpoint**: the 16 cards on file are linked, and the router follows the map before the library grows.
 
