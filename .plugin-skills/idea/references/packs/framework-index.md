@@ -16,10 +16,10 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | E | solution-sketch | journey-map-service-blueprint, sipoc |
 | J | solution-sketch | journey-map-service-blueprint, sipoc |
 | K | challenge | assumption-map, pre-mortem, swot, test-and-control-pilot |
-| L | plan | adkar |
+| L | plan | adkar, stage-gate |
 | L | solution-sketch | journey-map-service-blueprint |
 | M | challenge | test-and-control-pilot |
-| M | plan | bcg-matrix, build-buy-partner-roi, marketing-mix-4p-7p, npv, tco |
+| M | plan | bcg-matrix, build-buy-partner-roi, marketing-mix-4p-7p, npv, stage-gate, tco |
 
 ## Cards
 
@@ -43,6 +43,7 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | pre-mortem | challenge | K | — | — | assumption-map, build-buy-partner-roi, moscow | driver-tree (the target that could be missed); fishbone (the operational causes); swot (the weaknesses and threats) |
 | rice-ice | plan | E | — | value-effort | moscow | — |
 | sipoc | solution-sketch | E, J | — | — | journey-map-service-blueprint, driver-tree | — |
+| stage-gate | plan | M, L | — | — | — | — |
 | stp | plan | B, E | — | — | marketing-mix-4p-7p | — |
 | swot | challenge | D, K | — | — | pre-mortem, driver-tree | — |
 | tco | plan | M | — | — | npv | — |

@@ -23,6 +23,7 @@ vibebiz tự chọn phương pháp phân tích (framework) theo phần còn tr�
 | RICE and ICE scoring | — | MoSCoW | Value-effort matrix | mục E đổi, ban lãnh đạo yêu cầu sửa |
 | Segmentation, targeting and positioning (STP) | — | 4P / 7P marketing mix | — | mục B đổi, mục E đổi |
 | SIPOC (with a Requirements column) | — | Customer journey map and service blueprint, Driver tree (KPI tree) | — | mục E đổi, mục J đổi |
+| Stage-gate rollout | — | — | — | mục E đổi, mục M đổi, ban lãnh đạo yêu cầu sửa |
 | SWOT | — | Pre-mortem, Driver tree (KPI tree) | — | mục D đổi, mục K đổi |
 | Test-and-control pilot | Assumption map, Driver tree (KPI tree) | Build, buy or partner with return and payback | — | mục C đổi, mục E đổi |
 | Total cost of ownership | — | NPV and payback | — | mục M đổi, ban lãnh đạo yêu cầu sửa, đội kỹ thuật thẩm định |
