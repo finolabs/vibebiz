@@ -9,7 +9,7 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | A | problem-framing | fishbone, five-whys, jobs-to-be-done |
 | B | problem-framing | jobs-to-be-done |
 | C | outcome | balanced-scorecard, driver-tree |
-| D | challenge | assumption-map, five-forces, swot |
+| D | challenge | assumption-map, cost-of-inaction, five-forces, swot |
 | D | plan | build-buy-partner-roi |
 | E | plan | marketing-mix-4p-7p, moscow |
 | E | solution-sketch | journey-map-service-blueprint, sipoc |
@@ -17,7 +17,7 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | K | challenge | assumption-map, five-forces, pestel, pre-mortem, swot, test-and-control-pilot |
 | L | plan | adkar |
 | L | solution-sketch | journey-map-service-blueprint |
-| M | challenge | test-and-control-pilot |
+| M | challenge | cost-of-inaction, test-and-control-pilot |
 | M | plan | build-buy-partner-roi, marketing-mix-4p-7p |
 
 ## Cards
@@ -27,7 +27,8 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | adkar | plan | L | — | — | — | build-buy-partner-roi (the chosen route and whose work it changes); journey-map-service-blueprint (the staff whose work changes); moscow (what ships first and who uses it) |
 | assumption-map | challenge | K, D | — | — | test-and-control-pilot | driver-tree (the drivers that rest on beliefs); pre-mortem (the failure causes as beliefs) |
 | balanced-scorecard | outcome | C | — | — | driver-tree | — |
-| build-buy-partner-roi | plan | D, M | — | — | adkar | pre-mortem (the risks each route must cover); test-and-control-pilot (the pilot result) |
+| build-buy-partner-roi | plan | D, M | — | — | adkar | cost-of-inaction (doing nothing as a route, with its yearly cost); pre-mortem (the risks each route must cover); test-and-control-pilot (the pilot result) |
+| cost-of-inaction | challenge | D, M | — | — | build-buy-partner-roi | — |
 | cynefin | router | — | — | — | — | — |
 | driver-tree | outcome | C | — | — | assumption-map, pre-mortem, test-and-control-pilot | balanced-scorecard (the perspective the idea moves); five-whys (the cause the target must move); jobs-to-be-done (the outcome the customer wants); sipoc (the step whose delay to measure); swot (the opportunity to measure) |
 | fishbone | problem-framing | A | — | five-whys | pre-mortem | — |

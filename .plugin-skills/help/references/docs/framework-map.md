@@ -10,6 +10,7 @@ vibebiz tự chọn phương pháp phân tích (framework) theo phần còn tr�
 | Assumption map | — | Test-and-control pilot | — | mục C đổi, mục E đổi |
 | Balanced Scorecard | — | Driver tree (KPI tree) | — | mục C đổi |
 | Build, buy or partner with return and payback | — | ADKAR | — | mục D đổi, mục M đổi, ban lãnh đạo yêu cầu sửa, đội kỹ thuật thẩm định |
+| Cost of inaction | — | Build, buy or partner with return and payback | — | mục D đổi, mục M đổi, ban lãnh đạo yêu cầu sửa |
 | Customer journey map and service blueprint | — | MoSCoW, ADKAR | — | mục E đổi, mục J đổi, mục L đổi |
 | Cynefin | — | — | — | — |
 | Driver tree (KPI tree) | — | Assumption map, Pre-mortem, Test-and-control pilot | — | mục C đổi |
