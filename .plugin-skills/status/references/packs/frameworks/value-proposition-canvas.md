@@ -8,6 +8,8 @@ diagram_type: none
 origin: Alexander Osterwalder, Yves Pigneur and others, "Value Proposition Design" (Strategyzer, 2014); the canvas is CC BY-SA, described here in vibebiz's own words
 needs: []
 feeds:
+  - to: kano
+    passes: the gain creators to classify
   - to: moscow
     passes: the pain relievers to keep
 instead_of: []
