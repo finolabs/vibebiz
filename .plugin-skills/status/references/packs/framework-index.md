@@ -19,7 +19,7 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | L | plan | adkar |
 | L | solution-sketch | journey-map-service-blueprint |
 | M | challenge | test-and-control-pilot |
-| M | plan | bcg-matrix, build-buy-partner-roi, marketing-mix-4p-7p, tco |
+| M | plan | bcg-matrix, build-buy-partner-roi, marketing-mix-4p-7p, npv, tco |
 
 ## Cards
 
@@ -39,11 +39,12 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | journey-map-service-blueprint | solution-sketch | E, J, L | — | — | moscow, adkar | jobs-to-be-done (the steps of the job); sipoc (the hand-offs that reach the customer) |
 | marketing-mix-4p-7p | plan | E, M | — | — | — | stp (the target segment and its position) |
 | moscow | plan | E | — | — | adkar | journey-map-service-blueprint (the journeys to cut); pre-mortem (what to leave out of the first release); rice-ice (the scored list to cut); value-effort (the quick wins and big bets) |
+| npv | plan | M | tco, build-buy-partner-roi | — | — | tco (the yearly cost of the chosen route) |
 | pre-mortem | challenge | K | — | — | assumption-map, build-buy-partner-roi, moscow | driver-tree (the target that could be missed); fishbone (the operational causes); swot (the weaknesses and threats) |
 | rice-ice | plan | E | — | value-effort | moscow | — |
 | sipoc | solution-sketch | E, J | — | — | journey-map-service-blueprint, driver-tree | — |
 | stp | plan | B, E | — | — | marketing-mix-4p-7p | — |
 | swot | challenge | D, K | — | — | pre-mortem, driver-tree | — |
-| tco | plan | M | — | — | — | — |
+| tco | plan | M | — | — | npv | — |
 | test-and-control-pilot | challenge | M, K | assumption-map, driver-tree | — | build-buy-partner-roi | assumption-map (the riskiest belief); driver-tree (the metric to test) |
 | value-effort | plan | E | — | rice-ice | moscow | — |

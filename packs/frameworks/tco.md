@@ -7,7 +7,9 @@ core: false
 diagram_type: bar
 origin: Total cost of ownership, popularised by Gartner for IT purchases in the late 1980s and used across procurement since
 needs: []
-feeds: []
+feeds:
+  - to: npv
+    passes: the yearly cost of the chosen route
 instead_of: []
 revisit_when: [M, board-changes, tech-review]
 ---
