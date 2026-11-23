@@ -6,9 +6,9 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 
 | Code | Lens | Cards |
 |---|---|---|
-| A | problem-framing | fishbone, five-whys, jobs-to-be-done |
-| B | problem-framing | jobs-to-be-done |
-| C | outcome | balanced-scorecard, driver-tree |
+| A | problem-framing | fishbone, five-whys, issue-tree, jobs-to-be-done, value-chain |
+| B | problem-framing | jobs-to-be-done, value-chain |
+| C | outcome | balanced-scorecard, driver-tree, leading-lagging, north-star-metric, okr, smart |
 | D | challenge | assumption-map, swot |
 | D | plan | build-buy-partner-roi |
 | E | plan | marketing-mix-4p-7p, moscow |
@@ -19,6 +19,7 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | L | solution-sketch | journey-map-service-blueprint |
 | M | challenge | test-and-control-pilot |
 | M | plan | build-buy-partner-roi, marketing-mix-4p-7p |
+| O | outcome | okr, smart |
 
 ## Cards
 
@@ -29,14 +30,20 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | balanced-scorecard | outcome | C | — | — | driver-tree | — |
 | build-buy-partner-roi | plan | D, M | — | — | adkar | pre-mortem (the risks each route must cover); test-and-control-pilot (the pilot result) |
 | cynefin | router | — | — | — | — | — |
-| driver-tree | outcome | C | — | — | assumption-map, pre-mortem, test-and-control-pilot | balanced-scorecard (the perspective the idea moves); five-whys (the cause the target must move); jobs-to-be-done (the outcome the customer wants); sipoc (the step whose delay to measure); swot (the opportunity to measure) |
+| driver-tree | outcome | C | — | — | assumption-map, pre-mortem, test-and-control-pilot | balanced-scorecard (the perspective the idea moves); five-whys (the cause the target must move); issue-tree (the branch to move); jobs-to-be-done (the outcome the customer wants); sipoc (the step whose delay to measure); swot (the opportunity to measure) |
 | fishbone | problem-framing | A | — | five-whys | pre-mortem | — |
 | five-whys | problem-framing | A | — | fishbone | driver-tree | — |
+| issue-tree | problem-framing | A | — | — | driver-tree | — |
 | jobs-to-be-done | problem-framing | A, B | — | — | journey-map-service-blueprint, driver-tree | — |
 | journey-map-service-blueprint | solution-sketch | E, J, L | — | — | moscow, adkar | jobs-to-be-done (the steps of the job); sipoc (the hand-offs that reach the customer) |
+| leading-lagging | outcome | C | — | — | test-and-control-pilot | north-star-metric (the inputs to the star) |
 | marketing-mix-4p-7p | plan | E, M | — | — | — | — |
 | moscow | plan | E | — | — | adkar | journey-map-service-blueprint (the journeys to cut); pre-mortem (what to leave out of the first release) |
+| north-star-metric | outcome | C | — | — | okr, leading-lagging | — |
+| okr | outcome | C, O | — | — | smart | north-star-metric (the objective) |
 | pre-mortem | challenge | K | — | — | assumption-map, build-buy-partner-roi, moscow | driver-tree (the target that could be missed); fishbone (the operational causes); swot (the weaknesses and threats) |
-| sipoc | solution-sketch | E, J | — | — | journey-map-service-blueprint, driver-tree | — |
+| sipoc | solution-sketch | E, J | — | — | journey-map-service-blueprint, driver-tree | value-chain (the activity the idea touches) |
+| smart | outcome | C, O | — | — | — | okr (the key results to sharpen) |
 | swot | challenge | D, K | — | — | pre-mortem, driver-tree | — |
-| test-and-control-pilot | challenge | M, K | assumption-map, driver-tree | — | build-buy-partner-roi | assumption-map (the riskiest belief); driver-tree (the metric to test) |
+| test-and-control-pilot | challenge | M, K | assumption-map, driver-tree | — | build-buy-partner-roi | assumption-map (the riskiest belief); driver-tree (the metric to test); leading-lagging (the early signal) |
+| value-chain | problem-framing | A, B | — | — | sipoc | — |

@@ -14,9 +14,15 @@ vibebiz tự chọn phương pháp phân tích (framework) theo phần còn tr�
 | Cynefin | — | — | — | — |
 | Driver tree (KPI tree) | — | Assumption map, Pre-mortem, Test-and-control pilot | — | mục C đổi |
 | Fishbone (Ishikawa diagram) | — | Pre-mortem | 5 Whys | mục A đổi |
+| Issue tree (MECE) | — | Driver tree (KPI tree) | — | mục A đổi |
 | Jobs to be done | — | Customer journey map and service blueprint, Driver tree (KPI tree) | — | mục A đổi, mục B đổi |
+| Leading and lagging indicators | — | Test-and-control pilot | — | mục C đổi |
 | MoSCoW | — | ADKAR | — | mục E đổi, ban lãnh đạo yêu cầu sửa |
+| North Star metric | — | OKR, Leading and lagging indicators | — | mục C đổi |
+| OKR | — | SMART goals | — | mục C đổi, ban lãnh đạo yêu cầu sửa |
+| Porter value chain | — | SIPOC (with a Requirements column) | — | mục A đổi |
 | Pre-mortem | — | Assumption map, Build, buy or partner with return and payback, MoSCoW | — | mục E đổi, mục K đổi |
 | SIPOC (with a Requirements column) | — | Customer journey map and service blueprint, Driver tree (KPI tree) | — | mục E đổi, mục J đổi |
+| SMART goals | — | — | — | mục C đổi, mục O đổi |
 | SWOT | — | Pre-mortem, Driver tree (KPI tree) | — | mục D đổi, mục K đổi |
 | Test-and-control pilot | Assumption map, Driver tree (KPI tree) | Build, buy or partner with return and payback | — | mục C đổi, mục E đổi |
