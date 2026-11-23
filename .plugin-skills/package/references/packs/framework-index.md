@@ -27,39 +27,39 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | Card | Lens | Fills | Needs | Instead of | Feeds | Fed by (passes) |
 |---|---|---|---|---|---|---|
 | adkar | plan | L | — | — | — | build-buy-partner-roi (the chosen route and whose work it changes); journey-map-service-blueprint (the staff whose work changes); moscow (what ships first and who uses it) |
-| ansoff | plan | D | — | bcg-matrix | — | — |
+| ansoff | plan | D | — | bcg-matrix | — | five-forces (market position) |
 | assumption-map | challenge | K, D | — | — | test-and-control-pilot | driver-tree (the drivers that rest on beliefs); pre-mortem (the failure causes as beliefs) |
 | balanced-scorecard | outcome | C | — | — | driver-tree, okr | — |
 | bcg-matrix | plan | D, M | — | ansoff | — | — |
-| build-buy-partner-roi | plan | D, M | — | — | adkar | cost-of-inaction (doing nothing as a route, with its yearly cost); pre-mortem (the risks each route must cover); test-and-control-pilot (the pilot result) |
-| cost-of-inaction | challenge | D, M | — | — | build-buy-partner-roi | — |
+| build-buy-partner-roi | plan | D, M | — | — | adkar, tco, npv | cost-of-inaction (doing nothing as a route, with its yearly cost); pre-mortem (the risks each route must cover); test-and-control-pilot (the pilot result) |
+| cost-of-inaction | challenge | D, M | — | — | build-buy-partner-roi, npv | — |
 | cynefin | router | — | — | — | — | — |
-| driver-tree | outcome | C | — | — | assumption-map, pre-mortem, test-and-control-pilot, north-star-metric, leading-lagging | balanced-scorecard (the perspective the idea moves); five-whys (the cause the target must move); issue-tree (the branch to move); jobs-to-be-done (the outcome the customer wants); sipoc (the step whose delay to measure); swot (the opportunity to measure) |
+| driver-tree | outcome | C | — | — | assumption-map, pre-mortem, test-and-control-pilot, north-star-metric, leading-lagging, npv | balanced-scorecard (the perspective the idea moves); five-whys (the cause the target must move); issue-tree (the branch to move); jobs-to-be-done (the outcome the customer wants); sipoc (the step whose delay to measure); swot (the opportunity to measure) |
 | fishbone | problem-framing | A | — | five-whys | pre-mortem, issue-tree | — |
-| five-forces | challenge | D, K | — | — | swot | value-chain (where margin is made) |
+| five-forces | challenge | D, K | — | — | swot, ansoff | value-chain (where margin is made) |
 | five-whys | problem-framing | A | — | fishbone | driver-tree, issue-tree | — |
 | issue-tree | problem-framing | A | — | — | driver-tree | fishbone (the grouped causes); five-whys (the root cause) |
-| jobs-to-be-done | problem-framing | A, B | — | — | journey-map-service-blueprint, driver-tree, value-proposition-canvas | — |
+| jobs-to-be-done | problem-framing | A, B | — | — | journey-map-service-blueprint, driver-tree, value-proposition-canvas, stp | — |
 | journey-map-service-blueprint | solution-sketch | E, J, L | — | — | moscow, adkar, kano | jobs-to-be-done (the steps of the job); sipoc (the hand-offs that reach the customer) |
-| kano | solution-sketch | E | — | — | moscow | journey-map-service-blueprint (the features at each step); value-proposition-canvas (the gain creators to classify) |
-| leading-lagging | outcome | C | — | — | test-and-control-pilot | driver-tree (the drivers); north-star-metric (the inputs to the star) |
-| lean-dmaic | solution-sketch | E, J | sipoc | — | test-and-control-pilot | sipoc (the process map for Define); theory-of-constraints (the bottleneck to improve) |
+| kano | solution-sketch | E | — | — | moscow, rice-ice | journey-map-service-blueprint (the features at each step); value-proposition-canvas (the gain creators to classify) |
+| leading-lagging | outcome | C | — | — | test-and-control-pilot, stage-gate | driver-tree (the drivers); north-star-metric (the inputs to the star) |
+| lean-dmaic | solution-sketch | E, J | sipoc | — | test-and-control-pilot, stage-gate | sipoc (the process map for Define); theory-of-constraints (the bottleneck to improve) |
 | marketing-mix-4p-7p | plan | E, M | — | — | — | stp (the target segment and its position) |
-| moscow | plan | E | — | — | adkar | journey-map-service-blueprint (the journeys to cut); kano (the must-haves); pre-mortem (what to leave out of the first release); rice-ice (the scored list to cut); value-effort (the quick wins and big bets); value-proposition-canvas (the pain relievers to keep) |
+| moscow | plan | E | — | — | adkar, stage-gate | journey-map-service-blueprint (the journeys to cut); kano (the must-haves); pre-mortem (what to leave out of the first release); rice-ice (the scored list to cut); value-effort (the quick wins and big bets); value-proposition-canvas (the pain relievers to keep) |
 | north-star-metric | outcome | C | — | — | okr, leading-lagging | driver-tree (the top of the tree) |
-| npv | plan | M | tco, build-buy-partner-roi | — | — | tco (the yearly cost of the chosen route) |
+| npv | plan | M | tco, build-buy-partner-roi | — | — | build-buy-partner-roi (cost and return per route); cost-of-inaction (cost of waiting); driver-tree (the driver change to value); tco (the yearly cost of the chosen route) |
 | okr | outcome | C, O | — | — | smart | balanced-scorecard (the perspective the idea moves); north-star-metric (the objective) |
 | pestel | challenge | K | — | — | swot | — |
 | pre-mortem | challenge | K | — | — | assumption-map, build-buy-partner-roi, moscow | driver-tree (the target that could be missed); fishbone (the operational causes); six-thinking-hats (the caution view); swot (the weaknesses and threats) |
-| rice-ice | plan | E | — | value-effort | moscow | — |
+| rice-ice | plan | E | — | value-effort | moscow | kano (features to score) |
 | sipoc | solution-sketch | E, J | — | — | journey-map-service-blueprint, driver-tree, lean-dmaic | value-chain (the activity the idea touches) |
 | six-thinking-hats | challenge | D, K | — | swot | pre-mortem | — |
 | smart | outcome | C, O | — | — | — | okr (the key results to sharpen) |
-| stage-gate | plan | M, L | — | — | — | — |
-| stp | plan | B, E | — | — | marketing-mix-4p-7p | — |
+| stage-gate | plan | M, L | — | — | — | leading-lagging (gate metrics); lean-dmaic (control step); moscow (what ships first); test-and-control-pilot (the pilot result as the first gate) |
+| stp | plan | B, E | — | — | marketing-mix-4p-7p | jobs-to-be-done (who has the job) |
 | swot | challenge | D, K | — | six-thinking-hats | pre-mortem, driver-tree | five-forces (the threats from rivals, suppliers, buyers, substitutes and new entrants); pestel (the external opportunities and threats) |
-| tco | plan | M | — | — | npv | — |
-| test-and-control-pilot | challenge | M, K | assumption-map, driver-tree | — | build-buy-partner-roi | assumption-map (the riskiest belief); driver-tree (the metric to test); leading-lagging (the early signal); lean-dmaic (the improvement to prove) |
+| tco | plan | M | — | — | npv | build-buy-partner-roi (the chosen route) |
+| test-and-control-pilot | challenge | M, K | assumption-map, driver-tree | — | build-buy-partner-roi, stage-gate | assumption-map (the riskiest belief); driver-tree (the metric to test); leading-lagging (the early signal); lean-dmaic (the improvement to prove) |
 | theory-of-constraints | challenge | D | — | — | lean-dmaic | — |
 | value-chain | problem-framing | A, B | — | — | sipoc, five-forces | — |
 | value-effort | plan | E | — | rice-ice | moscow | — |

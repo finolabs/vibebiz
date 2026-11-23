@@ -10,6 +10,8 @@ needs: []
 feeds:
   - to: adkar
     passes: what ships first and who uses it
+  - to: stage-gate
+    passes: what ships first
 instead_of: []
 revisit_when: [E, board-changes]
 ---

@@ -14,6 +14,8 @@ feeds:
     passes: the outcome the customer wants
   - to: value-proposition-canvas
     passes: the jobs, pains and gains
+  - to: stp
+    passes: who has the job
 instead_of: []
 revisit_when: [A, B]
 ---

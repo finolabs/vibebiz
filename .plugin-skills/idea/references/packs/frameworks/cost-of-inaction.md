@@ -10,6 +10,8 @@ needs: []
 feeds:
   - to: build-buy-partner-roi
     passes: doing nothing as a route, with its yearly cost
+  - to: npv
+    passes: cost of waiting
 instead_of: []
 revisit_when: [D, M, board-changes]
 ---

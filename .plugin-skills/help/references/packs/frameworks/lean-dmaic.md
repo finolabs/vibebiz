@@ -10,6 +10,8 @@ needs: [sipoc]
 feeds:
   - to: test-and-control-pilot
     passes: the improvement to prove
+  - to: stage-gate
+    passes: control step
 instead_of: []
 revisit_when: [E, J]
 ---

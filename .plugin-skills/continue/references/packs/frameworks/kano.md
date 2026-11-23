@@ -10,6 +10,8 @@ needs: []
 feeds:
   - to: moscow
     passes: the must-haves
+  - to: rice-ice
+    passes: features to score
 instead_of: []
 revisit_when: [E]
 ---

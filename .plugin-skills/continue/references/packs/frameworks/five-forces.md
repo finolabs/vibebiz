@@ -10,6 +10,8 @@ needs: []
 feeds:
   - to: swot
     passes: the threats from rivals, suppliers, buyers, substitutes and new entrants
+  - to: ansoff
+    passes: market position
 instead_of: []
 revisit_when: [D, K]
 ---

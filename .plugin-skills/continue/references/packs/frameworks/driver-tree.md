@@ -18,6 +18,8 @@ feeds:
     passes: the top of the tree
   - to: leading-lagging
     passes: the drivers
+  - to: npv
+    passes: the driver change to value
 instead_of: []
 revisit_when: [C]
 ---

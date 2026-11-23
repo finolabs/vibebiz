@@ -119,14 +119,14 @@ The planning cards (`lens: plan`) are applied here at packaging, never by the ro
 - it is not already listed in that category's `frameworks`, and no other planning card is applied to the same category in this pass; there is no limit on how many planning cards an idea uses;
 - or the user asked for it by name (noted in `## Clarifications`) and the first three conditions still hold. If one fails, say why in one plain sentence.
 
-When several planning cards fit one category, choose by "When to use" against the idea and write why in one English line under the category's `framework_reasons`, keyed by the card id.
+Find the candidates in `references/packs/framework-index.md` before writing section 4: for each category that is `missing` or `partial`, the rows with lens `plan` in "By category". Open each candidate card and check the conditions above against it; never pick from the list below alone, since the index holds every shipped planning card.
 
-The two cards this module most often uses:
+For every card applied, write one English line under the filled category's `framework_reasons`, keyed by the card id: which open gap it fills and, when several fit, why this one by "When to use". A card applied without its line is incomplete.
+
+Two cards with a fixed place in sections 4.2 and 4.4:
 
 - **`build-buy-partner-roi`** (fills D, M): when M is `partial` because the scenarios, resources or payback are missing, or because only the build cost was counted. Use its questions in plain words to collect the figures for section 4.2: one-time and yearly cost per route, the main return driver and today's value, the team needed. Count running cost, training and store staff time, not only the purchase or build. Every cost and return scenario in low, base and high, labelled as an estimate; today's value of the return driver, when nobody knows it, follows the ask protocol's rule 5 instead.
 - **`adkar`** (fills L): when L is `missing` or `partial` and the work of store staff, supervisors or back-office teams changes. Ask its questions for the group whose work changes most, record the step where that group is stuck as the place the plan starts, and write training, support, KPI changes and owners. Guessing how staff feel is not allowed: an answer nobody present can give becomes an assumption to test in the pilot or an open question.
-
-The other planning cards (`moscow`, `marketing-mix-4p-7p`) follow the same conditions; at readiness their categories are usually settled, so they rarely apply here.
 
 Before asking a card's questions, read the results its feeding cards passed on (an applied card whose `feeds` lists it, per `references/packs/framework-index.md` "Cards"; the result is where that card's "Writes to" put it) and drop the questions they already answer (spec 004 FR-015). Start its `framework_reasons` line with `fed by <card> (<passes>);` as the router's rule 3 does.
 
