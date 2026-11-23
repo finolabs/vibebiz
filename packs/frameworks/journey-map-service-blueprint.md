@@ -14,6 +14,8 @@ feeds:
     passes: the staff whose work changes
   - to: kano
     passes: the features at each step
+  - to: raci
+    passes: lanes
 instead_of: []
 revisit_when: [E, J, L]
 ---
