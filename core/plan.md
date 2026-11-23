@@ -4,7 +4,7 @@ Turn a ready idea into the business plan the board decides on: what is asked for
 
 - **Used by**: package, at readiness, before the checklist and analyze modules.
 - **Reads**: the idea's `spec.md` (`## Problem & Why`, `## Outcome`, `## Alternatives`, `## AI-fit`, `## Cost & Risk`, the user stories, `## Assumptions`, `## Clarifications`), `coverage.md` (category statuses and `frameworks`, `cynefin`, `language`, `estimate_status`), `decisions.md`, `assumptions.md`, `open-questions.md`; the workspace `constitution.md` (`status`, `priorities`, `approval_ceiling`, `mandatory_approvals`, `strategy_map`, `okrs`); the template `references/templates/idea/plan.md`; the planning cards in `references/packs/frameworks/` (`lens: plan`), only under section 6.
-- **Writes**: the idea's `plan.md`; `spec.md` (`## Cost & Risk` for new cost, return, rollout and organizational-change facts, and Clarifications through the ask protocol); `decisions.md` (`answer` entries through the ask protocol, `ground-rule-conflict` and `supersede` entries from section 5); `open-questions.md`; `coverage.md` (status, `frameworks` and `updated` of M, and of L when section 6 fills it; the body table).
+- **Writes**: the idea's `plan.md`; `spec.md` (`## Cost & Risk` for new cost, return, rollout and organizational-change facts, and Clarifications through the ask protocol); `decisions.md` (`answer` entries through the ask protocol, `ground-rule-conflict` and `supersede` entries from section 5); `open-questions.md`; `coverage.md` (status, `frameworks`, `framework_reasons` and `updated` of every category section 6 fills; the body table).
 - **Fills**: M (cost, resources and return) to completion; L when the ADKAR card applies; the ground-rule conflicts.
 
 Follow `references/core/ask-protocol.md` for every question, `references/core/writing-rules.md` for every word the user reads (including how to address the user), and `references/core/anti-sycophancy.md` in everything the plan says about the idea.
@@ -121,7 +121,7 @@ The planning cards (`lens: plan`) are applied here at packaging, never by the ro
 
 Find the candidates in `references/packs/framework-index.md` before writing section 4: for each category that is `missing` or `partial`, the rows with lens `plan` in "By category". Open each candidate card and check the conditions above against it; never pick from the list below alone, since the index holds every shipped planning card.
 
-For every card applied, write one English line under the filled category's `framework_reasons`, keyed by the card id: which open gap it fills and, when several fit, why this one by "When to use". A card applied without its line is incomplete.
+Record each card you apply in `coverage.md` as soon as you choose it, before writing the plan section it shapes: add its id to the filled category's `frameworks`, and write one English line under that category's `framework_reasons`, keyed by the card id, saying which open gap it fills and, when several fit, why this one by "When to use". This step is done when every card whose method shapes `plan.md` has both entries in `coverage.md`.
 
 Two cards with a fixed place in sections 4.2 and 4.4:
 
@@ -130,7 +130,7 @@ Two cards with a fixed place in sections 4.2 and 4.4:
 
 Before asking a card's questions, read the results its feeding cards passed on (an applied card whose `feeds` lists it, per `references/packs/framework-index.md` "Cards"; the result is where that card's "Writes to" put it) and drop the questions they already answer (spec 004 FR-015). Start its `framework_reasons` line with `fed by <card> (<passes>);` as the router's rule 3 does.
 
-Ask a card's questions without naming the framework. When at least one of its questions was answered, or the card's method shaped a section from the files, add its id to the `frameworks` list of the category it filled, so the outputs can name it. Without the card file, do the section in its plain form; never apply a framework from memory.
+Ask a card's questions without naming the framework. The `frameworks` entry lets the outputs name the card. Without the card file, do the section in its plain form; never apply a framework from memory.
 
 ## 7. The tech-review label
 
