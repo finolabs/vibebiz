@@ -28,6 +28,7 @@ Splits one broad question about the business into smaller questions that do not 
 
 - One recurring defect with a recent real case, where one chain of causes explains it: use `five-whys`.
 - An operational problem whose candidate causes come in kinds (people, process, stock, system) and must be listed before choosing: use `fishbone`.
+- The idea has no activity yet and the question is where along the company's activities, from design to after-sales, to put it: use `value-chain`.
 
 ## Inputs
 
