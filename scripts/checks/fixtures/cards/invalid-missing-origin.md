@@ -5,6 +5,10 @@ lens: problem-framing
 fills: [A]
 core: true
 diagram_type: flowchart
+needs: []
+feeds: []
+instead_of: []
+revisit_when: []
 ---
 # Sample card
 

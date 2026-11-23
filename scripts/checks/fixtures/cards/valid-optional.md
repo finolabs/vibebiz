@@ -6,6 +6,10 @@ fills: [B, C]
 core: false
 diagram_type: flowchart
 origin: "Fictional author, fictional source"
+needs: []
+feeds: []
+instead_of: []
+revisit_when: []
 ---
 # Sample card
 
