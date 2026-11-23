@@ -14,6 +14,10 @@ feeds:
     passes: the target that could be missed
   - to: test-and-control-pilot
     passes: the metric to test
+  - to: north-star-metric
+    passes: the top of the tree
+  - to: leading-lagging
+    passes: the drivers
 instead_of: []
 revisit_when: [C]
 ---

@@ -12,6 +12,8 @@ feeds:
     passes: the journeys to cut
   - to: adkar
     passes: the staff whose work changes
+  - to: kano
+    passes: the features at each step
 instead_of: []
 revisit_when: [E, J, L]
 ---

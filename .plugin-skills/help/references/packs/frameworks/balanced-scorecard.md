@@ -10,6 +10,8 @@ needs: []
 feeds:
   - to: driver-tree
     passes: the perspective the idea moves
+  - to: okr
+    passes: the perspective the idea moves
 instead_of: []
 revisit_when: [C]
 ---

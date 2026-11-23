@@ -10,6 +10,8 @@ needs: []
 feeds:
   - to: pre-mortem
     passes: the operational causes
+  - to: issue-tree
+    passes: the grouped causes
 instead_of: [five-whys]
 revisit_when: [A]
 ---

@@ -163,7 +163,7 @@ Then rebuild the coverage table as the ask protocol says, leave `next_step` and 
 
 ## 8. Framework cards
 
-The router may hand this lens one framework card for an open category; it never picks one itself. Use a card only when it was handed over, its `lens` is `solution-sketch`, and its `fills` includes a category of yours that is still `missing` or `partial`. In the first release that card is `journey-map-service-blueprint`, loaded from `references/packs/frameworks/journey-map-service-blueprint.md`; it adds what staff and back office must do behind each customer step.
+The router may hand this lens one framework card for an open category; it never picks one itself. Use a card only when it was handed over, its `lens` is `solution-sketch`, and its `fills` includes a category of yours that is still `missing` or `partial`. The solution-sketch cards are the rows with lens `solution-sketch` in `references/packs/framework-index.md`; load the handed one from `references/packs/frameworks/<id>.md`.
 - When the hand-off names a feeding card and its result, read that result from the idea's files first and drop every question of this card that it already answers (spec 004 FR-015); a revisit hand-off asks only about the change it names.
 
 - Ask the card's questions in plain words, through the ask protocol, without making the user learn the framework; name it only if the user asked for it by name.

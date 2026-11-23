@@ -12,6 +12,8 @@ feeds:
     passes: the steps of the job
   - to: driver-tree
     passes: the outcome the customer wants
+  - to: value-proposition-canvas
+    passes: the jobs, pains and gains
 instead_of: []
 revisit_when: [A, B]
 ---

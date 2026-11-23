@@ -12,6 +12,8 @@ feeds:
     passes: the hand-offs that reach the customer
   - to: driver-tree
     passes: the step whose delay to measure
+  - to: lean-dmaic
+    passes: the process map for Define
 instead_of: []
 revisit_when: [E, J]
 ---

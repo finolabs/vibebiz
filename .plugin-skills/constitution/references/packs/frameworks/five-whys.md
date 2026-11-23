@@ -10,6 +10,8 @@ needs: []
 feeds:
   - to: driver-tree
     passes: the cause the target must move
+  - to: issue-tree
+    passes: the root cause
 instead_of: [fishbone]
 revisit_when: [A]
 ---

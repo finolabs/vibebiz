@@ -10,6 +10,8 @@ needs: []
 feeds:
   - to: sipoc
     passes: the activity the idea touches
+  - to: five-forces
+    passes: where margin is made
 instead_of: []
 revisit_when: [A]
 ---
