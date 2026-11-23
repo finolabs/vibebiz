@@ -2,7 +2,7 @@
 
 Run the interview loop for one idea: decide what to ask next, hand each category to the module that fills it, keep the session within its question budget, and tell the user what comes next. Used by the `idea` and `continue` entry skills, and by `package` when the analyze module's findings send the idea back to the interview (see "Findings from analyze"). The `continue` entry skill records board outcomes and tech reviews itself and hands the board's requested changes here (see "Changes from the board").
 
-- **Reads**: the idea's `coverage.md`, `spec.md`, `decisions.md`, `assumptions.md`, `open-questions.md`, `glossary.md`; the workspace `constitution.md`; the framework cards in `references/packs/frameworks/`.
+- **Reads**: the idea's `coverage.md`, `spec.md`, `decisions.md`, `assumptions.md`, `open-questions.md`, `glossary.md`; the workspace `constitution.md`; the card index `references/packs/framework-index.md` and the framework cards in `references/packs/frameworks/`.
 - **Writes**: `coverage.md` (`cynefin`, `budget_rounds_used`, `next_step`, `status` between `clarifying` and `ready`, each category's `frameworks`, `updated`, the body table); `decisions.md` for `supersede` entries and for split decisions (type `answer`).
 - **Asks through**: `references/core/ask-protocol.md`, which owns the question rules, the default budget of three rounds, Skip, the all-skipped round, no-answer runs and the per-round write-back of answers, decisions and open questions.
 
@@ -19,7 +19,7 @@ At the start of a session (the first round for this idea in this conversation), 
 5. **Check for two ideas** (see "Two ideas in one") when the intake or the latest answers suggest it.
 6. **Compute the frontier** and **rank** it (below).
 7. **Look facts up** for every candidate question before asking it (see "Facts before questions").
-8. **Choose the module** for each category in the round, choose its framework card if one fits (see "Frameworks", including any card waiting for a revisit), and let the module write the round's questions (see "Who fills what"). Do the card check in every round, not only the first: for each category in the round, read the frontmatter of the cards whose `fills` include it and whose `lens` is its module, and hand one over unless every one is excluded by "Frameworks" rules 1, 2 and 8 or by the depth. One round holds at most four questions in total, taken from the highest-ranked categories first.
+8. **Choose the module** for each category in the round, choose its framework card if one fits (see "Frameworks", including any card waiting for a revisit), and let the module write the round's questions (see "Who fills what"). Do the card check in every round, not only the first: for each category in the round, look its code up in `references/packs/framework-index.md` ("By category", the row whose lens is the category's module), read the file of every card listed there, and hand one over unless every one is excluded by "Frameworks" rules 1, 2 and 8 or by the depth. One round holds at most four questions in total, taken from the highest-ranked categories first.
 9. **Ask the round** through the ask protocol, which writes the answers back.
 10. **Close the round**: increment `budget_rounds_used` by one (an all-skipped round counts too), make sure each category the round touched has its new status and its applied cards in `frameworks`, rebuild the `coverage.md` body table from the frontmatter, write `next_step` (see "Next step"), set `updated` to today, and rebuild the table of contents by the workspace module's rules (`references/core/workspace.md`). Do this after every round, so an abandoned session loses nothing.
 11. **Check the budget** (see "Budget"). If budget remains, go back to step 1.
@@ -122,7 +122,7 @@ Framework cards (`references/packs/frameworks/<id>.md`) give a lens a proven way
 5. **Record**: the lens reports which handed-over card had a question answered. When a round asked at least one question from a card and that question was answered, add the card's id to the `frameworks` list of the category it filled. A card whose questions were all skipped is not recorded.
 6. **Not chosen here**: cards with `lens: plan` are applied by the plan module at packaging, and the Cynefin card serves "Depth" only; the plan module applies its cards under the same rules 1 to 3.
 7. **No card, no framework**: if the pack folder or a card is missing, the lens works without it. Never apply a framework from memory without its card.
-8. **Follow the map**: each card's frontmatter links it to others (`references/docs/framework-map.md` shows them all).
+8. **Follow the map**: each card's frontmatter links it to others (`references/packs/framework-index.md` "Cards" lists every card's `needs`, `instead_of` and `feeds`).
    - `needs`: hand a card over only when one card it lists is already applied to this idea, or every category that card `fills` is already `clear`.
    - `instead_of`: never hand a card for a category where a card it lists is already applied.
    - `feeds`: when you hand over a card that an applied card feeds, name in the hand-off the feeding card and its `passes` text, so the lens reads that result from the files (where the feeding card's "Writes to" put it) and asks only what it leaves open. Name the feeding card in the `framework_reasons` line too.

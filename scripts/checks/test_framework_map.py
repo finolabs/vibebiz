@@ -54,6 +54,18 @@ class MapFixtures(unittest.TestCase):
         d = self.folder({"a": card("a", revisit="[Z]")})
         self.assertTrue(any("revisit_when 'Z'" in p for p in fm.check(d)))
 
+    def test_index_lists_cards_by_category_and_lens(self):
+        d = self.folder({
+            "a": card("a", feeds="\n  - to: b\n    passes: the root cause", instead="[c]"),
+            "b": card("b", needs="[a]"),
+            "c": card("c", instead="[a]").replace("lens: outcome", "lens: plan"),
+        })
+        text = fm.render_index(d)
+        self.assertIn("| C | outcome | a, b |", text)
+        self.assertIn("| C | plan | c |", text)
+        self.assertIn("| a | outcome | C | — | c | b |", text)
+        self.assertIn("| b | outcome | C | a | — | — |", text)
+
     def test_missing_link_key(self):
         d = self.folder({"a": card("a").replace("revisit_when: []\n", "")})
         self.assertTrue(any("missing link key 'revisit_when'" in p for p in fm.check(d)))
@@ -66,6 +78,10 @@ class Repository(unittest.TestCase):
     def test_doc_is_current(self):
         self.assertTrue(fm.DOC.is_file(), "run framework_map.py render")
         self.assertEqual(fm.DOC.read_text(encoding="utf-8"), fm.render(), "stale docs/framework-map.md; run framework_map.py render")
+
+    def test_index_is_current(self):
+        self.assertTrue(fm.INDEX.is_file(), "run framework_map.py render")
+        self.assertEqual(fm.INDEX.read_text(encoding="utf-8"), fm.render_index(), "stale packs/framework-index.md; run framework_map.py render")
 
 
 if __name__ == "__main__":

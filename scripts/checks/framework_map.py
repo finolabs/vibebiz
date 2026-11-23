@@ -6,7 +6,7 @@ Each card declares four link keys in its frontmatter:
   instead_of:   [card ids]            declared on both sides
   revisit_when: [codes A-O, board-changes, tech-review]
 
-`check` validates the links across a folder; `render` writes docs/framework-map.md,
+`check` validates the links across a folder; `render` writes docs/framework-map.md and packs/framework-index.md (the router's lookup),
 the plain-Vietnamese table `help` reads. Python 3.10+ standard library only.
 
 Run: python3 scripts/checks/framework_map.py check
@@ -27,6 +27,7 @@ from frontmatter import load  # noqa: E402
 REPO = HERE.parent.parent
 CARDS_DIR = REPO / "packs" / "frameworks"
 DOC = REPO / "docs" / "framework-map.md"
+INDEX = REPO / "packs" / "framework-index.md"
 LINK_KEYS = ("needs", "feeds", "instead_of", "revisit_when")
 EVENTS = {"board-changes", "tech-review"}
 CODES = set("ABCDEFGHIJKLMNO")
@@ -113,6 +114,44 @@ def render(directory: Path = CARDS_DIR) -> str:
     return "\n".join(lines) + "\n"
 
 
+def render_index(directory: Path = CARDS_DIR) -> str:
+    """The router's lookup from a category to the cards that fill it, built from card frontmatter."""
+    cards = _cards(directory)
+    by_slot: dict[tuple[str, str], list[str]] = {}
+    for cid, d in cards.items():
+        for code in _list(d.get("fills")):
+            by_slot.setdefault((str(code), str(d.get("lens"))), []).append(cid)
+    lines = [
+        "# Framework card index",
+        "",
+        "Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/framework_map.py render`; do not edit by hand. "
+        "Look a category up here to find every card whose `fills` includes it, then read those cards' files. "
+        "The card file stays the authority for \"When to use\", \"When not to use\", `feeds` and `revisit_when`.",
+        "",
+        "## By category",
+        "",
+        "| Code | Lens | Cards |",
+        "|---|---|---|",
+    ]
+    for code, lens in sorted(by_slot):
+        lines.append(f"| {code} | {lens} | {', '.join(sorted(by_slot[(code, lens)]))} |")
+    lines += [
+        "",
+        "## Cards",
+        "",
+        "| Card | Lens | Fills | Needs | Instead of | Feeds |",
+        "|---|---|---|---|---|---|",
+    ]
+    for cid in sorted(cards):
+        d = cards[cid]
+        fills = ", ".join(str(c) for c in _list(d.get("fills"))) or "—"
+        needs = ", ".join(_list(d.get("needs"))) or "—"
+        inst = ", ".join(_list(d.get("instead_of"))) or "—"
+        feeds = ", ".join(f["to"] for f in _list(d.get("feeds")) if isinstance(f, dict) and f.get("to")) or "—"
+        lines.append(f"| {cid} | {d.get('lens')} | {fills} | {needs} | {inst} | {feeds} |")
+    return "\n".join(lines) + "\n"
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("mode", choices=("check", "render"))
@@ -124,7 +163,8 @@ def main(argv: list[str] | None = None) -> int:
         print("map ok" if not problems else f"{len(problems)} problems")
         return 1 if problems else 0
     DOC.write_text(render(), encoding="utf-8")
-    print(f"wrote {DOC.relative_to(REPO)}")
+    INDEX.write_text(render_index(), encoding="utf-8")
+    print(f"wrote {DOC.relative_to(REPO)} and {INDEX.relative_to(REPO)}")
     return 0
 
 
