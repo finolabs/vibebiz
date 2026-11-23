@@ -10,7 +10,7 @@ needs: []
 feeds:
   - to: moscow
     passes: the scored list to cut
-instead_of: []
+instead_of: [value-effort]
 revisit_when: [E, board-changes]
 ---
 

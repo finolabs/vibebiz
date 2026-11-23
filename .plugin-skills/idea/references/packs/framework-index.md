@@ -12,7 +12,7 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | C | outcome | balanced-scorecard, driver-tree |
 | D | challenge | assumption-map, swot |
 | D | plan | ansoff, bcg-matrix, build-buy-partner-roi |
-| E | plan | marketing-mix-4p-7p, moscow, rice-ice, stp |
+| E | plan | marketing-mix-4p-7p, moscow, rice-ice, stp, value-effort |
 | E | solution-sketch | journey-map-service-blueprint, sipoc |
 | J | solution-sketch | journey-map-service-blueprint, sipoc |
 | K | challenge | assumption-map, pre-mortem, swot, test-and-control-pilot |
@@ -38,10 +38,11 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | jobs-to-be-done | problem-framing | A, B | — | — | journey-map-service-blueprint, driver-tree | — |
 | journey-map-service-blueprint | solution-sketch | E, J, L | — | — | moscow, adkar | jobs-to-be-done (the steps of the job); sipoc (the hand-offs that reach the customer) |
 | marketing-mix-4p-7p | plan | E, M | — | — | — | stp (the target segment and its position) |
-| moscow | plan | E | — | — | adkar | journey-map-service-blueprint (the journeys to cut); pre-mortem (what to leave out of the first release); rice-ice (the scored list to cut) |
+| moscow | plan | E | — | — | adkar | journey-map-service-blueprint (the journeys to cut); pre-mortem (what to leave out of the first release); rice-ice (the scored list to cut); value-effort (the quick wins and big bets) |
 | pre-mortem | challenge | K | — | — | assumption-map, build-buy-partner-roi, moscow | driver-tree (the target that could be missed); fishbone (the operational causes); swot (the weaknesses and threats) |
-| rice-ice | plan | E | — | — | moscow | — |
+| rice-ice | plan | E | — | value-effort | moscow | — |
 | sipoc | solution-sketch | E, J | — | — | journey-map-service-blueprint, driver-tree | — |
 | stp | plan | B, E | — | — | marketing-mix-4p-7p | — |
 | swot | challenge | D, K | — | — | pre-mortem, driver-tree | — |
 | test-and-control-pilot | challenge | M, K | assumption-map, driver-tree | — | build-buy-partner-roi | assumption-map (the riskiest belief); driver-tree (the metric to test) |
+| value-effort | plan | E | — | rice-ice | moscow | — |
