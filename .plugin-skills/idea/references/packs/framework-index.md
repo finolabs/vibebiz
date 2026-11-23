@@ -11,7 +11,7 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | B | problem-framing | jobs-to-be-done |
 | C | outcome | balanced-scorecard, driver-tree |
 | D | challenge | assumption-map, swot |
-| D | plan | build-buy-partner-roi |
+| D | plan | ansoff, build-buy-partner-roi |
 | E | plan | marketing-mix-4p-7p, moscow, stp |
 | E | solution-sketch | journey-map-service-blueprint, sipoc |
 | J | solution-sketch | journey-map-service-blueprint, sipoc |
@@ -26,6 +26,7 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | Card | Lens | Fills | Needs | Instead of | Feeds | Fed by (passes) |
 |---|---|---|---|---|---|---|
 | adkar | plan | L | — | — | — | build-buy-partner-roi (the chosen route and whose work it changes); journey-map-service-blueprint (the staff whose work changes); moscow (what ships first and who uses it) |
+| ansoff | plan | D | — | — | — | — |
 | assumption-map | challenge | K, D | — | — | test-and-control-pilot | driver-tree (the drivers that rest on beliefs); pre-mortem (the failure causes as beliefs) |
 | balanced-scorecard | outcome | C | — | — | driver-tree | — |
 | build-buy-partner-roi | plan | D, M | — | — | adkar | pre-mortem (the risks each route must cover); test-and-control-pilot (the pilot result) |
