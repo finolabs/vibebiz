@@ -7,11 +7,12 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | Code | Lens | Cards |
 |---|---|---|
 | A | problem-framing | fishbone, five-whys, jobs-to-be-done |
+| B | plan | stp |
 | B | problem-framing | jobs-to-be-done |
 | C | outcome | balanced-scorecard, driver-tree |
 | D | challenge | assumption-map, swot |
 | D | plan | build-buy-partner-roi |
-| E | plan | marketing-mix-4p-7p, moscow |
+| E | plan | marketing-mix-4p-7p, moscow, stp |
 | E | solution-sketch | journey-map-service-blueprint, sipoc |
 | J | solution-sketch | journey-map-service-blueprint, sipoc |
 | K | challenge | assumption-map, pre-mortem, swot, test-and-control-pilot |
@@ -34,9 +35,10 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | five-whys | problem-framing | A | — | fishbone | driver-tree | — |
 | jobs-to-be-done | problem-framing | A, B | — | — | journey-map-service-blueprint, driver-tree | — |
 | journey-map-service-blueprint | solution-sketch | E, J, L | — | — | moscow, adkar | jobs-to-be-done (the steps of the job); sipoc (the hand-offs that reach the customer) |
-| marketing-mix-4p-7p | plan | E, M | — | — | — | — |
+| marketing-mix-4p-7p | plan | E, M | — | — | — | stp (the target segment and its position) |
 | moscow | plan | E | — | — | adkar | journey-map-service-blueprint (the journeys to cut); pre-mortem (what to leave out of the first release) |
 | pre-mortem | challenge | K | — | — | assumption-map, build-buy-partner-roi, moscow | driver-tree (the target that could be missed); fishbone (the operational causes); swot (the weaknesses and threats) |
 | sipoc | solution-sketch | E, J | — | — | journey-map-service-blueprint, driver-tree | — |
+| stp | plan | B, E | — | — | marketing-mix-4p-7p | — |
 | swot | challenge | D, K | — | — | pre-mortem, driver-tree | — |
 | test-and-control-pilot | challenge | M, K | assumption-map, driver-tree | — | build-buy-partner-roi | assumption-map (the riskiest belief); driver-tree (the metric to test) |
