@@ -7,7 +7,9 @@ core: false
 diagram_type: tree
 origin: Product-growth practice of the 2010s; the North Star metric with its input metrics is described in published growth-team playbooks such as Amplitude's North Star guide
 needs: []
-feeds: []
+feeds:
+  - to: okr
+    passes: the objective
 instead_of: []
 revisit_when: [C]
 ---

@@ -17,7 +17,8 @@ vibebiz tự chọn phương pháp phân tích (framework) theo phần còn tr�
 | Issue tree (MECE) | — | Driver tree (KPI tree) | — | mục A đổi |
 | Jobs to be done | — | Customer journey map and service blueprint, Driver tree (KPI tree) | — | mục A đổi, mục B đổi |
 | MoSCoW | — | ADKAR | — | mục E đổi, ban lãnh đạo yêu cầu sửa |
-| North Star metric | — | — | — | mục C đổi |
+| North Star metric | — | OKR | — | mục C đổi |
+| OKR | — | — | — | mục C đổi, ban lãnh đạo yêu cầu sửa |
 | Porter value chain | — | SIPOC (with a Requirements column) | — | mục A đổi |
 | Pre-mortem | — | Assumption map, Build, buy or partner with return and payback, MoSCoW | — | mục E đổi, mục K đổi |
 | SIPOC (with a Requirements column) | — | Customer journey map and service blueprint, Driver tree (KPI tree) | — | mục E đổi, mục J đổi |
