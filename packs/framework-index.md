@@ -9,12 +9,12 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | A | problem-framing | fishbone, five-whys, jobs-to-be-done |
 | B | problem-framing | jobs-to-be-done |
 | C | outcome | balanced-scorecard, driver-tree |
-| D | challenge | assumption-map, cost-of-inaction, five-forces, swot |
+| D | challenge | assumption-map, cost-of-inaction, five-forces, six-thinking-hats, swot |
 | D | plan | build-buy-partner-roi |
 | E | plan | marketing-mix-4p-7p, moscow |
 | E | solution-sketch | journey-map-service-blueprint, sipoc |
 | J | solution-sketch | journey-map-service-blueprint, sipoc |
-| K | challenge | assumption-map, five-forces, pestel, pre-mortem, swot, test-and-control-pilot |
+| K | challenge | assumption-map, five-forces, pestel, pre-mortem, six-thinking-hats, swot, test-and-control-pilot |
 | L | plan | adkar |
 | L | solution-sketch | journey-map-service-blueprint |
 | M | challenge | cost-of-inaction, test-and-control-pilot |
@@ -39,7 +39,8 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | marketing-mix-4p-7p | plan | E, M | — | — | — | — |
 | moscow | plan | E | — | — | adkar | journey-map-service-blueprint (the journeys to cut); pre-mortem (what to leave out of the first release) |
 | pestel | challenge | K | — | — | swot | — |
-| pre-mortem | challenge | K | — | — | assumption-map, build-buy-partner-roi, moscow | driver-tree (the target that could be missed); fishbone (the operational causes); swot (the weaknesses and threats) |
+| pre-mortem | challenge | K | — | — | assumption-map, build-buy-partner-roi, moscow | driver-tree (the target that could be missed); fishbone (the operational causes); six-thinking-hats (the caution view); swot (the weaknesses and threats) |
 | sipoc | solution-sketch | E, J | — | — | journey-map-service-blueprint, driver-tree | — |
-| swot | challenge | D, K | — | — | pre-mortem, driver-tree | five-forces (the threats from rivals, suppliers, buyers, substitutes and new entrants); pestel (the external opportunities and threats) |
+| six-thinking-hats | challenge | D, K | — | swot | pre-mortem | — |
+| swot | challenge | D, K | — | six-thinking-hats | pre-mortem, driver-tree | five-forces (the threats from rivals, suppliers, buyers, substitutes and new entrants); pestel (the external opportunities and threats) |
 | test-and-control-pilot | challenge | M, K | assumption-map, driver-tree | — | build-buy-partner-roi | assumption-map (the riskiest belief); driver-tree (the metric to test) |

@@ -21,5 +21,6 @@ vibebiz tự chọn phương pháp phân tích (framework) theo phần còn tr�
 | Porter Five Forces | — | SWOT | — | mục D đổi, mục K đổi |
 | Pre-mortem | — | Assumption map, Build, buy or partner with return and payback, MoSCoW | — | mục E đổi, mục K đổi |
 | SIPOC (with a Requirements column) | — | Customer journey map and service blueprint, Driver tree (KPI tree) | — | mục E đổi, mục J đổi |
-| SWOT | — | Pre-mortem, Driver tree (KPI tree) | — | mục D đổi, mục K đổi |
+| Six Thinking Hats | — | Pre-mortem | SWOT | mục D đổi, mục K đổi |
+| SWOT | — | Pre-mortem, Driver tree (KPI tree) | Six Thinking Hats | mục D đổi, mục K đổi |
 | Test-and-control pilot | Assumption map, Driver tree (KPI tree) | Build, buy or partner with return and payback | — | mục C đổi, mục E đổi |
