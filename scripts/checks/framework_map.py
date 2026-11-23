@@ -126,6 +126,7 @@ def render_index(directory: Path = CARDS_DIR) -> str:
         "",
         "Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/framework_map.py render`; do not edit by hand. "
         "Look a category up here to find every card whose `fills` includes it, then read those cards' files. "
+        "\"Fed by\" lists every card that feeds this one and what it passes; when one of them is applied to the idea, name it in the hand-off and start the reason line with `fed by <card> (<passes>);`. "
         "The card file stays the authority for \"When to use\", \"When not to use\", `feeds` and `revisit_when`.",
         "",
         "## By category",
@@ -139,16 +140,22 @@ def render_index(directory: Path = CARDS_DIR) -> str:
         "",
         "## Cards",
         "",
-        "| Card | Lens | Fills | Needs | Instead of | Feeds |",
-        "|---|---|---|---|---|---|",
+        "| Card | Lens | Fills | Needs | Instead of | Feeds | Fed by (passes) |",
+        "|---|---|---|---|---|---|---|",
     ]
+    fed_by: dict[str, list[str]] = {}
+    for src in sorted(cards):
+        for f in _list(cards[src].get("feeds")):
+            if isinstance(f, dict) and f.get("to"):
+                fed_by.setdefault(str(f["to"]), []).append(f"{src} ({f.get('passes')})")
     for cid in sorted(cards):
         d = cards[cid]
         fills = ", ".join(str(c) for c in _list(d.get("fills"))) or "—"
         needs = ", ".join(_list(d.get("needs"))) or "—"
         inst = ", ".join(_list(d.get("instead_of"))) or "—"
         feeds = ", ".join(f["to"] for f in _list(d.get("feeds")) if isinstance(f, dict) and f.get("to")) or "—"
-        lines.append(f"| {cid} | {d.get('lens')} | {fills} | {needs} | {inst} | {feeds} |")
+        fed = "; ".join(fed_by.get(cid, [])) or "—"
+        lines.append(f"| {cid} | {d.get('lens')} | {fills} | {needs} | {inst} | {feeds} | {fed} |")
     return "\n".join(lines) + "\n"
 
 

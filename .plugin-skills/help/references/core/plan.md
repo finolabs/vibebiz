@@ -128,6 +128,8 @@ The two cards this module most often uses:
 
 The other planning cards (`moscow`, `marketing-mix-4p-7p`) follow the same conditions; at readiness their categories are usually settled, so they rarely apply here.
 
+Before asking a card's questions, read the results its feeding cards passed on (an applied card whose `feeds` lists it, per `references/packs/framework-index.md` "Cards"; the result is where that card's "Writes to" put it) and drop the questions they already answer (spec 004 FR-015). Start its `framework_reasons` line with `fed by <card> (<passes>);` as the router's rule 3 does.
+
 Ask a card's questions without naming the framework. When at least one of its questions was answered, or the card's method shaped a section from the files, add its id to the `frameworks` list of the category it filled, so the outputs can name it. Without the card file, do the section in its plain form; never apply a framework from memory.
 
 ## 7. The tech-review label

@@ -63,8 +63,8 @@ class MapFixtures(unittest.TestCase):
         text = fm.render_index(d)
         self.assertIn("| C | outcome | a, b |", text)
         self.assertIn("| C | plan | c |", text)
-        self.assertIn("| a | outcome | C | — | c | b |", text)
-        self.assertIn("| b | outcome | C | a | — | — |", text)
+        self.assertIn("| a | outcome | C | — | c | b | — |", text)
+        self.assertIn("| b | outcome | C | a | — | — | a (the root cause) |", text)
 
     def test_missing_link_key(self):
         d = self.folder({"a": card("a").replace("revisit_when: []\n", "")})
