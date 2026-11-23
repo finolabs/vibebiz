@@ -25,7 +25,7 @@ title: "Chia ngân sách nhập hàng 2027 giữa bốn dòng hàng"
 language: vi
 vertical: fashion
 cynefin: complicated
-status: clarifying
+status: ready
 estimate_status: not-tech-reviewed
 budget_rounds_used: 0
 latest_export: null
@@ -55,7 +55,7 @@ categories:
     frameworks: []
     updated: "2026-11-12"
   D:
-    status: partial
+    status: clear
     reason: null
     prerequisites: [A, C]
     filled_by: challenge
@@ -147,7 +147,7 @@ categories:
 | A | Problem and why | clear |  | 2026-11-12 |
 | B | Users and stakeholders | clear |  | 2026-11-12 |
 | C | Outcome and measurement | clear |  | 2026-11-12 |
-| D | Alternatives | partial |  | 2026-11-12 |
+| D | Alternatives | clear |  | 2026-11-12 |
 | E | Scope and behavior | clear |  | 2026-11-12 |
 | F | AI fit | deferred | Ý tưởng không dùng AI | 2026-11-12 |
 | G | Data and entities | clear |  | 2026-11-12 |
@@ -160,7 +160,7 @@ categories:
 | N | Terminology | clear |  | 2026-11-12 |
 | O | Completion signals | clear |  | 2026-11-12 |
 
-**Clear**: 12 of 15
+**Clear**: 13 of 15
 VIBEBIZ_SEED_2
 mkdir -p "$(dirname 'specs/001-fit-bcg-matrix/spec.md')"
 cat > 'specs/001-fit-bcg-matrix/spec.md' <<'VIBEBIZ_SEED_3'
@@ -182,10 +182,9 @@ Biên lợi nhuận gộp năm 2027 cao hơn năm 2026 với cùng ngân sách n
 
 ## Alternatives
 
-- Không làm gì: chia ngân sách như năm 2026.
-- Chia đều cho bốn dòng.
-
-Chưa so sánh các dòng theo tốc độ tăng của thị trường và vị thế của chuỗi trong từng dòng.
+- Không làm gì: chia ngân sách như năm 2026. Bị loại: biên lợi nhuận gộp không đổi.
+- Chia đều cho bốn dòng. Bị loại: dồn thêm vốn vào dòng đã chững lại.
+- Chia lại theo tốc độ tăng của thị trường và vị thế của chuỗi trong từng dòng. Được chọn (D-001).
 
 ## AI-fit
 
@@ -193,7 +192,7 @@ Không dùng AI; mục này hoãn.
 
 ## Cost & Risk
 
-Cỡ L (chưa qua kỹ thuật thẩm định). Tổng ngân sách nhập hàng giữ như năm 2026; số tiền chưa ghi vào hồ sơ.
+Cỡ L (chưa qua kỹ thuật thẩm định). Tổng ngân sách nhập hàng giữ như năm 2026; số tiền chưa ghi vào hồ sơ. Chưa có phần chia cho từng dòng (thêm vốn, giữ nguyên hay thu hẹp), chưa có kịch bản thấp, cơ sở, cao, và chưa ghi tốc độ tăng của thị trường hay vị thế của chuỗi trong từng dòng.
 
 ## Clarifications
 
@@ -228,6 +227,13 @@ VIBEBIZ_SEED_3
 mkdir -p "$(dirname 'specs/001-fit-bcg-matrix/decisions.md')"
 cat > 'specs/001-fit-bcg-matrix/decisions.md' <<'VIBEBIZ_SEED_4'
 # Decisions: Chia ngân sách nhập hàng 2027 giữa bốn dòng hàng
+
+## D-001 — Chia lại ngân sách theo từng dòng
+
+- date: 2026-11-12
+- type: answer
+- text: Chia lại ngân sách nhập hàng 2027 theo tốc độ tăng của thị trường và vị thế của chuỗi trong từng dòng, thay vì chia như năm 2026 hay chia đều.
+- reason: Ban giám đốc chọn trong buổi họp ngày 12/11/2026.
 VIBEBIZ_SEED_4
 mkdir -p "$(dirname 'specs/001-fit-bcg-matrix/assumptions.md')"
 cat > 'specs/001-fit-bcg-matrix/assumptions.md' <<'VIBEBIZ_SEED_5'
