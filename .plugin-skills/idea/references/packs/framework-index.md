@@ -8,7 +8,7 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 |---|---|---|
 | A | problem-framing | fishbone, five-whys, issue-tree, jobs-to-be-done, value-chain |
 | B | problem-framing | jobs-to-be-done, value-chain |
-| C | outcome | balanced-scorecard, driver-tree, north-star-metric, okr |
+| C | outcome | balanced-scorecard, driver-tree, north-star-metric, okr, smart |
 | D | challenge | assumption-map, swot |
 | D | plan | build-buy-partner-roi |
 | E | plan | marketing-mix-4p-7p, moscow |
@@ -19,7 +19,7 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | L | solution-sketch | journey-map-service-blueprint |
 | M | challenge | test-and-control-pilot |
 | M | plan | build-buy-partner-roi, marketing-mix-4p-7p |
-| O | outcome | okr |
+| O | outcome | okr, smart |
 
 ## Cards
 
@@ -39,9 +39,10 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | marketing-mix-4p-7p | plan | E, M | — | — | — | — |
 | moscow | plan | E | — | — | adkar | journey-map-service-blueprint (the journeys to cut); pre-mortem (what to leave out of the first release) |
 | north-star-metric | outcome | C | — | — | okr | — |
-| okr | outcome | C, O | — | — | — | north-star-metric (the objective) |
+| okr | outcome | C, O | — | — | smart | north-star-metric (the objective) |
 | pre-mortem | challenge | K | — | — | assumption-map, build-buy-partner-roi, moscow | driver-tree (the target that could be missed); fishbone (the operational causes); swot (the weaknesses and threats) |
 | sipoc | solution-sketch | E, J | — | — | journey-map-service-blueprint, driver-tree | value-chain (the activity the idea touches) |
+| smart | outcome | C, O | — | — | — | okr (the key results to sharpen) |
 | swot | challenge | D, K | — | — | pre-mortem, driver-tree | — |
 | test-and-control-pilot | challenge | M, K | assumption-map, driver-tree | — | build-buy-partner-roi | assumption-map (the riskiest belief); driver-tree (the metric to test) |
 | value-chain | problem-framing | A, B | — | — | sipoc | — |

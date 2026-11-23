@@ -7,7 +7,9 @@ core: false
 diagram_type: tree
 origin: Objectives and key results, developed by Andy Grove at Intel in the 1970s and spread by John Doerr's writing; used here for one idea's own period, not for an organization's OKRs
 needs: []
-feeds: []
+feeds:
+  - to: smart
+    passes: the key results to sharpen
 instead_of: []
 revisit_when: [C, board-changes]
 ---
