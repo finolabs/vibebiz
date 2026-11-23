@@ -12,7 +12,7 @@ feeds:
     passes: the weaknesses and threats
   - to: driver-tree
     passes: the opportunity to measure
-instead_of: []
+instead_of: [six-thinking-hats]
 revisit_when: [D, K]
 ---
 
