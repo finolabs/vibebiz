@@ -8,7 +8,7 @@ diagram_type: none
 origin: Jeff Hiatt (Prosci)
 needs: []
 feeds: []
-instead_of: []
+instead_of: [kotter]
 revisit_when: [L]
 ---
 

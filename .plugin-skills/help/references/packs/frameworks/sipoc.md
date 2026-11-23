@@ -14,6 +14,8 @@ feeds:
     passes: the step whose delay to measure
   - to: lean-dmaic
     passes: the process map for Define
+  - to: raci
+    passes: owner of each step
 instead_of: []
 revisit_when: [E, J]
 ---

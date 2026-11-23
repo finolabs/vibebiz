@@ -6,22 +6,24 @@ vibebiz tự chọn phương pháp phân tích (framework) theo phần còn tr�
 |---|---|---|---|---|
 | 4P / 7P marketing mix | — | — | — | mục E đổi, mục M đổi |
 | 5 Whys | — | Driver tree (KPI tree), Issue tree (MECE) | Fishbone (Ishikawa diagram) | mục A đổi |
-| ADKAR | — | — | — | mục L đổi |
+| ADKAR | — | — | Kotter's eight steps | mục L đổi |
 | Ansoff matrix | — | — | BCG growth-share matrix | mục D đổi |
 | Assumption map | — | Test-and-control pilot | — | mục C đổi, mục E đổi |
 | Balanced Scorecard | — | Driver tree (KPI tree), OKR | — | mục C đổi |
 | BCG growth-share matrix | — | — | Ansoff matrix | mục D đổi, mục M đổi |
 | Build, buy or partner with return and payback | — | ADKAR, Total cost of ownership, NPV and payback | — | mục D đổi, mục M đổi, ban lãnh đạo yêu cầu sửa, đội kỹ thuật thẩm định |
 | Cost of inaction | — | Build, buy or partner with return and payback, NPV and payback | — | mục D đổi, mục M đổi, ban lãnh đạo yêu cầu sửa |
-| Customer journey map and service blueprint | — | MoSCoW, ADKAR, Kano model | — | mục E đổi, mục J đổi, mục L đổi |
+| Customer journey map and service blueprint | — | MoSCoW, ADKAR, Kano model, RACI | — | mục E đổi, mục J đổi, mục L đổi |
 | Cynefin | — | — | — | — |
 | Driver tree (KPI tree) | — | Assumption map, Pre-mortem, Test-and-control pilot, North Star metric, Leading and lagging indicators, NPV and payback | — | mục C đổi |
 | Fishbone (Ishikawa diagram) | — | Pre-mortem, Issue tree (MECE) | 5 Whys | mục A đổi |
 | Issue tree (MECE) | — | Driver tree (KPI tree) | — | mục A đổi |
 | Jobs to be done | — | Customer journey map and service blueprint, Driver tree (KPI tree), Value Proposition Canvas, Segmentation, targeting and positioning (STP) | — | mục A đổi, mục B đổi |
 | Kano model | — | MoSCoW, RICE and ICE scoring | — | mục E đổi |
+| Kotter's eight steps | — | — | ADKAR | mục L đổi |
 | Leading and lagging indicators | — | Test-and-control pilot, Stage-gate rollout | — | mục C đổi |
 | Lean and DMAIC | SIPOC (with a Requirements column) | Test-and-control pilot, Stage-gate rollout | — | mục E đổi, mục J đổi |
+| McKinsey 7S | — | ADKAR, Kotter's eight steps | — | mục L đổi |
 | MoSCoW | — | ADKAR, Stage-gate rollout | — | mục E đổi, ban lãnh đạo yêu cầu sửa |
 | North Star metric | — | OKR, Leading and lagging indicators | — | mục C đổi |
 | NPV and payback | Total cost of ownership, Build, buy or partner with return and payback | — | — | mục C đổi, mục M đổi, ban lãnh đạo yêu cầu sửa, đội kỹ thuật thẩm định |
@@ -30,9 +32,10 @@ vibebiz tự chọn phương pháp phân tích (framework) theo phần còn tr�
 | Porter Five Forces | — | SWOT, Ansoff matrix | — | mục D đổi, mục K đổi |
 | Porter value chain | — | SIPOC (with a Requirements column), Porter Five Forces | — | mục A đổi |
 | Pre-mortem | — | Assumption map, Build, buy or partner with return and payback, MoSCoW | — | mục E đổi, mục K đổi |
+| RACI | — | ADKAR, Kotter's eight steps | — | mục B đổi, mục L đổi |
 | RICE and ICE scoring | — | MoSCoW | Value-effort matrix | mục E đổi, ban lãnh đạo yêu cầu sửa |
 | Segmentation, targeting and positioning (STP) | — | 4P / 7P marketing mix | — | mục B đổi, mục E đổi |
-| SIPOC (with a Requirements column) | — | Customer journey map and service blueprint, Driver tree (KPI tree), Lean and DMAIC | — | mục E đổi, mục J đổi |
+| SIPOC (with a Requirements column) | — | Customer journey map and service blueprint, Driver tree (KPI tree), Lean and DMAIC, RACI | — | mục E đổi, mục J đổi |
 | Six Thinking Hats | — | Pre-mortem | SWOT | mục D đổi, mục K đổi |
 | SMART goals | — | — | — | mục C đổi, mục O đổi |
 | Stage-gate rollout | — | — | — | mục E đổi, mục M đổi, ban lãnh đạo yêu cầu sửa |
