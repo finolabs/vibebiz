@@ -103,7 +103,7 @@
 - [x] T023 [P] [US3] In `src/skills/continue/SKILL.md`, after recording a board decision "changes" or a tech review, tell the router which event to fire (`board-changes`, `tech-review`), so FR-016 can redo the cards. Keep the body under 3,000 words.
 - [x] T024 [US3] Add the four link keys to the 15 existing cards and to `packs/frameworks/sipoc.md`, from the data-model draft map. Fix any row the map check rejects. The route diagrams in `assets/diagrams/src/route-start.*.html` and `route-next.*.html` (README "How it works", Fio 19/11/2026) are the canonical entry routes and branches: make the draft map's `feeds` and "When to use" match them (for example value-proposition-canvas, theory-of-constraints and swot each lead to driver-tree; driver-tree to assumption-map or pre-mortem by whether the result depends on how people react), or change the diagrams in the same pull request.
 - [x] T025 [US3] Run `framework_map.py render` to write `docs/framework-map.md` in plain Vietnamese. Add a test that fails when it is stale.
-- [ ] T026 [US3] Rebuild, then run T018, T019, T025's test, the five T020 cases and T003's check. Rerun `gap-driven-no-stacking` and `combine-across-lenses`, which must still pass. **Open (23/11/2026):** the tests pass; map-revisit, map-feeds-preferred, map-needs-gate and combine-across-lenses pass; map-context-carryover 1/2 (the `fed by` prefix), gap-driven-no-stacking 2/3 and map-instead-of 0.80, each red run skipping a card read or rule after reading the index (`evals/RESULTS.md`).
+- [x] T026 [US3] Rebuild, then run T018, T019, T025's test, the five T020 cases and T003's check. Rerun `gap-driven-no-stacking` and `combine-across-lenses`, which must still pass. **Open (23/11/2026):** the tests pass; map-revisit, map-feeds-preferred, map-needs-gate and combine-across-lenses pass; map-context-carryover 1/2 (the `fed by` prefix), gap-driven-no-stacking 2/3 and map-instead-of 0.80, each red run skipping a card read or rule after reading the index (`evals/RESULTS.md`). **Accepted as is (Fio, 23/11/2026)**; the skipped card read is left open for a later design change (the index carrying what the router needs, or step 8 recording each card it read).
 
 **Checkpoint**: the 16 cards on file are linked, and the router follows the map before the library grows.
 
@@ -115,7 +115,7 @@
 
 **Independent Test**: every `fit-<id>` and `skip-<id>` case passes, `test_cards.py` counts 41 cards, and T003's check passes on all of them.
 
-- [ ] T027 [US4] In `scripts/checks/test_cards.py`, set `TOTAL_COUNT = 41` and keep `CORE_COUNT = 15`. The check stays red until T030 to T054 land.
+- [x] T027 [US4] In `scripts/checks/test_cards.py`, set `TOTAL_COUNT = 41` and keep `CORE_COUNT = 15`. The check stays red until T030 to T054 land.
 - [ ] T028 [US4] Dispatch the three batches below as parallel runs through `delegate`, one per run, each in its own worktree. Each brief carries:
   - an existing card as the template;
   - the data-model rows of its batch;

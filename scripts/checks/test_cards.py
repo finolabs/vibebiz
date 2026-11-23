@@ -42,6 +42,7 @@ REQUIRED_SECTIONS = (
 CATEGORY_CODES = set("ABCDEFGHIJKLMNO")
 LENSES = ("problem-framing", "outcome", "challenge", "solution-sketch", "plan", "router")
 CORE_COUNT = 15
+TOTAL_COUNT = 41  # the first-release library plus the 25 catalog cards (spec 004 US4)
 
 _HEADING_RE = re.compile(r"^#{2,6}\s+(.+?)\s*#*\s*$", re.MULTILINE)
 
@@ -198,6 +199,10 @@ class RepositoryCards(unittest.TestCase):
         if not cards:
             self.skipTest("packs/frameworks/ has no cards yet; this check applies once they exist")
         self.assertEqual(check_cards(CARDS_DIR), [])
+
+    def test_shipped_library_holds_every_catalog_card(self):
+        cards = sorted(CARDS_DIR.glob("*.md")) if CARDS_DIR.is_dir() else []
+        self.assertEqual(len(cards), TOTAL_COUNT, f"{len(cards)} cards in packs/frameworks/, expected {TOTAL_COUNT}")
 
 
 if __name__ == "__main__":
