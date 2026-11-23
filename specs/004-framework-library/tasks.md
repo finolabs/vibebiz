@@ -69,10 +69,10 @@
 
 **Independent Test**: `combine-across-lenses` passes, and the package check flags a missing framework name.
 
-- [ ] T014 [US2] Write `evals/frameworks/combine-across-lenses/`, red first. It is a fixed coverage record with A, C, D and E open over several rounds. The expected cards are handed over, each with one line in `framework_reasons`, and no card goes to a `clear` category.
-- [ ] T015 [P] [US2] Add a `scripts/checks/fixtures/package/` case with four applied cards, one of them missing from `frameworks[]` of its slide. `python3 -m unittest scripts/checks/test_package_check.py` must flag it (SC-004). Add a passing twin.
-- [ ] T016 [US2] In `core/export-guidelines.md`, name "pyramid principle / SCQA" in the board rule at line 24, and add the rule that a framework result which does not fit the slide's fixed layout goes to the appendix (FR-008).
-- [ ] T017 [US2] Rebuild, then run T014, T015 and T003's check.
+- [x] T014 [US2] Write `evals/frameworks/combine-across-lenses/`, red first. It is a fixed coverage record with A, C, D and E open over several rounds. The expected cards are handed over, each with one line in `framework_reasons`, and no card goes to a `clear` category. **Accepted at 2/3 (Fio, 23/11/2026):** after the card index and the C confirmation answer, combine-9 scored 0.60, 1.00, 1.00; the red run skipped router step 8's lookup for D and E in later rounds. A stable 3/3 is left to the Cowork smoke test, where each round is answered; no Agent SDK harness for now (`evals/RESULTS.md`).
+- [x] T015 [P] [US2] Add a `scripts/checks/fixtures/package/` case with four applied cards, one of them missing from `frameworks[]` of its slide. `python3 -m unittest scripts/checks/test_package_check.py` must flag it (SC-004). Add a passing twin.
+- [x] T016 [US2] In `core/export-guidelines.md`, name "pyramid principle / SCQA" in the board rule at line 24, and add the rule that a framework result which does not fit the slide's fixed layout goes to the appendix (FR-008).
+- [x] T017 [US2] Rebuild, then run T014, T015 and T003's check. Done 23/11/2026: `--skills` rebuild left nothing to regenerate; T014 is combine-9 on this build (2/3, accepted above); `test_package_check.py` 42 OK; T003's graders `no-framework-name` and `no-framework-name-in-text` passed in all three combine-9 runs and `test_framework_names.py` 5 OK.
 
 **Checkpoint**: the gap-driven rule and multi-framework packages are proven before the library grows.
 
