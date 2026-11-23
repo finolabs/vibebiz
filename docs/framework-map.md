@@ -14,6 +14,7 @@ vibebiz tự chọn phương pháp phân tích (framework) theo phần còn tr�
 | Cynefin | — | — | — | — |
 | Driver tree (KPI tree) | — | Assumption map, Pre-mortem, Test-and-control pilot | — | mục C đổi |
 | Fishbone (Ishikawa diagram) | — | Pre-mortem | 5 Whys | mục A đổi |
+| Issue tree (MECE) | — | Driver tree (KPI tree) | — | mục A đổi |
 | Jobs to be done | — | Customer journey map and service blueprint, Driver tree (KPI tree) | — | mục A đổi, mục B đổi |
 | MoSCoW | — | ADKAR | — | mục E đổi, ban lãnh đạo yêu cầu sửa |
 | Pre-mortem | — | Assumption map, Build, buy or partner with return and payback, MoSCoW | — | mục E đổi, mục K đổi |

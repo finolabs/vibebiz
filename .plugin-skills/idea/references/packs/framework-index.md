@@ -6,7 +6,7 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 
 | Code | Lens | Cards |
 |---|---|---|
-| A | problem-framing | fishbone, five-whys, jobs-to-be-done |
+| A | problem-framing | fishbone, five-whys, issue-tree, jobs-to-be-done |
 | B | problem-framing | jobs-to-be-done |
 | C | outcome | balanced-scorecard, driver-tree |
 | D | challenge | assumption-map, swot |
@@ -29,9 +29,10 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | balanced-scorecard | outcome | C | — | — | driver-tree | — |
 | build-buy-partner-roi | plan | D, M | — | — | adkar | pre-mortem (the risks each route must cover); test-and-control-pilot (the pilot result) |
 | cynefin | router | — | — | — | — | — |
-| driver-tree | outcome | C | — | — | assumption-map, pre-mortem, test-and-control-pilot | balanced-scorecard (the perspective the idea moves); five-whys (the cause the target must move); jobs-to-be-done (the outcome the customer wants); sipoc (the step whose delay to measure); swot (the opportunity to measure) |
+| driver-tree | outcome | C | — | — | assumption-map, pre-mortem, test-and-control-pilot | balanced-scorecard (the perspective the idea moves); five-whys (the cause the target must move); issue-tree (the branch to move); jobs-to-be-done (the outcome the customer wants); sipoc (the step whose delay to measure); swot (the opportunity to measure) |
 | fishbone | problem-framing | A | — | five-whys | pre-mortem | — |
 | five-whys | problem-framing | A | — | fishbone | driver-tree | — |
+| issue-tree | problem-framing | A | — | — | driver-tree | — |
 | jobs-to-be-done | problem-framing | A, B | — | — | journey-map-service-blueprint, driver-tree | — |
 | journey-map-service-blueprint | solution-sketch | E, J, L | — | — | moscow, adkar | jobs-to-be-done (the steps of the job); sipoc (the hand-offs that reach the customer) |
 | marketing-mix-4p-7p | plan | E, M | — | — | — | — |
