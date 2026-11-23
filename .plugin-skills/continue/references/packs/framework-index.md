@@ -11,7 +11,7 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | B | problem-framing | jobs-to-be-done |
 | C | outcome | balanced-scorecard, driver-tree |
 | D | challenge | assumption-map, swot |
-| D | plan | ansoff, build-buy-partner-roi |
+| D | plan | ansoff, bcg-matrix, build-buy-partner-roi |
 | E | plan | marketing-mix-4p-7p, moscow, stp |
 | E | solution-sketch | journey-map-service-blueprint, sipoc |
 | J | solution-sketch | journey-map-service-blueprint, sipoc |
@@ -19,16 +19,17 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | L | plan | adkar |
 | L | solution-sketch | journey-map-service-blueprint |
 | M | challenge | test-and-control-pilot |
-| M | plan | build-buy-partner-roi, marketing-mix-4p-7p |
+| M | plan | bcg-matrix, build-buy-partner-roi, marketing-mix-4p-7p |
 
 ## Cards
 
 | Card | Lens | Fills | Needs | Instead of | Feeds | Fed by (passes) |
 |---|---|---|---|---|---|---|
 | adkar | plan | L | — | — | — | build-buy-partner-roi (the chosen route and whose work it changes); journey-map-service-blueprint (the staff whose work changes); moscow (what ships first and who uses it) |
-| ansoff | plan | D | — | — | — | — |
+| ansoff | plan | D | — | bcg-matrix | — | — |
 | assumption-map | challenge | K, D | — | — | test-and-control-pilot | driver-tree (the drivers that rest on beliefs); pre-mortem (the failure causes as beliefs) |
 | balanced-scorecard | outcome | C | — | — | driver-tree | — |
+| bcg-matrix | plan | D, M | — | ansoff | — | — |
 | build-buy-partner-roi | plan | D, M | — | — | adkar | pre-mortem (the risks each route must cover); test-and-control-pilot (the pilot result) |
 | cynefin | router | — | — | — | — | — |
 | driver-tree | outcome | C | — | — | assumption-map, pre-mortem, test-and-control-pilot | balanced-scorecard (the perspective the idea moves); five-whys (the cause the target must move); jobs-to-be-done (the outcome the customer wants); sipoc (the step whose delay to measure); swot (the opportunity to measure) |

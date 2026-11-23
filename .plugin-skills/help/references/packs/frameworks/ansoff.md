@@ -8,7 +8,7 @@ diagram_type: quadrant
 origin: H. Igor Ansoff, "Strategies for Diversification", Harvard Business Review (1957)
 needs: []
 feeds: []
-instead_of: []
+instead_of: [bcg-matrix]
 revisit_when: [D]
 ---
 

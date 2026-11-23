@@ -7,9 +7,10 @@ vibebiz tự chọn phương pháp phân tích (framework) theo phần còn tr�
 | 4P / 7P marketing mix | — | — | — | mục E đổi, mục M đổi |
 | 5 Whys | — | Driver tree (KPI tree) | Fishbone (Ishikawa diagram) | mục A đổi |
 | ADKAR | — | — | — | mục L đổi |
-| Ansoff matrix | — | — | — | mục D đổi |
+| Ansoff matrix | — | — | BCG growth-share matrix | mục D đổi |
 | Assumption map | — | Test-and-control pilot | — | mục C đổi, mục E đổi |
 | Balanced Scorecard | — | Driver tree (KPI tree) | — | mục C đổi |
+| BCG growth-share matrix | — | — | Ansoff matrix | mục D đổi, mục M đổi |
 | Build, buy or partner with return and payback | — | ADKAR | — | mục D đổi, mục M đổi, ban lãnh đạo yêu cầu sửa, đội kỹ thuật thẩm định |
 | Customer journey map and service blueprint | — | MoSCoW, ADKAR | — | mục E đổi, mục J đổi, mục L đổi |
 | Cynefin | — | — | — | — |
