@@ -7,7 +7,9 @@ core: false
 diagram_type: flowchart
 origin: Eliyahu M. Goldratt, "The Goal" (1984), with its five focusing steps
 needs: []
-feeds: []
+feeds:
+  - to: lean-dmaic
+    passes: the bottleneck to improve
 instead_of: []
 revisit_when: [D]
 ---

@@ -12,8 +12,8 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | D | challenge | assumption-map, cost-of-inaction, five-forces, six-thinking-hats, swot, theory-of-constraints |
 | D | plan | build-buy-partner-roi |
 | E | plan | marketing-mix-4p-7p, moscow |
-| E | solution-sketch | journey-map-service-blueprint, kano, sipoc, value-proposition-canvas |
-| J | solution-sketch | journey-map-service-blueprint, sipoc |
+| E | solution-sketch | journey-map-service-blueprint, kano, lean-dmaic, sipoc, value-proposition-canvas |
+| J | solution-sketch | journey-map-service-blueprint, lean-dmaic, sipoc |
 | K | challenge | assumption-map, five-forces, pestel, pre-mortem, six-thinking-hats, swot, test-and-control-pilot |
 | L | plan | adkar |
 | L | solution-sketch | journey-map-service-blueprint |
@@ -37,6 +37,7 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | jobs-to-be-done | problem-framing | A, B | — | — | journey-map-service-blueprint, driver-tree | — |
 | journey-map-service-blueprint | solution-sketch | E, J, L | — | — | moscow, adkar | jobs-to-be-done (the steps of the job); sipoc (the hand-offs that reach the customer) |
 | kano | solution-sketch | E | — | — | moscow | value-proposition-canvas (the gain creators to classify) |
+| lean-dmaic | solution-sketch | E, J | sipoc | — | test-and-control-pilot | theory-of-constraints (the bottleneck to improve) |
 | marketing-mix-4p-7p | plan | E, M | — | — | — | — |
 | moscow | plan | E | — | — | adkar | journey-map-service-blueprint (the journeys to cut); kano (the must-haves); pre-mortem (what to leave out of the first release); value-proposition-canvas (the pain relievers to keep) |
 | pestel | challenge | K | — | — | swot | — |
@@ -44,6 +45,6 @@ Generated from the frontmatter of the cards in `frameworks/` by `scripts/checks/
 | sipoc | solution-sketch | E, J | — | — | journey-map-service-blueprint, driver-tree | — |
 | six-thinking-hats | challenge | D, K | — | swot | pre-mortem | — |
 | swot | challenge | D, K | — | six-thinking-hats | pre-mortem, driver-tree | five-forces (the threats from rivals, suppliers, buyers, substitutes and new entrants); pestel (the external opportunities and threats) |
-| test-and-control-pilot | challenge | M, K | assumption-map, driver-tree | — | build-buy-partner-roi | assumption-map (the riskiest belief); driver-tree (the metric to test) |
-| theory-of-constraints | challenge | D | — | — | — | — |
+| test-and-control-pilot | challenge | M, K | assumption-map, driver-tree | — | build-buy-partner-roi | assumption-map (the riskiest belief); driver-tree (the metric to test); lean-dmaic (the improvement to prove) |
+| theory-of-constraints | challenge | D | — | — | lean-dmaic | — |
 | value-proposition-canvas | solution-sketch | E | — | — | kano, moscow | — |

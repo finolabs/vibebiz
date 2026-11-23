@@ -17,6 +17,7 @@ vibebiz tự chọn phương pháp phân tích (framework) theo phần còn tr�
 | Fishbone (Ishikawa diagram) | — | Pre-mortem | 5 Whys | mục A đổi |
 | Jobs to be done | — | Customer journey map and service blueprint, Driver tree (KPI tree) | — | mục A đổi, mục B đổi |
 | Kano model | — | MoSCoW | — | mục E đổi |
+| Lean and DMAIC | SIPOC (with a Requirements column) | Test-and-control pilot | — | mục E đổi, mục J đổi |
 | MoSCoW | — | ADKAR | — | mục E đổi, ban lãnh đạo yêu cầu sửa |
 | PESTEL | — | SWOT | — | mục K đổi |
 | Porter Five Forces | — | SWOT | — | mục D đổi, mục K đổi |
@@ -25,5 +26,5 @@ vibebiz tự chọn phương pháp phân tích (framework) theo phần còn tr�
 | Six Thinking Hats | — | Pre-mortem | SWOT | mục D đổi, mục K đổi |
 | SWOT | — | Pre-mortem, Driver tree (KPI tree) | Six Thinking Hats | mục D đổi, mục K đổi |
 | Test-and-control pilot | Assumption map, Driver tree (KPI tree) | Build, buy or partner with return and payback | — | mục C đổi, mục E đổi |
-| Theory of Constraints | — | — | — | mục D đổi |
+| Theory of Constraints | — | Lean and DMAIC | — | mục D đổi |
 | Value Proposition Canvas | — | Kano model, MoSCoW | — | mục E đổi |
