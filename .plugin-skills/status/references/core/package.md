@@ -206,6 +206,8 @@ A failure you can fix from the files (a missing id, a stray value in text, a mis
 
    Example: "Đã đóng gói xong ý tưởng nhắc khách quay lại. Bản trình bày cho ban lãnh đạo: <link>. Tài liệu cho đội kỹ thuật: <link>. Các con số chi phí đang ghi “chưa qua kỹ thuật thẩm định”. Hai liên kết này chỉ anh/chị xem được; anh/chị tự chia sẻ khi muốn gửi."
 
+   Before sending, check the message against the card names and ids in `references/packs/framework-index.md` "Cards": each one you find, with its abbreviation, becomes what the method did. The message is ready when it holds none of them.
+
 Before sending the closing message, read it once against `references/core/writing-rules.md` and fix it in place: every command in this host's form (§2, "Command names in this host's form"); no file name, path or `file://` link, the views named as "bản trình bày" and "tài liệu cho đội kỹ thuật" with where they are kept in plain words; every term in the user's language, explained if new. On every host, the run is done only when this last look and section 11 both pass.
 
 ## 13. Drive mode
