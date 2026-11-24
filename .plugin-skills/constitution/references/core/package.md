@@ -3,7 +3,7 @@
 Turn one ready idea into what the board decides on and what the tech team builds from: a board view, a tech view and a copy of the requirement, all rendered from one data file, published private, with the previous version kept. Used by the `package` entry skill.
 
 - **Reads**: the idea's `coverage.md`, `spec.md`, `plan.md`, `decisions.md`, `assumptions.md`, `open-questions.md`, `glossary.md`, `checklists/`, `diagrams/`, `exports/` (the previous set, when there is one); the workspace `constitution.md`; the templates in `references/templates/exports/`; the framework cards in `references/packs/frameworks/`.
-- **Writes**: diagram briefs and rendered diagrams in `diagrams/`; `exports/data.json`, `exports/board-deck.html`, `exports/tech-prd.html`, `exports/spec.md`, `exports/links.md`; `exports/history/<date>/`; `coverage.md` (`status`, `latest_export`, `next_step`, `updated`); the table of contents. In Drive mode, no HTML file in Drive (section 13). Outside the workspace: private Artifacts, and the Google Slides and Docs files the user chose, in the user's own Drive.
+- **Writes**: diagram briefs and rendered diagrams in `diagrams/`; `exports/data.json`, `exports/board-deck.html`, `exports/tech-prd.html`, `exports/spec.md`, `exports/links.md`; `exports/history/<date>/`; `coverage.md` (`status`, `latest_export`, `next_step`, `updated`, and the `frameworks` and `framework_reasons` entries of the planning cards the plan applied, section 3); the table of contents. In Drive mode, no HTML file in Drive (section 13). Outside the workspace: private Artifacts, and the Google Slides and Docs files the user chose, in the user's own Drive.
 - **Asks through**: `references/core/ask-protocol.md`. The format round (section 4) is not counted against the question budget.
 - **Loads, in order**: `references/core/plan.md`, `references/core/checklist.md`, `references/core/analyze.md`, `references/core/export-guidelines.md`; `references/core/router.md` when findings go back to the interview; `references/core/workspace.md` for the table of contents.
 
@@ -39,7 +39,7 @@ In Drive mode (`references/core/workspace.md` §1a) every read and write in the 
 
 Run the three modules in this order, each to its end, and keep what each hands back:
 
-1. **Plan** (`references/core/plan.md`): updates `plan.md`, may ask its one round, and reports the plan's gaps, ground-rule conflicts and `estimate_status`.
+1. **Plan** (`references/core/plan.md`): updates `plan.md`, may ask its one round, and reports the planning cards it applied, the plan's gaps, ground-rule conflicts and `estimate_status`. Before the checklist, read `coverage.md` back: for each planning card the plan reported, its id is in the filled category's `frameworks` and its reason under that category's `framework_reasons`. Write any entry that is missing from the plan's report. This step is done when every reported card has both entries in `coverage.md`.
 2. **Checklist** (`references/core/checklist.md`): writes the two readiness checklists and reports failed items with the categories to reopen.
 3. **Analyze** (`references/core/analyze.md`): returns a verdict, findings and the gaps the outputs will show.
 
@@ -185,7 +185,7 @@ Check the set against these rules, fix what fails, and check again. Never report
 7. `links.md` lists exactly the addresses in `links`, and no address anywhere is a public or sharing link.
 8. `exports/spec.md` is identical to the idea's `spec.md`, and its Spec Kit headings are in place.
 9. The HTML read-back of section 7 passes for both files.
-10. Every framework applied is named on the slide or section its category feeds; the address-form decision appears nowhere.
+10. Every framework applied is named on the slide or section its category feeds, and every planning card named in the outputs has its `frameworks` and `framework_reasons` entries in `coverage.md`; the address-form decision appears nowhere.
 11. The rest of the export guidelines' list before handing over.
 
 A failure you can fix from the files (a missing id, a stray value in text, a missing label) is fixed here. A failure that needs a fact the files do not hold becomes a gap in the outputs and in `gaps[]`, and the set is then a draft: set `draft` to `true` and tell the user why.

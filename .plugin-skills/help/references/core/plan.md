@@ -121,7 +121,7 @@ The planning cards (`lens: plan`) are applied here at packaging, never by the ro
 
 Find the candidates in `references/packs/framework-index.md` before writing section 4: for each category that is `missing` or `partial`, the rows with lens `plan` in "By category". Open each candidate card and check the conditions above against it; never pick from the list below alone, since the index holds every shipped planning card.
 
-Record each card you apply in `coverage.md` as soon as you choose it, before writing the plan section it shapes: add its id to the filled category's `frameworks`, and write one English line under that category's `framework_reasons`, keyed by the card id, saying which open gap it fills and, when several fit, why this one by "When to use". This step is done when every card whose method shapes `plan.md` has both entries in `coverage.md`.
+For each card you apply, note its id, the open category it fills and one English reason: which gap it fills and, when several fit, why this one by "When to use". Section 9 writes them to `coverage.md` and hands them to the package module.
 
 Two cards with a fixed place in sections 4.2 and 4.4:
 
@@ -157,6 +157,7 @@ Ask a card's questions without naming the framework. The `frameworks` entry lets
 
 1. **M** is `clear` when the plan holds the size, the low, base and high cost and return each with source, period and label, the resources, the time frame, and the decision requested with its amount and deadline. Otherwise `partial` (a recorded size is enough for readiness). Never set M below the status it had.
 2. **L**, when section 6 filled it: `clear` when training, KPI changes, affected roles and an owner for keeping the change up are written for each group whose work changes; otherwise it keeps its status. A category whose only question was skipped keeps its status and `updated` date.
-3. Set `updated` on each category you changed and on the idea, rebuild the `coverage.md` body table and the "Clear: n of 15" line, and rebuild the table of contents by `references/core/workspace.md`.
-4. Report to the package module: the plan sections or elements still `chưa làm rõ`, each with the category it belongs to; whether a missing pilot design is blocking (complex ideas); the current ground-rule conflicts by D-###; whether the ground rules are deferred; `estimate_status` and any mismatch from section 7; contradictions found in section 2.
-5. Tell the user in one or two plain sentences what the plan now holds and what is still open, for example: "Kế hoạch đã có khoản đề nghị duyệt, ba phương án chi phí và lộ trình thử ở 3 cửa hàng; còn thiếu người chịu trách nhiệm đào tạo nhân viên. Khoản chi phương án cao vượt mức anh/chị tự duyệt, nên cần cấp trên duyệt." No file names, codes or paths, and no praise.
+3. For each card section 6 applied, add its id to the filled category's `frameworks` and write its reason under that category's `framework_reasons`, keyed by the card id.
+4. Set `updated` on each category you changed and on the idea, rebuild the `coverage.md` body table and the "Clear: n of 15" line, and rebuild the table of contents by `references/core/workspace.md`.
+5. Report to the package module: the planning cards applied, each with its id, category and reason; the plan sections or elements still `chưa làm rõ`, each with the category it belongs to; whether a missing pilot design is blocking (complex ideas); the current ground-rule conflicts by D-###; whether the ground rules are deferred; `estimate_status` and any mismatch from section 7; contradictions found in section 2.
+6. Tell the user in one or two plain sentences what the plan now holds and what is still open, for example: "Kế hoạch đã có khoản đề nghị duyệt, ba phương án chi phí và lộ trình thử ở 3 cửa hàng; còn thiếu người chịu trách nhiệm đào tạo nhân viên. Khoản chi phương án cao vượt mức anh/chị tự duyệt, nên cần cấp trên duyệt." No file names, codes or paths, and no praise.
