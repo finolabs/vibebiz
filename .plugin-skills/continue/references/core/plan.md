@@ -4,7 +4,7 @@ Turn a ready idea into the business plan the board decides on: what is asked for
 
 - **Used by**: package, at readiness, before the checklist and analyze modules.
 - **Reads**: the idea's `spec.md` (`## Problem & Why`, `## Outcome`, `## Alternatives`, `## AI-fit`, `## Cost & Risk`, the user stories, `## Assumptions`, `## Clarifications`), `coverage.md` (category statuses and `frameworks`, `cynefin`, `language`, `estimate_status`), `decisions.md`, `assumptions.md`, `open-questions.md`; the workspace `constitution.md` (`status`, `priorities`, `approval_ceiling`, `mandatory_approvals`, `strategy_map`, `okrs`); the template `references/templates/idea/plan.md`; the planning cards in `references/packs/frameworks/` (`lens: plan`), only under section 6.
-- **Writes**: the idea's `plan.md`; `spec.md` (`## Cost & Risk` for new cost, return, rollout and organizational-change facts, and Clarifications through the ask protocol); `decisions.md` (`answer` entries through the ask protocol, `ground-rule-conflict` and `supersede` entries from section 5); `open-questions.md`; `coverage.md` (status, `frameworks`, `framework_reasons` and `updated` of every category section 6 fills; the body table).
+- **Writes**: the idea's `plan.md`; `spec.md` (`## Cost & Risk` for new cost, return, rollout and organizational-change facts, and Clarifications through the ask protocol); `decisions.md` (`answer` entries through the ask protocol, `ground-rule-conflict` and `supersede` entries from section 5); `open-questions.md`; `coverage.md` (status and `updated` of every category section 6 fills; the body table).
 - **Fills**: M (cost, resources and return) to completion; L when the ADKAR card applies; the ground-rule conflicts.
 
 Follow `references/core/ask-protocol.md` for every question, `references/core/writing-rules.md` for every word the user reads (including how to address the user), and `references/core/anti-sycophancy.md` in everything the plan says about the idea.
@@ -112,16 +112,14 @@ For each conflict:
 
 ## 6. Planning cards
 
-The planning cards (`lens: plan`) are applied here at packaging, never by the router. Apply a card only when all of these hold:
+The planning cards (`lens: plan`) are applied here at packaging, never by the router. The package module chooses them before this module runs (`package.md` section 3, step 1) by the conditions below and writes each to `coverage.md`; apply exactly the cards it chose. A card is chosen only when all of these hold:
 
 - one of the categories in its `fills` is `missing` or `partial`;
 - its "When not to use" does not match the idea's files;
 - it is not already listed in that category's `frameworks`, and no other planning card is applied to the same category in this pass; there is no limit on how many planning cards an idea uses;
 - or the user asked for it by name (noted in `## Clarifications`) and the first three conditions still hold. If one fails, say why in one plain sentence.
 
-Find the candidates in `references/packs/framework-index.md` before writing section 4: for each category that is `missing` or `partial`, the rows with lens `plan` in "By category". Open each candidate card and check the conditions above against it; never pick from the list below alone, since the index holds every shipped planning card.
-
-For each card you apply, note its id, the open category it fills and one English reason: which gap it fills and, when several fit, why this one by "When to use". Section 9 writes them to `coverage.md` and hands them to the package module.
+A chosen card's `framework_reasons` line is one English sentence keyed by the card id: which open gap it fills and, when several fit, why this one by "When to use". The cards below are two of the candidates, not the whole list: the index holds every shipped planning card.
 
 Two cards with a fixed place in sections 4.2 and 4.4:
 
@@ -157,7 +155,6 @@ Ask a card's questions without naming the framework. The `frameworks` entry lets
 
 1. **M** is `clear` when the plan holds the size, the low, base and high cost and return each with source, period and label, the resources, the time frame, and the decision requested with its amount and deadline. Otherwise `partial` (a recorded size is enough for readiness). Never set M below the status it had.
 2. **L**, when section 6 filled it: `clear` when training, KPI changes, affected roles and an owner for keeping the change up are written for each group whose work changes; otherwise it keeps its status. A category whose only question was skipped keeps its status and `updated` date.
-3. For each card section 6 applied, add its id to the filled category's `frameworks` and write its reason under that category's `framework_reasons`, keyed by the card id.
-4. Set `updated` on each category you changed and on the idea, rebuild the `coverage.md` body table and the "Clear: n of 15" line, and rebuild the table of contents by `references/core/workspace.md`.
-5. Report to the package module: the planning cards applied, each with its id, category and reason; the plan sections or elements still `chưa làm rõ`, each with the category it belongs to; whether a missing pilot design is blocking (complex ideas); the current ground-rule conflicts by D-###; whether the ground rules are deferred; `estimate_status` and any mismatch from section 7; contradictions found in section 2.
-6. Tell the user in one or two plain sentences what the plan now holds and what is still open, for example: "Kế hoạch đã có khoản đề nghị duyệt, ba phương án chi phí và lộ trình thử ở 3 cửa hàng; còn thiếu người chịu trách nhiệm đào tạo nhân viên. Khoản chi phương án cao vượt mức anh/chị tự duyệt, nên cần cấp trên duyệt." No file names, codes or paths, and no praise.
+3. Set `updated` on each category you changed and on the idea, rebuild the `coverage.md` body table and the "Clear: n of 15" line, and rebuild the table of contents by `references/core/workspace.md`.
+4. Report to the package module: the plan sections or elements still `chưa làm rõ`, each with the category it belongs to; whether a missing pilot design is blocking (complex ideas); the current ground-rule conflicts by D-###; whether the ground rules are deferred; `estimate_status` and any mismatch from section 7; contradictions found in section 2.
+5. Tell the user in one or two plain sentences what the plan now holds and what is still open, for example: "Kế hoạch đã có khoản đề nghị duyệt, ba phương án chi phí và lộ trình thử ở 3 cửa hàng; còn thiếu người chịu trách nhiệm đào tạo nhân viên. Khoản chi phương án cao vượt mức anh/chị tự duyệt, nên cần cấp trên duyệt." No file names, codes or paths, and no praise.
