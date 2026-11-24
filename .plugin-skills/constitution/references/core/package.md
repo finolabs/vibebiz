@@ -195,7 +195,7 @@ A failure you can fix from the files (a missing id, a stray value in text, a mis
 
 1. In `coverage.md`: set `latest_export` to `idea.version`; when this is not a draft and `status` is `ready`, set `status` to `packaged` (a draft and any other status stay as they are); write `next_step` in plain words (for example "Gửi bản trình bày cho ban lãnh đạo và báo lại kết quả", or for a draft "Trả lời các điểm còn thiếu rồi đóng gói lại"); set `updated` to today.
 2. Rebuild the table of contents by `references/core/workspace.md`.
-3. Tell the user, in a few lines in the idea's language, describing any method used by what it did in everyday words ("chia việc mở rộng thành từng đợt, mỗi đợt có điều kiện đi tiếp"); framework names belong to the outputs only, never to this message:
+3. Tell the user, in a few lines in the idea's language, describing any method used by what it did (`references/core/writing-rules.md` §2, "Methods by what they did"):
    - the links, board view first, by their plain names;
    - whether this is a draft, and how many points show "chưa làm rõ";
    - that estimates are marked as not yet reviewed by the tech team, when they are;
