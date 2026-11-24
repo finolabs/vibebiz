@@ -35,6 +35,13 @@ class Pattern(unittest.TestCase):
             with self.subTest(text):
                 self.assertIsNone(self.rx.search(text))
 
+    def test_text_pattern_skips_slugs_and_paths(self):
+        rx = re.compile(fn.text_pattern(fn.pattern()))
+        self.assertIsNone(rx.search("Các tệp nằm trong `specs/001-fit-stp/`."))
+        self.assertIsNone(rx.search("Ý tưởng fit-tco đã đóng gói."))
+        self.assertIsNotNone(rx.search("Phương pháp giá trị hiện tại ròng (NPV) được thêm vào."))
+        self.assertIsNotNone(rx.search("theo tám bước của Kotter."))
+
     def test_exempt_cards_are_left_out(self):
         self.assertFalse(any(n.lower() == "okr" for n in fn.names()))
 

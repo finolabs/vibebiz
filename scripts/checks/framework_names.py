@@ -87,9 +87,15 @@ def grader_text(pat: str) -> str:
     )
 
 
+def text_pattern(pat: str) -> str:
+    """The names as whole words: a name inside a slug, file path or longer word (`specs/001-fit-stp/`,
+    `smartphone`) is not a framework named to the user."""
+    return rf"(?<![A-Za-z0-9_/-])(?:{pat})(?![A-Za-z0-9_])"
+
+
 def text_grader_text(pat: str) -> str:
     """The same names in the final message, where a headless run shows its questions as text."""
-    quoted = pat.replace("'", "''")
+    quoted = text_pattern(pat).replace("'", "''")
     return (
         "---\n"
         "type: regex\n"
