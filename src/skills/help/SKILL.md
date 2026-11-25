@@ -20,6 +20,7 @@ Load these when a step needs them:
   - `references/docs/reading-outputs.md` ("Đọc các tài liệu vibebiz tạo ra"): board deck, tech document, labels, numbers, formats, history.
   - `references/docs/faq.md` ("Câu hỏi thường gặp"): common questions, alternatives, privacy, sharing; the apps vibebiz runs in, connecting Google in each, where the views appear (questions 12 to 16).
   - `references/docs/glossary.md` ("Thuật ngữ"): retail, AI, and vibebiz terminology.
+  - `references/docs/framework-map.md` ("Các phương pháp nối với nhau thế nào"): for each framework, what it needs first, which framework uses its result, which it replaces, and when it is redone.
 - `references/examples/`: the fictional example idea (`000-<slug>`), showing finished outputs.
 - `references/core/writing-rules.md`: wording of everything the user reads, including how to address the user.
 - `references/core/ask-protocol.md`: question structure when clarifying situations.

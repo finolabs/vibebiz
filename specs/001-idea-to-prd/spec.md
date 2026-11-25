@@ -201,7 +201,7 @@ Before or after the first idea, the user records their organization's ground rul
 **Frameworks**
 
 - **FR-036**: vibebiz MUST ship a framework library of cards, each stating when to use it and when not to, the coverage categories it fills, the inputs it needs, its question set, where its result is written, its diagram type, common misuse, a fictional fashion-retail example and its origin for attribution.
-- **FR-037**: A lens MUST select a framework only to fill an open coverage gap, MUST apply at most two frameworks per lens per idea, and MUST ask in plain language.
+- **FR-037**: A lens MUST select a framework only to fill an open coverage gap, MUST apply at most two frameworks per lens per idea, and MUST ask in plain language. (Superseded by spec 004 FR-005: the gap-driven rule replaces the two-per-lens limit.)
 - **FR-038**: The user MUST be able to request a framework by name; vibebiz applies it when it fills an open gap and otherwise explains why and names the framework that fits.
 - **FR-039**: Outputs MUST name each framework applied, and the board view MUST show its result in the slide the framework's coverage category feeds.
 - **FR-040**: The router MUST classify each idea's situation as clear, complicated, complex or chaotic and set interview depth from it: a quick path for clear, analysis for complicated, small pilots and experiments for complex, stabilize first for chaotic.
@@ -268,7 +268,7 @@ Before or after the first idea, the user records their organization's ground rul
 - **SC-008**: 100% of question rounds in evaluation follow the round rules and respect category prerequisites.
 - **SC-009**: At least 95% of vague quality terms in evaluation answers are turned into measurable values or recorded as open.
 - **SC-010**: Help routes at least 90% of situation questions correctly and invents no feature in any evaluation case.
-- **SC-011**: In evaluation, at least 90% of framework selections fill the coverage gap that was open, and no lens applies more than two frameworks to one idea.
+- **SC-011**: In evaluation, at least 90% of framework selections fill the coverage gap that was open, and no lens applies more than two frameworks to one idea. (Spec 004 replaces the second clause with its gap-driven rule.)
 
 ## Assumptions
 
@@ -378,6 +378,8 @@ Each diagram brief states its message, type, source fields and placement. Artifa
 
 ## Appendix F - Framework Library
 
+Spec 004 (`specs/004-framework-library/`) ships the catalog below as 41 cards and replaces "at most two per lens per idea" with its gap-driven rule.
+
 Frameworks serve the coverage map: one is applied only when it fills an open category, at most two per lens per idea, asked in plain words, named in the outputs. Each card carries the fields in FR-036 and is written in vibebiz's own words.
 
 **Full catalog by lens** (later releases unless marked core):
@@ -478,7 +480,7 @@ Each brief names what it illustrates and the vibebiz and diagram-design versions
 | 7 | Table of contents | Matches the folder after every action | 100% |
 | 8 | Simulated sessions | Hidden-truth persona (impatient, non-technical) across three fashion ideas and two other retail ideas; rounds to readiness, budget hits, facts preserved | at least 85% of key facts, four sessions or fewer |
 | 9 | Help | Routing, no invented features, help versus router; docs and README pair cover exactly what ships | at least 90% routing, zero inventions |
-| 10 | Frameworks | Selection fills the open gap; at most two per lens | at least 90% |
+| 10 | Frameworks | Selection fills the open gap; at most two per lens (spec 004: gap-driven, no second card on a filled category) | at least 90% |
 
 Structure checks run in code; semantic judgments (claim support, meaning preservation) may use Jev in development only. Headless runs cannot answer the question tool, so eval prompts carry the answers; the simulated-persona suite uses an Agent SDK harness that answers through `canUseTool`. A manual Cowork smoke test runs before each release.
 

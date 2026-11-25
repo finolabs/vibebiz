@@ -42,7 +42,7 @@ A way to lead a large change from the top, in order: make the need urgent, build
 3. "Kết quả sau cùng là gì, nói trong một câu mà nhân viên cửa hàng cũng hiểu?"
 4. "Điều gì đang cản nhân viên làm theo cách mới: chỉ tiêu, quy trình hay công cụ?"
 5. "Trong ba tháng đầu, kết quả sớm nào có thể cho mọi người thấy?"
-6. "Sau khi triển khai, việc gì giữ cách làm mới không bị quay lại cách cũ?"
+6. "Sau khi triển khai, điều gì giữ cho cách làm mới không trở lại như cũ?"
 
 A step the user cannot answer becomes an open question; a leader the user only hopes will back the change is an assumption.
 

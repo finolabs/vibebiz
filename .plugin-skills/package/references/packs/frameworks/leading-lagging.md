@@ -42,7 +42,7 @@ Pairs the outcome, a lagging number that arrives weeks or months after the work,
 
 One round at most. Offer candidate early numbers built from the driver as options.
 
-1. "Kết quả cuối cùng chỉ biết sau bao lâu kể từ khi việc diễn ra?" (a fact to look up first; ask only if no file has it)
+1. "Phải bao lâu sau khi việc diễn ra mới biết được kết quả cuối cùng?" (a fact to look up first; ask only if no file has it)
 2. "Trước khi kết quả đó hiện ra, khách hoặc nhân viên làm gì khác đi mà mình thấy được ngay? Ví dụ: tỷ lệ khách dùng gợi ý size trước khi đặt hàng (Đề xuất), tỷ lệ đơn đổi size trước khi giao."
 3. "Con số sớm đó hiện ghi ở đâu, và đọc được sau bao lâu?"
 4. "Đến tuần thứ mấy, con số sớm đạt mức nào thì coi là đang đi đúng hướng, mức nào thì cần dừng lại xem xét?" (the levels are the user's decision)

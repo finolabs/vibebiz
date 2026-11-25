@@ -43,9 +43,9 @@ A table of who does what in a process that several teams share. For each step, o
 Ask step by step, starting with the step that caused the most disputes.
 
 1. "Ở bước này, ai là người trực tiếp làm?"
-2. "Nếu bước này sai, ai là một người chịu trách nhiệm cuối cùng?"
+2. "Nếu bước này sai, ai là người duy nhất chịu trách nhiệm cuối cùng?"
 3. "Ai cần được hỏi ý kiến trước khi làm, và ai chỉ cần được báo sau?"
-4. "Có bước nào hiện chưa ai nhận, hoặc hai bộ phận cùng nghĩ mình quyết không?"
+4. "Có bước nào hiện chưa ai nhận, hoặc có hai bộ phận cùng nghĩ mình là bên quyết định không?"
 
 An answer nobody present can give becomes an open question naming the step and the role.
 

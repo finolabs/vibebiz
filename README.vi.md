@@ -46,7 +46,7 @@ vibebiz làm theo từng vòng: mỗi vòng chọn một chỗ còn trống củ
 
 ![Quy trình vibebiz, từ ý tưởng mơ hồ đến bộ tài liệu cho ban lãnh đạo và đội kỹ thuật](assets/diagrams/workflow.vi.png)
 
-Trong mỗi vòng, vibebiz tự chọn phương pháp phân tích (framework), bạn không phải chọn. Điều bạn mang tới quyết định điểm bắt đầu, và kết quả của mỗi phương pháp quyết định phương pháp tiếp theo.
+Trong mỗi vòng, vibebiz tự chọn phương pháp phân tích (framework), bạn không phải chọn. Điều bạn mang tới quyết định điểm bắt đầu, và kết quả của mỗi phương pháp quyết định phương pháp tiếp theo. Bản này có 41 phương pháp, từ 5 Whys và cây chỉ số đến NPV và RACI; một phương pháp chỉ được dùng để lấp chỗ trống chưa có phương pháp nào lấp. Trang [docs/framework-map.md](docs/framework-map.md) cho biết mỗi phương pháp cần có gì trước và kết quả của nó được dùng tiếp ở đâu.
 
 ![Bắt đầu từ đâu: bốn tình huống ban đầu, mỗi tình huống đi qua hai phương pháp rồi tới cây chỉ số](assets/diagrams/route-start.vi.png)
 

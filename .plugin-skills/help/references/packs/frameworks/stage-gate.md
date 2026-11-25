@@ -40,7 +40,7 @@ A way to roll out a change in waves, with a checkpoint between waves where someo
 Ask about the rollout itself, one round at most; never ask the user to name a method or draw a timeline.
 
 1. "Sau khi thử, mình mở rộng cho bao nhiêu cửa hàng ở đợt đầu, và chọn cửa hàng nào trước?"
-2. "Cuối mỗi đợt, ai là người quyết đi tiếp, sửa lại hay dừng?"
+2. "Cuối mỗi đợt, ai là người quyết định đi tiếp, sửa lại hay dừng?"
 3. "Con số nào ở cuối đợt cho thấy nên đi tiếp, và mức nào thì phải dừng?" (Offer the metric and kill criteria already on file.)
 4. "Mỗi đợt cần thêm bao nhiêu người và mất bao lâu để chuẩn bị?"
 

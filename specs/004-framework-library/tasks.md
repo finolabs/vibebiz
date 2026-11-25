@@ -169,17 +169,17 @@
 
 ## Phase 7: Language
 
-- [ ] T056 Run one `vietnamizer` pass over the "Questions" and "Fashion example" sections of the 26 new cards (research R10). Change only wording, never meaning. Rerun `test_cards.py`.
+- [x] T056 Run one `vietnamizer` pass over the "Questions" and "Fashion example" sections of the 26 new cards (research R10). Change only wording, never meaning. Rerun `test_cards.py`. Done (25/11/2026): nine questions in eight cards; the "Fashion example" sections are English agent reference in every card, core ones included, so only the questions were edited.
 
 ---
 
 ## Phase 8: Docs, records and release review
 
-- [ ] T057 [P] Update `docs/workflow.md` ("15 phương pháp" → the library as shipped, chosen by vibebiz), `docs/glossary.md`, `src/skills/help/situation-map.md` (pointing to `docs/framework-map.md` for how the methods connect) and the README pair (FR-010). Edit the Vietnamese with `vietnamizer`.
-- [ ] T058 Run `python3 -m unittest scripts/checks/test_docs_map.py`.
-- [ ] T059 [P] Update the suite 10 rows in `evals/README.md`: `gap-driven-no-stacking`, the `fit-`/`skip-` cases, `combine-across-lenses` and the name check.
-- [ ] T060 [P] Update `CLAUDE.md` line 30 to "the framework library in `packs/frameworks/` (spec 004); a card is applied only while its category is open and not already filled by a card", with Fio's yes on this spec.
-- [ ] T061 [P] Add one-line pointers to spec 004 in `specs/001-idea-to-prd/spec.md`: FR-037, SC-011, Appendix F, and the Appendix I row 10 (research R1).
+- [x] T057 [P] Update `docs/workflow.md` ("15 phương pháp" → the library as shipped, chosen by vibebiz), `docs/glossary.md`, `src/skills/help/situation-map.md` (pointing to `docs/framework-map.md` for how the methods connect) and the README pair (FR-010). Edit the Vietnamese with `vietnamizer`.
+- [x] T058 Run `python3 -m unittest scripts/checks/test_docs_map.py`.
+- [x] T059 [P] Update the suite 10 rows in `evals/README.md`: `gap-driven-no-stacking`, the `fit-`/`skip-` cases, `combine-across-lenses` and the name check.
+- [x] T060 [P] Update `CLAUDE.md` line 30 to "the framework library in `packs/frameworks/` (spec 004); a card is applied only while its category is open and not already filled by a card", with Fio's yes on this spec. Done (25/11/2026) under the afk lease, from Fio's settled decisions Q1 and Q2 of 18/11 (decision q20261125-125954-8ee5).
+- [x] T061 [P] Add one-line pointers to spec 004 in `specs/001-idea-to-prd/spec.md`: FR-037, SC-011, Appendix F, and the Appendix I row 10 (research R1).
 - [ ] T062 Run the whole framework suite once on the final build, and record it in `evals/RESULTS.md`. SC-001 must be 100%, SC-002 at least 90%, and SC-003 met for every new card.
 - [ ] T063 Run the simulated-session suite (SC-005): rounds to readiness at four sessions or fewer, key facts at 85% or more. Record the result.
 - [ ] T064 Fio runs the Cowork smoke test (`specs/001-idea-to-prd/quickstart.md`) on the release candidate, as constitution §V requires.

@@ -46,7 +46,7 @@ vibebiz works in rounds: each round picks one gap in the idea, asks about it in 
 
 ![vibebiz workflow, from a vague idea to the board and tech package](assets/diagrams/workflow.en.png)
 
-Behind each round, vibebiz picks the management frameworks itself. You never choose one. What you bring decides where it starts, and the result of each framework decides which one comes next.
+Behind each round, vibebiz picks the management frameworks itself. You never choose one. What you bring decides where it starts, and the result of each framework decides which one comes next. This release ships 41 frameworks, from 5 Whys and the driver tree to NPV and RACI; a framework is used only to fill a gap that no other framework has filled. [docs/framework-map.md](docs/framework-map.md) shows what each one needs first and where its result goes.
 
 ![Where to start: four starting situations, each routed through two frameworks to the driver tree](assets/diagrams/route-start.en.png)
 

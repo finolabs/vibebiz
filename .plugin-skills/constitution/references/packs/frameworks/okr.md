@@ -40,7 +40,7 @@ Sets one ambitious objective for a fixed period, usually a quarter, and three or
 
 One round at most. Offer drafts built from the files as options.
 
-1. "Đến cuối quý này, điều gì phải khác đi để cả các nhóm cùng thấy đợt này thành công? Nói thành một câu, chưa cần con số."
+1. "Đến cuối quý này, điều gì phải khác đi để mọi nhóm cùng thấy đợt này thành công? Nói thành một câu, chưa cần con số."
 2. "Ba hoặc bốn con số nào cho thấy điều đó đã xảy ra? Mỗi con số đo một thay đổi, không phải một việc cần làm." (Offer drafts: "Tỷ lệ đơn livestream giao trong 2 ngày", "Tỷ lệ người xem đặt mua".)
 3. "Mỗi con số đó hiện là bao nhiêu, lấy từ đâu, và đến cuối quý cần đạt bao nhiêu?" (the starting value is a fact to look up first; the target is the user's decision)
 4. "Nhóm nào chịu trách nhiệm cho từng con số?"

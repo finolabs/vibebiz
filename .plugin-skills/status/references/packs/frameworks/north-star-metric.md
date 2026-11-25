@@ -45,7 +45,7 @@ One round at most. Offer the teams' current numbers and one value-based candidat
 1. "Khi ứng dụng (hoặc chương trình) này thực sự có ích, khách làm được điều gì mà trước đó không làm được?"
 2. "Con số nào tăng chỉ khi khách nhận được điều đó, chứ không tăng chỉ vì mình quảng cáo nhiều hơn? Ví dụ: số thành viên mua lại trong 90 ngày (Đề xuất), lượt tải ứng dụng, điểm đã tích."
 3. "Con số đó hiện là bao nhiêu, lấy từ báo cáo nào, của giai đoạn nào?" (a fact to look up first; without one, record a measurement plan)
-4. "Các con số mỗi nhóm đang theo góp vào con số chung đó thế nào?" (the inputs)
+4. "Các con số mỗi nhóm đang theo dõi góp vào con số chung đó thế nào?" (the inputs)
 5. "Con số nào không được xấu đi khi đẩy con số chung, ví dụ biên lợi nhuận hoặc chi phí điểm thưởng?"
 
 ## Writes to

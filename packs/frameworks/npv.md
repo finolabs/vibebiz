@@ -39,7 +39,7 @@ A way to judge whether money spent now is worth a return that arrives over sever
 Ask only for what is still missing, one round at most; never ask the user to compute a present value.
 
 1. "Khoản lợi (tiền tiết kiệm hay doanh thu thêm) bắt đầu từ năm nào và mỗi năm khoảng bao nhiêu? Anh/chị lấy số này ở đâu?"
-2. "Phòng tài chính đang dùng mức lãi nào để so các khoản đầu tư: theo lãi vay của công ty hay một mức chung?" (Offer the rate the ground rules or finance named; a rate nobody knows becomes an open question to finance.)
+2. "Phòng tài chính đang dùng mức lãi nào để so sánh các khoản đầu tư: theo lãi vay của công ty hay một mức chung?" (Offer the rate the ground rules or finance named; a rate nobody knows becomes an open question to finance.)
 3. "Hội đồng chấp nhận hoàn vốn trong bao lâu thì duyệt?"
 
 Never invent a return, a rate or a cost: a figure nobody present can give becomes an open question with its owner, and today's value follows ask protocol rule 5. Present value and payback are estimates derived from labelled inputs and carry "not tech-reviewed" until reviewed (rule 10).

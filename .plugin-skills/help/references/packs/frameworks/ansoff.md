@@ -39,7 +39,7 @@ A two-by-two of growth routes. One axis asks whether the customers are the ones 
 
 Ask about the routes people named and what the business already knows, one round at most.
 
-1. "Ngoài hướng đã ghi, những hướng nào để tăng doanh thu đã được ai đề xuất? Ví dụ bán thêm cho khách hiện có, mở vùng hay kênh mới, thêm dòng hàng mới." (Offer the routes the files name.)
+1. "Ngoài hướng đã ghi, đã có ai đề xuất hướng nào khác để tăng doanh thu? Ví dụ: bán thêm cho khách hiện có, mở vùng hay kênh mới, thêm dòng hàng mới." (Offer the routes the files name.)
 2. "Với từng hướng, mình đã có khách sẵn chưa, và đã có hàng sẵn chưa?" (This places each route in a cell; never ask the user to place it.)
 3. "Công ty đã từng mở vùng, kênh hay dòng hàng mới nào chưa? Kết quả ra sao?"
 4. "Nếu chỉ đủ sức đi một hướng trong năm tới, hướng nào nên đi trước, và vì sao?"

@@ -27,7 +27,7 @@ These rules record the design decisions Fio settled on 12/11/2026. A rule here c
 - On Claude Code, Codex and Antigravity vibebiz offers the folder and Drive workspaces, Google Slides and Docs, and the views in the host's preview through that host's own tools, choosing each path by the tools present (`specs/003-multi-host/contracts/host-capabilities.md`).
 - Installed plugins also load in claude.ai chat and in Cowork on the web or a phone, which have no local folder. Every entry skill picks its storage first: a local folder, then Google Drive through the host's Drive tools or skills, otherwise it writes nothing and names both ways forward (`core/workspace.md` §1).
 - Questions follow the interview protocol (spec Appendix B) through the host's question tool (Cowork's `AskUserQuestion`, or its equivalent on another supported host): never add "None" or "Other" (the tool has Skip and free text), a skip leaves the category unchanged, and with nobody to answer proceed on recorded assumptions without inventing answers.
-- First-release content: `packs/retail-fashion`, `packs/ai-patterns-retail`, and the fifteen framework cards in `packs/frameworks/` (spec Appendix F). Frameworks are applied only to fill an open coverage gap, at most two per lens per idea.
+- First-release content: `packs/retail-fashion`, `packs/ai-patterns-retail`, and the framework library in `packs/frameworks/` (spec 004); a card is applied only while its category is open and not already filled by a card.
 
 ## Workspace and outputs
 
