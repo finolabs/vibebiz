@@ -129,7 +129,7 @@ Two cards with a fixed place in sections 4.2 and 4.4:
 
 Before asking a card's questions, read the results its feeding cards passed on (an applied card whose `feeds` lists it, per `references/packs/framework-index.md` "Cards"; the result is where that card's "Writes to" put it) and drop the questions they already answer (spec 004 FR-015). Start its `framework_reasons` line with `fed by <card> (<passes>);` as the router's rule 3 does.
 
-Ask a card's questions without naming the framework. When at least one of a chosen card's questions was answered, or its method shaped a section from the files, add its id to the `frameworks` list of the category it filled, so the outputs can name it (router rule 5). A card whose questions were all skipped and that shaped nothing stays out of `frameworks`, so a later packaging run can choose it again. Without the card file, do the section in its plain form; never apply a framework from memory.
+Ask a card's questions without naming the framework. When at least one of a chosen card's questions was answered, or its method shaped a section from the files, add its id to the `frameworks` list of the category it filled, so the outputs can name it (router rule 5, with the plan's own exception for a shaped section, rule 6). A card whose questions were all skipped and that shaped nothing stays out of `frameworks`, so a later packaging run can choose it again. Without the card file, do the section in its plain form; never apply a framework from memory.
 
 ## 7. The tech-review label
 
