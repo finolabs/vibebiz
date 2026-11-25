@@ -12,7 +12,7 @@ Follow `references/core/ask-protocol.md` for every question, `references/core/wr
 ## 1. Rules the plan never breaks
 
 1. **No new facts.** Every line of `plan.md` traces to `spec.md`, `decisions.md`, `assumptions.md` or `constitution.md`. When the user gives a new figure or decision during this module, write it to its home in `spec.md` (or `decisions.md`) first, then copy it into the plan. The board and tech views render from those files; a fact that lives only in the plan would make the views disagree.
-2. **Same number everywhere.** A figure in the plan is the figure in `spec.md`, with the same value, unit, source, period and label. Never round, convert currency or re-total it into a different claim. The one derived number allowed is payback (section 4.2), and it names the figures it comes from.
+2. **Same number everywhere.** A figure in the plan is the figure in `spec.md`, with the same value, unit, source, period and label. Never round, convert currency or re-total it into a different claim. The derived numbers allowed are payback (section 4.2) and the figures a planning card applied in this pass computes by its own steps (net present value, total cost over the period); each names the figures it comes from and carries the estimate label.
 3. **Every number carries its source, period and label**: measured (đo được) when it comes from a report or count, assumed (giả định) when it is someone's estimate.
 4. **Estimates stay unreviewed until reviewed.** While `estimate_status` is `not-tech-reviewed`, every cost, effort, resource or return estimate in the plan carries the label "not tech-reviewed" in the idea's language (in Vietnamese: "chưa qua kỹ thuật thẩm định"). See section 7.
 5. **Gaps are shown, never filled by guessing.** Write the phrase for "not yet clarified" in the idea's language (`chưa làm rõ` in Vietnamese) for anything without an answer. Never invent a figure, a deadline, an owner or a phase to make the plan look complete.
@@ -116,8 +116,9 @@ The planning cards (`lens: plan`) are applied here at packaging, never by the ro
 
 - one of the categories in its `fills` is `missing` or `partial`;
 - its "When not to use" does not match the idea's files;
-- it is not already listed in that category's `frameworks`, and no other planning card is applied to the same category in this pass; there is no limit on how many planning cards an idea uses;
-- or the user asked for it by name (noted in `## Clarifications`) and the first three conditions still hold. If one fails, say why in one plain sentence.
+- no other planning card is chosen for the same category in this pass; a card already listed in that category's `frameworks` while the category is still open is chosen again and keeps its entries, so its open questions are asked again; there is no limit on how many planning cards an idea uses;
+- it follows the map as `references/core/router.md` rule 8 says: a card it `needs` is already applied, or every category that card fills is `clear`; and no card in its `instead_of` is listed in any category's `frameworks`;
+- or the user asked for it by name (noted in `## Clarifications`) and the conditions above still hold. If one fails, say why in one plain sentence.
 
 A chosen card's `framework_reasons` line is one English sentence keyed by the card id: which open gap it fills and, when several fit, why this one by "When to use". The cards below are two of the candidates, not the whole list: the index holds every shipped planning card.
 
