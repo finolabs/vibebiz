@@ -34,6 +34,9 @@ CASES_DIR = REPO / "evals" / "frameworks"
 GRADER_NAME = "no-framework-name.md"
 TEXT_GRADER_NAME = "no-framework-name-in-text.md"
 EXEMPT = {"okr"}
+# Abbreviations a card's name joins ("RICE and ICE scoring"), matched in capitals only so the
+# everyday words "rice" and "ice" stay allowed.
+ALIASES = {"rice-ice": ["RICE", "ICE"], "lean-dmaic": ["DMAIC"]}
 
 
 def _caseless(text: str) -> str:
@@ -68,8 +71,16 @@ def names(cards_dir: Path = CARDS_DIR) -> list[str]:
     return sorted(found, key=lambda s: (-len(s), s.lower()))
 
 
+def aliases(cards_dir: Path = CARDS_DIR) -> list[str]:
+    """ALIASES of the shipped, non-exempt cards, longest first."""
+    shipped = {p.stem for p in cards_dir.glob("*.md")} - EXEMPT
+    found = {a for card, items in ALIASES.items() if card in shipped for a in items}
+    return sorted(found, key=lambda s: (-len(s), s))
+
+
 def pattern(cards_dir: Path = CARDS_DIR) -> str:
-    return "|".join(_caseless(n) for n in names(cards_dir))
+    parts = [_caseless(n) for n in names(cards_dir)] + [re.escape(a) for a in aliases(cards_dir)]
+    return "|".join(parts)
 
 
 def grader_text(pat: str) -> str:

@@ -42,6 +42,12 @@ class Pattern(unittest.TestCase):
         self.assertIsNotNone(rx.search("Phương pháp giá trị hiện tại ròng (NPV) được thêm vào."))
         self.assertIsNotNone(rx.search("theo tám bước của Kotter."))
 
+    def test_joined_abbreviations_are_caught(self):
+        rx = re.compile(fn.text_pattern(fn.pattern()))
+        for text in ("Mình dùng RICE để xếp thứ tự.", "Chấm điểm ICE cho từng việc.", "Theo các bước DMAIC."):
+            self.assertIsNotNone(rx.search(text), text)
+        self.assertIsNone(rx.search("Giá gạo (rice) tăng."))
+
     def test_exempt_cards_are_left_out(self):
         self.assertFalse(any(n.lower() == "okr" for n in fn.names()))
 
