@@ -48,6 +48,12 @@ class Pattern(unittest.TestCase):
             self.assertIsNotNone(rx.search(text), text)
         self.assertIsNone(rx.search("Giá gạo (rice) tăng."))
 
+    def test_abbreviations_skip_longer_words_in_both_graders(self):
+        for rx in (re.compile(fn.pattern()), re.compile(fn.text_pattern(fn.pattern()))):
+            for text in ("Bảng PRICE mới", "Gói SERVICE cho cửa hàng", "Nhóm BACKOFFICE"):
+                self.assertIsNone(rx.search(text), text)
+            self.assertIsNotNone(rx.search("Chấm điểm ICE."))
+
     def test_exempt_cards_are_left_out(self):
         self.assertFalse(any(n.lower() == "okr" for n in fn.names()))
 

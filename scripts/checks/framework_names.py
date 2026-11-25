@@ -79,7 +79,7 @@ def aliases(cards_dir: Path = CARDS_DIR) -> list[str]:
 
 
 def pattern(cards_dir: Path = CARDS_DIR) -> str:
-    parts = [_caseless(n) for n in names(cards_dir)] + [re.escape(a) for a in aliases(cards_dir)]
+    parts = [_caseless(n) for n in names(cards_dir)] + [rf"(?<![A-Za-z]){re.escape(a)}(?![A-Za-z])" for a in aliases(cards_dir)]
     return "|".join(parts)
 
 
