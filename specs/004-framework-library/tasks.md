@@ -125,7 +125,7 @@
   - `writing-for-agents`;
   - "own words, fictional example, no invented figures (ask-protocol rules 5 and 10)";
   - the tests to run: `test_cards.py` and the batch's eval cases one at a time.
-- [ ] T029 [US4] Accept each batch through `checks`. Merge it into the feature branch, rebuild, and get a code and a security review from another family. Batches 1–3 accepted and merged; the code and security review by another family is still to run.
+- [x] T029 [US4] Accept each batch through `checks`. Merge it into the feature branch, rebuild, and get a code and a security review from another family. Done (25/11/2026): batches 1–3 accepted and merged; Codex security review of 440bf16..f94d155 found nothing; Codex code review found four P2s, fixed in 352ba1f, 698e4bf, c61f11a, d08597c and 0e11601 after two re-reviews (rework limit 2).
 
 ### Batch 1: problem-framing and outcome (6 cards)
 
