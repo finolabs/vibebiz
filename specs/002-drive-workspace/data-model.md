@@ -54,6 +54,7 @@ read (modifiedTime T0)
 - Before the create, read the old file's permissions. If they differ from what the folder gives (an extra person, or the folder's access turned off for this file), stop and ask: a replacement would take the folder's sharing instead (FR-012).
 - If a run is interrupted while two files share a title, the next run reports both (title, last change) and asks which one to keep. It trashes neither without the user's answer, because either may be a hand edit (spec edge case).
 - A trashed file is never permanently deleted by vibebiz.
+- If the trash call fails or the user declines it, two files keep one title: the new one stands, the user is told which old file to trash, and the next run treats them as above (`core/drive-workspace.md` §3 step 6).
 
 ## State impact
 
