@@ -90,7 +90,7 @@ Every change to the content of a workspace file is a replacement:
 3. **Create** the new content as a new plain file with the same title in the same folder.
 4. **Read it back** with the download tool and confirm the bytes match what you wrote.
 5. **Check `modifiedTime`** of the old file again. If it changed since T0, someone else edited it: keep both, trash nothing, tell the user, and ask which version to keep.
-6. **Trash** the old file.
+6. **Trash** the old file. When the trash call fails or is declined, the new file stands and the old one stays: tell the user, in one sentence, the old file's title, folder and last change, and that they can move it to the Drive trash themselves; on a later run it counts as two live files (below).
 
 These steps are silent: say nothing to the user about reading back, comparing or trashing files unless a step stops the run. Trashing asks the user's permission in some apps (Cowork asks before each "Trash file" by default); `docs/faq.md` explains why and advises approving each one, since a standing allow covers every trash through the connector. Never ask the user to allow trashing for all files.
 
