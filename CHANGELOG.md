@@ -10,11 +10,11 @@ All notable changes to vibebiz are recorded here. The format follows [Keep a Cha
 
 - The framework library grows from 15 to 41 management methods (for example a driver tree, Kano, RACI, NPV and payback, a stage-gate rollout), written in vibebiz's own words. vibebiz still asks their questions in everyday words and names a method only in the board deck and the tech document.
 - Planning methods (for example RACI, a build-buy-or-partner comparison, NPV) are chosen when the plan is built at packaging; asking for one by name during the interview records the request for packaging.
-- A map in the docs shows which method feeds which, and when a method is applied again after a board decision or a tech review.
+- A map in the docs shows which method feeds which, and when a method is applied again after an answer changes, the board asks for changes or the tech team reviews the estimates.
 
 ### Changed
 
-- There is no longer a limit of two methods per part of the idea: a method is used only while that point is still open and no other method has covered it.
+- There is no longer a limit of two methods for each angle vibebiz looks at an idea from: a method is used only while that point is still open and no other method has covered it.
 - The interview keeps going past a point that only someone outside the conversation can answer (for example a supplier's price): the points that depend on it are asked now and asked again when the answer arrives. When nothing else can be asked, vibebiz says who to ask and recommends pausing.
 
 ### Fixed
