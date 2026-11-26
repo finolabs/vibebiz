@@ -63,5 +63,30 @@ class BudgetOffer(unittest.TestCase):
         self.assertIsNone(turns.budget_offer_choice(["Đi tiếp, chờ số sau (Đề xuất)", "Dừng chờ số"]))
 
 
+
+class ToolAllowedTest(unittest.TestCase):
+    def setUp(self):
+        import tempfile
+        self.ws = Path(tempfile.mkdtemp())
+        self.plugin = Path(tempfile.mkdtemp())
+
+    def test_shell_denied(self):
+        self.assertFalse(turns.tool_allowed("Bash", {"command": "true"}, self.ws, self.plugin))
+
+    def test_write_outside_denied(self):
+        self.assertFalse(turns.tool_allowed("Write", {"file_path": "/tmp/outside.txt"}, self.ws, self.plugin))
+        self.assertFalse(turns.tool_allowed("Edit", {"file_path": "../x.md"}, self.ws, self.plugin))
+
+    def test_read_home_denied(self):
+        self.assertFalse(turns.tool_allowed("Read", {"file_path": "~/.ssh/id_ed25519"}, self.ws, self.plugin))
+        self.assertFalse(turns.tool_allowed("Grep", {"path": "/etc"}, self.ws, self.plugin))
+
+    def test_inside_allowed(self):
+        self.assertTrue(turns.tool_allowed("Write", {"file_path": str(self.ws / "specs/a.md")}, self.ws, self.plugin))
+        self.assertTrue(turns.tool_allowed("Write", {"file_path": "specs/a.md"}, self.ws, self.plugin))
+        self.assertTrue(turns.tool_allowed("Read", {"file_path": str(self.plugin / "skills/x.md")}, self.ws, self.plugin))
+        self.assertTrue(turns.tool_allowed("Glob", {"pattern": "specs/*"}, self.ws, self.plugin))
+        self.assertTrue(turns.tool_allowed("Skill", {"skill": "vibebiz:idea"}, self.ws, self.plugin))
+
 if __name__ == "__main__":
     unittest.main()

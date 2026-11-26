@@ -18,6 +18,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -45,7 +46,7 @@ REPO = HERE.parents[1]
 DIST = REPO / "dist" / "vibebiz"
 RESULTS = REPO / "evals" / "results"
 SKILLS = [f"vibebiz:{n}" for n in ("idea", "continue", "status", "package", "constitution", "help")]
-AGENT_TOOLS = ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "Skill"]
+AGENT_TOOLS = ["Read", "Write", "Edit", "Glob", "Grep", "Skill"]  # no Bash: suite 8 never packages
 
 PERSONA_SYSTEM = """You play one user of a business-idea interviewer, in a test. Stay in character.
 
@@ -144,9 +145,9 @@ def _persona_system(fx: dict) -> str:
 def make_can_use_tool(run: Run):
     async def can_use_tool(name: str, tool_input: dict, _ctx):
         if name != "AskUserQuestion":
-            if name in AGENT_TOOLS or name.startswith("Skill"):
+            if turns.tool_allowed(name, tool_input, run.workspace, run.args.plugin or DIST):
                 return PermissionResultAllow(updated_input=tool_input)
-            return PermissionResultDeny(message=f"{name} is not available in this test.")
+            return PermissionResultDeny(message=f"{name} on that path is not available in this test.")
         if run.ready():
             run.stopped_ready = True
             return PermissionResultDeny(message="Test ended: the idea is ready.", interrupt=True)
@@ -192,7 +193,7 @@ async def run_session(run: Run, number: int) -> dict:
         disallowed_tools=["WebFetch", "WebSearch", "Agent", "Task"],
         model=run.args.model,
         max_turns=run.args.max_turns,
-        max_budget_usd=run.args.session_cost,
+        max_budget_usd=max(0.01, min(run.args.session_cost, run.args.max_cost - run.cost)),
         can_use_tool=make_can_use_tool(run),
     )
     session_cost, plain, nudges, last_result, error, capped = 0.0, 0, 0, None, None, None
@@ -247,6 +248,8 @@ async def judge(run: Run, spec_text: str, facts: list[dict]) -> dict:
 async def main_async(args) -> int:
     fixture_path = Path(args.fixture).resolve()
     fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+    if not re.fullmatch(r"[a-z0-9-]+", str(fixture.get("id", ""))):
+        raise SystemExit("fixture id must match [a-z0-9-]+")
     if not args.no_build and not args.plugin:  # a plugin given by path is built where it lives
         subprocess.run([sys.executable, str(REPO / "scripts" / "build_plugin.py")], check=True, cwd=REPO)
     workspace = Path(tempfile.mkdtemp(prefix=f"vibebiz-persona-{fixture['id']}-"))
