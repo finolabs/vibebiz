@@ -57,7 +57,7 @@
   - `fit-sipoc`: a warehouse-to-store replenishment idea with E open. SIPOC's questions are asked without its name.
   - `skip-sipoc`: a customer journey idea with no internal hand-off. The journey-map card is chosen instead.
 - [x] T012 [US1] Write `packs/frameworks/sipoc.md` (data-model row 1, `core: false`). Use the seven sections and the Requirements column, describe both forms in `origin`, and name journey-map-service-blueprint and lean-dmaic in "When not to use". Write it in vibebiz's own words with a fictional fashion example. Follow the `writing-for-agents` skill.
-- [ ] T013 [US1] Rebuild, then run T011's two cases and T003's check. Run `python3 -m unittest scripts/checks/test_cards.py`. **Open (19/11/2026):** fit-sipoc unstable at 0.50 to 0.67; `one-new-card-per-gap` fails in every run (see `evals/RESULTS.md`). Next: check whether a lens draws on a second card in one round now that the per-lens limit is gone, and seed the gap-* fixtures with the sections their `clear` categories claim.
+- [x] T013 [US1] Rebuild, then run T011's two cases and T003's check. Run `python3 -m unittest scripts/checks/test_cards.py`. **Open (19/11/2026):** fit-sipoc unstable at 0.50 to 0.67; `one-new-card-per-gap` fails in every run (see `evals/RESULTS.md`). Next: check whether a lens draws on a second card in one round now that the per-lens limit is gone, and seed the gap-* fixtures with the sections their `clear` categories claim. **Done (26/11/2026):** fit-sipoc 1.0 in T062 (b195502); skip-sipoc 1.0 after its seed Outcome gained a leading indicator and kill criterion (`evals/RESULTS.md`).
 
 **Checkpoint**: SIPOC works on its own and the MVP can be shown.
 

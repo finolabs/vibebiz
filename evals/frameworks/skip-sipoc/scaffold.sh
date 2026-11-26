@@ -175,7 +175,7 @@ Khách mua online chọn sai size nên trả hàng nhiều; khách tự chọn s
 
 ## Outcome
 
-Giảm tỷ lệ trả hàng vì sai size trên website từ 18% xuống 12% trong 6 tháng (số 18%: báo cáo đổi trả quý 3/2026, đo). Giới hạn: tỷ lệ chuyển đổi không giảm.
+Giảm tỷ lệ trả hàng vì sai size trên website từ 18% xuống 12% trong 6 tháng (số 18%: báo cáo đổi trả quý 3/2026, đếm theo đơn hàng, đo). Giới hạn: tỷ lệ chuyển đổi không giảm dưới 2,1% (tháng 10/2026, đo). Chỉ số theo dõi sớm: tỷ lệ trả hàng vì sai size của khách có dùng gợi ý so với khách không dùng, đọc hằng tuần. Ngưỡng dừng: sau 8 tuần thử mà mức giảm chưa tới 2 điểm phần trăm thì dừng và xem lại.
 
 ## Alternatives
 
