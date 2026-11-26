@@ -174,7 +174,7 @@ Nhân viên quầy phải thêm một bước mỗi lần thanh toán, lúc cu�
 
 ## Outcome
 
-Giảm thời gian thêm mỗi đơn từ 20 giây xuống 5 giây trong 2 tháng (số 20 giây: bấm giờ tháng 10/2026, đo). Giới hạn: tỷ lệ đơn có tích điểm không giảm.
+Giảm thời gian thêm mỗi đơn từ 20 giây xuống 5 giây trong 2 tháng (số 20 giây: bấm giờ tháng 10/2026, đo). Giới hạn: tỷ lệ đơn có tích điểm không giảm. Chỉ số theo dõi sớm: tỷ lệ đơn tích điểm được quét trên tổng đơn tích điểm, đọc hằng tuần. Ngưỡng dừng: dưới một nửa số đơn được quét sau 4 tuần thử ở 2 cửa hàng thì dừng và xem lại.
 
 ## Alternatives
 
