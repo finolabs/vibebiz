@@ -4,6 +4,7 @@
   "fictional_company": "Mộc Nhiên Denim (thương hiệu quần jean, 12 cửa hàng, 60% doanh thu online)",
   "persona": "Giám đốc thương mại online, vội, hay nói 'cứ làm đi', dị ứng với từ kỹ thuật",
   "intake_vi": "Khách online trả hàng nhiều quá vì không vừa size, tao muốn có cái gì đó AI gợi ý size cho họ.",
+  "involves_ai": true,
   "key_facts": [
     {"id": "problem", "category": "problem", "fact": "Tỉ lệ trả hàng online 31%, trong đó 58% vì sai size."},
     {"id": "users", "category": "users", "fact": "Khách mua online qua website, nam nữ 20–35; đội chăm sóc khách hàng 9 người xử lý đổi trả."},

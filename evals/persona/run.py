@@ -47,6 +47,7 @@ DIST = REPO / "dist" / "vibebiz"
 RESULTS = REPO / "evals" / "results"
 SKILLS = [f"vibebiz:{n}" for n in ("idea", "continue", "status", "package", "constitution", "help")]
 AGENT_TOOLS = ["Read", "Write", "Edit", "Glob", "Grep", "Skill"]  # no Bash: suite 8 never packages
+MIN_SESSION_USD = 0.05  # below this much budget left, no new session starts
 
 PERSONA_SYSTEM = """You play one user of a business-idea interviewer, in a test. Stay in character.
 
@@ -100,6 +101,9 @@ class Run:
     questions_answered: int = 0
     questions_skipped: int = 0
     plain_replies: int = 0
+    persona_errors: int = 0
+    judge_error: str | None = None
+    live_session_cost: float = 0.0  # running total of the session in progress
     paused: bool = False
     stopped_ready: bool = False
     sessions: list = field(default_factory=list)
@@ -109,20 +113,30 @@ class Run:
     def cost(self) -> float:
         return self.cost_agent + self.cost_persona + self.cost_judge
 
+    def spent(self) -> float:
+        """Everything spent so far, the session in progress and persona calls inside it included."""
+        return self.cost + self.live_session_cost
+
     def ready(self) -> bool:
         idea = score.find_idea(self.workspace)
-        return bool(idea and (idea / "coverage.md").exists() and score.readiness(idea / "coverage.md")[0])
+        return bool(idea and (idea / "coverage.md").exists()
+                    and score.readiness(idea / "coverage.md", bool(self.fixture.get("involves_ai")))[0])
 
 
-def _json_from(text: str) -> dict:
+def _json_from(text: str) -> dict | None:
+    """The JSON object in a model reply, or None when there is none or it does not parse."""
     start, end = text.find("{"), text.rfind("}")
     if start < 0 or end < start:
-        raise ValueError(f"no JSON in model reply: {text[:200]!r}")
-    return json.loads(text[start : end + 1])
+        return None
+    try:
+        value = json.loads(text[start : end + 1])
+    except ValueError:
+        return None
+    return value if isinstance(value, dict) else None
 
 
-async def _ask_model(prompt: str, system: str | None, model: str) -> tuple[dict, float]:
-    """One tool-less, settings-free turn; returns parsed JSON and its cost."""
+async def _ask_model(prompt: str, system: str | None, model: str) -> tuple[dict | None, float]:
+    """One tool-less, settings-free turn; returns its JSON object (None when malformed) and its cost."""
     opts = ClaudeAgentOptions(model=model, system_prompt=system, tools=[], max_turns=1, setting_sources=[])
     text, cost = "", 0.0
     async for msg in query(prompt=prompt, options=opts):
@@ -151,6 +165,8 @@ def make_can_use_tool(run: Run):
         if run.ready():
             run.stopped_ready = True
             return PermissionResultDeny(message="Test ended: the idea is ready.", interrupt=True)
+        if run.spent() >= run.args.max_cost:
+            return PermissionResultDeny(message="Test ended: the run's cost cap is reached.", interrupt=True)
         questions = tool_input.get("questions") or []
         answers: dict[str, str] = {}
         to_persona = []
@@ -168,9 +184,13 @@ def make_can_use_tool(run: Run):
                 ROUND_TASK.format(questions=json.dumps(to_persona, ensure_ascii=False)),
                 _persona_system(run.fixture), run.args.persona_model)
             run.cost_persona += cost
-            for q, a in zip(to_persona, reply.get("answers") or []):
+            if reply is None:
+                run.persona_errors += 1
+            given = reply.get("answers") if reply and isinstance(reply.get("answers"), list) else []
+            for i, q in enumerate(to_persona):  # a missing or malformed entry is a skip
+                a = given[i] if i < len(given) and isinstance(given[i], dict) else {}
                 value = a.get("choice") or a.get("text")
-                if value:
+                if isinstance(value, str) and value.strip():
                     answers[q["question"]] = value
                     run.questions_answered += 1
                 else:
@@ -193,7 +213,7 @@ async def run_session(run: Run, number: int) -> dict:
         disallowed_tools=["WebFetch", "WebSearch", "Agent", "Task"],
         model=run.args.model,
         max_turns=run.args.max_turns,
-        max_budget_usd=max(0.01, min(run.args.session_cost, run.args.max_cost - run.cost)),
+        max_budget_usd=min(run.args.session_cost, run.args.max_cost - run.cost),
         can_use_tool=make_can_use_tool(run),
     )
     session_cost, plain, nudges, last_result, error, capped = 0.0, 0, 0, None, None, None
@@ -206,6 +226,7 @@ async def run_session(run: Run, number: int) -> dict:
                     text = "".join(b.text for b in msg.content if isinstance(b, TextBlock)) or text
                 elif isinstance(msg, ResultMessage):
                     session_cost = msg.total_cost_usd or session_cost  # running total for the session
+                    run.live_session_cost = session_cost
                     last_result = msg.subtype
                     if msg.subtype in turns.SESSION_CAPS:
                         capped = msg.subtype  # the session cap ends this session, not the run
@@ -213,7 +234,7 @@ async def run_session(run: Run, number: int) -> dict:
                         error = (msg.result or text or msg.subtype)[:300]
             run.transcript.append({"session": number, "assistant": text[-2000:]})
             action = turns.next_turn(
-                text, error=bool(error) or run.cost + session_cost >= run.args.max_cost,
+                text, error=bool(error) or run.spent() >= run.args.max_cost,
                 ready=run.stopped_ready or run.ready(), paused=run.paused,
                 finished=last_result == "success", replies=plain, nudges=nudges,
                 max_replies=run.args.max_plain_turns)
@@ -226,10 +247,16 @@ async def run_session(run: Run, number: int) -> dict:
             reply, cost = await _ask_model(PLAIN_TASK.format(message=text[-3000:]),
                                            _persona_system(run.fixture), run.args.persona_model)
             run.cost_persona += cost
+            text_reply = reply.get("text") if reply else None
+            if not (isinstance(text_reply, str) and text_reply.strip()):
+                run.persona_errors += reply is None
+                run.questions_skipped += 1  # the persona did not answer: the session ends here
+                break
             run.plain_replies += 1
-            run.transcript.append({"session": number, "user": reply.get("text", "")})
-            await client.query(reply.get("text") or "Tao chưa biết, mày cứ đề xuất đi.")
+            run.transcript.append({"session": number, "user": text_reply})
+            await client.query(text_reply)
     run.cost_agent += session_cost
+    run.live_session_cost = 0.0
     info = {"session": number, "prompt": prompt, "cost_usd": round(session_cost, 4),
             "result": last_result, "error": error, "capped": capped, "plain_replies": plain, "nudges": nudges, "paused_at_budget": run.paused,
             "ready_after": run.ready()}
@@ -242,7 +269,9 @@ async def judge(run: Run, spec_text: str, facts: list[dict]) -> dict:
         JUDGE_PROMPT.format(spec=spec_text, facts=json.dumps(facts, ensure_ascii=False)),
         None, run.args.judge_model)
     run.cost_judge += cost
-    return verdicts
+    if verdicts is None:
+        run.judge_error = "judge reply was not a JSON object"
+    return verdicts or {}
 
 
 async def main_async(args) -> int:
@@ -255,60 +284,69 @@ async def main_async(args) -> int:
     workspace = Path(tempfile.mkdtemp(prefix=f"vibebiz-persona-{fixture['id']}-"))
     run = Run(fixture=fixture, workspace=workspace, args=args)
     started = time.time()
-    stop_reason = "session limit"
-    for n in range(1, args.max_sessions + 1):
-        info = await run_session(run, n)
-        print(f"session {n}: {info}", file=sys.stderr)
-        if run.ready():
-            stop_reason = "ready"
-            break
-        if info["error"] or (info["cost_usd"] == 0 and n == 1):
-            stop_reason = f"agent error: {info['error'] or 'no model call in session 1'}"
-            break
-        if run.cost >= args.max_cost:
-            stop_reason = "cost cap"
-            break
-    ready_session = next((s["session"] for s in run.sessions if s["ready_after"]), None)
-
-    verdicts: dict = {}
-    idea = score.find_idea(workspace)
-    spec_path = idea / "spec.md" if idea else None
-    semantic = [f for f in fixture["key_facts"] if not score.quantities(f["fact"])]
-    if not args.no_judge and semantic and spec_path and spec_path.exists():
-        verdicts = await judge(run, spec_path.read_text(encoding="utf-8"), semantic)
-    result = score.score_workspace(workspace, fixture, judge=(lambda *_: verdicts) if verdicts else None)
-
-    facts = result["facts"]
-    out = {
-        "suite": 8, "fixture": fixture["id"], "date": time.strftime("%Y-%m-%d"),
-        "plugin": str(args.plugin or DIST), "model": args.model, "persona_model": args.persona_model,
-        "judge_model": None if args.no_judge else args.judge_model,
-        "stop_reason": stop_reason, "sessions_run": len(run.sessions),
-        "sessions_to_readiness": ready_session, "budget_hits": run.budget_hits,
-        "questions_answered": run.questions_answered, "questions_skipped": run.questions_skipped,
-        "plain_replies": run.plain_replies, "idea": result["idea"], "ready": result["ready"],
-        "unmet": result["unmet"], "facts": facts,
-        "cost_usd": {"agent": round(run.cost_agent, 4), "persona": round(run.cost_persona, 4),
-                     "judge": round(run.cost_judge, 4), "total": round(run.cost, 4)},
-        "seconds": round(time.time() - started), "sessions": run.sessions,
-        "pass": bool(ready_session and ready_session <= 4 and (facts["share"] or 0) >= 0.85),
-        "transcript": run.transcript,
-    }
+    stop_reason, crash, verdicts = "session limit", None, {}
     RESULTS.mkdir(parents=True, exist_ok=True)
     path = RESULTS / f"persona-{fixture['id']}-{time.strftime('%Y%m%d-%H%M%S')}.json"
-    path.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
-    if args.keep_workspace:
-        print(f"workspace kept: {workspace}", file=sys.stderr)
-    else:
+    try:
+        for n in range(1, args.max_sessions + 1):
+            if args.max_cost - run.cost < MIN_SESSION_USD:
+                stop_reason = "cost cap"
+                break
+            info = await run_session(run, n)
+            print(f"session {n}: {info}", file=sys.stderr)
+            if run.ready():
+                stop_reason = "ready"
+                break
+            if info["error"] or (info["cost_usd"] == 0 and n == 1):
+                stop_reason = f"agent error: {info['error'] or 'no model call in session 1'}"
+                break
+            if run.cost >= args.max_cost:
+                stop_reason = "cost cap"
+                break
+        idea = score.find_idea(workspace)
+        spec_path = idea / "spec.md" if idea else None
+        semantic = [f for f in fixture["key_facts"] if not score.quantities(f["fact"])]
+        if args.no_judge or run.cost >= args.max_cost:
+            run.judge_error = None if args.no_judge else "skipped: cost cap reached"
+        elif semantic and spec_path and spec_path.exists():
+            verdicts = await judge(run, spec_path.read_text(encoding="utf-8"), semantic)
+    except Exception as exc:  # a harness error still writes what the run has
+        crash = f"{type(exc).__name__}: {exc}"[:300]
+        stop_reason = f"harness error: {crash}"
+    finally:
+        result = score.score_workspace(workspace, fixture, judge=(lambda *_: verdicts) if verdicts else None)
+        ready_session = next((s["session"] for s in run.sessions if s["ready_after"]), None)
+        facts = result["facts"]
+        out = {
+            "suite": 8, "fixture": fixture["id"], "date": time.strftime("%Y-%m-%d"),
+            "plugin": str(args.plugin or DIST), "model": args.model, "persona_model": args.persona_model,
+            "judge_model": None if args.no_judge else args.judge_model,
+            "stop_reason": stop_reason, "sessions_run": len(run.sessions),
+            "sessions_to_readiness": ready_session, "budget_hits": run.budget_hits,
+            "questions_answered": run.questions_answered, "questions_skipped": run.questions_skipped,
+            "plain_replies": run.plain_replies, "persona_errors": run.persona_errors,
+            "judge_error": run.judge_error, "idea": result["idea"], "ready": result["ready"],
+            "unmet": result["unmet"], "facts": facts,
+            "cost_usd": {"agent": round(run.cost_agent, 4), "persona": round(run.cost_persona, 4),
+                         "judge": round(run.cost_judge, 4), "total": round(run.cost, 4)},
+            "seconds": round(time.time() - started), "sessions": run.sessions,
+            "pass": bool(ready_session and ready_session <= 4 and facts["unscored"] == 0
+                         and (facts["share"] or 0) >= 0.85),
+            "transcript": run.transcript,
+        }
+        path.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
         if (workspace / "specs").exists():  # keep the idea folder beside the JSON (git-ignored)
             shutil.copytree(workspace / "specs", path.with_suffix(""), dirs_exist_ok=True)
-        shutil.rmtree(workspace, ignore_errors=True)
-    share = "n/a" if facts["share"] is None else f"{facts['share']:.0%}"
-    print(f"suite8 {fixture['id']}: {'PASS' if out['pass'] else 'FAIL'} "
-          f"ready_session={ready_session} sessions={len(run.sessions)} budget_hits={run.budget_hits} "
-          f"facts={facts['preserved']}/{facts['scored']} ({share}, {facts['unscored']} unscored) "
-          f"cost=${run.cost:.2f} stop={stop_reason} -> {path.relative_to(REPO)}")
-    return 0
+        if args.keep_workspace:
+            print(f"workspace kept: {workspace}", file=sys.stderr)
+        else:
+            shutil.rmtree(workspace, ignore_errors=True)
+        share = "n/a" if facts["share"] is None else f"{facts['share']:.0%}"
+        print(f"suite8 {fixture['id']}: {'PASS' if out['pass'] else 'FAIL'} "
+              f"ready_session={ready_session} sessions={len(run.sessions)} budget_hits={run.budget_hits} "
+              f"facts={facts['preserved']}/{facts['scored']} ({share}, {facts['unscored']} unscored) "
+              f"cost=${run.cost:.2f} stop={stop_reason} -> {path.relative_to(REPO)}")
+    return 1 if crash else 0
 
 
 def main() -> int:

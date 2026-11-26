@@ -29,6 +29,30 @@ class Readiness(unittest.TestCase):
         self.assertEqual(unmet, ["D:partial", "H:deferred", "M:missing"])
 
 
+class ReadinessEdges(unittest.TestCase):
+    def cov(self, case):
+        return CANNED / case / "specs" / "001-tich-diem-khach-quen" / "coverage.md"
+
+    def test_chaotic_is_never_ready(self):
+        self.assertEqual(score.readiness(self.cov("chaotic")), (False, ["cynefin:chaotic"]))
+
+    def test_f_must_be_clear_when_the_idea_involves_ai(self):
+        self.assertEqual(score.readiness(self.cov("f-deferred")), (True, []))
+        self.assertEqual(score.readiness(self.cov("f-deferred"), involves_ai=True), (False, ["F:deferred"]))
+
+    def test_malformed_coverage_is_not_ready_and_names_the_error(self):
+        ready, unmet = score.readiness(self.cov("malformed"))
+        self.assertFalse(ready)
+        self.assertTrue(unmet[0].startswith("coverage.md unreadable:"), unmet)
+        result = score.score_workspace(CANNED / "malformed", FIXTURE)  # scoring still runs
+        self.assertFalse(result["ready"])
+        self.assertEqual(result["facts"]["preserved"], 8)
+
+    def test_fixtures_say_whether_the_idea_involves_ai(self):
+        for path in sorted((HERE.parents[1] / "evals" / "fixtures").glob("*.json")):
+            self.assertIsInstance(json.loads(path.read_text(encoding="utf-8")).get("involves_ai"), bool, path.name)
+
+
 class Quantities(unittest.TestCase):
     def test_units_normalize(self):
         q = score.quantities("18% trong ba tháng, 6.000.000 đ, 0,4 tỷ đồng, 40 giờ, khách 25-40 tuổi")
@@ -43,6 +67,18 @@ class Quantities(unittest.TestCase):
     def test_words_that_are_not_units_are_ignored(self):
         self.assertEqual(score.quantities("6 trong số khách"), {("count", 6.0)})
         self.assertEqual(score.quantities("năm đầu"), set())
+
+
+class QuantityEdges(unittest.TestCase):
+    def test_vnd_with_d_bar(self):
+        self.assertIn(("money", 6e6), score.quantities("6.000.000 VNĐ mỗi tháng"))
+
+    def test_dates_and_record_ids_are_not_quantities(self):
+        text = "D-019, Q-004 và SC-001 ngày 2026-11-27, 27/11/2026, khoảng 5/2027"
+        self.assertEqual(score.quantities(text), set())
+
+    def test_values_are_rounded_before_comparing(self):
+        self.assertTrue(score.fact_numbers_present("ngân sách 0,3 tỷ", "300 triệu đồng"))
 
 
 class Facts(unittest.TestCase):
@@ -67,6 +103,12 @@ class Facts(unittest.TestCase):
         self.assertEqual(seen, ["risk"])
         self.assertEqual(result["facts"]["facts"]["risk"], {"method": "judge", "preserved": True})
         self.assertEqual(result["facts"]["share"], 0.9)
+
+    def test_judge_reply_that_is_not_a_boolean_stays_unscored(self):
+        result = score.score_workspace(CANNED / "ready", FIXTURE, judge=lambda *_: {"risk": "true"})
+        self.assertEqual(result["facts"]["facts"]["risk"], {"method": "unscored", "preserved": None})
+        result = score.score_workspace(CANNED / "ready", FIXTURE, judge=lambda *_: ["risk"])
+        self.assertEqual(result["facts"]["unscored"], 1)
 
     def test_dropped_budget_is_caught(self):
         result = score.score_workspace(CANNED / "not-ready", FIXTURE)

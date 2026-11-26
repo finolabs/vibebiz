@@ -62,7 +62,7 @@ Add `--case '<glob>'` or `--tag <tag>` to run one suite. Runs call the model wit
 
 ## Fixtures
 
-Each file in `evals/fixtures/` is JSON with `id`, `sector`, `fictional_company`, `persona`, `intake_vi` (the one-line intake a sales director would say, in Vietnamese), `key_facts` (hidden truth: problem, users, baseline cost, outcome, constraints, data, risk, numbers) and `answers` (what the persona says per topic, with a `default` for questions it cannot answer). Everything is invented; company names are fictional and the release review (T101) scans them for real names and figures.
+Each file in `evals/fixtures/` is JSON with `id`, `sector`, `fictional_company`, `persona`, `intake_vi` (the one-line intake a sales director would say, in Vietnamese), `involves_ai` (whether the idea uses AI, so readiness needs F clear), `key_facts` (hidden truth: problem, users, baseline cost, outcome, constraints, data, risk, numbers) and `answers` (what the persona says per topic, with a `default` for questions it cannot answer). Everything is invented; company names are fictional and the release review (T101) scans them for real names and figures.
 
 ## Fake Drive (spec 002)
 

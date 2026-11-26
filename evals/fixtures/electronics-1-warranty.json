@@ -4,6 +4,7 @@
   "fictional_company": "Điện Tử Bãi Cát (chuỗi bán điện thoại và phụ kiện, 48 cửa hàng)",
   "persona": "Giám đốc bán lẻ, quen số liệu doanh thu nhưng không rành quy trình hậu mãi, nói cộc",
   "intake_vi": "Khách mang máy đi bảo hành là than ầm lên, tao muốn tự động hóa khâu bảo hành cho nhanh.",
+  "involves_ai": false,
   "key_facts": [
     {"id": "problem", "category": "problem", "fact": "Bảo hành trung bình 11 ngày; 26% khiếu nại về thời gian chờ và không biết máy đang ở đâu."},
     {"id": "users", "category": "users", "fact": "Khách mang máy tới cửa hàng; 48 cửa hàng gửi máy về 2 trung tâm bảo hành; 14 kỹ thuật viên."},

@@ -4,6 +4,7 @@
   "fictional_company": "Tơ Sáng Kids (thời trang trẻ em, 21 cửa hàng, một kho tổng)",
   "persona": "Giám đốc vận hành kiêm bán hàng, nói nhanh, không thích họp, hay gộp nhiều ý vào một câu",
   "intake_vi": "Cuối mùa nào tao cũng ôm hàng tồn với hết size ở cửa hàng, muốn một hệ thống chia hàng thông minh hơn.",
+  "involves_ai": true,
   "key_facts": [
     {"id": "problem", "category": "problem", "fact": "Cuối mùa tồn 22% số lượng nhập, trong khi 30% cửa hàng hết size bán chạy sau tuần thứ 3."},
     {"id": "users", "category": "users", "fact": "3 nhân viên điều phối hàng ở kho tổng và 21 cửa hàng trưởng."},

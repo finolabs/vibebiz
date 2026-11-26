@@ -4,6 +4,7 @@
   "fictional_company": "Gia Dụng Cẩm Tú (điện gia dụng lớn, 15 siêu thị, giao lắp máy lạnh và máy giặt)",
   "persona": "Giám đốc kinh doanh, nghĩ theo doanh thu từng cửa hàng, hay đổi ý giữa chừng, thiếu kiên nhẫn với câu hỏi dài",
   "intake_vi": "Giao hàng với lắp đặt bên tao loạn lắm, khách hẹn mà trễ, tao muốn xếp lịch tự động.",
+  "involves_ai": false,
   "key_facts": [
     {"id": "problem", "category": "problem", "fact": "27% lịch giao lắp bị trễ hoặc phải hẹn lại; mỗi lần hẹn lại sinh thêm 1 chuyến xe."},
     {"id": "users", "category": "users", "fact": "5 nhân viên điều phối, 40 thợ lắp và tài xế; khách mua máy lạnh và máy giặt."},
