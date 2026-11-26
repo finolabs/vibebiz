@@ -168,7 +168,25 @@ cat > 'specs/001-gap-m-build-or-buy/spec.md' <<'VIBEBIZ_SEED_3'
 
 ## Problem & Why
 
-Có sản phẩm bán sẵn trên thị trường và cũng có thể tự làm. Chưa so sánh chi phí.
+Có sản phẩm bán sẵn trên thị trường và cũng có thể tự làm. Chưa so sánh chi phí. Người chịu thiệt: khách cũ không quay lại vì không ai nhắc. Tần suất: hằng tháng. Chi phí hiện nay: chưa đo. Nguyên nhân gốc: chuỗi không có kênh nhắn tin cho khách đã mua. Vì sao làm bây giờ: đội marketing được giao chỉ tiêu giữ chân khách năm 2027
+
+**Người liên quan**: khách cũ; đội marketing; quản lý cửa hàng; giám đốc kinh doanh duyệt
+
+## Outcome
+
+Tăng tỷ lệ khách cũ quay lại trong 90 ngày từ 18% lên 25% trong 6 tháng (số 18%: dữ liệu bán hàng 2026, đo). Giới hạn: số khách hủy nhận tin dưới 2% mỗi tháng.
+
+## Alternatives
+
+- Không làm gì: không nhắn tin.
+- Sửa quy trình: nhân viên tự nhắn bằng điện thoại cá nhân. Rủi ro dữ liệu khách.
+- Mua công cụ nhắn tin bán sẵn hoặc tự làm: hai hướng còn lại, chưa so chi phí.
+
+## User Scenarios & Testing
+
+### User Story 1 - Nhắn tin nhắc khách cũ (Priority: P1)
+
+Đội marketing gửi tin nhắc cho khách chưa quay lại sau 60 ngày, kèm ưu đãi theo lần mua gần nhất.
 
 ## Clarifications
 

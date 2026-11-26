@@ -3,7 +3,7 @@
 Turn one ready idea into what the board decides on and what the tech team builds from: a board view, a tech view and a copy of the requirement, all rendered from one data file, published private, with the previous version kept. Used by the `package` entry skill.
 
 - **Reads**: the idea's `coverage.md`, `spec.md`, `plan.md`, `decisions.md`, `assumptions.md`, `open-questions.md`, `glossary.md`, `checklists/`, `diagrams/`, `exports/` (the previous set, when there is one); the workspace `constitution.md`; the templates in `references/templates/exports/`; the framework cards in `references/packs/frameworks/`.
-- **Writes**: diagram briefs and rendered diagrams in `diagrams/`; `exports/data.json`, `exports/board-deck.html`, `exports/tech-prd.html`, `exports/spec.md`, `exports/links.md`; `exports/history/<date>/`; `coverage.md` (`status`, `latest_export`, `next_step`, `updated`); the table of contents. In Drive mode, no HTML file in Drive (section 13). Outside the workspace: private Artifacts, and the Google Slides and Docs files the user chose, in the user's own Drive.
+- **Writes**: diagram briefs and rendered diagrams in `diagrams/`; `exports/data.json`, `exports/board-deck.html`, `exports/tech-prd.html`, `exports/spec.md`, `exports/links.md`; `exports/history/<date>/`; `coverage.md` (`status`, `latest_export`, `next_step`, `updated`, and the `framework_reasons` lines of the planning cards chosen in section 3 step 1); the table of contents. In Drive mode, no HTML file in Drive (section 13). Outside the workspace: private Artifacts, and the Google Slides and Docs files the user chose, in the user's own Drive.
 - **Asks through**: `references/core/ask-protocol.md`. The format round (section 4) is not counted against the question budget.
 - **Loads, in order**: `references/core/plan.md`, `references/core/checklist.md`, `references/core/analyze.md`, `references/core/export-guidelines.md`; `references/core/router.md` when findings go back to the interview; `references/core/workspace.md` for the table of contents.
 
@@ -37,11 +37,12 @@ In Drive mode (`references/core/workspace.md` §1a) every read and write in the 
 
 ## 3. Plan, checklist and analysis
 
-Run the three modules in this order, each to its end, and keep what each hands back:
+Run these steps in this order, each to its end, and keep what each hands back:
 
-1. **Plan** (`references/core/plan.md`): updates `plan.md`, may ask its one round, and reports the plan's gaps, ground-rule conflicts and `estimate_status`.
-2. **Checklist** (`references/core/checklist.md`): writes the two readiness checklists and reports failed items with the categories to reopen.
-3. **Analyze** (`references/core/analyze.md`): returns a verdict, findings and the gaps the outputs will show.
+1. **Choose the planning cards**, before the plan module and in drafts too. Open `references/packs/framework-index.md`; for each category that is `missing` or `partial` in `coverage.md`, list every row with lens `plan` under "By category". Open each listed card and check it against the conditions in `references/core/plan.md` section 6. For each card chosen, write to `coverage.md` now one English line keyed by the card id under the filled category's `framework_reasons`, in the form section 6 gives; the plan adds the id to `frameworks` once the card has done its work. This step is done when every listed candidate either has its line in `coverage.md` or is dropped with a one-line reason you keep for yourself; with no open category, or no plan row for one, the list is empty and the step is done.
+2. **Plan** (`references/core/plan.md`): applies the cards step 1 chose, updates `plan.md`, may ask its one round, and reports the plan's gaps, ground-rule conflicts and `estimate_status`.
+3. **Checklist** (`references/core/checklist.md`): writes the two readiness checklists and reports failed items with the categories to reopen.
+4. **Analyze** (`references/core/analyze.md`): returns a verdict, findings and the gaps the outputs will show.
 
 Then decide:
 
@@ -185,7 +186,7 @@ Check the set against these rules, fix what fails, and check again. Never report
 7. `links.md` lists exactly the addresses in `links`, and no address anywhere is a public or sharing link.
 8. `exports/spec.md` is identical to the idea's `spec.md`, and its Spec Kit headings are in place.
 9. The HTML read-back of section 7 passes for both files.
-10. Every framework applied is named on the slide or section its category feeds; the address-form decision appears nowhere.
+10. Every framework applied is named on the slide or section its category feeds, and every planning card named in the outputs has its `frameworks` and `framework_reasons` entries in `coverage.md`; the address-form decision appears nowhere.
 11. The rest of the export guidelines' list before handing over.
 
 A failure you can fix from the files (a missing id, a stray value in text, a missing label) is fixed here. A failure that needs a fact the files do not hold becomes a gap in the outputs and in `gaps[]`, and the set is then a draft: set `draft` to `true` and tell the user why.
@@ -194,7 +195,7 @@ A failure you can fix from the files (a missing id, a stray value in text, a mis
 
 1. In `coverage.md`: set `latest_export` to `idea.version`; when this is not a draft and `status` is `ready`, set `status` to `packaged` (a draft and any other status stay as they are); write `next_step` in plain words (for example "Gửi bản trình bày cho ban lãnh đạo và báo lại kết quả", or for a draft "Trả lời các điểm còn thiếu rồi đóng gói lại"); set `updated` to today.
 2. Rebuild the table of contents by `references/core/workspace.md`.
-3. Tell the user, in a few lines in the idea's language:
+3. Tell the user, in a few lines in the idea's language, describing any method used by what it did (`references/core/writing-rules.md` §2, "Methods by what they did"):
    - the links, board view first, by their plain names;
    - whether this is a draft, and how many points show "chưa làm rõ";
    - that estimates are marked as not yet reviewed by the tech team, when they are;
@@ -204,6 +205,8 @@ A failure you can fix from the files (a missing id, a stray value in text, a mis
    - **Without the Artifact tool**, in place of the links: that the two views are web pages saved in the idea's folder, inside the folder they work in, named by their plain titles ("bản trình bày cho ban lãnh đạo", "tài liệu cho đội kỹ thuật"), and that each opens in a web browser by double-clicking the file or dragging it into the browser window. Give no `file://` link and promise no preview pane or other host feature. When a view could not be written (section 7), say which one and that it was not saved, instead of saying where it is.
 
    Example: "Đã đóng gói xong ý tưởng nhắc khách quay lại. Bản trình bày cho ban lãnh đạo: <link>. Tài liệu cho đội kỹ thuật: <link>. Các con số chi phí đang ghi “chưa qua kỹ thuật thẩm định”. Hai liên kết này chỉ anh/chị xem được; anh/chị tự chia sẻ khi muốn gửi."
+
+   Before sending, check the message against the card names and ids in `references/packs/framework-index.md` "Cards": each one you find, with its abbreviation, becomes what the method did. The message is ready when it holds none of them.
 
 Before sending the closing message, read it once against `references/core/writing-rules.md` and fix it in place: every command in this host's form (§2, "Command names in this host's form"); no file name, path or `file://` link, the views named as "bản trình bày" and "tài liệu cho đội kỹ thuật" with where they are kept in plain words; every term in the user's language, explained if new. On every host, the run is done only when this last look and section 11 both pass.
 

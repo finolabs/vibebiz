@@ -6,6 +6,18 @@ fills: [A, B]
 core: true
 diagram_type: none
 origin: Clayton Christensen, Anthony Ulwick, Bob Moesta and others
+needs: []
+feeds:
+  - to: journey-map-service-blueprint
+    passes: the steps of the job
+  - to: driver-tree
+    passes: the outcome the customer wants
+  - to: value-proposition-canvas
+    passes: the jobs, pains and gains
+  - to: stp
+    passes: who has the job
+instead_of: []
+revisit_when: [A, B]
 ---
 
 # Jobs to be done

@@ -3,7 +3,8 @@
 A card is valid when it has the frontmatter keys id, name, lens, fills, core,
 diagram_type and origin (data-model "Framework card") and the seven body
 sections below. The shipped set must hold exactly fifteen cards with
-``core: true`` (the first-release library). Python 3.10+ standard library only.
+``core: true`` (the first-release library). Every card also carries the four
+routing-map link keys (needs, feeds, instead_of, revisit_when), possibly empty. Python 3.10+ standard library only.
 
 Run: python3 scripts/checks/test_cards.py -v
 """
@@ -27,6 +28,8 @@ CARDS_DIR = REPO / "packs" / "frameworks"
 FIXTURES = HERE / "fixtures" / "cards"
 
 REQUIRED_KEYS = ("id", "name", "lens", "fills", "core", "diagram_type", "origin")
+# The routing-map links (spec 004 FR-017); present on every card, possibly empty lists.
+LINK_KEYS = ("needs", "feeds", "instead_of", "revisit_when")
 REQUIRED_SECTIONS = (
     "When to use",
     "When not to use",
@@ -37,7 +40,9 @@ REQUIRED_SECTIONS = (
     "Fashion example",
 )
 CATEGORY_CODES = set("ABCDEFGHIJKLMNO")
+LENSES = ("problem-framing", "outcome", "challenge", "solution-sketch", "plan", "router")
 CORE_COUNT = 15
+TOTAL_COUNT = 41  # the first-release library plus the 25 catalog cards (spec 004 US4)
 
 _HEADING_RE = re.compile(r"^#{2,6}\s+(.+?)\s*#*\s*$", re.MULTILINE)
 
@@ -63,6 +68,11 @@ def check_card(path) -> list[str]:
             continue  # the router's own card (Cynefin) sets depth and fills no category
         elif data[key] is None or data[key] == "" or data[key] == []:
             problems.append(f"{name}: frontmatter key '{key}' is empty")
+    for key in LINK_KEYS:
+        if key not in data:
+            problems.append(f"{name}: missing link key '{key}'")
+        elif data[key] is not None and not isinstance(data[key], list):
+            problems.append(f"{name}: link key '{key}' must be a list")
 
     card_id = data.get("id")
     if isinstance(card_id, str) and card_id and card_id != path.stem:
@@ -72,6 +82,10 @@ def check_card(path) -> list[str]:
         fills = data["fills"]
         if not isinstance(fills, list) or any(not isinstance(c, str) or c not in CATEGORY_CODES for c in fills):
             problems.append(f"{name}: 'fills' must be a list of category codes A to O")
+
+    lens = data.get("lens")
+    if lens not in (None, "") and lens not in LENSES:
+        problems.append(f"{name}: 'lens' must be one of {', '.join(LENSES)}")
 
     if "core" in data and data["core"] is not None and not isinstance(data["core"], bool):
         problems.append(f"{name}: 'core' must be true or false")
@@ -118,6 +132,8 @@ class CardFixtures(unittest.TestCase):
         "invalid-id-mismatch.md": "does not match the file name",
         "invalid-no-frontmatter.md": "does not start with a '---'",
         "invalid-empty-value.md": "frontmatter key 'name' is empty",
+        "invalid-lens.md": "'lens' must be one of",
+        "invalid-missing-link-key.md": "missing link key 'revisit_when'",
     }
 
     def test_every_invalid_fixture_is_covered(self):
@@ -183,6 +199,10 @@ class RepositoryCards(unittest.TestCase):
         if not cards:
             self.skipTest("packs/frameworks/ has no cards yet; this check applies once they exist")
         self.assertEqual(check_cards(CARDS_DIR), [])
+
+    def test_shipped_library_holds_every_catalog_card(self):
+        cards = sorted(CARDS_DIR.glob("*.md")) if CARDS_DIR.is_dir() else []
+        self.assertEqual(len(cards), TOTAL_COUNT, f"{len(cards)} cards in packs/frameworks/, expected {TOTAL_COUNT}")
 
 
 if __name__ == "__main__":

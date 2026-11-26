@@ -163,9 +163,11 @@ Then rebuild the coverage table as the ask protocol says, leave `next_step` and 
 
 ## 8. Framework cards
 
-The router may hand this lens one framework card for an open category; it never picks one itself. Use a card only when it was handed over, its `lens` is `solution-sketch`, and its `fills` includes a category of yours that is still `missing` or `partial`. In the first release that card is `journey-map-service-blueprint`, loaded from `references/packs/frameworks/journey-map-service-blueprint.md`; it adds what staff and back office must do behind each customer step.
+The router may hand this lens one framework card for an open category; it never picks one itself. Use a card only when it was handed over, its `lens` is `solution-sketch`, and its `fills` includes a category of yours that is still `missing` or `partial`. The solution-sketch cards are the rows with lens `solution-sketch` in `references/packs/framework-index.md`; load the handed one from `references/packs/frameworks/<id>.md`.
+- When the hand-off names a feeding card and its result, read that result from the idea's files first and drop every question of this card that it already answers (spec 004 FR-015); a revisit hand-off asks only about the change it names.
 
 - Ask the card's questions in plain words, through the ask protocol, without making the user learn the framework; name it only if the user asked for it by name.
 - Write its result where the card's "Writes to" says, within this lens's sections.
-- At most two cards per lens per idea: the router counts them and records the applied card ids in the category's `frameworks` field; report to it which handed-over card had at least one question answered. Never apply a third.
+- The router decides how many cards this lens uses: one new card per open category per round, never one already applied there, with no limit per lens. It records the applied card ids in the category's `frameworks` field; report to it which handed-over card had at least one question answered.
+- A handed card replaces the step of section 4 that covers the same part, for that round: `sipoc` replaces 4.1 for an internal process (its before and after tables are the journeys), `journey-map-service-blueprint` is 4.1 in full, and a card that cuts scope (such as `moscow`, `kano` or `value-proposition-canvas`) replaces 4.3 and 4.4. Do not run the replaced step beside the card, and do not read another card's file to fill it: one method per category per round.
 - Without a card, sections 4 and 5 still run in their plain form; they are this lens's own steps.

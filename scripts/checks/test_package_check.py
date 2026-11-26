@@ -45,6 +45,7 @@ EXPECTED = {
                                "links-mismatch: https://example.com/other"],
     "invalid_unknown_spec_id": ["untraceable: slide 2 cites FR-099"],
     "invalid_links_missing": ["links-mismatch: exports/links.md is missing"],
+    "invalid_applied_card_unnamed": ["unnamed-applied-card: pre-mortem (category K)"],
 }
 
 
@@ -56,6 +57,10 @@ def _fixture(name):
 class ValidFixtures(unittest.TestCase):
     def test_valid_folder_has_no_problems(self):
         self.assertEqual(package_check.check_path(FIX / "valid"), [])
+
+    def test_applied_cards_named_where_their_category_feeds(self):
+        # Spec 004 SC-004: four applied cards in coverage.md, each named on its slide.
+        self.assertEqual(package_check.check_path(FIX / "valid_applied_cards_named"), [])
 
     def test_gap_listed_omission_is_valid(self):
         self.assertEqual(package_check.check_path(FIX / "valid_gap_listed.json"), [])

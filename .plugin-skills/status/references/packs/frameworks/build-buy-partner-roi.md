@@ -6,6 +6,16 @@ fills: [D, M]
 core: true
 diagram_type: bar
 origin: Corporate-strategy practice; see Laurence Capron and Will Mitchell, Build, Borrow, or Buy
+needs: []
+feeds:
+  - to: adkar
+    passes: the chosen route and whose work it changes
+  - to: tco
+    passes: the chosen route
+  - to: npv
+    passes: cost and return per route
+instead_of: []
+revisit_when: [D, M, board-changes, tech-review]
 ---
 
 # Build, buy or partner with return and payback

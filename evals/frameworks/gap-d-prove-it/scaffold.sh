@@ -168,7 +168,13 @@ cat > 'specs/001-gap-d-prove-it/spec.md' <<'VIBEBIZ_SEED_3'
 
 ## Problem & Why
 
-Muốn đưa gợi ý size vào toàn bộ chuỗi nếu chạy thử tốt.
+Muốn đưa gợi ý size vào toàn bộ chuỗi nếu chạy thử tốt. Người chịu thiệt: khách thử nhiều size và nhân viên phòng thử. Tần suất: mỗi ngày, nhất là cuối tuần. Chi phí hiện nay: tỷ lệ đổi hàng vì sai size 9% (báo cáo đổi trả quý 3/2026, đo). Nguyên nhân gốc: khách không biết size của mình theo từng dáng áo. Vì sao làm bây giờ: mùa cao điểm cuối năm sắp tới
+
+**Người liên quan**: khách mua tại cửa hàng; nhân viên phòng thử; quản lý cửa hàng; giám đốc kinh doanh duyệt
+
+## Outcome
+
+Giảm tỷ lệ đổi hàng vì sai size từ 9% xuống 6% trong 3 tháng (số 9%: báo cáo đổi trả quý 3/2026, đo). Giới hạn: thời gian ở phòng thử không tăng.
 
 ## Clarifications
 

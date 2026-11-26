@@ -11,7 +11,7 @@ The single source for every output format (research R4). Top-level keys:
 - `gaps[]`: fields shown as "not yet clarified".
 - `links`: `board_artifact`, `tech_artifact`, `slides` and `docs` URLs.
 
-**Package check** (code, development and eval): every Appendix D slide and tech section present or listed in `gaps`; every figure referenced by id exists and carries source, period and label; slide titles non-empty and one message per slide; every chart block names a source and a period; `estimate_status` label present on estimate figures when `not-tech-reviewed`; `links.md` matches `links`.
+**Package check** (code, development and eval): every Appendix D slide and tech section present or listed in `gaps`; every figure referenced by id exists and carries source, period and label; slide titles non-empty and one message per slide; every chart block names a source and a period; `estimate_status` label present on estimate figures when `not-tech-reviewed`; `links.md` matches `links`; every card id applied in `coverage.md` is named in `frameworks[]` of a slide its category feeds, the appendix, or, for a category that feeds no slide, a tech section (spec 004 SC-004).
 
 ### data.json conventions
 

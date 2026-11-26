@@ -6,6 +6,14 @@ fills: [C]
 core: true
 diagram_type: none
 origin: Robert S. Kaplan and David P. Norton
+needs: []
+feeds:
+  - to: driver-tree
+    passes: the perspective the idea moves
+  - to: okr
+    passes: the perspective the idea moves
+instead_of: []
+revisit_when: [C]
 ---
 
 # Balanced Scorecard

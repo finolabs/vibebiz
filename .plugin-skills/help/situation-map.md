@@ -11,6 +11,7 @@ Help uses this map to route a situation the user describes to one entry skill, t
 | Muốn có người phản biện một ý tưởng mới, chỉ ra điểm yếu trước khi trình ("ý tưởng này có ổn không", "tìm giúp chỗ dễ thất bại") | /vibebiz:idea |
 | Muốn phản biện kỹ hơn hoặc đặt mục tiêu đo được cho một ý tưởng đang làm ("đo kết quả thế nào", "nếu không làm thì sao") | /vibebiz:continue |
 | Muốn dùng một phương pháp cụ thể cho ý tưởng đang làm ("phân tích SWOT giúp tôi", "dùng Balanced Scorecard", "hỏi 5 lần vì sao") | /vibebiz:continue |
+| Muốn biết vibebiz có những phương pháp nào và chúng nối với nhau thế nào ("có những phương pháp gì", "phương pháp nào dùng trước") | /vibebiz:help |
 | Tình hình của ý tưởng đang làm đã thay đổi và muốn vibebiz hỏi lại cho phù hợp ("sự cố đã xử lý xong", "hóa ra chi nhánh khác đã làm việc này rồi") | /vibebiz:continue |
 | Ý tưởng đã rõ và cần tài liệu trình ban lãnh đạo hoặc gửi đội kỹ thuật ("làm slide", "viết PRD", "đóng gói ý tưởng") | /vibebiz:package |
 | Muốn lấy bản nháp của ý tưởng dù còn chỗ chưa rõ ("xuất bản nháp") | /vibebiz:package |

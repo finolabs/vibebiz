@@ -16,7 +16,9 @@ created: "{{YYYY-MM-DD}}"
 updated: "{{YYYY-MM-DD}}"
 # Each category: status clear | partial | missing | deferred; reason is
 # required when status is deferred, null otherwise; prerequisites are fixed
-# (spec Appendix A); frameworks lists applied card ids, at most two per lens.
+# (spec Appendix A); frameworks lists applied card ids (a card is added only
+# while the category is open and the card is not already listed);
+# framework_reasons, optional, maps a card id to one line on why it was chosen.
 categories:
   A:  # Problem and why
     status: missing

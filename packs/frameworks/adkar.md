@@ -6,6 +6,10 @@ fills: [L]
 core: true
 diagram_type: none
 origin: Jeff Hiatt (Prosci)
+needs: []
+feeds: []
+instead_of: [kotter]
+revisit_when: [L]
 ---
 
 # ADKAR

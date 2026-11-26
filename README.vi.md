@@ -40,6 +40,20 @@ Bạn bắt đầu với một câu như "mình muốn dùng AI để kéo khác
 
 vibebiz không phải công cụ lập trình. Trong Cowork, bạn không bao giờ phải mở cửa sổ dòng lệnh (terminal); trong Claude Code, Codex và Antigravity, bạn chỉ gõ một hai dòng lệnh lúc cài, sau đó mọi việc diễn ra bằng trò chuyện thông thường.
 
+## vibebiz làm việc thế nào
+
+vibebiz làm theo từng vòng: mỗi vòng chọn một chỗ còn trống của ý tưởng, hỏi bằng lời dễ hiểu rồi ghi câu trả lời vào tệp của bạn, cho tới khi ý tưởng đủ rõ để đóng gói.
+
+![Quy trình vibebiz, từ ý tưởng mơ hồ đến bộ tài liệu cho ban lãnh đạo và đội kỹ thuật](assets/diagrams/workflow.vi.png)
+
+Trong mỗi vòng, vibebiz tự chọn phương pháp phân tích (framework), bạn không phải chọn. Điều bạn mang tới quyết định điểm bắt đầu, và kết quả của mỗi phương pháp quyết định phương pháp tiếp theo. Bản này có 41 phương pháp, từ 5 Whys và cây chỉ số đến NPV và RACI; một phương pháp chỉ được dùng để lấp chỗ trống chưa có phương pháp nào lấp. Trang [docs/framework-map.md](docs/framework-map.md) cho biết mỗi phương pháp cần có gì trước và kết quả của nó được dùng tiếp ở đâu.
+
+![Bắt đầu từ đâu: bốn tình huống ban đầu, mỗi tình huống đi qua hai phương pháp rồi tới cây chỉ số](assets/diagrams/route-start.vi.png)
+
+![Đi tiếp thế nào: từ cây chỉ số, dữ kiện trong hồ sơ quyết định chạy thử hay lường trước rủi ro, mua hay tự làm, và chuẩn bị con người ra sao](assets/diagrams/route-next.vi.png)
+
+![Mỗi vòng vibebiz chọn phương pháp thế nào: chỗ còn trống, lọc, ưu tiên phương pháp dùng được kết quả của bước trước, chỉ hỏi phần còn thiếu](assets/diagrams/card-selection.vi.png)
+
 ## Dành cho ai
 
 Nhà sáng lập và lãnh đạo doanh nghiệp vừa và nhỏ (không cần rành kỹ thuật) đang có một ý tưởng về hệ thống, cách dùng AI hoặc tự động hóa và cần đưa ý tưởng đó ra trước hội đồng quản trị và đội kỹ thuật. Ngành bán lẻ được hỗ trợ trước, cả bán trực tuyến lẫn tại cửa hàng (thời trang trước, sau đó là điện máy, đồ gia dụng và các ngành tương tự): các ví dụ và gói kiến thức có sẵn hiện nay đều dành cho ngành bán lẻ. Câu hỏi và kết quả dùng đúng ngôn ngữ bạn trao đổi, mặc định là tiếng Việt.

@@ -4,7 +4,7 @@ Turn a ready idea into the business plan the board decides on: what is asked for
 
 - **Used by**: package, at readiness, before the checklist and analyze modules.
 - **Reads**: the idea's `spec.md` (`## Problem & Why`, `## Outcome`, `## Alternatives`, `## AI-fit`, `## Cost & Risk`, the user stories, `## Assumptions`, `## Clarifications`), `coverage.md` (category statuses and `frameworks`, `cynefin`, `language`, `estimate_status`), `decisions.md`, `assumptions.md`, `open-questions.md`; the workspace `constitution.md` (`status`, `priorities`, `approval_ceiling`, `mandatory_approvals`, `strategy_map`, `okrs`); the template `references/templates/idea/plan.md`; the planning cards in `references/packs/frameworks/` (`lens: plan`), only under section 6.
-- **Writes**: the idea's `plan.md`; `spec.md` (`## Cost & Risk` for new cost, return, rollout and organizational-change facts, and Clarifications through the ask protocol); `decisions.md` (`answer` entries through the ask protocol, `ground-rule-conflict` and `supersede` entries from section 5); `open-questions.md`; `coverage.md` (status, `frameworks` and `updated` of M, and of L when section 6 fills it; the body table).
+- **Writes**: the idea's `plan.md`; `spec.md` (`## Cost & Risk` for new cost, return, rollout and organizational-change facts, and Clarifications through the ask protocol); `decisions.md` (`answer` entries through the ask protocol, `ground-rule-conflict` and `supersede` entries from section 5); `open-questions.md`; `coverage.md` (status, `frameworks` and `updated` of every category section 6 fills; the body table).
 - **Fills**: M (cost, resources and return) to completion; L when the ADKAR card applies; the ground-rule conflicts.
 
 Follow `references/core/ask-protocol.md` for every question, `references/core/writing-rules.md` for every word the user reads (including how to address the user), and `references/core/anti-sycophancy.md` in everything the plan says about the idea.
@@ -12,7 +12,7 @@ Follow `references/core/ask-protocol.md` for every question, `references/core/wr
 ## 1. Rules the plan never breaks
 
 1. **No new facts.** Every line of `plan.md` traces to `spec.md`, `decisions.md`, `assumptions.md` or `constitution.md`. When the user gives a new figure or decision during this module, write it to its home in `spec.md` (or `decisions.md`) first, then copy it into the plan. The board and tech views render from those files; a fact that lives only in the plan would make the views disagree.
-2. **Same number everywhere.** A figure in the plan is the figure in `spec.md`, with the same value, unit, source, period and label. Never round, convert currency or re-total it into a different claim. The one derived number allowed is payback (section 4.2), and it names the figures it comes from.
+2. **Same number everywhere.** A figure in the plan is the figure in `spec.md`, with the same value, unit, source, period and label. Never round, convert currency or re-total it into a different claim. The derived numbers allowed are payback (section 4.2) and the figures a planning card applied in this pass computes by its own steps (net present value, total cost over the period); each names the figures it comes from and carries the estimate label.
 3. **Every number carries its source, period and label**: measured (đo được) when it comes from a report or count, assumed (giả định) when it is someone's estimate.
 4. **Estimates stay unreviewed until reviewed.** While `estimate_status` is `not-tech-reviewed`, every cost, effort, resource or return estimate in the plan carries the label "not tech-reviewed" in the idea's language (in Vietnamese: "chưa qua kỹ thuật thẩm định"). See section 7.
 5. **Gaps are shown, never filled by guessing.** Write the phrase for "not yet clarified" in the idea's language (`chưa làm rõ` in Vietnamese) for anything without an answer. Never invent a figure, a deadline, an owner or a phase to make the plan look complete.
@@ -45,6 +45,8 @@ One short paragraph a board member can approve or reject:
 Example in Vietnamese: "Đề nghị duyệt 120 triệu đồng (phương án cơ sở, giả định, chưa qua kỹ thuật thẩm định) để mua công cụ nhắc khách và thử ở 3 cửa hàng trong 8 tuần, quyết trước 15/01/2027 để kịp chạy trước mùa hè. Không tự làm hệ thống vì tốn gấp ba và chậm hơn hai quý (D-004)."
 
 ### 4.2 Size and scenarios
+
+This section is the three-scenarios method (low, base, high), built into the plan rather than a card: say so once in the section's lead line in the user's language (for example "ba kịch bản: thấp, cơ sở, cao"), and never add it to `frameworks`.
 
 1. The size first: small, medium or large, as `## Cost & Risk` records it, in the user's terms of money and time.
 2. The table, one row per scenario (low, base, high): **Cost** (one-time and per year when both exist), **Resources** (staff time, the tech team, outside help, number of stores or systems touched), **Return** (the driver from `## Outcome`, such as extra revenue, saved hours or fewer returns), **Time frame**. Every cell holds a figure with source, period, label and the estimate label, or `chưa làm rõ`.
@@ -110,21 +112,24 @@ For each conflict:
 
 ## 6. Planning cards
 
-The planning cards (`lens: plan`) are applied here at packaging, never by the router. Apply a card only when all of these hold:
+The planning cards (`lens: plan`) are applied here at packaging, never by the router. The package module chooses them before this module runs (`package.md` section 3, step 1) by the conditions below and writes each to `coverage.md`; apply exactly the cards it chose. A card is chosen only when all of these hold:
 
 - one of the categories in its `fills` is `missing` or `partial`;
 - its "When not to use" does not match the idea's files;
-- fewer than two planning cards are already applied to this idea (count the distinct ids of `lens: plan` cards in the `frameworks` of every category); never apply a third;
-- or the user asked for it by name (noted in `## Clarifications`) and the first three conditions still hold. If one fails, say why in one plain sentence.
+- it is not already listed in that category's `frameworks`, and no other planning card is chosen for the same category in this pass; there is no limit on how many planning cards an idea uses;
+- it follows the map as `references/core/router.md` rule 8 says: a card it `needs` is already applied, or every category that card fills is `clear`; and no card in its `instead_of` is listed in any category's `frameworks`;
+- or the user asked for it by name (noted in `## Clarifications`) and the conditions above still hold. If one fails, say why in one plain sentence.
 
-The two cards this module normally uses:
+A chosen card's `framework_reasons` line is one English sentence keyed by the card id: which open gap it fills and, when several fit, why this one by "When to use". The cards below are two of the candidates, not the whole list: the index holds every shipped planning card.
+
+Two cards with a fixed place in sections 4.2 and 4.4:
 
 - **`build-buy-partner-roi`** (fills D, M): when M is `partial` because the scenarios, resources or payback are missing, or because only the build cost was counted. Use its questions in plain words to collect the figures for section 4.2: one-time and yearly cost per route, the main return driver and today's value, the team needed. Count running cost, training and store staff time, not only the purchase or build. Every cost and return scenario in low, base and high, labelled as an estimate; today's value of the return driver, when nobody knows it, follows the ask protocol's rule 5 instead.
 - **`adkar`** (fills L): when L is `missing` or `partial` and the work of store staff, supervisors or back-office teams changes. Ask its questions for the group whose work changes most, record the step where that group is stuck as the place the plan starts, and write training, support, KPI changes and owners. Guessing how staff feel is not allowed: an answer nobody present can give becomes an assumption to test in the pilot or an open question.
 
-The other planning cards (`moscow`, `marketing-mix-4p-7p`) follow the same conditions; at readiness their categories are usually settled, so they rarely apply here.
+Before asking a card's questions, read the results its feeding cards passed on (an applied card whose `feeds` lists it, per `references/packs/framework-index.md` "Cards"; the result is where that card's "Writes to" put it) and drop the questions they already answer (spec 004 FR-015). Start its `framework_reasons` line with `fed by <card> (<passes>);` as the router's rule 3 does.
 
-Ask a card's questions without naming the framework. When at least one of its questions was answered, or the card's method shaped a section from the files, add its id to the `frameworks` list of the category it filled, so the outputs can name it. Without the card file, do the section in its plain form; never apply a framework from memory.
+Ask a card's questions without naming the framework. When at least one of a chosen card's questions was answered, or its method shaped a section from the files, add its id to the `frameworks` list of the category it filled, so the outputs can name it (router rule 5, with the plan's own exception for a shaped section, rule 6). A card whose questions were all skipped and that shaped nothing stays out of `frameworks`, so a later packaging run can choose it again. Without the card file, do the section in its plain form; never apply a framework from memory.
 
 ## 7. The tech-review label
 
@@ -153,4 +158,4 @@ Ask a card's questions without naming the framework. When at least one of its qu
 2. **L**, when section 6 filled it: `clear` when training, KPI changes, affected roles and an owner for keeping the change up are written for each group whose work changes; otherwise it keeps its status. A category whose only question was skipped keeps its status and `updated` date.
 3. Set `updated` on each category you changed and on the idea, rebuild the `coverage.md` body table and the "Clear: n of 15" line, and rebuild the table of contents by `references/core/workspace.md`.
 4. Report to the package module: the plan sections or elements still `chưa làm rõ`, each with the category it belongs to; whether a missing pilot design is blocking (complex ideas); the current ground-rule conflicts by D-###; whether the ground rules are deferred; `estimate_status` and any mismatch from section 7; contradictions found in section 2.
-5. Tell the user in one or two plain sentences what the plan now holds and what is still open, for example: "Kế hoạch đã có khoản đề nghị duyệt, ba phương án chi phí và lộ trình thử ở 3 cửa hàng; còn thiếu người chịu trách nhiệm đào tạo nhân viên. Khoản chi phương án cao vượt mức anh/chị tự duyệt, nên cần cấp trên duyệt." No file names, codes or paths, and no praise.
+5. Tell the user in one or two plain sentences what the plan now holds and what is still open, naming no framework, for example: "Kế hoạch đã có khoản đề nghị duyệt, ba phương án chi phí và lộ trình thử ở 3 cửa hàng; còn thiếu người chịu trách nhiệm đào tạo nhân viên. Khoản chi phương án cao vượt mức anh/chị tự duyệt, nên cần cấp trên duyệt." No file names, codes or paths, and no praise.

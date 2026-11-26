@@ -6,6 +6,14 @@ fills: [A]
 core: true
 diagram_type: none
 origin: Sakichi Toyoda, developed in the Toyota Production System
+needs: []
+feeds:
+  - to: driver-tree
+    passes: the cause the target must move
+  - to: issue-tree
+    passes: the root cause
+instead_of: [fishbone]
+revisit_when: [A]
 ---
 
 # 5 Whys

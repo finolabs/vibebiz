@@ -21,7 +21,7 @@ Write everything the reader sees by `references/core/writing-rules.md`, in the i
 
 ## 2. Board view: answer first
 
-The board decides; it does not read a story. Lead with the answer and support it after: the deck opens with the decision requested, and each slide states its point before its evidence (situation, complication, question and answer in that order inside a slide only when the slide needs the background).
+The board decides; it does not read a story. Lead with the answer and support it after (the pyramid principle / SCQA): the deck opens with the decision requested, and each slide states its point before its evidence (situation, complication, question and answer in that order inside a slide only when the slide needs the background). This is a writing rule, not a framework card: never list it in `frameworks[]`.
 
 - **One message per slide.** `message` is one sentence, with no line break and no second point. If a slide needs two messages, one of them belongs on another slide or in the appendix.
 - **The title states the takeaway.** `title` is the conclusion the board should remember, as a full sentence with its key figure where one exists ("Mỗi tháng mất {{N-02}} đơn vì khách chờ trả lời quá lâu"), never a topic label ("Vấn đề", "Chi phí").
@@ -45,7 +45,7 @@ The deck has these nine slides plus an appendix, in this order, with `n` 1 to 9 
 | appendix | Assumptions and open questions | `assumptions.md`, `open-questions.md` | all |
 
 - When the challenge concluded that the right answer is not to build (fix the process, buy or do nothing), the deck keeps the same map and presents that recommendation: slide 1 asks for that decision and slide 5 shows the process or purchase instead of a new system.
-- **Frameworks**: name every framework applied to the idea (the card ids in each category's `frameworks` in `coverage.md`, and the planning cards the plan applied) in `frameworks[]` of the slide its category feeds, with its result on that slide, and credit its origin as the card states it. A framework whose categories feed no slide (data, integrations, non-functional needs, edge cases, terminology) is named in the tech section it feeds instead.
+- **Frameworks**: name every framework applied to the idea (the card ids in each category's `frameworks` in `coverage.md`, and the planning cards the plan applied) in `frameworks[]` of the slide its category feeds, with its result on that slide, and credit its origin as the card states it. A framework whose categories feed no slide (data, integrations, non-functional needs, edge cases, terminology) is named in the tech section it feeds instead. When a framework's result does not fit the fixed layout of the slide its category feeds, name the framework on that slide with a one-line result and put the full result in the appendix; never bend the slide's hero to hold it.
 - **The appendix** lists every assumption with whether it was tested and every open question with its owner and whether it blocks, so the board sees what is still uncertain.
 
 ### Slide blocks

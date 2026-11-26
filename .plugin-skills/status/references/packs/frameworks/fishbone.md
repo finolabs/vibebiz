@@ -6,6 +6,14 @@ fills: [A]
 core: true
 diagram_type: none
 origin: Kaoru Ishikawa
+needs: []
+feeds:
+  - to: pre-mortem
+    passes: the operational causes
+  - to: issue-tree
+    passes: the grouped causes
+instead_of: [five-whys]
+revisit_when: [A]
 ---
 
 # Fishbone (Ishikawa diagram)

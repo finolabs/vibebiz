@@ -38,6 +38,9 @@ Phương pháp phân tích ý tưởng của vibebiz gồm bốn lăng kính:
 - **Phản biện (Challenge)**: tìm kiếm điểm yếu, rủi ro và so sánh với phương án không làm gì hoặc sửa quy trình.
 - **Phác thảo giải pháp (Solution-sketch)**: định hình hành trình trải nghiệm và phạm vi bản đầu tiên.
 
+### Phương pháp phân tích (Framework)
+Một cách làm quản trị có sẵn, như cây chỉ số hay giả định thất bại, mà vibebiz dùng để lấp một điểm còn thiếu của ý tưởng. vibebiz có 41 phương pháp và tự chọn theo điểm còn trống, bạn không phải chọn. Danh sách nằm ở trang "vibebiz hỏi ý tưởng của bạn như thế nào"; cách các phương pháp nối với nhau nằm ở trang "Các phương pháp nối với nhau thế nào".
+
 ### Đánh giá mức độ phù hợp với AI (AI fit)
 Quy trình rà soát xem một bài toán có thực sự cần tới trí tuệ nhân tạo (AI) hay chỉ cần các quy tắc nghiệp vụ thông thường (Rules) hoặc tự động hóa quy trình (Automation).
 

@@ -168,7 +168,9 @@ cat > 'specs/001-gap-c-board-strategy/spec.md' <<'VIBEBIZ_SEED_3'
 
 ## Problem & Why
 
-Hội đồng quản trị xem xét theo bốn góc nhìn chiến lược: tài chính, khách hàng, quy trình, học hỏi.
+Hội đồng quản trị xem xét theo bốn góc nhìn chiến lược: tài chính, khách hàng, quy trình, học hỏi và phát triển. Người chịu thiệt: khách quen mua ít lần hơn năm trước. Tần suất: hằng tháng. Chi phí hiện nay: chưa đo. Nguyên nhân gốc: chuỗi chưa có chương trình giữ chân khách quen. Vì sao làm bây giờ: hội đồng muốn mỗi đề xuất gắn với chiến lược năm 2027
+
+**Người liên quan**: khách quen; nhân viên cửa hàng; phòng marketing; hội đồng quản trị duyệt
 
 ## Clarifications
 

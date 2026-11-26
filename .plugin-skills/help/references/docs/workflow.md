@@ -87,33 +87,27 @@ Cây quyết định mức độ phù hợp với AI: phân biệt rõ ràng khi
 
 ## Các phương pháp quản trị có sẵn
 
-vibebiz tích hợp sẵn 15 phương pháp quản trị kinh điển, được chọn lọc kỹ cho ngành bán lẻ thời trang. Mỗi phương pháp chỉ được dùng khi nó giúp làm rõ một điểm còn thiếu trên cây phụ thuộc, và mỗi góc nhìn dùng tối đa hai phương pháp cho một ý tưởng.
+vibebiz có sẵn 41 phương pháp quản trị, mỗi phương pháp kèm câu hỏi và ví dụ cho ngành bán lẻ thời trang. vibebiz tự chọn phương pháp, bạn không phải chọn. Một phương pháp chỉ được dùng khi nó lấp một điểm còn thiếu trên cây phụ thuộc mà chưa có phương pháp nào lấp, và mỗi vòng chỉ thêm tối đa một phương pháp mới cho mỗi điểm. Các phương pháp lập kế hoạch được chọn và áp dụng lúc đóng gói.
 
-Bạn không cần phải học thuộc các phương pháp này: vibebiz sẽ đặt câu hỏi bằng ngôn ngữ kinh doanh thông thường, sau đó ghi nhận tên phương pháp và kết quả trên các trang tài liệu.
+Bạn không cần học thuộc các phương pháp này: vibebiz đặt câu hỏi bằng ngôn ngữ kinh doanh thông thường. Tên và nguồn gốc của phương pháp chỉ xuất hiện trong bản trình ban lãnh đạo và tài liệu cho đội kỹ thuật, nơi phương pháp được ghi công.
 
-| Góc nhìn | Phương pháp | Nguồn gốc | Dùng để làm gì |
-|---|---|---|---|
-| Vấn đề | **5 Whys** (Hỏi 5 lần vì sao) | Sakichi Toyoda / Hệ thống sản xuất Toyota | Tách triệu chứng bề mặt ("doanh số sụt giảm") khỏi nguyên nhân gốc (đứt size, giao hàng trễ, sai cơ cấu mẫu) |
-| Vấn đề | **Fishbone** (Sơ đồ xương cá) | Kaoru Ishikawa | Phân tích các vấn đề vận hành phức tạp có nhiều nguyên nhân đan xen (tồn kho, tỷ lệ trả hàng, phòng thử đồ quá tải) |
-| Vấn đề | **Jobs to be done** | Clayton Christensen | Tìm hiểu việc thật sự mà khách hàng và nhân viên cửa hàng đang cần hoàn thành |
-| Kết quả | **Driver tree** (Cây chỉ số) | Phân tích quản trị kinh doanh | Bẻ nhỏ doanh thu thành: Lượt khách × Tỷ lệ mua × Số món/đơn × Giá bình quân để biết can thiệp vào mắt xích nào |
-| Kết quả | **Balanced Scorecard** | Robert Kaplan & David Norton | Gắn kết quả của ý tưởng với 4 góc nhìn chiến lược: tài chính, khách hàng, quy trình nội bộ, học hỏi và phát triển |
-| Phản biện | **SWOT** | Albert Humphrey / Stanford | Đặt điểm yếu nội bộ và mối đe dọa thị trường lên trang giấy một cách minh bạch |
-| Phản biện | **Pre-mortem** (Giả định thất bại) | Gary Klein | Tưởng tượng dự án đã thất bại hoàn toàn sau 6 tháng để tìm ra nguyên nhân tiềm ẩn trước khi chi tiền |
-| Phản biện | **Assumption map** (Bản đồ giả định) | David Bland & Alexander Osterwalder | Phân loại các niềm tin ngầm theo mức độ quan trọng và mức độ đã kiểm chứng để tìm ra giả định rủi ro nhất |
-| Phản biện | **Thử nghiệm có nhóm đối chứng** | Phương pháp luận khoa học bán lẻ | Thử nghiệm ở vài cửa hàng đại diện so với cửa hàng đối chứng tương đương, đủ thời gian và tránh yếu tố mùa vụ |
-| Phác thảo giải pháp | **Hành trình khách hàng & Sơ đồ dịch vụ** | Thiết kế dịch vụ / Service Design | Vẽ rõ trải nghiệm của khách hàng cùng các hoạt động hỗ trợ ở hậu cần và cửa hàng |
-| Lập kế hoạch | **4P / 7P** | E. Jerome McCarthy / Booms & Bitner | Rà soát sản phẩm, giá, kênh, khuyến mại, con người, quy trình và cơ sở vật chất |
-| Lập kế hoạch | **Tự làm, mua sẵn hay hợp tác (kèm ROI)** | Phân tích đầu tư tài chính | So sánh bài toán kinh tế giữa tự phát triển, mua giải pháp đóng gói hoặc thuê ngoài |
-| Lập kế hoạch | **MoSCoW** | Dai Clegg | Phân loại phạm vi bản đầu tiên: Phải có (Must), Nên có (Should), Có thì tốt (Could), Để sau (Won't) |
-| Lập kế hoạch | **ADKAR** | Prosci / Jeff Hiatt | Quản trị sự thay đổi: Đảm bảo nhân viên cửa hàng nhận thức, mong muốn, có kỹ năng và thực tế áp dụng quy trình mới |
-| Định tuyến | **Cynefin** | Dave Snowden | Xác định độ phức tạp của bài toán để quyết định hỏi nhanh hay hỏi sâu |
+| Góc nhìn | Phương pháp |
+|---|---|
+| Vấn đề | 5 Whys (hỏi 5 lần vì sao), Fishbone (sơ đồ xương cá), Issue tree (cây vấn đề), Jobs to be done, Porter value chain (chuỗi giá trị) |
+| Kết quả | Driver tree (cây chỉ số), Balanced Scorecard, North Star metric (chỉ số chính), Leading and lagging indicators (chỉ số sớm và chỉ số kết quả), OKR, SMART goals |
+| Phản biện | SWOT, Pre-mortem (giả định thất bại), Assumption map (bản đồ giả định), Thử nghiệm có nhóm đối chứng, Cost of inaction (cái giá của việc không làm), PESTEL, Porter Five Forces (năm áp lực cạnh tranh), Six Thinking Hats (sáu chiếc mũ tư duy), Theory of Constraints (điểm nghẽn) |
+| Phác thảo giải pháp | Hành trình khách hàng và sơ đồ dịch vụ, SIPOC, Lean và DMAIC, Kano model, Value Proposition Canvas |
+| Lập kế hoạch | 4P / 7P, Tự làm, mua sẵn hay hợp tác (kèm ROI), MoSCoW, ADKAR, Kotter's eight steps (tám bước dẫn dắt thay đổi), McKinsey 7S, RACI, RICE and ICE, Value-effort matrix (ma trận giá trị và công sức), STP (phân khúc, chọn khách và định vị), Ansoff matrix, BCG matrix, Stage-gate rollout (mở rộng theo đợt), Total cost of ownership (tổng chi phí sở hữu), NPV and payback (giá trị hiện tại ròng và thời gian hoàn vốn) |
+| Định tuyến | Cynefin, để quyết định hỏi nhanh hay hỏi sâu |
+
+Phương pháp nào cần có trước, kết quả của nó được dùng tiếp ở đâu và khi nào được làm lại: xem [Các phương pháp nối với nhau thế nào](framework-map.md).
 
 ### Yêu cầu một phương pháp cụ thể
 
 Bạn hoàn toàn có thể yêu cầu: *"Phân tích SWOT cho ý tưởng này giúp tôi"* hoặc *"Dùng cây chỉ số để bẻ doanh thu"*.
-- Nếu phương pháp đó phục vụ đúng một điểm đang còn thiếu trên cây phụ thuộc, vibebiz sẽ áp dụng ngay ở vòng tiếp theo.
-- Nếu điểm đó đã được làm rõ hoặc góc nhìn đó đã dùng đủ 2 phương pháp, vibebiz sẽ giải thích lý do ngắn gọn và gợi ý phương pháp phù hợp hơn với phần đang còn khuyết.
+- Nếu phương pháp đó phục vụ đúng một điểm đang còn thiếu trên cây phụ thuộc, vibebiz sẽ áp dụng ở vòng tiếp theo. Nếu điểm đó còn phải chờ các điểm đứng trước được làm rõ, vibebiz sẽ nói và áp dụng khi tới lượt.
+- Nếu đó là phương pháp lập kế hoạch (ví dụ RACI, NPV), vibebiz ghi lại yêu cầu và dùng khi dựng kế hoạch lúc đóng gói, không áp dụng trong lúc phỏng vấn.
+- Nếu điểm đó đã được làm rõ hoặc đã có phương pháp khác lấp, vibebiz sẽ giải thích lý do ngắn gọn và gợi ý phương pháp phù hợp hơn với phần đang còn khuyết.
 
 ---
 

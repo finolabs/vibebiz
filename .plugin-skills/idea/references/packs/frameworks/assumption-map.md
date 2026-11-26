@@ -6,6 +6,12 @@ fills: [K, D]
 core: true
 diagram_type: quadrant
 origin: Assumption mapping as described by David J. Bland and Alexander Osterwalder (Strategyzer, Testing Business Ideas)
+needs: []
+feeds:
+  - to: test-and-control-pilot
+    passes: the riskiest belief
+instead_of: []
+revisit_when: [C, E]
 ---
 
 # Assumption map

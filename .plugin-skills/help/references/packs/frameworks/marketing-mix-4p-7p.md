@@ -6,6 +6,10 @@ fills: [E, M]
 core: true
 diagram_type: none
 origin: 4P by E. Jerome McCarthy; 7P extension by Bernard Booms and Mary Jo Bitner
+needs: []
+feeds: []
+instead_of: []
+revisit_when: [E, M]
 ---
 
 # 4P / 7P marketing mix

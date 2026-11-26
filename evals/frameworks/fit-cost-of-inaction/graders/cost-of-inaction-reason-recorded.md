@@ -1,0 +1,6 @@
+---
+type: regex
+target: { source: 'file', path: 'specs/001-fit-cost-of-inaction/coverage.md' }
+match: 'contains'
+pattern: 'framework_reasons:\s*\n(?:[ \t]+[\w-]+:[^\n]*\n)*?[ \t]+cost-of-inaction:'
+---

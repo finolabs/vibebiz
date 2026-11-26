@@ -6,6 +6,14 @@ fills: [M, K]
 core: true
 diagram_type: line
 origin: Controlled experiment design (R. A. Fisher and later retail test-versus-control practice)
+needs: [assumption-map, driver-tree]
+feeds:
+  - to: build-buy-partner-roi
+    passes: the pilot result
+  - to: stage-gate
+    passes: the pilot result as the first gate
+instead_of: []
+revisit_when: [C, E]
 ---
 
 # Test-and-control pilot
