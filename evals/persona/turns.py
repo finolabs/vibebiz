@@ -38,3 +38,27 @@ def next_turn(text: str, *, error: bool, ready: bool, paused: bool, finished: bo
     if "?" in text[-400:]:
         return "reply" if replies < max_replies else "end"
     return "nudge" if nudges < max_nudges else "end"
+
+
+WRITE_TOOLS = ("Write", "Edit")
+READ_TOOLS = ("Read", "Glob", "Grep")
+
+
+def _inside(raw: str | None, roots: list) -> bool:
+    """True when the path (relative to the first root, `~` expanded) resolves inside one of the roots."""
+    from pathlib import Path
+    base = Path(roots[0]).resolve()
+    p = Path(raw).expanduser() if raw else base
+    p = (p if p.is_absolute() else base / p).resolve()
+    return any(p == Path(r).resolve() or Path(r).resolve() in p.parents for r in roots)
+
+
+def tool_allowed(name: str, tool_input: dict, workspace, plugin_dir) -> bool:
+    """The agent under test may write only in its workspace and read only there or in the plugin; no shell."""
+    if name == "Skill" or name.startswith("Skill"):
+        return True
+    if name in WRITE_TOOLS:
+        return _inside(tool_input.get("file_path"), [workspace])
+    if name in READ_TOOLS:
+        return _inside(tool_input.get("file_path") or tool_input.get("path"), [workspace, plugin_dir])
+    return False
