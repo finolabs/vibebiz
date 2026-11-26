@@ -105,7 +105,8 @@ Phương pháp nào cần có trước, kết quả của nó được dùng ti�
 ### Yêu cầu một phương pháp cụ thể
 
 Bạn hoàn toàn có thể yêu cầu: *"Phân tích SWOT cho ý tưởng này giúp tôi"* hoặc *"Dùng cây chỉ số để bẻ doanh thu"*.
-- Nếu phương pháp đó phục vụ đúng một điểm đang còn thiếu trên cây phụ thuộc, vibebiz sẽ áp dụng ngay ở vòng tiếp theo.
+- Nếu phương pháp đó phục vụ đúng một điểm đang còn thiếu trên cây phụ thuộc, vibebiz sẽ áp dụng ở vòng tiếp theo. Nếu điểm đó còn phải chờ các điểm đứng trước được làm rõ, vibebiz sẽ nói và áp dụng khi tới lượt.
+- Nếu đó là phương pháp lập kế hoạch (ví dụ RACI, NPV), vibebiz ghi lại yêu cầu và dùng khi dựng kế hoạch lúc đóng gói, không áp dụng trong lúc phỏng vấn.
 - Nếu điểm đó đã được làm rõ hoặc đã có phương pháp khác lấp, vibebiz sẽ giải thích lý do ngắn gọn và gợi ý phương pháp phù hợp hơn với phần đang còn khuyết.
 
 ---
