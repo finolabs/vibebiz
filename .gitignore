@@ -17,6 +17,7 @@ CLAUDE.local.md
 # Eval runs
 evals/results/
 evals/*/plugins/
+evals/persona/.venv/
 
 # Manual test workspaces created by /vibebiz:idea during development
 sandbox/
