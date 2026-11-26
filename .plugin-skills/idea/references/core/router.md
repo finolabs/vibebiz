@@ -17,14 +17,14 @@ At the start of a session (the first round for this idea in this conversation), 
 3. **Check readiness** (see "Readiness"). If ready, offer to package and stop the loop unless the user chooses to keep going. When the user chooses to package, hand over to the `package` entry skill (or name `/vibebiz:package` when you cannot start it from here); its steps call any Google Slides, Docs or Drive skill.
 4. **Resolve conflicts first**: if the last answers contradict an earlier decision, handle it (see "Contradictions") before anything else.
 5. **Check for two ideas** (see "Two ideas in one") when the intake or the latest answers suggest it.
-6. **Compute the frontier** and **rank** it (below).
+6. **Compute the frontier** and **rank** its askable categories (see "Frontier" and "Ranking").
 7. **Look facts up** for every candidate question before asking it (see "Facts before questions").
 8. **Choose the module** for each category in the round, choose its framework card if one fits (see "Frameworks", including any card waiting for a revisit), and let the module write the round's questions (see "Who fills what"). Do the card check in every round, not only the first: for each category in the round, look its code up in `references/packs/framework-index.md` ("By category", the row whose lens is the category's module), read the file of every card listed there, and hand one over unless every one is excluded by "Frameworks" rules 1, 2 and 8 or by the depth. One round holds at most four questions in total, taken from the highest-ranked categories first.
 9. **Ask the round** through the ask protocol, which writes the answers back.
 10. **Close the round**: increment `budget_rounds_used` by one (an all-skipped round counts too), make sure each category the round touched has its new status and its applied cards in `frameworks`, rebuild the `coverage.md` body table from the frontmatter, write `next_step` (see "Next step"), set `updated` to today, and rebuild the table of contents by the workspace module's rules (`references/core/workspace.md`). Do this after every round, so an abandoned session loses nothing.
 11. **Check the budget** (see "Budget"). If budget remains, go back to step 1.
 
-When the loop stops (readiness, the budget, or nobody to answer), close the run (see "Close the run").
+When the loop stops (readiness, the budget, only categories waiting on someone else, or nobody to answer), close the run (see "Close the run").
 
 ## Depth
 
@@ -70,13 +70,13 @@ The frontier is every category whose status is `missing` or `partial` and whose 
 | O | Completion signals | testable acceptance criteria | C, E |
 
 - Never put a question on the round for a category outside the frontier, even when it seems quick. A question that depends on an unsettled answer (for example return on investment before the outcome is set) waits for a later round, because its answer would rest on a guess.
-- **Waiting on someone else.** A `partial` category whose only remaining gap is a fact someone not in the conversation must supply (an open question in `open-questions.md` with `status: open`, not one that confirms a `no-answer-run` assumption) is waiting. It is not asked again and stays `partial` until that answer arrives, but for the frontier it counts as settled, like `deferred`: the categories that depend on it are asked now. Where an answer rests on the missing fact, the text written for it names that open question (for example "chờ Q-001, giá phần mềm"), and the missing fact stays an open question, never your estimate. The question's `blocking` field says whether the tech team can start without it; it does not hold back the interview. When that open question is resolved, set every category whose text names it back to `partial` with the reason `revisit: Q-###`, and ask about the change in the next round.
+- **Waiting on someone else.** A `partial` category whose only remaining gap is a fact someone not in the conversation must supply (an open question in `open-questions.md` with `status: open` whose owner is not the user) is waiting. It is not asked again and stays `partial` until that answer arrives, but for the frontier it counts as settled, like `deferred`: the categories that depend on it are asked now. Where an answer rests on the missing fact, the text written for it names that open question (for example "chờ Q-001, giá phần mềm"), and the missing fact stays an open question, never your estimate. The question's `blocking` field says whether the tech team can start without it; it does not hold back the interview. When that open question is resolved, set back to `partial`, with the reason `revisit: Q-###`, every category whose text names it and every category its `unblocks` and `category` fields name, and ask about the change in the next round; unlike a card revisit ("Frameworks" rule 9), other frontier categories may join that round.
 - **The askable frontier** is the frontier without waiting categories. While budget remains and it holds a category, ask the round, unless the user asked to pause: waiting for someone else's answer is a reason to record an open question, never a reason to end the round or the session early. When only waiting categories are left, ask nothing more: write a `next_step` that names who to ask for what, and make the budget offer (see "Budget") recommending "Tạm dừng".
 - A category with an unresolved contradiction is treated as not settled, so the categories that depend on it leave the frontier until the user decides.
 
 ## Ranking
 
-Score each frontier category as **impact × uncertainty**, from 1 to 9, and ask the highest scores first.
+Score each category on the askable frontier as **impact × uncertainty**, from 1 to 9, and ask the highest scores first.
 
 - **Impact**: how much the answer changes the idea's scope, its cost or the board's decision. 1 low, 2 medium, 3 high.
 - **Uncertainty**: how well the answer is already known. 1 likely known (the files or the user's words almost settle it), 2 partly known, 3 unknown.
@@ -200,7 +200,7 @@ When `budget_rounds_used` reaches the session budget (three rounds by default) o
 - **"Tạm dừng"** (pause): everything is already saved. Tell the user in one sentence what comes next and that they resume with `/vibebiz:continue`.
 - **"Xuất bản nháp"** (draft): an export with every gap labelled "not yet clarified" (in the idea's language). Hand over to the `package` entry skill and say a labelled draft is wanted; if it is not available, tell the user the draft requirement is already saved in the idea folder and offer pause.
 
-Recommend "Hỏi tiếp" when the askable frontier (see "Frontier") still has categories scoring 6 or more, otherwise "Tạm dừng". With nobody to answer, choose pause and stop.
+Recommend "Hỏi tiếp" when the askable frontier (see "Frontier") still has categories scoring 6 or more, otherwise "Tạm dừng". When the askable frontier is empty and the user still chooses "Hỏi tiếp", ask nothing: say in one sentence that nothing can be asked until the person named in `next_step` answers, that the user can type that answer if they have it, and pause. With nobody to answer, choose pause and stop.
 
 ## Close the run
 

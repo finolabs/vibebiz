@@ -95,7 +95,8 @@ Then tell the user in one or two plain sentences what was recorded and what come
   - continue with more questions now ("Hỏi tiếp"),
   - pause and keep everything saved for later ("Tạm dừng"),
   - export a draft with every gap labelled ("Xuất bản nháp").
-  Recommend "Hỏi tiếp" when the frontier still holds a category scoring 6 or more on the router's impact × uncertainty ranking, otherwise "Tạm dừng". If the user skips this question, or nobody can answer, pause.
+  Recommend "Hỏi tiếp" when the router's askable frontier still holds a category scoring 6 or more on the router's impact × uncertainty ranking, otherwise "Tạm dừng". If the user skips this question, or nobody can answer, pause.
+- The router also makes this offer before the budget is used when only categories waiting on someone else are left (its "Frontier" section); then recommend "Tạm dừng".
 - On "Hỏi tiếp", grant another budget of the same size in this session; the counter keeps counting and the offer returns at the next multiple (after six rounds, then nine). On "Tạm dừng", say in one sentence where the idea stopped and that `/vibebiz:continue` resumes it. On "Xuất bản nháp", hand over to the `package` entry skill's draft path.
 
 ## 9. A round where everything was skipped
