@@ -59,6 +59,10 @@ class BudgetOffer(unittest.TestCase):
         self.assertEqual(turns.budget_offer_choice(["Xuất bản nháp (Đề xuất)", "Tạm dừng", "Hỏi tiếp"]),
                          ("Tạm dừng", True))
 
+    def test_only_the_bracketed_marker_counts(self):
+        labels = ["Hỏi tiếp", "Tạm dừng, xem đề xuất sau", "Xuất bản nháp"]
+        self.assertEqual(turns.budget_offer_choice(labels), ("Hỏi tiếp", False))
+
     def test_ordinary_question_is_not_the_offer(self):
         self.assertIsNone(turns.budget_offer_choice(["Đi tiếp, chờ số sau (Đề xuất)", "Dừng chờ số"]))
 

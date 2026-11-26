@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 
-RECOMMENDED = ("đề xuất", "recommended")
+RECOMMENDED = ("(đề xuất)", "(recommended)")  # only the bracketed marker vibebiz writes
 
 
 def budget_offer_choice(labels: list[str]) -> tuple[str, bool] | None:
