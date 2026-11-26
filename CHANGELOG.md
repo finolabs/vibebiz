@@ -4,6 +4,23 @@ All notable changes to vibebiz are recorded here. The format follows [Keep a Cha
 
 ## [Unreleased]
 
+## [0.1.9] - 2026-11-27
+
+### Added
+
+- A library of 41 management frameworks (for example five whys, a driver tree, SWOT, Kano, RACI, NPV and payback, a stage-gate rollout), written in vibebiz's own words. vibebiz picks a framework only to fill a point of the idea that is still open, asks its questions in everyday words, and names it only in the board deck and the tech document.
+- Planning frameworks (for example RACI, a build-buy-or-partner comparison, NPV) are chosen when the plan is built at packaging; asking for one by name during the interview records the request for packaging.
+- `docs/framework-map.md` shows which framework feeds which, and when a framework is applied again after a change.
+
+### Changed
+
+- The interview keeps going past a point that only someone outside the conversation can answer (for example a supplier's price): the points that depend on it are asked now and name the open question they rest on, and are asked again when the answer arrives. A session no longer ends early to wait for such an answer; when nothing else can be asked, vibebiz says who to ask and recommends pausing.
+
+### Fixed
+
+- Short progress notes while vibebiz works are now in your language too.
+- In a Google Drive workspace, when the old copy of a replaced file cannot be moved to the trash, vibebiz now says which file to trash yourself and keeps writing to the new copy; the next run asks which copy to keep. If you decline the trash, the run stops there.
+
 ## [0.1.8] - 2026-11-18
 
 ### Fixed
