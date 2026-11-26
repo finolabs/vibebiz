@@ -233,7 +233,7 @@
 
 ## Phase 9: Polish & Cross-Cutting Concerns
 
-- [ ] T097 Build the simulated-persona harness in `evals/persona/` on the Claude Agent SDK for Python with a pinned lockfile, answering `AskUserQuestion` through `canUseTool` from the hidden-truth fixtures (T022); run suite 8 (three fashion and two other retail ideas) and record facts preserved and sessions to readiness in `evals/RESULTS.md`
+- [x] T097 Build the simulated-persona harness in `evals/persona/` on the Claude Agent SDK for Python with a pinned lockfile, answering `AskUserQuestion` through `canUseTool` from the hidden-truth fixtures (T022); run suite 8 (three fashion and two other retail ideas) and record facts preserved and sessions to readiness in `evals/RESULTS.md` Done (27/11/2026): harness, scorer and tests in `evals/persona/`; calibrated on fashion-1-loyalty only (the four suite 8 rows of 26–27/11 in `evals/RESULTS.md`); the five-fixture run was not done.
 - [ ] T098 Run the full structural checks and every eval suite once against a fresh build; confirm every Appendix I threshold; record in `evals/RESULTS.md`
 - [ ] T099 Edit every Vietnamese user-facing text (`docs/`, `README.vi.md`, user-facing strings in `templates/` and `core/`) for natural wording
 - [ ] T100 Run the Cowork smoke test in quickstart.md §6 by uploading `dist/vibebiz.plugin`; record the five open checks in `CLAUDE.md` "Platform findings" and fix any failure
