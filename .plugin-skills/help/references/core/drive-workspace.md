@@ -90,13 +90,13 @@ Every change to the content of a workspace file is a replacement:
 3. **Create** the new content as a new plain file with the same title in the same folder.
 4. **Read it back** with the download tool and confirm the bytes match what you wrote.
 5. **Check `modifiedTime`** of the old file again. If it changed since T0, someone else edited it: keep both, trash nothing, tell the user, and ask which version to keep.
-6. **Trash** the old file.
+6. **Trash** the old file. When the trash call fails or is declined, the new file stands and the old one stays: tell the user, in one sentence, the old file's title, folder and last change, and that they can move it to the Drive trash themselves. For the rest of the run, write to the new file's id and leave the old one alone; on a later run the pair counts as two live files (below). A declined trash then ends the run as "Declined by the user" below says; a failed one does not.
 
-These steps are silent: say nothing to the user about reading back, comparing or trashing files unless a step stops the run. Trashing asks the user's permission in some apps (Cowork asks before each "Trash file" by default); `docs/faq.md` explains why and advises approving each one, since a standing allow covers every trash through the connector. Never ask the user to allow trashing for all files.
+These steps are silent: say nothing to the user about reading back, comparing or trashing files unless a step stops the run or the trash in step 6 fails or is declined. Trashing asks the user's permission in some apps (Cowork asks before each "Trash file" by default); `docs/faq.md` explains why and advises approving each one, since a standing allow covers every trash through the connector. Never ask the user to allow trashing for all files.
 
 A new file (nothing to replace) is steps 3 and 4 only. Before creating any file, search its folder for the title: if it exists, follow the rules above instead of creating a second one.
 
-**Two live files with one contract name** (a run stopped between steps 3 and 6, or a hand copy): report both, with their last change, and ask which to keep. Trash neither without the answer.
+**Two live files with one contract name** (a run stopped between steps 3 and 6, a trash in step 6 that failed or was declined, or a hand copy): report both, with their last change, and ask which to keep. Trash neither without the answer.
 
 **Errors:**
 - **Read-only:** when a write is refused for permissions, say that vibebiz cannot save to this Google Drive and that nothing was saved, show this session's answers in the chat so nothing is lost, and say how to go on (a Drive account or folder the user can edit, or the Claude desktop app with a working folder). Stop.

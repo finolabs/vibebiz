@@ -8,7 +8,7 @@ Every module follows these rules for anything a user reads: questions, summaries
 
 ## 1. Language of the output
 
-1. Use the idea's `language` field in `coverage.md` (`vi`, `en` or another code) for every question, summary, section body and output of that idea.
+1. Use the idea's `language` field in `coverage.md` (`vi`, `en` or another code) for every question, summary, section body and output of that idea, and for every line the user sees while you work, short progress notes between steps included.
 2. Before the idea exists (first intake), use the language of the user's first substantive message about the idea. When it is unclear, use Vietnamese. The specify module records it as `language`.
 3. Keep the recorded language across sessions. If the user later writes in another language and keeps doing so, ask once whether to switch; change `language` only on a yes.
 4. Some text is never translated, in any language: file and folder names, frontmatter keys and values (`status: clarifying`), record and requirement ids (`D-003`, `A-002`, the `FR-` and `SC-` numbers), category codes A–O, and the Spec Kit section headings of the requirement file. Business section headings (Problem & Why and the others the template fixes) also stay as the template has them. Only the content under them follows the user's language.
