@@ -84,7 +84,7 @@ The router chooses cards and hands this lens at most one new card per category p
 
 ## 7. Writing the round's questions for the router
 
-The router tells you which of A and B are in the round and how many question slots you have. B is in the frontier only when A is `clear` or `deferred`, so a round rarely holds both.
+The router tells you which of A and B are in the round and how many question slots you have. B is in the frontier only when A is settled as the router's "Frontier" section defines it, so a round rarely holds both.
 
 1. Re-read the files listed under **Reads**, list the items of section 1 still missing, and drop every one the files or connected documents already answer.
 2. For each remaining item, draft a candidate: a tool question that follows the ask protocol's rules for tool questions (self-contained, short header, two to four exclusive options, recommended first with its marker and reason, no escape options), or the round's single open question in plain text (the real occurrence, a story, a term the user uses).
