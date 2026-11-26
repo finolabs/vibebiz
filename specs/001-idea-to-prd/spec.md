@@ -284,7 +284,7 @@ Before or after the first idea, the user records their organization's ground rul
 
 ## Appendix A - Coverage Taxonomy
 
-Spec Kit 1.4.0's `clarify` categories (scope, data, UX flow, non-functional, integration, edge cases, constraints, terminology, completion signals) extended with business categories. A category is asked only after its prerequisites are settled. Each round is the frontier of the dependency tree, ordered by impact times uncertainty.
+Spec Kit 1.4.0's `clarify` categories (scope, data, UX flow, non-functional, integration, edge cases, constraints, terminology, completion signals) extended with business categories. A category is asked only after its prerequisites are settled: `clear`, `deferred`, or `partial` with only an open question left that someone outside the conversation owns, in which case the answers that rest on it name that open question (amended 26/11/2026 after the T097 persona calibration). Each round is the frontier of the dependency tree, ordered by impact times uncertainty.
 
 | Code | Category | Prerequisites | Written to | Filled by |
 |---|---|---|---|---|

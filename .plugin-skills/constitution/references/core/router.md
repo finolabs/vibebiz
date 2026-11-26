@@ -49,7 +49,7 @@ Classify from what is on file (the intake answer, the spec, the ground rules), n
 
 ## Frontier
 
-The frontier is every category whose status is `missing` or `partial` and whose prerequisites are all `clear` or `deferred`. Prerequisites are fixed (also in each category's `prerequisites` field); the elements column is what a category needs before it is `clear`:
+The frontier is every category whose status is `missing` or `partial` and whose prerequisites are all settled: `clear`, `deferred`, or waiting only on someone else's answer (the second rule below). Prerequisites are fixed (also in each category's `prerequisites` field); the elements column is what a category needs before it is `clear`:
 
 | Code | Category | Elements | Prerequisites |
 |---|---|---|---|
@@ -70,7 +70,8 @@ The frontier is every category whose status is `missing` or `partial` and whose 
 | O | Completion signals | testable acceptance criteria | C, E |
 
 - Never put a question on the round for a category outside the frontier, even when it seems quick. A question that depends on an unsettled answer (for example return on investment before the outcome is set) waits for a later round, because its answer would rest on a guess.
-- A `partial` category whose only remaining gap is an open question owned by someone who is not in the conversation (`open-questions.md`, `status: open`) is not asked again; it stays `partial` until that answer arrives.
+- A `partial` category whose only remaining gap is an open question owned by someone who is not in the conversation (`open-questions.md`, `status: open`) is not asked again; it stays `partial` until that answer arrives. For the frontier it counts as settled, like `deferred`: the categories that depend on it are asked now, and where an answer rests on the missing fact, the text written for it names that open question (for example "chờ Q-001, giá phần mềm"), so it is revisited when the answer arrives. The missing fact stays an open question, never your estimate.
+- While budget remains and the frontier holds a category, ask the round. Waiting for someone else's answer is a reason to record an open question, never a reason to end the round or the session early.
 - A category with an unresolved contradiction is treated as not settled, so the categories that depend on it leave the frontier until the user decides.
 
 ## Ranking

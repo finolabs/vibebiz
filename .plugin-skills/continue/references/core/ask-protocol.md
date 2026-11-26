@@ -25,7 +25,7 @@ The **question tool** is whichever tool this session offers for asking the user 
 
 ## 2. What a round is
 
-- A **round** is one set of questions asked together: the current frontier the router hands you, meaning only questions whose prerequisite categories (the router's frontier table) are `clear` or `deferred`. Never add a question whose answer depends on another question that is still open; hold it for a later round.
+- A **round** is one set of questions asked together: the current frontier the router hands you, meaning only questions whose prerequisite categories (the router's frontier table) are settled as the router's "Frontier" section defines it. Never add a question whose answer depends on another question that is still open; hold it for a later round.
 - A round has **one to four questions in total**: at most four tool questions sent in **one** question-tool call (or consecutive calls when the tool takes fewer, section 0), plus at most one open question in plain text (section 5), and the total of both never exceeds four.
 - Order the questions as the router ranked them (highest impact times uncertainty first).
 - The intake question (`references/core/specify.md`), the ground-rules round (`constitution`), the format round (`package`) and the budget offer (section 8) are asked with these rules but are not counted against the question budget.
