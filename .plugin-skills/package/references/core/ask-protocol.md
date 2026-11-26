@@ -25,7 +25,7 @@ The **question tool** is whichever tool this session offers for asking the user 
 
 ## 2. What a round is
 
-- A **round** is one set of questions asked together: the current frontier the router hands you, meaning only questions whose prerequisite categories (the router's frontier table) are `clear` or `deferred`. Never add a question whose answer depends on another question that is still open; hold it for a later round.
+- A **round** is one set of questions asked together: the current frontier the router hands you, meaning only questions whose prerequisite categories (the router's frontier table) are settled as the router's "Frontier" section defines it. Never add a question whose answer depends on another question that is still open; hold it for a later round.
 - A round has **one to four questions in total**: at most four tool questions sent in **one** question-tool call (or consecutive calls when the tool takes fewer, section 0), plus at most one open question in plain text (section 5), and the total of both never exceeds four.
 - Order the questions as the router ranked them (highest impact times uncertainty first).
 - The intake question (`references/core/specify.md`), the ground-rules round (`constitution`), the format round (`package`) and the budget offer (section 8) are asked with these rules but are not counted against the question budget.
@@ -95,7 +95,8 @@ Then tell the user in one or two plain sentences what was recorded and what come
   - continue with more questions now ("Hỏi tiếp"),
   - pause and keep everything saved for later ("Tạm dừng"),
   - export a draft with every gap labelled ("Xuất bản nháp").
-  Recommend "Hỏi tiếp" when the frontier still holds a category scoring 6 or more on the router's impact × uncertainty ranking, otherwise "Tạm dừng". If the user skips this question, or nobody can answer, pause.
+  Recommend "Hỏi tiếp" when the router's askable frontier still holds a category scoring 6 or more on the router's impact × uncertainty ranking, otherwise "Tạm dừng". If the user skips this question, or nobody can answer, pause.
+- The router also makes this offer before the budget is used when only categories waiting on someone else are left (its "Frontier" section); then recommend "Tạm dừng".
 - On "Hỏi tiếp", grant another budget of the same size in this session; the counter keeps counting and the offer returns at the next multiple (after six rounds, then nine). On "Tạm dừng", say in one sentence where the idea stopped and that `/vibebiz:continue` resumes it. On "Xuất bản nháp", hand over to the `package` entry skill's draft path.
 
 ## 9. A round where everything was skipped
