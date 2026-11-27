@@ -79,13 +79,13 @@ _UNIT = r"%|phần trăm|" + "|".join(sorted({*_DAYS, *_MONEY, *_HOURS, *_CURREN
 _RANGE = r"(?:\s*[–\-—]\s*|\s+(?:xuống|lên|đến|tới|to)\s+(?:còn\s+)?)"
 _QTY_RE = re.compile(
     rf"(?<![\w.,])({_NUM})(?:{_RANGE}({_NUM}))?\s*({_UNIT})?(?!\w)", re.IGNORECASE)
-# Number words are read as whole numerals, then by the word after them (`hai mươi bảy giờ` is
-# 27 hours, `bảy phần trăm` 7%, `bảy triệu` 7 million, `mười hai nhân viên` a count of 12).
+# Number words are read as whole numerals and kept only with a unit after them (`hai mươi bảy
+# giờ` is 27 hours, `bảy phần trăm` 7%, `bảy triệu` 7 million). A bare word count is not read:
+# idioms such as `hai chiều`, `hai bên` and `một lần` make it unreliable, and specs write their
+# figures in digits.
 _DIGITS = {"một": 1, "mốt": 1, "hai": 2, "ba": 3, "bốn": 4, "tư": 4, "năm": 5, "lăm": 5,
            "sáu": 6, "bảy": 7, "tám": 8, "chín": 9}
 _NUMERAL_WORDS = {*_DIGITS, "mười", "mươi", "chục", "trăm", "linh", "lẻ"}
-# Alone, these also mean "a", "father", "fourth", "year", "ripe": they need a unit to count.
-_AMBIGUOUS = {"một", "ba", "tư", "năm", "chín", "mốt", "lăm"}
 # Punctuation is kept as its own token so `hai, ba cửa hàng` stays two numerals.
 _WORD_TOKEN_RE = re.compile(r"\w+|[^\w\s]")
 
@@ -166,23 +166,17 @@ def _word_quantities(text: str) -> set[tuple[str, float]]:
                 parts.append(run[start:k])
                 start = k
         parts.append(run[start:])
-        lone_ambiguous = len(run) == 1 and run[0] in _AMBIGUOUS
         for part in parts:
             value = _numeral_value(part)
             if after == "phần trăm":
                 found.add(("pct", value))
             elif nxt in _DAYS or nxt in _HOURS or nxt in _MONEY or nxt in _CURRENCY:
                 found.add(_kind(value, nxt))
-            elif nxt.isalpha() and not lone_ambiguous:
-                found.add(("count", value))
     return found
 
 
-def quantities(text: str, word_counts: bool = True) -> set[tuple[str, float]]:
-    """Every (kind, value) the text states, values rounded; a range `25–40 x` gives both ends.
-
-    `word_counts=False` drops counts written only in words: fixture facts write their figures
-    in digits, so a word count there is an idiom (`hai chiều`, `một lần`), not a figure."""
+def quantities(text: str) -> set[tuple[str, float]]:
+    """Every (kind, value) the text states, values rounded; a range `25–40 x` gives both ends."""
     text = _NOT_QTY_RE.sub(" ", text)
     found: set[tuple[str, float]] = set()
     for m in _QTY_RE.finditer(text):
@@ -190,13 +184,13 @@ def quantities(text: str, word_counts: bool = True) -> set[tuple[str, float]]:
         for tok in (m.group(1), m.group(2)):
             if tok:
                 found.add(_kind(_to_float(tok), unit))
-    found |= {q for q in _word_quantities(text) if word_counts or q[0] != "count"}
+    found |= _word_quantities(text)
     return {(kind, round(value, 6)) for kind, value in found}
 
 
 def fact_numbers_present(fact: str, spec_text: str) -> bool:
     """All of the fact's quantities appear in the spec with the same kind (a count matches only a count)."""
-    return quantities(fact, word_counts=False) <= quantities(spec_text)
+    return quantities(fact) <= quantities(spec_text)
 
 
 # ---------------------------------------------------------------- facts
