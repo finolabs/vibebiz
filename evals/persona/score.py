@@ -155,7 +155,8 @@ def _word_quantities(text: str) -> set[tuple[str, float]]:
         nxt = words[j] if j < len(words) else ""
         after = " ".join(words[j:j + 2])
         i = j
-        if before in ("thứ", "tháng"):  # weekdays and month names: `thứ hai`, `tháng Sáu`
+        # Ordinals, weekdays and month names: `lần hai`, `đợt ba`, `thứ hai`, `tháng Sáu`.
+        if before in ("thứ", "tháng", "lần", "đợt", "kỳ", "hạng"):
             continue
         # Two digits side by side are an approximate range (`hai ba ngày`, two or three days):
         # split there and give each end the unit after the run, as `25–40 tuổi` does.

@@ -135,6 +135,14 @@ class QuantityEdges(unittest.TestCase):
         self.assertFalse(score.fact_numbers_present("7 nhân viên", "Cần ba bốn nhân viên hỗ trợ"))
         self.assertFalse(score.fact_numbers_present("5 ngày", "Chờ hai ba ngày"))
 
+    def test_ordinals_are_not_counts(self):
+        self.assertEqual(score.quantities("khách mua lần hai trong 90 ngày"), {("days", 90.0)})
+        self.assertEqual(score.quantities("đợt ba triển khai"), set())
+        self.assertIn(("count", 2.0), score.quantities("mua hai lần"))
+        problem = next(f["fact"] for f in FIXTURE["key_facts"] if f["id"] == "problem")
+        spec = "Mỗi tháng 1.800 khách mua lần đầu; chỉ 18% mua lại trong 90 ngày, khách mua một lần rồi bỏ đi."
+        self.assertTrue(score.fact_numbers_present(problem, spec))
+
     def test_long_tokens_stay_fast(self):
         import time
         start = time.monotonic()
