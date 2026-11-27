@@ -85,6 +85,16 @@ class QuantityEdges(unittest.TestCase):
         self.assertFalse(score.fact_numbers_present("34 cửa hàng", "34% khách quay lại"))
         self.assertFalse(score.fact_numbers_present("40 tuổi", "trong 40 giờ"))
 
+    def test_a_range_shares_its_closing_unit(self):
+        self.assertTrue(score.fact_numbers_present("từ 11 xuống 7 ngày", "từ 11 ngày xuống 7 ngày"))
+        self.assertTrue(score.fact_numbers_present("từ 26% xuống 12%", "26% xuống còn 12%"))
+        self.assertFalse(score.fact_numbers_present("từ 11 xuống 7 ngày", "11 cửa hàng, 7 ngày"))
+
+    def test_a_number_word_before_a_noun_is_a_count(self):
+        self.assertTrue(score.fact_numbers_present("7 nhân viên", "bảy nhân viên gọi báo"))
+        self.assertTrue(score.fact_numbers_present("2 trung tâm", "hai trung tâm bảo hành"))
+        self.assertTrue(score.fact_numbers_present("5 giờ mỗi ngày", "năm tiếng một ngày"))
+
 
 class Facts(unittest.TestCase):
     def test_numbers_deterministic_and_unscored_without_judge(self):

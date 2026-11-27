@@ -77,11 +77,17 @@ _CURRENCY = ("đồng", "đ", "vnd", "vnđ", "₫")
 
 _NUM = r"\d+(?:[.,]\d+)*"
 _UNIT = r"%|phần trăm|" + "|".join(sorted({*_DAYS, *_MONEY, *_HOURS, *_CURRENCY}, key=len, reverse=True))
+# A range shares its closing unit: `25–40 tuổi`, `từ 11 xuống 7 ngày`.
+_RANGE = r"(?:\s*[–\-—]\s*|\s+(?:xuống|lên|đến|tới|to)\s+(?:còn\s+)?)"
 _QTY_RE = re.compile(
-    rf"(?<![\w.,])({_NUM})(?:\s*[–\-—]\s*({_NUM}))?\s*({_UNIT})?(?!\w)", re.IGNORECASE)
+    rf"(?<![\w.,])({_NUM})(?:{_RANGE}({_NUM}))?\s*({_UNIT})?(?!\w)", re.IGNORECASE)
 _WORD_RE = re.compile(
     r"(?<!\w)(" + "|".join(sorted(_WORDS, key=len, reverse=True)) + r")\s+("
-    + "|".join(sorted(_DAYS, key=len, reverse=True)) + r")(?!\w)", re.IGNORECASE)
+    + "|".join(sorted({*_DAYS, *_HOURS}, key=len, reverse=True)) + r")(?!\w)", re.IGNORECASE)
+# A number word before any other word is a count (`bảy nhân viên`); "một", "năm", "tư" and
+# "ba" also mean "a", "year", "fourth" and "father", so only a unit makes them quantities.
+_COUNT_WORDS = ("mười hai", "mười", "chín", "tám", "bảy", "sáu", "bốn", "hai")
+_COUNT_WORD_RE = re.compile(r"(?<!\w)(" + "|".join(_COUNT_WORDS) + r")\s+(\w+)", re.IGNORECASE)
 
 
 def _to_float(token: str) -> float:
@@ -124,6 +130,10 @@ def quantities(text: str) -> set[tuple[str, float]]:
                 found.add(_kind(_to_float(tok), unit))
     for m in _WORD_RE.finditer(text):
         found.add(_kind(float(_WORDS[m.group(1).lower()]), m.group(2)))
+    for m in _COUNT_WORD_RE.finditer(text):
+        noun = m.group(2).lower()
+        if noun not in _DAYS and noun not in _HOURS:
+            found.add(("count", float(_WORDS[m.group(1).lower()])))
     return {(kind, round(value, 6)) for kind, value in found}
 
 
