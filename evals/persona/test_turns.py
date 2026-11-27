@@ -90,6 +90,12 @@ class ToolAllowedTest(unittest.TestCase):
         self.assertTrue(turns.tool_allowed("Write", {"file_path": "specs/a.md"}, self.ws, self.plugin))
         self.assertTrue(turns.tool_allowed("Read", {"file_path": str(self.plugin / "skills/x.md")}, self.ws, self.plugin))
         self.assertTrue(turns.tool_allowed("Glob", {"pattern": "specs/*"}, self.ws, self.plugin))
+        self.assertTrue(turns.tool_allowed("Glob", {"pattern": "**/coverage.md"}, self.ws, self.plugin))
+
+    def test_glob_pattern_outside_denied(self):
+        for pattern in ("/etc/*", "../../*", "~/.ssh/*", "specs/../../*", "/tmp/outside"):
+            self.assertFalse(turns.tool_allowed("Glob", {"pattern": pattern}, self.ws, self.plugin), pattern)
+        self.assertTrue(turns.tool_allowed("Glob", {"pattern": "skills/*", "path": str(self.plugin)}, self.ws, self.plugin))
         self.assertTrue(turns.tool_allowed("Skill", {"skill": "vibebiz:idea"}, self.ws, self.plugin))
 
 if __name__ == "__main__":

@@ -60,5 +60,22 @@ def tool_allowed(name: str, tool_input: dict, workspace, plugin_dir) -> bool:
     if name in WRITE_TOOLS:
         return _inside(tool_input.get("file_path"), [workspace])
     if name in READ_TOOLS:
-        return _inside(tool_input.get("file_path") or tool_input.get("path"), [workspace, plugin_dir])
+        roots = [workspace, plugin_dir]
+        base = tool_input.get("file_path") or tool_input.get("path")
+        if not _inside(base, roots):
+            return False
+        if name == "Glob":  # the pattern can carry its own location: `/etc/*`, `../../*`, `~/x/*`
+            return _inside(_glob_root(tool_input.get("pattern") or "", base or str(workspace)), roots)
+        return True
     return False
+
+
+def _glob_root(pattern: str, base: str) -> str:
+    """The folder a Glob pattern searches: its part before the first wildcard, joined to the base."""
+    from pathlib import Path
+    cut = min([pattern.find(c) for c in "*?[{" if c in pattern] or [len(pattern)])
+    head = pattern[:cut]
+    if cut < len(pattern):  # drop the partial name the wildcard belongs to: `src/fo*` searches `src`
+        head = head.rsplit("/", 1)[0] if "/" in head else ""
+    p = Path(head or ".").expanduser()
+    return str(p if p.is_absolute() else Path(base).expanduser() / p)

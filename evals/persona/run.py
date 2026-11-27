@@ -31,6 +31,7 @@ from claude_agent_sdk import (
     AssistantMessage,
     ClaudeAgentOptions,
     ClaudeSDKClient,
+    HookMatcher,
     PermissionResultAllow,
     PermissionResultDeny,
     ResultMessage,
@@ -48,6 +49,8 @@ RESULTS = REPO / "evals" / "results"
 SKILLS = [f"vibebiz:{n}" for n in ("idea", "continue", "status", "package", "constitution", "help")]
 AGENT_TOOLS = ["Read", "Write", "Edit", "Glob", "Grep", "Skill"]  # no Bash: suite 8 never packages
 MIN_SESSION_USD = 0.05  # below this much budget left, no new session starts
+MIN_CALL_USD = 0.01  # below this much budget left, no persona or judge call starts
+PERSONA_RESERVE_USD = 0.5  # held back from each session's agent allowance for the persona's calls
 
 PERSONA_SYSTEM = """You play one user of a business-idea interviewer, in a test. Stay in character.
 
@@ -104,6 +107,7 @@ class Run:
     persona_errors: int = 0
     judge_error: str | None = None
     live_session_cost: float = 0.0  # running total of the session in progress
+    session_allowance: float = 0.0  # the agent budget of the session in progress, committed until it ends
     paused: bool = False
     stopped_ready: bool = False
     sessions: list = field(default_factory=list)
@@ -116,6 +120,10 @@ class Run:
     def spent(self) -> float:
         """Everything spent so far, the session in progress and persona calls inside it included."""
         return self.cost + self.live_session_cost
+
+    def call_budget(self) -> float:
+        """What a persona or judge call may spend: the cap minus everything spent and the agent's allowance."""
+        return self.args.max_cost - self.cost - max(self.live_session_cost, self.session_allowance)
 
     def ready(self) -> bool:
         idea = score.find_idea(self.workspace)
@@ -135,9 +143,10 @@ def _json_from(text: str) -> dict | None:
     return value if isinstance(value, dict) else None
 
 
-async def _ask_model(prompt: str, system: str | None, model: str) -> tuple[dict | None, float]:
-    """One tool-less, settings-free turn; returns its JSON object (None when malformed) and its cost."""
-    opts = ClaudeAgentOptions(model=model, system_prompt=system, tools=[], max_turns=1, setting_sources=[])
+async def _ask_model(prompt: str, system: str | None, model: str, budget: float) -> tuple[dict | None, float]:
+    """One tool-less, settings-free turn capped at `budget` USD; returns its JSON object (None when malformed) and its cost."""
+    opts = ClaudeAgentOptions(model=model, system_prompt=system, tools=[], max_turns=1, setting_sources=[],
+                              max_budget_usd=budget)
     text, cost = "", 0.0
     async for msg in query(prompt=prompt, options=opts):
         if isinstance(msg, AssistantMessage):
@@ -156,6 +165,18 @@ def _persona_system(fx: dict) -> str:
     )
 
 
+def make_confine(run: Run):
+    """PreToolUse hook: every tool call the agent makes passes the workspace rule, auto-approved ones included."""
+    async def confine(input_data, _tool_use_id, _ctx):
+        name, tool_input = input_data.get("tool_name", ""), input_data.get("tool_input") or {}
+        if name == "AskUserQuestion" or turns.tool_allowed(name, tool_input, run.workspace, run.args.plugin or DIST):
+            return {}  # no decision: the normal permission flow (and can_use_tool) goes on
+        return {"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
+                                       "permissionDecisionReason": f"{name} on that path is not available in this test."}}
+
+    return confine
+
+
 def make_can_use_tool(run: Run):
     async def can_use_tool(name: str, tool_input: dict, _ctx):
         if name != "AskUserQuestion":
@@ -165,7 +186,7 @@ def make_can_use_tool(run: Run):
         if run.ready():
             run.stopped_ready = True
             return PermissionResultDeny(message="Test ended: the idea is ready.", interrupt=True)
-        if run.spent() >= run.args.max_cost:
+        if run.call_budget() < MIN_CALL_USD:
             return PermissionResultDeny(message="Test ended: the run's cost cap is reached.", interrupt=True)
         questions = tool_input.get("questions") or []
         answers: dict[str, str] = {}
@@ -182,7 +203,7 @@ def make_can_use_tool(run: Run):
         if to_persona:
             reply, cost = await _ask_model(
                 ROUND_TASK.format(questions=json.dumps(to_persona, ensure_ascii=False)),
-                _persona_system(run.fixture), run.args.persona_model)
+                _persona_system(run.fixture), run.args.persona_model, run.call_budget())
             run.cost_persona += cost
             if reply is None:
                 run.persona_errors += 1
@@ -204,70 +225,82 @@ def make_can_use_tool(run: Run):
 async def run_session(run: Run, number: int) -> dict:
     prompt = f"/vibebiz:idea {run.fixture['intake_vi']}" if number == 1 else "/vibebiz:continue"
     run.paused = False
+    left = run.args.max_cost - run.cost
+    run.session_allowance = min(run.args.session_cost, left - min(PERSONA_RESERVE_USD, left / 4))
     opts = ClaudeAgentOptions(
         cwd=str(run.workspace),
         plugins=[{"type": "local", "path": str(run.args.plugin or DIST)}],
         setting_sources=[],
         skills=SKILLS,
-        allowed_tools=[],  # can_use_tool approves AGENT_TOOLS, so every call reaches it
+        tools=AGENT_TOOLS + ["AskUserQuestion"],  # the only tools the agent sees
+        allowed_tools=[],
         disallowed_tools=["WebFetch", "WebSearch", "Agent", "Task"],
+        hooks={"PreToolUse": [HookMatcher(matcher=None, hooks=[make_confine(run)])]},
         model=run.args.model,
         max_turns=run.args.max_turns,
-        max_budget_usd=min(run.args.session_cost, run.args.max_cost - run.cost),
+        max_budget_usd=run.session_allowance,
         can_use_tool=make_can_use_tool(run),
     )
     session_cost, plain, nudges, last_result, error, capped = 0.0, 0, 0, None, None, None
-    async with ClaudeSDKClient(options=opts) as client:
-        await client.query(prompt)
-        while True:
-            text = ""
-            async for msg in client.receive_response():
-                if isinstance(msg, AssistantMessage):
-                    text = "".join(b.text for b in msg.content if isinstance(b, TextBlock)) or text
-                elif isinstance(msg, ResultMessage):
-                    session_cost = msg.total_cost_usd or session_cost  # running total for the session
-                    run.live_session_cost = session_cost
-                    last_result = msg.subtype
-                    if msg.subtype in turns.SESSION_CAPS:
-                        capped = msg.subtype  # the session cap ends this session, not the run
-                    elif msg.is_error:
-                        error = (msg.result or text or msg.subtype)[:300]
-            run.transcript.append({"session": number, "assistant": text[-2000:]})
-            action = turns.next_turn(
-                text, error=bool(error) or run.spent() >= run.args.max_cost,
-                ready=run.stopped_ready or run.ready(), paused=run.paused,
-                finished=last_result == "success", replies=plain, nudges=nudges,
-                max_replies=run.args.max_plain_turns)
-            if action == "end":
-                break
-            if action == "nudge":
-                nudges += 1
-            else:
-                plain += 1
-            reply, cost = await _ask_model(PLAIN_TASK.format(message=text[-3000:]),
-                                           _persona_system(run.fixture), run.args.persona_model)
-            run.cost_persona += cost
-            text_reply = reply.get("text") if reply else None
-            if not (isinstance(text_reply, str) and text_reply.strip()):
-                run.persona_errors += reply is None
-                run.questions_skipped += 1  # the persona did not answer: the session ends here
-                break
-            run.plain_replies += 1
-            run.transcript.append({"session": number, "user": text_reply})
-            await client.query(text_reply)
-    run.cost_agent += session_cost
-    run.live_session_cost = 0.0
-    info = {"session": number, "prompt": prompt, "cost_usd": round(session_cost, 4),
-            "result": last_result, "error": error, "capped": capped, "plain_replies": plain, "nudges": nudges, "paused_at_budget": run.paused,
-            "ready_after": run.ready()}
-    run.sessions.append(info)
+    try:
+        async with ClaudeSDKClient(options=opts) as client:
+            await client.query(prompt)
+            while True:
+                text = ""
+                async for msg in client.receive_response():
+                    if isinstance(msg, AssistantMessage):
+                        text = "".join(b.text for b in msg.content if isinstance(b, TextBlock)) or text
+                    elif isinstance(msg, ResultMessage):
+                        session_cost = msg.total_cost_usd or session_cost  # running total for the session
+                        run.live_session_cost = session_cost
+                        last_result = msg.subtype
+                        if msg.subtype in turns.SESSION_CAPS:
+                            capped = msg.subtype  # the session cap ends this session, not the run
+                        elif msg.is_error:
+                            error = (msg.result or text or msg.subtype)[:300]
+                run.transcript.append({"session": number, "assistant": text[-2000:]})
+                action = turns.next_turn(
+                    text, error=bool(error) or run.call_budget() < MIN_CALL_USD,
+                    ready=run.stopped_ready or run.ready(), paused=run.paused,
+                    finished=last_result == "success", replies=plain, nudges=nudges,
+                    max_replies=run.args.max_plain_turns)
+                if action == "end":
+                    break
+                if action == "nudge":
+                    nudges += 1
+                else:
+                    plain += 1
+                reply, cost = await _ask_model(PLAIN_TASK.format(message=text[-3000:]),
+                                               _persona_system(run.fixture), run.args.persona_model,
+                                               run.call_budget())
+                run.cost_persona += cost
+                text_reply = reply.get("text") if reply else None
+                if not (isinstance(text_reply, str) and text_reply.strip()):
+                    run.persona_errors += reply is None
+                    run.questions_skipped += 1  # the persona did not answer: the session ends here
+                    break
+                run.plain_replies += 1
+                run.transcript.append({"session": number, "user": text_reply})
+                if run.spent() >= run.args.max_cost:  # the persona's reply used the last of the budget
+                    break
+                await client.query(text_reply)
+    except Exception as exc:  # keep what the session spent, then let the run report the error
+        error = f"{type(exc).__name__}: {exc}"[:300]
+        raise
+    finally:
+        run.cost_agent += session_cost  # the last reported running total: a turn cut off mid-way is not counted
+        run.live_session_cost = run.session_allowance = 0.0
+        info = {"session": number, "prompt": prompt, "cost_usd": round(session_cost, 4),
+                "result": last_result, "error": error, "capped": capped, "plain_replies": plain, "nudges": nudges,
+                "paused_at_budget": run.paused, "ready_after": run.ready()}
+        run.sessions.append(info)
     return info
 
 
 async def judge(run: Run, spec_text: str, facts: list[dict]) -> dict:
     verdicts, cost = await _ask_model(
         JUDGE_PROMPT.format(spec=spec_text, facts=json.dumps(facts, ensure_ascii=False)),
-        None, run.args.judge_model)
+        None, run.args.judge_model, run.call_budget())
     run.cost_judge += cost
     if verdicts is None:
         run.judge_error = "judge reply was not a JSON object"
@@ -306,7 +339,7 @@ async def main_async(args) -> int:
         idea = score.find_idea(workspace)
         spec_path = idea / "spec.md" if idea else None
         semantic = [f for f in fixture["key_facts"] if not score.quantities(f["fact"])]
-        if args.no_judge or run.cost >= args.max_cost:
+        if args.no_judge or run.call_budget() < MIN_CALL_USD:
             run.judge_error = None if args.no_judge else "skipped: cost cap reached"
         elif semantic and spec_path and spec_path.exists():
             verdicts = await judge(run, spec_path.read_text(encoding="utf-8"), semantic)

@@ -128,16 +128,8 @@ def quantities(text: str) -> set[tuple[str, float]]:
 
 
 def fact_numbers_present(fact: str, spec_text: str) -> bool:
-    """All of the fact's quantities appear in the spec; a plain count matches any kind."""
-    have = quantities(spec_text)
-    values = {v for _, v in have}
-    for kind, value in quantities(fact):
-        if kind == "count":
-            if value not in values:
-                return False
-        elif (kind, value) not in have:
-            return False
-    return True
+    """All of the fact's quantities appear in the spec with the same kind (a count matches only a count)."""
+    return quantities(fact) <= quantities(spec_text)
 
 
 # ---------------------------------------------------------------- facts

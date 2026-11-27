@@ -80,6 +80,11 @@ class QuantityEdges(unittest.TestCase):
     def test_values_are_rounded_before_comparing(self):
         self.assertTrue(score.fact_numbers_present("ngân sách 0,3 tỷ", "300 triệu đồng"))
 
+    def test_a_count_matches_only_a_count(self):
+        self.assertTrue(score.fact_numbers_present("34 cửa hàng", "ở 34 cửa hàng"))
+        self.assertFalse(score.fact_numbers_present("34 cửa hàng", "34% khách quay lại"))
+        self.assertFalse(score.fact_numbers_present("40 tuổi", "trong 40 giờ"))
+
 
 class Facts(unittest.TestCase):
     def test_numbers_deterministic_and_unscored_without_judge(self):
