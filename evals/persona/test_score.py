@@ -102,6 +102,8 @@ class QuantityEdges(unittest.TestCase):
         self.assertTrue(score.fact_numbers_present("5 giờ mỗi ngày", "năm tiếng một ngày"))
         self.assertFalse(score.fact_numbers_present("4 giờ mỗi ngày", "hai mươi bốn giờ mỗi ngày"))
         self.assertFalse(score.fact_numbers_present("5 ngày", "Chờ hai ba ngày"))
+        self.assertEqual(q("tháng Bảy năm nay"), set())
+        self.assertEqual(q("mỗi tháng hai ngày"), {("days", 2.0)})
 
     def test_bare_number_words_are_not_counts(self):
         for text in ("bảy nhân viên", "đồng bộ hai chiều", "Hai bên dùng chung mã", "mua lần hai",
@@ -116,6 +118,8 @@ class QuantityEdges(unittest.TestCase):
             "Chỉ 18% mua lại trong 90 ngày, khách mua một lần rồi bỏ đi."))
         self.assertTrue(score.fact_numbers_present(fact("fashion-2-size-returns", "cost-today"),
             "Mỗi đơn trả tốn trung bình 52.000 đồng vận chuyển khứ hồi và xử lý; khoảng 1.900 đơn trả mỗi tháng."))
+        self.assertTrue(score.fact_numbers_present(fact("fashion-3-seasonal-stock", "cost-today"),
+            "Chia hàng bằng Excel, mỗi đợt hai ngày công của cả 3 người; xả hàng tồn giảm giá trung bình 45%."))
         self.assertFalse(score.fact_numbers_present(fact("fashion-3-seasonal-stock", "goal"),
             "Giảm tồn cuối mùa từ 22% xuống 15%. Đồng bộ dữ liệu hai chiều giữa kho và cửa hàng."))
 
