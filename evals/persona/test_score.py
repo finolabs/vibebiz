@@ -95,6 +95,14 @@ class QuantityEdges(unittest.TestCase):
         self.assertTrue(score.fact_numbers_present("2 trung tâm", "hai trung tâm bảo hành"))
         self.assertTrue(score.fact_numbers_present("5 giờ mỗi ngày", "năm tiếng một ngày"))
 
+    def test_number_words_in_dates_money_and_compounds_are_not_counts(self):
+        for spec in ("Ngân sách bảy triệu đồng.", "Họp vào thứ bảy hằng tuần.", "bảy mươi nhân viên"):
+            self.assertFalse(score.fact_numbers_present("7 nhân viên", spec), spec)
+        self.assertFalse(score.fact_numbers_present("10 nhân viên", "Có mười một nhân viên."))
+        self.assertFalse(score.fact_numbers_present("2 nhân viên", "ba mươi hai nhân viên"))
+        self.assertFalse(score.fact_numbers_present("9 cửa hàng", "kế hoạch đã chín muồi"))
+        self.assertFalse(score.fact_numbers_present("2 trung tâm", "thứ hai hàng tuần"))
+
 
 class Facts(unittest.TestCase):
     def test_numbers_deterministic_and_unscored_without_judge(self):

@@ -84,10 +84,12 @@ _QTY_RE = re.compile(
 _WORD_RE = re.compile(
     r"(?<!\w)(" + "|".join(sorted(_WORDS, key=len, reverse=True)) + r")\s+("
     + "|".join(sorted({*_DAYS, *_HOURS}, key=len, reverse=True)) + r")(?!\w)", re.IGNORECASE)
-# A number word before any other word is a count (`bảy nhân viên`); "một", "năm", "tư" and
-# "ba" also mean "a", "year", "fourth" and "father", so only a unit makes them quantities.
-_COUNT_WORDS = ("mười hai", "mười", "chín", "tám", "bảy", "sáu", "bốn", "hai")
-_COUNT_WORD_RE = re.compile(r"(?<!\w)(" + "|".join(_COUNT_WORDS) + r")\s+(\w+)", re.IGNORECASE)
+# A number word before a noun is a count (`bảy nhân viên`). "một", "năm", "tư", "ba" and "chín"
+# also mean "a", "year", "fourth", "father" and "ripe", so only a unit makes them quantities.
+# Weekdays (`thứ hai`), compounds (`mười một`, `ba mươi hai`) and money (`bảy triệu`) are not counts.
+_COUNT_WORDS = ("mười hai", "mười", "tám", "bảy", "sáu", "bốn", "hai")
+_COUNT_WORD_RE = re.compile(r"(\w*)\s*(?<!\w)(" + "|".join(_COUNT_WORDS) + r")\s+(\w+)", re.IGNORECASE)
+_NUMBER_PARTS = {*_WORDS, "mươi", "trăm", "linh", "lẻ", "lăm", "mốt", "thứ"}
 
 
 def _to_float(token: str) -> float:
@@ -131,9 +133,12 @@ def quantities(text: str) -> set[tuple[str, float]]:
     for m in _WORD_RE.finditer(text):
         found.add(_kind(float(_WORDS[m.group(1).lower()]), m.group(2)))
     for m in _COUNT_WORD_RE.finditer(text):
-        noun = m.group(2).lower()
-        if noun not in _DAYS and noun not in _HOURS:
-            found.add(("count", float(_WORDS[m.group(1).lower()])))
+        before, word, noun = m.group(1).lower(), m.group(2).lower(), m.group(3).lower()
+        if before in _NUMBER_PARTS or noun in _NUMBER_PARTS:
+            continue
+        if noun in _DAYS or noun in _HOURS or noun in _MONEY or noun in _CURRENCY:
+            continue
+        found.add(("count", float(_WORDS[word])))
     return {(kind, round(value, 6)) for kind, value in found}
 
 
