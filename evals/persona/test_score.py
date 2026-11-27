@@ -117,6 +117,15 @@ class QuantityEdges(unittest.TestCase):
         self.assertFalse(score.fact_numbers_present("4 giờ mỗi ngày", "hai mươi bốn giờ mỗi ngày"))
         self.assertFalse(score.fact_numbers_present("7 nhân viên", "Có bảy phần trăm đơn hàng bị lỗi."))
 
+    def test_punctuation_ends_a_numeral_and_nam_muoi_is_fifty(self):
+        q = score.quantities
+        self.assertFalse(score.fact_numbers_present("5 cửa hàng", "Thử nghiệm tại hai, ba cửa hàng."))
+        self.assertFalse(score.fact_numbers_present("35 nhân viên", "Có mười hai, mười ba nhân viên"))
+        self.assertEqual(q("một trăm năm mươi nhân viên"), {("count", 150.0)})
+        self.assertEqual(q("Ngân sách hai trăm năm mươi triệu đồng"), {("money", 250e6)})
+        self.assertEqual(q("năm mươi khách"), {("count", 50.0)})
+        self.assertEqual(q("hai trăm năm"), {("days", 73000.0)})
+
     def test_long_tokens_stay_fast(self):
         import time
         start = time.monotonic()

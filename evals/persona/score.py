@@ -86,7 +86,8 @@ _DIGITS = {"một": 1, "mốt": 1, "hai": 2, "ba": 3, "bốn": 4, "tư": 4, "nă
 _NUMERAL_WORDS = {*_DIGITS, "mười", "mươi", "chục", "trăm", "linh", "lẻ"}
 # Alone, these also mean "a", "father", "fourth", "year", "ripe": they need a unit to count.
 _AMBIGUOUS = {"một", "ba", "tư", "năm", "chín", "mốt", "lăm"}
-_WORD_TOKEN_RE = re.compile(r"\w+")
+# Punctuation is kept as its own token so `hai, ba cửa hàng` stays two numerals.
+_WORD_TOKEN_RE = re.compile(r"\w+|[^\w\s]")
 
 
 
@@ -144,9 +145,11 @@ def _word_quantities(text: str) -> set[tuple[str, float]]:
             i += 1
             continue
         j = i + 1
-        # "năm" after a numeral is the unit "year" (the digit 5 is "lăm"), except after "linh" or "lẻ".
+        # "năm" after a numeral is the unit "year" (the digit 5 is "lăm"), except after "linh"
+        # or "lẻ" and before "mươi" (`một trăm năm mươi` is 150).
         while j < len(words) and words[j] in _NUMERAL_WORDS and (
-                words[j] != "năm" or words[j - 1] in ("linh", "lẻ")):
+                words[j] != "năm" or words[j - 1] in ("linh", "lẻ")
+                or (j + 1 < len(words) and words[j + 1] == "mươi")):
             j += 1
         run, before = words[i:j], words[i - 1] if i else ""
         nxt = words[j] if j < len(words) else ""
@@ -159,7 +162,7 @@ def _word_quantities(text: str) -> set[tuple[str, float]]:
             found.add(("pct", value))
         elif nxt in _DAYS or nxt in _HOURS or nxt in _MONEY or nxt in _CURRENCY:
             found.add(_kind(value, nxt))
-        elif nxt and not (len(run) == 1 and run[0] in _AMBIGUOUS):
+        elif nxt.isalpha() and not (len(run) == 1 and run[0] in _AMBIGUOUS):
             found.add(("count", value))
     return found
 
