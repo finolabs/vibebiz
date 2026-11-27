@@ -126,6 +126,15 @@ class QuantityEdges(unittest.TestCase):
         self.assertEqual(q("năm mươi khách"), {("count", 50.0)})
         self.assertEqual(q("hai trăm năm"), {("days", 73000.0)})
 
+    def test_month_names_and_side_by_side_digits(self):
+        q = score.quantities
+        self.assertEqual(q("Triển khai vào tháng Sáu tới."), set())
+        self.assertEqual(q("tháng Bảy tới"), set())
+        self.assertEqual(q("Thử nghiệm tại hai ba cửa hàng"), {("count", 2.0), ("count", 3.0)})
+        self.assertEqual(q("Chờ hai ba ngày"), {("days", 2.0), ("days", 3.0)})
+        self.assertFalse(score.fact_numbers_present("7 nhân viên", "Cần ba bốn nhân viên hỗ trợ"))
+        self.assertFalse(score.fact_numbers_present("5 ngày", "Chờ hai ba ngày"))
+
     def test_long_tokens_stay_fast(self):
         import time
         start = time.monotonic()

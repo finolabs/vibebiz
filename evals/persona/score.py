@@ -155,15 +155,25 @@ def _word_quantities(text: str) -> set[tuple[str, float]]:
         nxt = words[j] if j < len(words) else ""
         after = " ".join(words[j:j + 2])
         i = j
-        if before == "thứ":
+        if before in ("thứ", "tháng"):  # weekdays and month names: `thứ hai`, `tháng Sáu`
             continue
-        value = _numeral_value(run)
-        if after == "phần trăm":
-            found.add(("pct", value))
-        elif nxt in _DAYS or nxt in _HOURS or nxt in _MONEY or nxt in _CURRENCY:
-            found.add(_kind(value, nxt))
-        elif nxt.isalpha() and not (len(run) == 1 and run[0] in _AMBIGUOUS):
-            found.add(("count", value))
+        # Two digits side by side are an approximate range (`hai ba ngày`, two or three days):
+        # split there and give each end the unit after the run, as `25–40 tuổi` does.
+        parts, start = [], 0
+        for k in range(1, len(run)):
+            if run[k] in _DIGITS and run[k - 1] in _DIGITS:
+                parts.append(run[start:k])
+                start = k
+        parts.append(run[start:])
+        lone_ambiguous = len(run) == 1 and run[0] in _AMBIGUOUS
+        for part in parts:
+            value = _numeral_value(part)
+            if after == "phần trăm":
+                found.add(("pct", value))
+            elif nxt in _DAYS or nxt in _HOURS or nxt in _MONEY or nxt in _CURRENCY:
+                found.add(_kind(value, nxt))
+            elif nxt.isalpha() and not lone_ambiguous:
+                found.add(("count", value))
     return found
 
 
