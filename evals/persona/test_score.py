@@ -104,6 +104,8 @@ class QuantityEdges(unittest.TestCase):
         self.assertFalse(score.fact_numbers_present("5 ngày", "Chờ hai ba ngày"))
         self.assertEqual(q("tháng Bảy năm nay"), set())
         self.assertEqual(q("mỗi tháng hai ngày"), {("days", 2.0)})
+        self.assertEqual(q("Chạy thử trong một năm sáu tháng."), {("days", 365.0), ("days", 180.0)})
+        self.assertFalse(score.fact_numbers_present("Phải chạy được trong 5 tháng tới.", "trong một năm sáu tháng"))
 
     def test_bare_number_words_are_not_counts(self):
         for text in ("bảy nhân viên", "đồng bộ hai chiều", "Hai bên dùng chung mã", "mua lần hai",

@@ -154,7 +154,9 @@ def _word_quantities(text: str) -> set[tuple[str, float]]:
         run, before = words[i:j], words[i - 1] if i else ""
         nxt = words[j] if j < len(words) else ""
         after = " ".join(words[j:j + 2])
-        i = j
+        is_unit = nxt in _DAYS or nxt in _HOURS or nxt in _MONEY or nxt in _CURRENCY
+        # Step past the unit too, so `một năm sáu tháng` does not read "năm" again as 5.
+        i = j + (2 if after == "phần trăm" else 1 if is_unit else 0)
         # Weekdays and month names are not quantities (`thứ hai`, `tháng Bảy năm nay`); after
         # "tháng" a shorter time unit is still a duration (`mỗi tháng hai ngày`).
         if before == "thứ" or (before == "tháng" and nxt not in ("ngày", "tuần", "giờ", "tiếng")):
@@ -171,7 +173,7 @@ def _word_quantities(text: str) -> set[tuple[str, float]]:
             value = _numeral_value(part)
             if after == "phần trăm":
                 found.add(("pct", value))
-            elif nxt in _DAYS or nxt in _HOURS or nxt in _MONEY or nxt in _CURRENCY:
+            elif is_unit:
                 found.add(_kind(value, nxt))
     return found
 
