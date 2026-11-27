@@ -93,7 +93,8 @@ class ToolAllowedTest(unittest.TestCase):
         self.assertTrue(turns.tool_allowed("Glob", {"pattern": "**/coverage.md"}, self.ws, self.plugin))
 
     def test_glob_pattern_outside_denied(self):
-        for pattern in ("/etc/*", "../../*", "~/.ssh/*", "specs/../../*", "/tmp/outside"):
+        for pattern in ("/etc/*", "../../*", "~/.ssh/*", "specs/../../*", "/tmp/outside",
+                        "/*", "/**/hosts", "/[e]tc/hosts", "/?tc/hosts", "*/../../x", "{a,b}/../../x"):
             self.assertFalse(turns.tool_allowed("Glob", {"pattern": pattern}, self.ws, self.plugin), pattern)
         self.assertTrue(turns.tool_allowed("Glob", {"pattern": "skills/*", "path": str(self.plugin)}, self.ws, self.plugin))
         self.assertTrue(turns.tool_allowed("Skill", {"skill": "vibebiz:idea"}, self.ws, self.plugin))

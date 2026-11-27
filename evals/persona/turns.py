@@ -71,11 +71,19 @@ def tool_allowed(name: str, tool_input: dict, workspace, plugin_dir) -> bool:
 
 
 def _glob_root(pattern: str, base: str) -> str:
-    """The folder a Glob pattern searches: its part before the first wildcard, joined to the base."""
+    """The folder a Glob pattern searches: its literal leading components (the `/` anchor kept), joined to the base.
+
+    A `..` after a wildcard can climb anywhere, so it searches from the filesystem root.
+    """
     from pathlib import Path
-    cut = min([pattern.find(c) for c in "*?[{" if c in pattern] or [len(pattern)])
-    head = pattern[:cut]
-    if cut < len(pattern):  # drop the partial name the wildcard belongs to: `src/fo*` searches `src`
-        head = head.rsplit("/", 1)[0] if "/" in head else ""
-    p = Path(head or ".").expanduser()
-    return str(p if p.is_absolute() else Path(base).expanduser() / p)
+    parts = Path(pattern).expanduser().parts
+    lead = 0
+    while lead < len(parts) and not any(c in parts[lead] for c in "*?[{"):
+        lead += 1
+    if ".." in parts[lead:]:
+        return "/"
+    if lead < len(parts):  # the components up to the first wildcard name the folder searched
+        head = Path(*parts[:lead]) if lead else Path(".")
+    else:  # no wildcard: the pattern names a file, searched in its folder
+        head = Path(*parts).parent if parts else Path(".")
+    return str(head if head.is_absolute() else Path(base).expanduser() / head)

@@ -94,7 +94,9 @@ class CanUseTool(unittest.TestCase):
 
         denied = hook("Read", {"file_path": "/etc/hosts"})
         self.assertEqual(denied["hookSpecificOutput"]["permissionDecision"], "deny")
-        self.assertEqual(hook("Glob", {"pattern": "/etc/*"})["hookSpecificOutput"]["permissionDecision"], "deny")
+        for pattern in ("/etc/*", "/*", "/[e]tc/hosts"):
+            self.assertEqual(hook("Glob", {"pattern": pattern})["hookSpecificOutput"]["permissionDecision"], "deny")
+        self.assertEqual(hook("Glob", {"pattern": "specs/**/*.md"}), {})
         self.assertEqual(hook("Bash", {"command": "ls"})["hookSpecificOutput"]["permissionDecision"], "deny")
         self.assertEqual(hook("Read", {"file_path": str(self.ws / "a.md")}), {})
         self.assertEqual(hook("AskUserQuestion", {"questions": []}), {})
