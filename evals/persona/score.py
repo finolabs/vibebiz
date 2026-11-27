@@ -65,8 +65,6 @@ def readiness(coverage_path: Path, involves_ai: bool = False) -> tuple[bool, lis
 
 # ---------------------------------------------------------------- quantities
 
-_WORDS = {"một": 1, "hai": 2, "ba": 3, "bốn": 4, "tư": 4, "năm": 5, "sáu": 6,
-          "bảy": 7, "tám": 8, "chín": 9, "mười": 10, "mười hai": 12}
 _DAYS = {"ngày": 1, "tuần": 7, "tháng": 30, "quý": 90, "năm": 365,
          "day": 1, "days": 1, "week": 7, "weeks": 7, "month": 30, "months": 30,
          "year": 365, "years": 365}
@@ -77,11 +75,20 @@ _CURRENCY = ("đồng", "đ", "vnd", "vnđ", "₫")
 
 _NUM = r"\d+(?:[.,]\d+)*"
 _UNIT = r"%|phần trăm|" + "|".join(sorted({*_DAYS, *_MONEY, *_HOURS, *_CURRENCY}, key=len, reverse=True))
+# A range shares its closing unit: `25–40 tuổi`, `từ 11 xuống 7 ngày`.
+_RANGE = r"(?:\s*[–\-—]\s*|\s+(?:xuống|lên|đến|tới|to)\s+(?:còn\s+)?)"
 _QTY_RE = re.compile(
-    rf"(?<![\w.,])({_NUM})(?:\s*[–\-—]\s*({_NUM}))?\s*({_UNIT})?(?!\w)", re.IGNORECASE)
-_WORD_RE = re.compile(
-    r"(?<!\w)(" + "|".join(sorted(_WORDS, key=len, reverse=True)) + r")\s+("
-    + "|".join(sorted(_DAYS, key=len, reverse=True)) + r")(?!\w)", re.IGNORECASE)
+    rf"(?<![\w.,])({_NUM})(?:{_RANGE}({_NUM}))?\s*({_UNIT})?(?!\w)", re.IGNORECASE)
+# Number words are read as whole numerals and kept only with a unit after them (`hai mươi bảy
+# giờ` is 27 hours, `bảy phần trăm` 7%, `bảy triệu` 7 million). A bare word count is not read:
+# idioms such as `hai chiều`, `hai bên` and `một lần` make it unreliable, and specs write their
+# figures in digits.
+_DIGITS = {"một": 1, "mốt": 1, "hai": 2, "ba": 3, "bốn": 4, "tư": 4, "năm": 5, "lăm": 5,
+           "sáu": 6, "bảy": 7, "tám": 8, "chín": 9}
+_NUMERAL_WORDS = {*_DIGITS, "mười", "mươi", "chục", "trăm", "linh", "lẻ"}
+# Punctuation is kept as its own token so `hai, ba cửa hàng` stays two numerals.
+_WORD_TOKEN_RE = re.compile(r"\w+|[^\w\s]")
+
 
 
 def _to_float(token: str) -> float:
@@ -113,6 +120,64 @@ def _kind(value: float, unit: str | None) -> tuple[str, float]:
 _NOT_QTY_RE = re.compile(r"\b\d{4}-\d{2}-\d{2}\b|\b\d{1,2}/\d{1,2}(?:/\d{2,4})?\b|\b\d{1,2}/\d{4}\b|\b[A-Z]{1,3}-\d+\b")
 
 
+def _numeral_value(words: list[str]) -> float:
+    """`hai mươi bảy` 27, `mười hai` 12, `ba trăm linh năm` 305, `bốn chục` 40."""
+    total, current = 0, 0
+    for w in words:
+        if w in _DIGITS:
+            current += _DIGITS[w]
+        elif w == "mười":
+            current += 10
+        elif w in ("mươi", "chục"):
+            current = (current or 1) * 10
+        elif w == "trăm":
+            total, current = total + (current or 1) * 100, 0
+    return float(total + current)
+
+
+def _word_quantities(text: str) -> set[tuple[str, float]]:
+    """Quantities written in Vietnamese number words; one linear pass over the words."""
+    words = [w.lower() for w in _WORD_TOKEN_RE.findall(text)]
+    found: set[tuple[str, float]] = set()
+    i = 0
+    while i < len(words):
+        if words[i] not in _NUMERAL_WORDS or words[i] in ("mươi", "chục", "trăm", "linh", "lẻ"):
+            i += 1
+            continue
+        j = i + 1
+        # "năm" after a numeral is the unit "year" (the digit 5 is "lăm"), except after "linh"
+        # or "lẻ" and before "mươi" (`một trăm năm mươi` is 150).
+        while j < len(words) and words[j] in _NUMERAL_WORDS and (
+                words[j] != "năm" or words[j - 1] in ("linh", "lẻ")
+                or (j + 1 < len(words) and words[j + 1] == "mươi")):
+            j += 1
+        run, before = words[i:j], words[i - 1] if i else ""
+        nxt = words[j] if j < len(words) else ""
+        after = " ".join(words[j:j + 2])
+        is_unit = nxt in _DAYS or nxt in _HOURS or nxt in _MONEY or nxt in _CURRENCY
+        # Step past the unit too, so `một năm sáu tháng` does not read "năm" again as 5.
+        i = j + (2 if after == "phần trăm" else 1 if is_unit else 0)
+        # Weekdays and month names are not quantities (`thứ hai`, `tháng Bảy năm nay`); after
+        # "tháng" a shorter time unit is still a duration (`mỗi tháng hai ngày`).
+        if before == "thứ" or (before == "tháng" and nxt not in ("ngày", "tuần", "giờ", "tiếng")):
+            continue
+        # Two digits side by side are an approximate range (`hai ba ngày`, two or three days):
+        # split there and give each end the unit after the run, as `25–40 tuổi` does.
+        parts, start = [], 0
+        for k in range(1, len(run)):
+            if run[k] in _DIGITS and run[k - 1] in _DIGITS:
+                parts.append(run[start:k])
+                start = k
+        parts.append(run[start:])
+        for part in parts:
+            value = _numeral_value(part)
+            if after == "phần trăm":
+                found.add(("pct", value))
+            elif is_unit:
+                found.add(_kind(value, nxt))
+    return found
+
+
 def quantities(text: str) -> set[tuple[str, float]]:
     """Every (kind, value) the text states, values rounded; a range `25–40 x` gives both ends."""
     text = _NOT_QTY_RE.sub(" ", text)
@@ -122,8 +187,7 @@ def quantities(text: str) -> set[tuple[str, float]]:
         for tok in (m.group(1), m.group(2)):
             if tok:
                 found.add(_kind(_to_float(tok), unit))
-    for m in _WORD_RE.finditer(text):
-        found.add(_kind(float(_WORDS[m.group(1).lower()]), m.group(2)))
+    found |= _word_quantities(text)
     return {(kind, round(value, 6)) for kind, value in found}
 
 

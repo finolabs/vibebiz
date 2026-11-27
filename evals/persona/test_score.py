@@ -85,6 +85,52 @@ class QuantityEdges(unittest.TestCase):
         self.assertFalse(score.fact_numbers_present("34 cửa hàng", "34% khách quay lại"))
         self.assertFalse(score.fact_numbers_present("40 tuổi", "trong 40 giờ"))
 
+    def test_a_range_shares_its_closing_unit(self):
+        self.assertTrue(score.fact_numbers_present("từ 11 xuống 7 ngày", "từ 11 ngày xuống 7 ngày"))
+        self.assertTrue(score.fact_numbers_present("từ 26% xuống 12%", "26% xuống còn 12%"))
+        self.assertFalse(score.fact_numbers_present("từ 11 xuống 7 ngày", "11 cửa hàng, 7 ngày"))
+
+    def test_number_words_count_only_with_a_unit(self):
+        q = score.quantities
+        self.assertEqual(q("Cần hai mươi bảy giờ."), {("hours", 27.0)})
+        self.assertEqual(q("mười một giờ"), {("hours", 11.0)})
+        self.assertEqual(q("Tỷ lệ lỗi bảy phần trăm."), {("pct", 7.0)})
+        self.assertEqual(q("Ngân sách hai trăm năm mươi triệu đồng"), {("money", 250e6)})
+        self.assertEqual(q("ba trăm linh năm ngày"), {("days", 305.0)})
+        self.assertEqual(q("hai năm"), {("days", 730.0)})
+        self.assertEqual(q("Chờ hai ba ngày"), {("days", 2.0), ("days", 3.0)})
+        self.assertTrue(score.fact_numbers_present("5 giờ mỗi ngày", "năm tiếng một ngày"))
+        self.assertFalse(score.fact_numbers_present("4 giờ mỗi ngày", "hai mươi bốn giờ mỗi ngày"))
+        self.assertFalse(score.fact_numbers_present("5 ngày", "Chờ hai ba ngày"))
+        self.assertEqual(q("tháng Bảy năm nay"), set())
+        self.assertEqual(q("mỗi tháng hai ngày"), {("days", 2.0)})
+        self.assertEqual(q("Chạy thử trong một năm sáu tháng."), {("days", 365.0), ("days", 180.0)})
+        self.assertFalse(score.fact_numbers_present("Phải chạy được trong 5 tháng tới.", "trong một năm sáu tháng"))
+
+    def test_bare_number_words_are_not_counts(self):
+        for text in ("bảy nhân viên", "đồng bộ hai chiều", "Hai bên dùng chung mã", "mua lần hai",
+                     "thứ bảy hằng tuần", "tháng Sáu tới", "hai, ba cửa hàng", "kế hoạch đã chín muồi"):
+            self.assertEqual(score.quantities(text), set(), text)
+
+    def test_fixture_facts_against_ordinary_spec_prose(self):
+        def fact(fixture, fid):
+            data = json.loads((HERE.parents[1] / "evals" / "fixtures" / f"{fixture}.json").read_text(encoding="utf-8"))
+            return next(f["fact"] for f in data["key_facts"] if f["id"] == fid)
+        self.assertTrue(score.fact_numbers_present(fact("fashion-1-loyalty", "problem"),
+            "Chỉ 18% mua lại trong 90 ngày, khách mua một lần rồi bỏ đi."))
+        self.assertTrue(score.fact_numbers_present(fact("fashion-2-size-returns", "cost-today"),
+            "Mỗi đơn trả tốn trung bình 52.000 đồng vận chuyển khứ hồi và xử lý; khoảng 1.900 đơn trả mỗi tháng."))
+        self.assertTrue(score.fact_numbers_present(fact("fashion-3-seasonal-stock", "cost-today"),
+            "Chia hàng bằng Excel, mỗi đợt hai ngày công của cả 3 người; xả hàng tồn giảm giá trung bình 45%."))
+        self.assertFalse(score.fact_numbers_present(fact("fashion-3-seasonal-stock", "goal"),
+            "Giảm tồn cuối mùa từ 22% xuống 15%. Đồng bộ dữ liệu hai chiều giữa kho và cửa hàng."))
+
+    def test_long_tokens_stay_fast(self):
+        import time
+        start = time.monotonic()
+        score.quantities("x" * 200_000 + " bảy nhân viên")
+        self.assertLess(time.monotonic() - start, 1.0)
+
 
 class Facts(unittest.TestCase):
     def test_numbers_deterministic_and_unscored_without_judge(self):
