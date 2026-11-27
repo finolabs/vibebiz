@@ -103,6 +103,26 @@ class QuantityEdges(unittest.TestCase):
         self.assertFalse(score.fact_numbers_present("9 cửa hàng", "kế hoạch đã chín muồi"))
         self.assertFalse(score.fact_numbers_present("2 trung tâm", "thứ hai hàng tuần"))
 
+    def test_compound_number_words_are_read_whole(self):
+        q = score.quantities
+        self.assertEqual(q("Có hai mươi bảy nhân viên."), {("count", 27.0)})
+        self.assertEqual(q("mười hai nhân viên"), {("count", 12.0)})
+        self.assertEqual(q("Cần hai mươi bảy giờ."), {("hours", 27.0)})
+        self.assertEqual(q("hai mươi bốn giờ"), {("hours", 24.0)})
+        self.assertEqual(q("mười một giờ"), {("hours", 11.0)})
+        self.assertEqual(q("Tỷ lệ lỗi bảy phần trăm."), {("pct", 7.0)})
+        self.assertEqual(q("bốn chục thợ"), {("count", 40.0)})
+        self.assertEqual(q("ba trăm linh năm khách"), {("count", 305.0)})
+        self.assertEqual(q("hai năm"), {("days", 730.0)})
+        self.assertFalse(score.fact_numbers_present("4 giờ mỗi ngày", "hai mươi bốn giờ mỗi ngày"))
+        self.assertFalse(score.fact_numbers_present("7 nhân viên", "Có bảy phần trăm đơn hàng bị lỗi."))
+
+    def test_long_tokens_stay_fast(self):
+        import time
+        start = time.monotonic()
+        score.quantities("x" * 200_000 + " bảy nhân viên")
+        self.assertLess(time.monotonic() - start, 1.0)
+
 
 class Facts(unittest.TestCase):
     def test_numbers_deterministic_and_unscored_without_judge(self):

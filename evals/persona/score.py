@@ -65,8 +65,6 @@ def readiness(coverage_path: Path, involves_ai: bool = False) -> tuple[bool, lis
 
 # ---------------------------------------------------------------- quantities
 
-_WORDS = {"một": 1, "hai": 2, "ba": 3, "bốn": 4, "tư": 4, "năm": 5, "sáu": 6,
-          "bảy": 7, "tám": 8, "chín": 9, "mười": 10, "mười hai": 12}
 _DAYS = {"ngày": 1, "tuần": 7, "tháng": 30, "quý": 90, "năm": 365,
          "day": 1, "days": 1, "week": 7, "weeks": 7, "month": 30, "months": 30,
          "year": 365, "years": 365}
@@ -81,15 +79,15 @@ _UNIT = r"%|phần trăm|" + "|".join(sorted({*_DAYS, *_MONEY, *_HOURS, *_CURREN
 _RANGE = r"(?:\s*[–\-—]\s*|\s+(?:xuống|lên|đến|tới|to)\s+(?:còn\s+)?)"
 _QTY_RE = re.compile(
     rf"(?<![\w.,])({_NUM})(?:{_RANGE}({_NUM}))?\s*({_UNIT})?(?!\w)", re.IGNORECASE)
-_WORD_RE = re.compile(
-    r"(?<!\w)(" + "|".join(sorted(_WORDS, key=len, reverse=True)) + r")\s+("
-    + "|".join(sorted({*_DAYS, *_HOURS}, key=len, reverse=True)) + r")(?!\w)", re.IGNORECASE)
-# A number word before a noun is a count (`bảy nhân viên`). "một", "năm", "tư", "ba" and "chín"
-# also mean "a", "year", "fourth", "father" and "ripe", so only a unit makes them quantities.
-# Weekdays (`thứ hai`), compounds (`mười một`, `ba mươi hai`) and money (`bảy triệu`) are not counts.
-_COUNT_WORDS = ("mười hai", "mười", "tám", "bảy", "sáu", "bốn", "hai")
-_COUNT_WORD_RE = re.compile(r"(\w*)\s*(?<!\w)(" + "|".join(_COUNT_WORDS) + r")\s+(\w+)", re.IGNORECASE)
-_NUMBER_PARTS = {*_WORDS, "mươi", "trăm", "linh", "lẻ", "lăm", "mốt", "thứ"}
+# Number words are read as whole numerals, then by the word after them (`hai mươi bảy giờ` is
+# 27 hours, `bảy phần trăm` 7%, `bảy triệu` 7 million, `mười hai nhân viên` a count of 12).
+_DIGITS = {"một": 1, "mốt": 1, "hai": 2, "ba": 3, "bốn": 4, "tư": 4, "năm": 5, "lăm": 5,
+           "sáu": 6, "bảy": 7, "tám": 8, "chín": 9}
+_NUMERAL_WORDS = {*_DIGITS, "mười", "mươi", "chục", "trăm", "linh", "lẻ"}
+# Alone, these also mean "a", "father", "fourth", "year", "ripe": they need a unit to count.
+_AMBIGUOUS = {"một", "ba", "tư", "năm", "chín", "mốt", "lăm"}
+_WORD_TOKEN_RE = re.compile(r"\w+")
+
 
 
 def _to_float(token: str) -> float:
@@ -121,6 +119,51 @@ def _kind(value: float, unit: str | None) -> tuple[str, float]:
 _NOT_QTY_RE = re.compile(r"\b\d{4}-\d{2}-\d{2}\b|\b\d{1,2}/\d{1,2}(?:/\d{2,4})?\b|\b\d{1,2}/\d{4}\b|\b[A-Z]{1,3}-\d+\b")
 
 
+def _numeral_value(words: list[str]) -> float:
+    """`hai mươi bảy` 27, `mười hai` 12, `ba trăm linh năm` 305, `bốn chục` 40."""
+    total, current = 0, 0
+    for w in words:
+        if w in _DIGITS:
+            current += _DIGITS[w]
+        elif w == "mười":
+            current += 10
+        elif w in ("mươi", "chục"):
+            current = (current or 1) * 10
+        elif w == "trăm":
+            total, current = total + (current or 1) * 100, 0
+    return float(total + current)
+
+
+def _word_quantities(text: str) -> set[tuple[str, float]]:
+    """Quantities written in Vietnamese number words; one linear pass over the words."""
+    words = [w.lower() for w in _WORD_TOKEN_RE.findall(text)]
+    found: set[tuple[str, float]] = set()
+    i = 0
+    while i < len(words):
+        if words[i] not in _NUMERAL_WORDS or words[i] in ("mươi", "chục", "trăm", "linh", "lẻ"):
+            i += 1
+            continue
+        j = i + 1
+        # "năm" after a numeral is the unit "year" (the digit 5 is "lăm"), except after "linh" or "lẻ".
+        while j < len(words) and words[j] in _NUMERAL_WORDS and (
+                words[j] != "năm" or words[j - 1] in ("linh", "lẻ")):
+            j += 1
+        run, before = words[i:j], words[i - 1] if i else ""
+        nxt = words[j] if j < len(words) else ""
+        after = " ".join(words[j:j + 2])
+        i = j
+        if before == "thứ":
+            continue
+        value = _numeral_value(run)
+        if after == "phần trăm":
+            found.add(("pct", value))
+        elif nxt in _DAYS or nxt in _HOURS or nxt in _MONEY or nxt in _CURRENCY:
+            found.add(_kind(value, nxt))
+        elif nxt and not (len(run) == 1 and run[0] in _AMBIGUOUS):
+            found.add(("count", value))
+    return found
+
+
 def quantities(text: str) -> set[tuple[str, float]]:
     """Every (kind, value) the text states, values rounded; a range `25–40 x` gives both ends."""
     text = _NOT_QTY_RE.sub(" ", text)
@@ -130,15 +173,7 @@ def quantities(text: str) -> set[tuple[str, float]]:
         for tok in (m.group(1), m.group(2)):
             if tok:
                 found.add(_kind(_to_float(tok), unit))
-    for m in _WORD_RE.finditer(text):
-        found.add(_kind(float(_WORDS[m.group(1).lower()]), m.group(2)))
-    for m in _COUNT_WORD_RE.finditer(text):
-        before, word, noun = m.group(1).lower(), m.group(2).lower(), m.group(3).lower()
-        if before in _NUMBER_PARTS or noun in _NUMBER_PARTS:
-            continue
-        if noun in _DAYS or noun in _HOURS or noun in _MONEY or noun in _CURRENCY:
-            continue
-        found.add(("count", float(_WORDS[word])))
+    found |= _word_quantities(text)
     return {(kind, round(value, 6)) for kind, value in found}
 
 
