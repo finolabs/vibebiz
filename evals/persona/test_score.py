@@ -143,6 +143,12 @@ class QuantityEdges(unittest.TestCase):
         spec = "Mỗi tháng 1.800 khách mua lần đầu; chỉ 18% mua lại trong 90 ngày, khách mua một lần rồi bỏ đi."
         self.assertTrue(score.fact_numbers_present(problem, spec))
 
+    def test_word_counts_in_a_fact_are_idioms(self):
+        fact = "Mỗi đơn trả tốn trung bình 52.000 đồng vận chuyển hai chiều và xử lý; khoảng 1.900 đơn trả mỗi tháng."
+        spec = "Mỗi đơn trả tốn trung bình 52.000 đồng vận chuyển khứ hồi và xử lý; khoảng 1.900 đơn trả mỗi tháng."
+        self.assertTrue(score.fact_numbers_present(fact, spec))
+        self.assertTrue(score.fact_numbers_present("trong 90 ngày", "trong ba tháng"))
+
     def test_long_tokens_stay_fast(self):
         import time
         start = time.monotonic()

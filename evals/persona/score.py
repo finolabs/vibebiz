@@ -178,8 +178,11 @@ def _word_quantities(text: str) -> set[tuple[str, float]]:
     return found
 
 
-def quantities(text: str) -> set[tuple[str, float]]:
-    """Every (kind, value) the text states, values rounded; a range `25–40 x` gives both ends."""
+def quantities(text: str, word_counts: bool = True) -> set[tuple[str, float]]:
+    """Every (kind, value) the text states, values rounded; a range `25–40 x` gives both ends.
+
+    `word_counts=False` drops counts written only in words: fixture facts write their figures
+    in digits, so a word count there is an idiom (`hai chiều`, `một lần`), not a figure."""
     text = _NOT_QTY_RE.sub(" ", text)
     found: set[tuple[str, float]] = set()
     for m in _QTY_RE.finditer(text):
@@ -187,13 +190,13 @@ def quantities(text: str) -> set[tuple[str, float]]:
         for tok in (m.group(1), m.group(2)):
             if tok:
                 found.add(_kind(_to_float(tok), unit))
-    found |= _word_quantities(text)
+    found |= {q for q in _word_quantities(text) if word_counts or q[0] != "count"}
     return {(kind, round(value, 6)) for kind, value in found}
 
 
 def fact_numbers_present(fact: str, spec_text: str) -> bool:
     """All of the fact's quantities appear in the spec with the same kind (a count matches only a count)."""
-    return quantities(fact) <= quantities(spec_text)
+    return quantities(fact, word_counts=False) <= quantities(spec_text)
 
 
 # ---------------------------------------------------------------- facts
