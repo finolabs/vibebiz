@@ -133,9 +133,11 @@ categories:
   Human view of the frontmatter above. Rebuild this table from the frontmatter
   after every round; the frontmatter is the source of truth. Write the body in
   the idea's language; keep the frontmatter keys and values in English.
-  Ready to package (spec Appendix A, FR-020): A, C, D and E clear; F clear when
-  AI is involved; M at least an S, M or L size; every other category clear or
-  deferred with a reason.
+  Ready to package (spec Appendix A, FR-020; router "Readiness"): A, C, D and E
+  settled with each frontier element recorded; F settled when AI is involved; M
+  at least an S, M or L size; every other category settled. Settled is clear,
+  deferred with a reason, or partial waiting only on open questions someone
+  other than the user owns (for D, also figures behind the chosen direction).
 -->
 
 | Code | Category | Status | Reason (when deferred) | Updated |

@@ -304,7 +304,7 @@ Spec Kit 1.4.0's `clarify` categories (scope, data, UX flow, non-functional, int
 | N | Terminology | none | glossary | clarify (module) |
 | O | Completion signals: testable acceptance criteria | C, E | Acceptance Scenarios | outcome |
 
-Readiness to package: A, C, D and E Clear; F Clear when AI is involved; M at least an S/M/L size; every other category Clear or Deferred with a reason.
+Readiness to package: A, C, D and E settled, each of their listed elements recorded, answered or as an open question with its owner; F settled when AI is involved; M at least an S/M/L size; every other category settled. Settled is Clear, Deferred with a reason, or waiting only on open questions someone else owns (for D, also figures behind the chosen direction). Missing information alone never holds an idea back: it goes into the package as an open question with its owner and is filled in through `continue` (amended 28/11/2026, Fio: plan with what you have).
 
 ## Appendix B - Interview Protocol and Session Flow
 

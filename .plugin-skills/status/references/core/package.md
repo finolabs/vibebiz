@@ -24,7 +24,7 @@ In Drive mode (`references/core/workspace.md` §1a) every read and write in the 
 
 1. Re-read every idea file listed above; the user's hand edits are authoritative.
 2. If `cynefin` is `chaotic`, do not package: say in one sentence that the current crisis needs handling first and that the idea is saved, and stop.
-3. Check readiness by the router's rule: problem (A), outcome (C), alternatives (D) and scope (E) are `clear`; AI fit (F) is `clear` when the idea involves AI; cost (M) has at least a small, medium or large size; every other category is `clear` or `deferred` with a reason.
+3. Check readiness by the router's rule (`references/core/router.md` "Readiness"): problem (A), outcome (C), alternatives (D) and scope (E) are settled, with each element the router's frontier table lists for them recorded, answered or as an open question with its owner; AI fit (F) is settled when the idea involves AI; cost (M) has at least a small, medium or large size; every other category is settled. Settled is `clear`, `deferred` with a reason, or waiting only on open questions someone else owns; missing information alone never holds an idea back.
 4. **Below readiness**, list what is missing in plain words, one short line per category, then ask one question: continue the interview (recommended, because the board decides better on a complete case) or export a labelled draft now. Example:
 
    "Ý tưởng còn thiếu ba điểm trước khi trình: cách đo kết quả, so sánh với việc sửa quy trình hiện tại, và quy mô chi phí. Anh/chị muốn làm gì tiếp?"

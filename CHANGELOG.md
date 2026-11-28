@@ -6,6 +6,8 @@ All notable changes to vibebiz are recorded here. The format follows [Keep a Cha
 
 ### Changed
 
+- Missing information no longer holds an idea back from packaging: once you have answered what you can, gaps only someone else can fill go into the board deck and tech document as open questions with their owner, and `continue` fills them in later.
+- A session keeps asking until its rounds are used instead of stopping after one round and telling you to come back.
 - Asking what vibebiz is now opens with a short invitation: for anyone with a business or operations idea who is not sure they can write it up as a professional document.
 - Once you choose which direction to try first (fix the process, buy, build), vibebiz goes on to scope, cost and the rest, even while figures behind that choice are still open questions; before, the interview stalled there and recommended pausing.
 

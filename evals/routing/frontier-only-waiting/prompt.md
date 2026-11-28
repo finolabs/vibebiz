@@ -1,5 +1,5 @@
 ---
-description: 'Only a category waiting on someone else is left: no question about it, a next step that names who to ask, and the budget offer recommends pause.'
+description: 'Only a category waiting on someone else is left: no question about it, and the idea is ready to package with that gap as an open question for its owner.'
 max_turns: 25
 timeout_seconds: 600
 allowed_tools: [Skill, Read, Write, Edit, Glob, Grep, AskUserQuestion]

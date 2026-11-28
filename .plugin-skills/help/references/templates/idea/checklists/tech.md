@@ -15,10 +15,10 @@
 
 ## Readiness (FR-020)
 
-- [ ] CHK001 Problem and why (A), outcome (C), alternatives (D) and scope (E) are clear
-- [ ] CHK002 AI fit (F) is clear, or the idea does not involve AI
+- [ ] CHK001 Problem and why (A), outcome (C), alternatives (D) and scope (E) are settled: clear, or waiting only on named open questions
+- [ ] CHK002 AI fit (F) is settled, or the idea does not involve AI
 - [ ] CHK003 Cost (M) has at least an S, M or L size
-- [ ] CHK004 Every other category is clear, or deferred with a recorded reason
+- [ ] CHK004 Every other category is clear, deferred with a recorded reason, or waiting only on named open questions
 
 ## Sections (spec Appendix D)
 

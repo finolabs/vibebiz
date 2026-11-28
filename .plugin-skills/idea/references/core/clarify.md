@@ -97,7 +97,7 @@ Set each handed-over category's status in `coverage.md` from the section 1 list,
 - `clear`: every item is answered, or recorded as an open question whose answer would not change the board's decision.
 - `partial`: some items are answered and at least one that matters is still missing.
 - `missing`: nothing is answered yet.
-- `deferred`: only with a written `reason`, and only when the user chose to settle it later or the answer belongs to someone named as `owner` of an open question (Q-###). Running out of questions is not a reason to defer; the ask protocol's budget offer handles that.
+- `deferred`: only with a written `reason`, and only when the user chose to settle it later. When the answer belongs to someone else, record the open question (Q-###) with that owner and keep the category `partial`: it waits on that answer, and waiting does not hold back readiness (the router's "Readiness"). Running out of questions is not a reason to defer; the ask protocol's budget offer handles that.
 
 A category whose only question was skipped keeps its status and its `updated` date. Then rebuild the coverage table and the clear count as the ask protocol says, and leave `next_step` and `budget_rounds_used` to the router.
 

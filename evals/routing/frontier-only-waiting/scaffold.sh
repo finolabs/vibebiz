@@ -118,8 +118,8 @@ categories:
     frameworks: []
     updated: "2026-11-12"
   M:
-    status: deferred
-    reason: "Để sau buổi chọn phần mềm"
+    status: partial
+    reason: null
     prerequisites: [C, D, E]
     filled_by: challenge, plan
     frameworks: []
@@ -156,7 +156,7 @@ categories:
 | J | Edge cases and failures | deferred | Để sau buổi chọn phần mềm | 2026-11-12 |
 | K | Risk and compliance | deferred | Để sau buổi chọn phần mềm | 2026-11-12 |
 | L | Organizational change | deferred | Để sau buổi chọn phần mềm | 2026-11-12 |
-| M | Cost, resources and return | deferred | Để sau buổi chọn phần mềm | 2026-11-12 |
+| M | Cost, resources and return | partial |  | 2026-11-12 |
 | N | Terminology | clear |  | 2026-11-12 |
 | O | Completion signals | deferred | Để sau buổi chọn phần mềm | 2026-11-12 |
 
@@ -180,7 +180,7 @@ Tăng tỷ lệ khách mua lần hai trong 90 ngày từ 18% lên 24% trong 6 th
 
 ## Alternatives
 
-- Không làm gì: tỷ lệ giữ ở 18%.
+- Không làm gì: tỷ lệ giữ ở 18%; mỗi tháng khoảng 1.500 khách mua một lần rồi không quay lại, mất khoảng 600 triệu đồng doanh thu mua lần hai mỗi tháng (báo cáo bán hàng quý 3/2026, đo); chờ thêm thì mất thêm hai mùa hàng như vậy.
 - Sửa quy trình: nhân viên cửa hàng tự nhắn tay qua Zalo; đã thử ở 2 cửa hàng tháng 8/2026, mỗi người chỉ nhắn được khoảng 20 khách một ngày.
 - Mua phần mềm nhắn tin có sẵn: phương án được chọn, đã thu hẹp còn hai nhà cung cấp; giá thuê bao hằng tháng chưa có (đã hỏi, xem Q-001).
 - Tự xây: loại, vì đội kỹ thuật không có người rảnh trước tháng 3/2027.
@@ -188,6 +188,10 @@ Tăng tỷ lệ khách mua lần hai trong 90 ngày từ 18% lên 24% trong 6 th
 ## Scope & Behavior
 
 Hành trình theo thứ tự ưu tiên: (1) phần mềm tự gửi tin Zalo nhắc khách chưa mua lần hai sau 45 ngày kể từ lần mua đầu; (2) khách bấm vào tin để xem hàng mới của cửa hàng gần nhất; (3) khách bấm từ chối thì không nhận tin nữa. Ngoài phạm vi: khuyến mãi riêng cho từng khách, gọi điện, khách chỉ mua online.
+
+## Cost & Risk
+
+Quy mô: nhỏ (ước tính của người dùng, chưa qua kỹ thuật thẩm định). Chi phí thuê bao hằng tháng: chưa làm rõ, chờ Q-001 (nhà cung cấp).
 
 ## Clarifications
 

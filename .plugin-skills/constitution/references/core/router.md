@@ -14,7 +14,7 @@ At the start of a session (the first round for this idea in this conversation), 
 
 1. **Re-read** every idea file listed above. The user may have edited them by hand; their edits are authoritative, so work from the current files and never restore an older version.
 2. **Set the depth** (see "Depth"): classify the idea right after intake, before the first round, and revisit the classification whenever the files or the latest answers change what it rests on.
-3. **Check readiness** (see "Readiness"). If ready, offer to package and stop the loop unless the user chooses to keep going. When the user chooses to package, hand over to the `package` entry skill (or name `/vibebiz:package` when you cannot start it from here); its steps call any Google Slides, Docs or Drive skill.
+3. **Check readiness** (see "Readiness") before computing any frontier, every pass. A sized M without scenarios does not prevent it (M's own rule); any other `partial` category counts only when it is settled by "Readiness", and one with a gap the user can answer is asked, not packaged. If ready, set `ready`, offer to package (recommended) or to keep refining, and stop the loop unless the user chooses to keep going; with nobody to answer, make that offer and stop. When the user chooses to package, hand over to the `package` entry skill (or name `/vibebiz:package` when you cannot start it from here); its steps call any Google Slides, Docs or Drive skill.
 4. **Resolve conflicts first**: if the last answers contradict an earlier decision, handle it (see "Contradictions") before anything else.
 5. **Check for two ideas** (see "Two ideas in one") when the intake or the latest answers suggest it.
 6. **Compute the frontier** and **rank** its askable categories (see "Frontier" and "Ranking").
@@ -22,7 +22,7 @@ At the start of a session (the first round for this idea in this conversation), 
 8. **Choose the module** for each category in the round, choose its framework card if one fits (see "Frameworks", including any card waiting for a revisit), and let the module write the round's questions (see "Who fills what"). Do the card check in every round, not only the first: for each category in the round, look its code up in `references/packs/framework-index.md` ("By category", the row whose lens is the category's module), read the file of every card listed there, and hand one over unless every one is excluded by "Frameworks" rules 1, 2 and 8 or by the depth. One round holds at most four questions in total, taken from the highest-ranked categories first.
 9. **Ask the round** through the ask protocol, which writes the answers back.
 10. **Close the round**: increment `budget_rounds_used` by one (an all-skipped round counts too), make sure each category the round touched has its new status and its applied cards in `frameworks`, rebuild the `coverage.md` body table from the frontmatter, write `next_step` (see "Next step"), set `updated` to today, and rebuild the table of contents by the workspace module's rules (`references/core/workspace.md`). Do this after every round, so an abandoned session loses nothing.
-11. **Check the budget** (see "Budget"). If budget remains, go back to step 1.
+11. **Check the budget** (see "Budget"). If budget remains, go back to step 1 in the same turn: a round is not a stopping point, so do not end the turn, close the run or tell the user to type `/vibebiz:continue` between rounds.
 
 When the loop stops (readiness, the budget, only categories waiting on someone else, or nobody to answer), close the run (see "Close the run").
 
@@ -72,7 +72,7 @@ The frontier is every category whose status is `missing` or `partial` and whose 
 - Never put a question on the round for a category outside the frontier, even when it seems quick. A question that depends on an unsettled answer (for example return on investment before the outcome is set) waits for a later round, because its answer would rest on a guess.
 - **Waiting on someone else.** A `partial` category whose only remaining gap is a fact someone not in the conversation must supply (an open question in `open-questions.md` with `status: open` whose owner is someone other than the user; an owner written `user`, as no-answer runs write it, is the user) is waiting. It is not asked again and stays `partial` until that answer arrives, but for the frontier it counts as settled, like `deferred`: the categories that depend on it are asked now. Where an answer rests on the missing fact, the text written for it names that open question (for example "chờ Q-001, giá phần mềm"), and the missing fact stays an open question, never your estimate. The question's `blocking` field says whether the tech team can start without it; it does not hold back the interview. When that open question is resolved, set back to `partial`, with the reason `revisit: Q-###`, every category whose text names it and every category its `unblocks` and `category` fields name, except a category the user deferred: keep that deferral and ask in the next round whether the answer changes it, reopening it only on the user's yes. Ask about the change in the next round; unlike a card revisit ("Frameworks" rule 9), other frontier categories may join that round.
 - **Direction chosen.** D counts as settled for the frontier once `decisions.md` records the direction the user chose to pursue first (do nothing, fix the process, buy, build, or a named mix), even while D stays `partial` on figures such as a vendor's price or how much a process fix would gain. Those figures stay open questions in D, never your estimate. While they are D's only gap, D counts as waiting, like a category waiting on someone else, even when the user owns them (for example the result of a trial the user will run): it leaves the askable frontier, so it neither fills a round nor keeps the budget recommendation at "Hỏi tiếp", and it is asked again only when the user brings one of those figures. E and M then rest on the chosen direction, and their text names it. When that decision is superseded, set E and M back to `partial` with the reason `revisit: D` and ask about the change in the next round.
-- **The askable frontier** is the frontier without waiting categories. While budget remains and it holds a category, ask the round, unless the user asked to pause: waiting for someone else's answer is a reason to record an open question, never a reason to end the round or the session early. When only waiting categories are left, ask nothing more: write a `next_step` that names who to ask for what, and make the budget offer (see "Budget") recommending "Tạm dừng".
+- **The askable frontier** is the frontier without waiting categories. While budget remains and it holds a category, ask the round, unless the user asked to pause: waiting for someone else's answer is a reason to record an open question, never a reason to end the round or the session early. When only waiting categories are left, ask nothing more and check readiness first (see "Readiness"): waiting categories are settled, so when it holds, set `ready` and offer to package, with the open questions going into the package for their owners. Only when it does not hold, write a `next_step` that names who to ask for what, and make the budget offer (see "Budget") recommending "Tạm dừng".
 - A category with an unresolved contradiction is treated as not settled, so the categories that depend on it leave the frontier until the user decides.
 
 ## Ranking
@@ -180,12 +180,16 @@ An idea holds two independent problems when they affect different people or need
 
 ## Readiness
 
+Missing information alone never holds an idea back: what the user can decide is asked, and what only someone else can supply goes into the package as an open question with its owner, to be filled in through `continue` (Fio, 28/11/2026: plan with what you have). A category is **settled** when it is `clear`, `deferred` with a reason, or waiting: its only gaps are open questions owned by someone other than the user ("Waiting on someone else"), or, for D, figures behind the chosen direction ("Direction chosen").
+
 The idea is ready to package when all of these hold:
 
-- A, C, D and E are `clear`;
-- F is `clear` when the idea involves AI;
+- A, C, D and E are settled, and each element the frontier table lists for them is recorded, either answered or as an open question with its owner; a partial A, C, D or E counts only when its remaining gaps are open questions owned by someone other than the user, or, for D, figures behind the chosen direction;
+- F is settled when the idea involves AI;
 - M has at least a small, medium or large size recorded;
-- every other category is `clear` or `deferred` with a reason.
+- every other category is settled; one with a gap the user can answer (for example K partial with no open question) is asked, not packaged.
+
+A waiting category stays `partial` in `coverage.md`; the package shows its gaps as "not yet clarified" with the open question and its owner, and when that answer arrives `continue` reopens what rests on it ("Waiting on someone else").
 
 When `cynefin` is `chaotic`, do not set `ready` and do not offer to package, even when the conditions hold: the crisis comes first (see "Depth"). Offer pause instead, and write a `next_step` that names returning to the idea once the situation is stable.
 
@@ -205,7 +209,7 @@ Recommend "Hỏi tiếp" when the askable frontier (see "Frontier") still has ca
 
 ## Close the run
 
-This applies to a run that `idea` or `continue` handed here; when `package` sent the idea back, `package` closes. The last message ends with the table of contents, after the round or the note that it was skipped: the Artifact link when one was published, otherwise a short table in the chat with each idea's title, status, points clear and next step (`references/core/workspace.md` §7; in Drive mode `references/core/drive-workspace.md` §5). Ideas and files go by their plain titles ("mục lục", "bản yêu cầu"). Done when the last message shows the round and then the table of contents, in the user's language, with every file named by its plain title.
+This applies to a run that `idea` or `continue` handed here, once the loop has stopped for one of its reasons (readiness, the budget offer, only categories waiting on someone else, the user's pause, or nobody to answer), never after a round while the loop would go on; when `package` sent the idea back, `package` closes. The last message ends with the table of contents, after the last round or the note that it was skipped: the Artifact link when one was published, otherwise a short table in the chat with each idea's title, status, points clear and next step (`references/core/workspace.md` §7; in Drive mode `references/core/drive-workspace.md` §5). Ideas and files go by their plain titles ("mục lục", "bản yêu cầu"). Done when the loop stopped for one of those reasons and the last message shows the last round and then the table of contents, in the user's language, with every file named by its plain title.
 
 ## Next step
 

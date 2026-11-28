@@ -44,7 +44,7 @@ Path: the folder open in Cowork (or its `vibebiz/` subfolder).
 
 **Category**: `status` (`clear` \| `partial` \| `missing` \| `deferred`), `reason` (required when deferred), `prerequisites` (fixed, spec Appendix A), `filled_by` (module), `frameworks` (applied card ids; a card is added only while the category is open and not already listed, spec 004), `framework_reasons` (optional map from card id to one English line on why it was chosen, spec 004), `updated`.
 
-**Validation**: a category is asked only when every prerequisite is `clear` or `deferred`; readiness is A, C, D, E `clear`, F `clear` when the idea involves AI, M at least sized, every other category `clear` or `deferred`.
+**Validation**: a category is asked only when every prerequisite is `clear` or `deferred`; readiness is A, C, D, E settled, F settled when the idea involves AI, M at least sized, every other category settled; settled is `clear`, `deferred` with a reason, or `partial` waiting only on open questions someone else owns (for D, also on figures behind the chosen direction) (spec Appendix A, router "Readiness").
 
 ### Idea status state machine
 

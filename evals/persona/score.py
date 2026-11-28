@@ -4,8 +4,11 @@ Stdlib only, so the unit test runs without the Agent SDK. Reads an idea folder
 (`specs/NNN-<slug>/` in the workspace) and a fixture from `evals/fixtures/`.
 
 - Readiness follows core/router.md "Readiness" (spec 001 Appendix A, FR-020):
-  A, C, D, E clear; M sized; every other category clear or deferred with a
-  reason. M is sized when its status is `clear` or `partial`: the challenge lens
+  A, C, D, E settled; M sized; every other category settled. Settled is clear,
+  deferred with a reason, or waiting: `partial` with an open question in
+  open-questions.md for that category owned by someone other than the user. Any
+  waiting category also needs the idea's own `status` to be `ready` or later,
+  since only the plugin can judge that nothing the user can answer is left. M is sized when its status is `clear` or `partial`: the challenge lens
   sets `partial` exactly when it records the size (core/lenses/challenge.md).
   F must be clear when the fixture's `involves_ai` is true; otherwise it counts like
   the other categories. An idea whose `cynefin` is `chaotic` is never ready (the
@@ -41,6 +44,25 @@ def find_idea(workspace: Path) -> Path | None:
     return folders[0] if folders else None
 
 
+_USER_OWNERS = ("user", "người dùng", "the user")  # whole owner values, lowercased
+_SETTLED_IDEA = ("ready", "packaged", "presented", "approved", "rejected", "needs-changes")
+
+
+def waiting_categories(questions_path: Path) -> set[str]:
+    """Categories with an open question owned by someone other than the user."""
+    try:
+        text = questions_path.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError):
+        return set()
+    found = set()
+    for block in re.split(r"(?m)^## Q-", text)[1:]:
+        field = lambda key: (re.search(rf"(?m)^- {key}:[ \t]*(.*)$", block) or [None, ""])[1].strip()
+        owner = field("owner").lower()
+        if field("status").lower() == "open" and owner and owner not in _USER_OWNERS:
+            found.add(field("category").upper()[:1])
+    return found
+
+
 def readiness(coverage_path: Path, involves_ai: bool = False) -> tuple[bool, list[str]]:
     """Return (ready, unmet) where unmet names each failing category."""
     try:
@@ -49,15 +71,18 @@ def readiness(coverage_path: Path, involves_ai: bool = False) -> tuple[bool, lis
         return False, [f"coverage.md unreadable: {exc}"]
     cats = data.get("categories") if isinstance(data.get("categories"), dict) else {}
     unmet = ["cynefin:chaotic"] if data.get("cynefin") == "chaotic" else []
+    waiting = waiting_categories(coverage_path.parent / "open-questions.md")
+    idea_settled = str(data.get("status", "")).strip() in _SETTLED_IDEA
     for code in ALL_CODES:
         cat = cats.get(code) if isinstance(cats.get(code), dict) else {}
         status = cat.get("status")
+        is_waiting = status == "partial" and code in waiting and idea_settled
         if code in MUST_CLEAR or (code == "F" and involves_ai):
-            ok = status == "clear"
+            ok = status == "clear" or is_waiting
         elif code == "M":
             ok = status in ("clear", "partial")
         else:
-            ok = status == "clear" or (status == "deferred" and bool(cat.get("reason")))
+            ok = status == "clear" or (status == "deferred" and bool(cat.get("reason"))) or is_waiting
         if not ok:
             unmet.append(f"{code}:{status}")
     return not unmet, unmet
