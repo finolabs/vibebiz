@@ -65,7 +65,7 @@ Run every pass. Each pass has a letter used in finding ids.
 - an AI decision with no human approval point or no stated cost of a wrong answer, when the idea involves AI.
 
 **G: gaps.** Every gap from the inventory, judged against readiness:
-- a gap in a category readiness requires (problem, outcome, alternatives and scope; AI fit when AI is involved; at least a small, medium or large size for cost) is never acceptable;
+- a gap in a category readiness requires (problem, outcome, alternatives and scope; AI fit when AI is involved; at least a small, medium or large size for cost) is never acceptable, unless it is an open question owned by someone other than the user (for D, also a figure behind the chosen direction) that the section names: that is expected, report it as low only when the section does not name the question;
 - a gap in a category marked `deferred` with a reason is expected: report it as low only when the section does not say it is deferred;
 - an open question marked `blocking` with `status: open`;
 - the riskiest assumption untested with no test in the plan's pilot.
