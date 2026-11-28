@@ -80,7 +80,7 @@ The tech view is for the internal tech team and keeps the requirement's structur
 7. **AI fit**: rule, automation or AI; the data available; the cost of a wrong answer; where a person approves. When the idea uses no AI, say so in one line.
 8. **Non-functional needs in plain words**: number of users, peak hours, store connectivity, devices, how fresh data must be.
 9. **Glossary**: every term with its plain meaning.
-10. **Open questions**, split into blocking and non-blocking, each with its owner and what it unblocks.
+10. **Open questions**, split into blocking and non-blocking, each with its owner and what it unblocks. Show an owner written `user` (a no-answer run's confirmation) as the idea's owner in the idea's language, "chủ ý tưởng" in Vietnamese, never the bare field value.
 
 Use the section ids that the tech requirements template defines for these sections, so the package check can find them. Keep the requirement's ids (`FR-###`, `SC-###`, `D-###`, `A-###`, `Q-###`) unchanged; never renumber. The requirement snapshot (`exports/spec.md`) ships alongside, as an exact copy of the idea's `spec.md`: its Spec Kit headings stay in English in every language.
 
