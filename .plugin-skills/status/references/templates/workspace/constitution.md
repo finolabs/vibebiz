@@ -22,7 +22,7 @@ mandatory_approvals: []     # steps that always need a person, e.g. ["{{refunds 
 # Optional. Written by /vibebiz:package, not a ground rule: the user's answer to
 # the companion setup question (core/companions.md §2). Keep it as it is.
 # companions:
-#   diagram-design: {answer: "{{later}}", asked: "{{YYYY-MM-DD}}", reminded: null}
+#   diagram-design: {answer: "{{later}}", asked: "{{YYYY-MM-DD}}", setup: null, reminded: null}
 updated: "{{YYYY-MM-DD}}"
 ---
 

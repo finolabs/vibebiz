@@ -26,7 +26,7 @@ vibebiz offers the same features on every supported host, each through that host
 
 ## Companion setup: what is verified
 
-Checked on 28/11/2026. "Verified" means the command's syntax and names come from the host CLI's own `--help` and listing on a real install, or from the host's or the companion's documentation; no install was run for this change. Every cell marked unverified is confirmed at the first real setup and recorded in `evals/RESULTS.md` before the modules rely on it.
+Checked on 28/11/2026. "Verified" means the command's syntax and names come from the host CLI's own `--help` and listing on a real install, or from the host's or the companion's documentation; no install was run for this change. Sources are pinned (`core/companions.md` §5): an existing marketplace or plugin of the same name that points elsewhere stops the setup. The source fields read for that check were seen on this machine: Claude Code `claude plugin marketplace list --json` (`source`, `repo`), Codex `codex plugin marketplace list --json` (`marketplaceSource.sourceType`, `.source`), Antigravity `agy plugin list --json` (`source`). Unverified: the exact form Codex stores for `cathrynlavery/diagram-design`, that `openai-curated-remote` never appears among configured marketplaces, and what `source` Antigravity shows for a plugin installed from a URL. Every cell marked unverified is confirmed at the first real setup and recorded in `evals/RESULTS.md` before the modules rely on it.
 
 | Host | Companion | Status | Source |
 | --- | --- | --- | --- |

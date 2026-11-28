@@ -213,9 +213,9 @@ Lần đầu đóng gói mà thiếu một phần, vibebiz hỏi bạn một l�
 - **Để sau**: lần đóng gói sau vibebiz nhắc một dòng, không hỏi lại.
 - **Không cần**: vibebiz không hỏi lại nữa; tài liệu vẫn dùng bảng.
 
-Lựa chọn của bạn được ghi trong thư mục làm việc, nên các lần sau vibebiz không hỏi lại. Dù chọn gì, lần đóng gói đó vẫn chạy xong bằng bảng hoặc bằng cách xem còn lại. Phần vừa cài chỉ có tác dụng ở phiên mới (ở Cowork là một tác vụ mới): bạn mở phiên mới rồi đóng gói lại. Đổi ý lúc nào cũng được: khi đóng gói, bạn chỉ cần nói "cài phần vẽ sơ đồ giúp tôi".
+Lựa chọn của bạn được ghi trong thư mục làm việc, nên các lần sau vibebiz không hỏi lại. Nếu lần cài trước chưa xong, lần đóng gói sau vibebiz nói rõ một lần là chưa xong và vì sao; vibebiz chỉ báo đã cài khi thật sự thấy phần đó. Dù chọn gì, lần đóng gói đó vẫn chạy xong bằng bảng hoặc bằng cách xem còn lại. Phần vừa cài chỉ có tác dụng ở phiên mới (ở Cowork là một tác vụ mới): bạn mở phiên mới rồi đóng gói lại. Đổi ý lúc nào cũng được: khi đóng gói, bạn chỉ cần nói "cài phần vẽ sơ đồ giúp tôi".
 
-vibebiz chỉ cài đúng phần bạn đồng ý, không cài thêm gì khác và không đổi cài đặt nào của ứng dụng. Với Google, bạn luôn tự đăng nhập tài khoản của mình; vibebiz không bao giờ nhập mật khẩu hay mã xác minh.
+vibebiz chỉ cài đúng phần bạn đồng ý, chỉ từ nguồn chính thức (kho `cathrynlavery/diagram-design` trên GitHub, danh mục Google chính thức của từng ứng dụng), không cài thêm gì khác và không đổi cài đặt nào của ứng dụng. Nếu ứng dụng đã đăng ký một nguồn khác cùng tên, vibebiz không cài và cho bạn biết nguồn đó. Với Google, bạn luôn tự đăng nhập tài khoản của mình; vibebiz không bao giờ nhập mật khẩu hay mã xác minh.
 
 **Cài phần vẽ sơ đồ theo từng ứng dụng**
 
