@@ -16,6 +16,7 @@ Modules are reference files under `core/`, copied into each entry skill's `refer
 | checklist | `core/checklist.md` | package | spec, plan | checklists/board.md, checklists/tech.md | readiness |
 | analyze | `core/analyze.md` | package | all idea files | findings returned to the router | consistency |
 | package | `core/package.md` | package | idea files, diagrams | data.json, exports, links, history | outputs |
+| companions | `core/companions.md` | package (sections 4 and 5), help (read only) | session tools and skills, `constitution.md` `companions` | `constitution.md` `companions`; on the user's yes, the host's plugin install for the named companion | offer and setup of diagram-design and the Google tools |
 | workspace | `core/workspace.md` | every entry skill | folder | scaffold, table of contents | layout, index |
 | drive workspace | `core/drive-workspace.md` | workspace (Drive mode, spec 002) | the user's Drive through the connector, inside the workspace folder | Drive files by replacement, `index.json` | layout and index in Drive |
 | export guidelines | `core/export-guidelines.md` | package | | | Appendix D rules, aesthetics |
@@ -24,6 +25,6 @@ Modules are reference files under `core/`, copied into each entry skill's `refer
 
 **Framework cards** follow data-model "Framework card"; the router picks a card only for an open category in its `fills`, at most two per lens per idea.
 
-**Diagram briefs** follow data-model "Diagram brief"; package asks diagram-design to render each brief and records `rendered_with`.
+**Diagram briefs** follow data-model "Diagram brief"; package asks diagram-design to render each brief and records `rendered_with`; when it is missing, `core/companions.md` offers to set it up once per workspace.
 
 **Templates** under `templates/`: `workspace/` (index.html, constitution.md), `idea/` (spec.md with business sections before the Spec Kit sections, coverage.md, plan.md, decisions.md, assumptions.md, open-questions.md, glossary.md, checklists), `exports/` (board-deck.html, tech-prd.html, links.md).

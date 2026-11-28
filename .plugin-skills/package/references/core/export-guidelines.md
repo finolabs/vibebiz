@@ -87,7 +87,7 @@ Use the section ids that the tech requirements template defines for these sectio
 ## 4. Look and layout
 
 - **One brand source.** Colors, fonts and logo come only from the brand profile of the companion diagram-design plugin. Without it, keep the templates' neutral look. Never invent a palette or apply an organization's brand from memory.
-- **Diagrams** come from the diagram briefs, rendered by diagram-design as SVG and embedded. Without diagram-design, the slot shows a table with a "no diagram" note (in Vietnamese "chưa có sơ đồ") and the user is told once how to add the plugin; never draw a substitute.
+- **Diagrams** come from the diagram briefs, rendered by diagram-design as SVG and embedded. Without diagram-design, the slot shows a table with a "no diagram" note (in Vietnamese "chưa có sơ đồ"), and `references/core/companions.md` decides whether the user is offered the setup; never draw a substitute.
 - **Calm and readable**: generous white space, one idea per slide, a consistent order of title, message, evidence, source line. No decorative images, clip art or stock photos. Both templates support light and dark mode; do not override it.
 - **Natural wording.** Edit Vietnamese for natural reading before delivery (the writing rules' style section): no word-for-word translation, no stacked nouns, no English where a common Vietnamese word exists.
 

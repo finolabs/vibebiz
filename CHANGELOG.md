@@ -4,6 +4,11 @@ All notable changes to vibebiz are recorded here. The format follows [Keep a Cha
 
 ## [Unreleased]
 
+### Added
+
+- At your first package, when diagrams cannot be drawn yet (or Google Slides and Docs are not connected), vibebiz asks once whether to set that up: "Cài giúp tôi", "Để sau" or "Không cần". On a yes it installs it itself in Claude Code, Codex and Antigravity and walks you through it in Cowork; you always sign in to Google yourself. Your answer is kept in the workspace, so you are not asked again; "Để sau" brings one reminder line at the next package.
+- Asking "what is set up?" tells you which of these are present in this session.
+
 ### Changed
 
 - Missing information no longer holds an idea back from packaging: once you have answered what you can, gaps only someone else can fill go into the board deck and tech document as open questions with their owner, and `continue` fills them in later.

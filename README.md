@@ -184,7 +184,7 @@ Open a workspace folder in Antigravity and type `/idea`, or describe your idea i
 
 ## Companion: diagram-design
 
-vibebiz writes diagram briefs; the separate plugin [diagram-design](https://github.com/cathrynlavery/diagram-design) (MIT) renders them. It is not part of this repository. Without it, exports show a table with a "no diagram" note.
+vibebiz writes diagram briefs; the separate plugin [diagram-design](https://github.com/cathrynlavery/diagram-design) (MIT) renders them. It is not part of this repository. Without it, exports show a table with a "no diagram" note, and the first package in a workspace asks once whether to set it up; on a yes, vibebiz installs it in Claude Code, Codex and Antigravity and gives the steps in Cowork ([FAQ 17](docs/faq.md)).
 
 ## Privacy
 
