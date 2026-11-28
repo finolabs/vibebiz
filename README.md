@@ -7,8 +7,11 @@
 
 <h1 align="center">vibebiz</h1>
 
-<p align="center"><strong>You think business. vibebiz writes it like a product owner.</strong><br>
-A plugin that interviews founders and business leaders until an idea is clear, challenged and measurable, then packages it for the board and the tech team, in Claude Cowork (its main app), Claude Code, Codex and Antigravity. It is a set of instructions the app follows and runs no program of its own; what it writes goes only to your folder or your own Google Drive.</p>
+<p align="center"><strong>You think business. vibebiz writes it like a product owner.</strong></p>
+
+<p align="center">You have a business or operations idea. Can you write it up as a professional document? If you're not sure, vibebiz is for you.</p>
+
+<p align="center">A plugin that interviews founders and business leaders until an idea is clear, challenged and measurable, then packages it for the board and the tech team, in Claude Cowork (its main app), Claude Code, Codex and Antigravity. It is a set of instructions the app follows and runs no program of its own; what it writes goes only to your folder or your own Google Drive.</p>
 
 <p align="center">
   <a href="https://github.com/finolabs/vibebiz/releases/latest"><img src="https://img.shields.io/github/v/release/finolabs/vibebiz" alt="Latest release"></a>

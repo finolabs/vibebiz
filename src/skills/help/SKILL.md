@@ -27,6 +27,8 @@ Load these when a step needs them:
 
 Help writes nothing to the workspace.
 
+When the user asks what vibebiz is, or asks for help with no specific question, open the reply with this line in the user's language, then continue: Vietnamese "Bạn có ý tưởng kinh doanh hay vận hành, nhưng chưa chắc mình viết được thành một tài liệu chuyên nghiệp? vibebiz chính là dành cho bạn.", English "You have a business or operations idea. Can you write it up as a professional document? If you're not sure, vibebiz is for you." (`references/docs/quick-start.md` opens with it).
+
 ## 1. Read the request
 
 Decide what the message asks for, from its meaning, in any language. One message can hold more than one; handle each in this order and keep the whole reply short.
