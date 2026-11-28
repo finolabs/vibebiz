@@ -4,6 +4,10 @@ All notable changes to vibebiz are recorded here. The format follows [Keep a Cha
 
 ## [Unreleased]
 
+### Changed
+
+- Once you choose which direction to try first (fix the process, buy, build), vibebiz goes on to scope, cost and the rest, even while figures behind that choice are still open questions; before, the interview stalled there and recommended pausing.
+
 ## [0.1.9] - 2026-11-27
 
 ### Added
