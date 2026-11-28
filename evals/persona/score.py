@@ -76,6 +76,9 @@ def readiness(coverage_path: Path, involves_ai: bool = False) -> tuple[bool, lis
     for code in ALL_CODES:
         cat = cats.get(code) if isinstance(cats.get(code), dict) else {}
         status = cat.get("status")
+        # Narrower than router "Readiness" on purpose: the scorer does not read decisions.md, so
+        # "Direction chosen" (D waiting on user-owned figures behind a recorded direction) is not
+        # applied and such a D scores not ready (test_a_question_the_user_owns_is_not_waiting).
         is_waiting = status == "partial" and code in waiting and idea_settled
         if code in MUST_CLEAR or (code == "F" and involves_ai):
             ok = status == "clear" or is_waiting

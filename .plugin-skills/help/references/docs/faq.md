@@ -224,7 +224,7 @@ vibebiz chỉ cài đúng phần bạn đồng ý, chỉ từ nguồn chính th�
 | Cowork | Mở Customize ở thanh bên, chọn Plugins, chọn Add marketplace và nhập `cathrynlavery/diagram-design`, rồi tìm Diagram Design và bấm Install. Nếu tổ chức không cho thêm danh mục, hãy nhờ quản trị viên |
 | Claude Code | `claude plugin marketplace add cathrynlavery/diagram-design` rồi `claude plugin install diagram-design@diagram-design` |
 | Codex | `codex plugin marketplace add cathrynlavery/diagram-design` rồi `codex plugin add diagram-design@diagram-design` |
-| Antigravity | `agy plugin install https://github.com/cathrynlavery/diagram-design` (cách này chưa được chạy thử trên Antigravity) |
+| Antigravity | `agy plugin install https://github.com/cathrynlavery/diagram-design` |
 
 Cách nối Google ở từng ứng dụng nằm ở câu hỏi 14. Ở Codex và Antigravity, vibebiz có thể cài giúp plugin Google, còn bước đăng nhập là của bạn.
 

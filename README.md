@@ -11,7 +11,7 @@
 
 <p align="center">Have a business or operations idea but not sure you can write it up as a professional document? vibebiz is for you.</p>
 
-<p align="center">A plugin that interviews founders and business leaders until an idea is clear, challenged and measurable, then packages it for the board and the tech team, in Claude Cowork (its main app), Claude Code, Codex and Antigravity. It is a set of instructions the app follows and runs no program of its own; what it writes goes only to your folder or your own Google Drive.</p>
+<p align="center">A plugin that interviews founders and business leaders until an idea is clear, challenged and measurable, then packages it for the board and the tech team, in Claude Cowork (its main app), Claude Code, Codex and Antigravity. It is a set of instructions the app follows and runs no program of its own; what it writes goes only to your folder or your own Google Drive, apart from the plugin files and settings your app writes when it installs a companion you said yes to.</p>
 
 <p align="center">
   <a href="https://github.com/finolabs/vibebiz/releases/latest"><img src="https://img.shields.io/github/v/release/finolabs/vibebiz" alt="Latest release"></a>
@@ -140,7 +140,7 @@ Without a question tool, vibebiz asks the same round in plain text with numbered
 - **Codex**: install the Google Drive plugin in Codex and sign in with your Google account; the same plugin covers Docs and Slides.
 - **Antigravity**: install Antigravity's official Google Drive plugin (and its Google Slides and Google Docs plugins for packaging) and sign in with your Google account. These plugins need internet access and download their own small helper program the first time; vibebiz itself runs no program.
 
-In every app the files go only into your folder or your own Google Drive, private; vibebiz never shares a file or makes one public.
+In every app the files go only into your folder or your own Google Drive, private; vibebiz never shares a file or makes one public. The one exception is a companion install you said yes to, where the app writes its own plugin files and settings (`PRIVACY.md`).
 
 ## Install
 

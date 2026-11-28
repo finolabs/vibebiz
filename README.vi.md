@@ -11,7 +11,7 @@
 
 <p align="center">Bạn có ý tưởng kinh doanh hay vận hành, nhưng chưa chắc mình viết được thành một tài liệu chuyên nghiệp? vibebiz chính là dành cho bạn.</p>
 
-<p align="center">vibebiz là plugin phỏng vấn nhà sáng lập và lãnh đạo doanh nghiệp cho tới khi ý tưởng rõ ràng, được phản biện và đo lường được, rồi đóng gói ý tưởng cho ban lãnh đạo và đội kỹ thuật. Plugin chạy trong Claude Cowork (ứng dụng chính), Claude Code, Codex và Antigravity. Bản thân vibebiz chỉ là bộ hướng dẫn để ứng dụng làm theo, không tự chạy chương trình nào; mọi thứ nó viết ra chỉ nằm trong thư mục của bạn hoặc Google Drive của chính bạn.</p>
+<p align="center">vibebiz là plugin phỏng vấn nhà sáng lập và lãnh đạo doanh nghiệp cho tới khi ý tưởng rõ ràng, được phản biện và đo lường được, rồi đóng gói ý tưởng cho ban lãnh đạo và đội kỹ thuật. Plugin chạy trong Claude Cowork (ứng dụng chính), Claude Code, Codex và Antigravity. Bản thân vibebiz chỉ là bộ hướng dẫn để ứng dụng làm theo, không tự chạy chương trình nào; mọi thứ nó viết ra chỉ nằm trong thư mục của bạn hoặc Google Drive của chính bạn, trừ tệp và thiết lập plugin mà ứng dụng tự ghi khi cài một phần đi kèm bạn đã đồng ý.</p>
 
 <p align="center">
   <a href="https://github.com/finolabs/vibebiz/releases/latest"><img src="https://img.shields.io/github/v/release/finolabs/vibebiz" alt="Bản phát hành mới nhất"></a>
@@ -140,7 +140,7 @@ Khi ứng dụng không có nút chọn, vibebiz hỏi đúng vòng đó bằng 
 - **Codex**: cài plugin Google Drive trong Codex rồi đăng nhập tài khoản Google; plugin này dùng được cho cả Docs và Slides.
 - **Antigravity**: cài plugin Google Drive chính thức của Antigravity (thêm plugin Google Slides và Google Docs để đóng gói) rồi đăng nhập tài khoản Google. Các plugin này cần kết nối mạng và lần đầu sẽ tự tải một chương trình nhỏ đi kèm; bản thân vibebiz không chạy chương trình nào.
 
-Ở ứng dụng nào, tệp cũng chỉ nằm trong thư mục của bạn hoặc Google Drive của chính bạn, ở chế độ riêng tư; vibebiz không bao giờ chia sẻ hay công khai tệp nào.
+Ở ứng dụng nào, tệp cũng chỉ nằm trong thư mục của bạn hoặc Google Drive của chính bạn, ở chế độ riêng tư; vibebiz không bao giờ chia sẻ hay công khai tệp nào. Ngoại lệ duy nhất là khi bạn đồng ý cài một phần đi kèm: ứng dụng tự ghi tệp và thiết lập plugin của nó (`PRIVACY.md`).
 
 ## Cài đặt
 

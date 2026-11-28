@@ -8,7 +8,7 @@ All notable changes to vibebiz are recorded here. The format follows [Keep a Cha
 
 ### Added
 
-- At your first package, when diagrams cannot be drawn yet or Google Slides and Docs are not connected, vibebiz asks once whether to set that up ("Cài giúp tôi", "Để sau", "Không cần"); on a yes it installs the diagram plugin in Claude Code, Codex and Antigravity and the Google plugin in Codex and Antigravity, only from the official source, and elsewhere walks you through the steps. You always sign in to Google yourself. Your answer is kept in the workspace, so you are asked only once; "Để sau" brings one reminder line at the next package.
+- When you package and diagrams cannot be drawn yet, or you asked for Google Slides or Docs and they are not connected, vibebiz asks whether to set that up ("Cài giúp tôi", "Để sau", "Không cần"); on a yes it installs the diagram plugin in Claude Code, Codex and Antigravity and the Google plugin in Codex and Antigravity, only from the official source, and elsewhere walks you through the steps. You always sign in to Google yourself. Your answer is kept in the workspace, so it is not asked again (a skipped question is asked at the next package); "Để sau" brings one reminder line at the next package.
 - Asking "what is set up?" tells you which of these are present in this session.
 
 ### Changed

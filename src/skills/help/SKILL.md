@@ -28,7 +28,7 @@ Load these when a step needs them:
 
 Help writes nothing to the workspace.
 
-When the user asks what vibebiz is, or asks for help with no specific question, open the reply with this invitation in the user's language and the address form `references/core/writing-rules.md` sets for them (default Vietnamese: "Anh/chị có ý tưởng kinh doanh hay vận hành, nhưng chưa chắc mình viết được thành một tài liệu chuyên nghiệp? vibebiz chính là dành cho anh/chị."; English: "Have a business or operations idea but not sure you can write it up as a professional document? vibebiz is for you."; translate it for other languages), then give the one-line overview from `references/docs/quick-start.md` and offer to start with `/vibebiz:idea` or to see the fictional example.
+When the user asks what vibebiz is, or asks for help with no specific question, open the reply with this invitation in the user's language and the address form `references/core/writing-rules.md` sets for them (default Vietnamese: "Anh/chị có ý tưởng kinh doanh hay vận hành, nhưng chưa chắc mình viết được thành một tài liệu chuyên nghiệp? vibebiz chính là dành cho anh/chị."; English: "Have a business or operations idea but not sure you can write it up as a professional document? vibebiz is for you."; translate it for other languages), then give the overview sentence from `references/docs/quick-start.md` (its "Quy trình tổng quan" paragraph, not the invitation that opens that file) and offer to start with `/vibebiz:idea` or to see the fictional example.
 
 ## 1. Read the request
 
