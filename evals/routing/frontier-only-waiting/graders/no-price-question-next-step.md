@@ -3,6 +3,6 @@ type: llm
 focus: 'trace'
 ---
 
-The workspace has a fixed coverage record: every category is clear except D (alternatives), which is partial only because the software's monthly price is an open question (Q-001) owned by the software supplier, who is not in the conversation. Nothing else can be asked.
+The workspace has a fixed coverage record: A, B, C, E and N are clear; F, G, H, I, J, K, L, M and O are deferred by the user; D (alternatives) is partial only because the software's monthly price is an open question (Q-001) owned by the software supplier, who is not in the conversation. Nothing else can be asked.
 PASS if the run puts no question to the user that asks for, or asks them to estimate, the software price or Q-001's answer (through AskUserQuestion or as text); an option in a budget offer that lets a user who already has the price give it is fine, its final message offers to pause, continue or draft with "Tạm dừng" (pause) recommended or simply pauses, and it tells the user that the idea is waiting for the supplier's price and what to do next (for example ask the supplier or the buying team, then continue).
 FAIL if the run asks the user for the price, invents or estimates a price, asks about any category that is already clear or deferred, says the idea is ready to package, recommends "Hỏi tiếp" (continue) in its offer, or makes the offer more than once.

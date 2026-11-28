@@ -95,7 +95,7 @@ Then tell the user in one or two plain sentences what was recorded and what come
   - continue with more questions now ("Hỏi tiếp"),
   - pause and keep everything saved for later ("Tạm dừng"),
   - export a draft with every gap labelled ("Xuất bản nháp").
-  Recommend "Hỏi tiếp" when the router's askable frontier still holds a category scoring 6 or more on the router's impact × uncertainty ranking, otherwise "Tạm dừng". If the user skips this question, or nobody can answer, pause.
+  Recommend "Hỏi tiếp" when the router's askable frontier still holds a category scoring 6 or more on the router's impact × uncertainty ranking, otherwise "Tạm dừng". If the user skips this question, or nobody can answer, pause. When the askable frontier is empty and the user still chooses "Hỏi tiếp", ask nothing more: the router's "Budget" section says what to tell the user, then pause.
 - The router also makes this offer before the budget is used when only categories waiting on someone else are left (its "Frontier" section); then recommend "Tạm dừng".
 - On "Hỏi tiếp", grant another budget of the same size in this session; the counter keeps counting and the offer returns at the next multiple (after six rounds, then nine). On "Tạm dừng", say in one sentence where the idea stopped and that `/vibebiz:continue` resumes it. On "Xuất bản nháp", hand over to the `package` entry skill's draft path.
 
@@ -112,7 +112,7 @@ When the user skips every question in a round (tool questions and the open quest
 When nobody can answer (an unattended or evaluation run, a host that skips every question by itself, or the user said to proceed without them). A missing or failing question tool is not this case: section 0 asks in plain text instead.
 
 - If the prompt already carries answers for these questions, use them exactly as the user's answers; that is not inventing.
-- Otherwise never pick an option on the user's behalf and never write an invented answer as decided. For each question, proceed on the option you would recommend as an **assumption**: append an A-### to `assumptions.md` with `tested: no`, `evidence: none yet`, `source: no-answer-run`, and a Q-### to `open-questions.md` with `status: open` and the owner who must confirm it.
+- Otherwise never pick an option on the user's behalf and never write an invented answer as decided. For each question, proceed on the option you would recommend as an **assumption**: append an A-### to `assumptions.md` with `tested: no`, `evidence: none yet`, `source: no-answer-run`, and a Q-### to `open-questions.md` with `status: open` and `owner: user`, written exactly so: the user confirms the assumption, and the router reads that fixed form as the user's own question, never as one waiting on someone else.
 - Write the question in Clarifications as `- Skipped: <question>`, write the assumption into the spec's `## Assumptions` section marked as not confirmed with its A-### id, leave the category status unchanged, and add no D-### entry.
 - Do not ask a question again in the same run once it is recorded as an assumption; stop at the budget as usual and end by listing the assumptions that need a person.
 
