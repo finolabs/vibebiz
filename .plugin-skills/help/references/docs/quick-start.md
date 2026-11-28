@@ -1,5 +1,7 @@
 # Bắt đầu nhanh với vibebiz
 
+Bạn có ý tưởng kinh doanh hay vận hành, nhưng chưa chắc mình viết được thành một tài liệu chuyên nghiệp? vibebiz chính là dành cho bạn.
+
 Hướng dẫn này giúp bạn làm quen với vibebiz trong vài phút: từ một câu ý tưởng ban đầu đến khi nhận bộ tài liệu hoàn chỉnh để trình ban lãnh đạo và bàn giao cho đội kỹ thuật.
 
 Quy trình tổng quan: từ ý tưởng ban đầu của giám đốc kinh doanh, vibebiz phỏng vấn qua các vòng ngắn có chọn lọc rồi tạo bản trình bày cho ban lãnh đạo và tài liệu yêu cầu cho đội kỹ thuật, giúp duyệt ngân sách và triển khai hệ thống.

@@ -1,6 +1,6 @@
 {
   "name": "vibebiz",
-  "tagline": "You think business.\nvibebiz writes it like\na product owner.",
+  "tagline": "Got a business idea\nbut no proper document?\nvibebiz is for you.",
   "mark": "../assets/icon-dark.svg",
   "input": "/vibebiz:idea we should use AI\nto bring lapsed customers back",
   "output": "title: \"Win back lapsed customers\n        through chat reminders\"\nstatus: packaged\nestimate_status: not-tech-reviewed\nnext_step: \"/vibebiz:continue\"",
