@@ -46,7 +46,7 @@ Run these steps in this order, each to its end, and keep what each hands back:
 
 Then decide:
 
-- **A failed readiness item** in either checklist means the idea is below readiness after all: go to section 2, step 4, unless this is already a draft.
+- **A failed readiness item** in either checklist, other than the repair in the next line, means the idea is below readiness after all: go to section 2, step 4, unless this is already a draft.
 - **A failed item or a finding whose only defect is a waiting gap that does not name its open question** is a repair, not a return to the interview: make the repair of section 2, step 3, and rerun the checklist and analyze.
 - **A failed Spec Kit headings item** is a repair of the requirement's structure, not a question: add each missing mandatory heading in its place with "not yet clarified" (in the idea's language) beneath it, change nothing else in the file, and rerun the checklist.
 - **Analyze returns `return-to-interview`, or a content or evidence item failed**, and this is not a draft: hand the findings and the failed items to the router (its section "Findings from analyze"), which asks them within its round and budget rules. When the router reaches readiness again, start this module over from section 2; nothing is packaged until a new analyze run returns `clear`. If the user takes "Xuất bản nháp" at the budget offer, come back here as a draft.
