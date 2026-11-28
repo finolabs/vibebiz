@@ -4,7 +4,7 @@ The user workspace is a public contract (constitution, Runtime and Distribution 
 
 ```
 index.html                       fixed template + JSON block (data-model "Table of contents data")
-constitution.md                  frontmatter per data-model "Ground rules"
+constitution.md                  frontmatter per data-model "Ground rules" (plus the optional `companions` record package writes)
 specs/NNN-<slug>/
   spec.md                        idea requirement (template in contracts/exports.md "Snapshot")
   coverage.md                    frontmatter per data-model "Idea"; body: human table of A–O

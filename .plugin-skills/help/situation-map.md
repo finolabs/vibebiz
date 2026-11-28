@@ -21,6 +21,7 @@ Help uses this map to route a situation the user describes to one entry skill, t
 | Muốn dùng vibebiz trên web hoặc điện thoại, hoặc vibebiz báo chưa mở được thư mục nào ("dùng trên điện thoại được không", "chưa có thư mục thì làm sao") | /vibebiz:help |
 | Muốn biết dùng vibebiz trong ứng dụng nào được, hoặc cách cài và gõ lệnh trong ứng dụng đang dùng ("dùng trong Codex được không", "Antigravity có chạy không", "lệnh trong Codex gõ thế nào") | /vibebiz:help |
 | Muốn nối Google Drive, Google Slides hoặc Google Docs trong ứng dụng đang dùng ("nối Google ở đây thế nào", "sao không lưu được lên Drive") | /vibebiz:help |
+| Muốn biết đã cài đủ phần đi kèm chưa, hoặc vì sao tài liệu chưa có sơ đồ ("đã cài đủ chưa", "sao không có sơ đồ", "cài phần vẽ sơ đồ thế nào") | /vibebiz:help |
 | Đóng gói xong và muốn biết xem bản trình bày hoặc PRD ở đâu trong ứng dụng đang dùng ("bản trình bày nằm đâu", "mở slide ở đâu") | /vibebiz:help |
 | Chưa biết bắt đầu từ đâu, muốn tìm hiểu cách dùng vibebiz hoặc cần hướng dẫn chọn lệnh phù hợp ("hướng dẫn tôi dùng", "làm gì tiếp theo", "tôi nên dùng lệnh nào", "cách dùng vibebiz") | /vibebiz:help |
 | Muốn xem một ý tưởng mẫu đã làm xong trông như thế nào ("cho xem ví dụ mẫu", "xem ý tưởng mẫu", "đầu ra trông ra sao") | /vibebiz:help |

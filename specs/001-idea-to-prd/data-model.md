@@ -23,6 +23,7 @@ Path: the folder open in Cowork (or its `vibebiz/` subfolder).
 | mandatory_approvals | list of text | steps that always need a person |
 | strategy_map | optional, BSC perspectives with objectives | used by challenge and plan |
 | okrs | optional list `{objective, key_results[]}` | outcome lens maps ideas to them |
+| companions | optional map, companion id (`diagram-design`, `google`) → `{answer, asked, reminded}`; `answer` `install` \| `later` \| `never`, `asked` date, `reminded` date or null | not a ground rule: written only by `package` (`core/companions.md` §2), kept unchanged by `constitution`, ignored by plan and analyze, no line in the body |
 | updated | date | |
 
 ## Idea (`coverage.md` frontmatter)

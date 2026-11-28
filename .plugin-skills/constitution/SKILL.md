@@ -90,7 +90,7 @@ Example: "Mức chi anh/chị tự duyệt: 50 triệu đồng → 300 triệu �
 
 Re-read the file just before writing; a hand edit since section 3 wins over your copy.
 
-1. **Frontmatter**: keep the template's keys and their order; change only the fields that were answered or confirmed. Add `strategy_map` and `okrs` only when recorded, where the template's comments place them. Keep the comment lines.
+1. **Frontmatter**: keep the template's keys and their order; change only the fields that were answered or confirmed. Add `strategy_map` and `okrs` only when recorded, where the template's comments place them. Keep the comment lines, and keep `companions` exactly as it is: `package` owns it and the body shows no line for it.
 2. **Status**: set `status: set` when at least one field now holds a value the user gave. When every question was skipped, or nobody answered, leave `status` exactly as it was: a deferred file stays `deferred`, and nothing in it changes.
 3. **Updated**: set `updated` to today's date only when something changed.
 4. **Body**: rebuild the human view from the frontmatter, in the user's language, keeping the heading `# Ground rules` and the HTML comment. One line per field, "chưa đặt" ("not yet set") for an empty one, the amount written with its currency in the user's style (for example "50.000.000 đồng"). Add a line for the strategy map, one sub-line per perspective, and one for OKRs, one sub-line per objective with its key results, only when they are recorded. Vietnamese labels: "Trạng thái" (đã đặt, để sau), "Ưu tiên năm nay", "Mức chi tôi tự duyệt", "Ngành hàng", "Việc luôn cần người duyệt", "Mục tiêu chiến lược", "OKR".

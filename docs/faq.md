@@ -100,7 +100,7 @@ vibebiz sẽ:
 
 vibebiz viết sẵn cấu trúc và mô tả chi tiết cho các sơ đồ (cây chỉ số, hành trình khách hàng, ma trận rủi ro...). Để các sơ đồ này tự động vẽ thành hình ảnh đẹp mắt, bạn cần cài đặt thêm plugin companion miễn phí mang tên **`diagram-design`**.
 
-Nếu chưa cài plugin này, tài liệu vẫn hiển thị đầy đủ thông tin dưới dạng bảng kèm ghi chú "chưa có sơ đồ".
+Nếu chưa cài plugin này, tài liệu vẫn hiển thị đầy đủ thông tin dưới dạng bảng kèm ghi chú "chưa có sơ đồ". Lần đầu đóng gói, vibebiz hỏi bạn có muốn cài không; cách cài ở từng ứng dụng nằm ở câu hỏi 17.
 
 ---
 
@@ -197,3 +197,35 @@ agy plugin install https://github.com/finolabs/vibebiz
 ```
 
 Nếu sau này bản cũ quay lại, bạn gỡ và cài lại theo đúng cách trên.
+
+---
+
+### 17. vibebiz hỏi tôi có muốn cài thêm phần đi kèm. Đó là gì, và cài thế nào?
+
+vibebiz dùng được ngay, nhưng có hai phần đi kèm giúp tài liệu tốt hơn:
+
+- **Phần vẽ sơ đồ** (plugin `diagram-design`): các sơ đồ hiện thành hình theo màu và logo của công ty, thay cho bảng "chưa có sơ đồ".
+- **Kết nối Google Slides và Google Docs**: bản trình bày và tài liệu kỹ thuật được tạo thành tệp Google trong Drive của bạn.
+
+Lần đầu đóng gói mà thiếu một phần, vibebiz hỏi bạn một lần, với ba lựa chọn:
+
+- **Cài giúp tôi**: ở Claude Code, Codex và Antigravity, vibebiz tự chạy lệnh cài; ứng dụng có thể hỏi bạn cho phép. Ở Cowork, vibebiz chỉ bạn từng bước ngắn để tự bấm (lựa chọn khi đó tên là "Hướng dẫn tôi cài").
+- **Để sau**: lần đóng gói sau vibebiz nhắc một dòng, không hỏi lại.
+- **Không cần**: vibebiz không hỏi lại nữa; tài liệu vẫn dùng bảng.
+
+Lựa chọn của bạn được ghi trong thư mục làm việc, nên các lần sau vibebiz không hỏi lại. Dù chọn gì, lần đóng gói đó vẫn chạy xong bằng bảng hoặc bằng cách xem còn lại. Phần vừa cài chỉ có tác dụng ở phiên mới (ở Cowork là một tác vụ mới): bạn mở phiên mới rồi đóng gói lại. Đổi ý lúc nào cũng được: khi đóng gói, bạn chỉ cần nói "cài phần vẽ sơ đồ giúp tôi".
+
+vibebiz chỉ cài đúng phần bạn đồng ý, không cài thêm gì khác và không đổi cài đặt nào của ứng dụng. Với Google, bạn luôn tự đăng nhập tài khoản của mình; vibebiz không bao giờ nhập mật khẩu hay mã xác minh.
+
+**Cài phần vẽ sơ đồ theo từng ứng dụng**
+
+| Ứng dụng | Cách cài |
+|---|---|
+| Cowork | Mở Customize ở thanh bên, chọn Plugins, chọn Add marketplace và nhập `cathrynlavery/diagram-design`, rồi tìm Diagram Design và bấm Install. Nếu tổ chức không cho thêm danh mục, hãy nhờ quản trị viên |
+| Claude Code | `claude plugin marketplace add cathrynlavery/diagram-design` rồi `claude plugin install diagram-design@diagram-design` |
+| Codex | `codex plugin marketplace add cathrynlavery/diagram-design` rồi `codex plugin add diagram-design@diagram-design` |
+| Antigravity | `agy plugin install https://github.com/cathrynlavery/diagram-design` (cách này chưa được chạy thử trên Antigravity) |
+
+Cách nối Google ở từng ứng dụng nằm ở câu hỏi 14. Ở Codex và Antigravity, vibebiz có thể cài giúp plugin Google, còn bước đăng nhập là của bạn.
+
+Muốn biết phiên này đã có những phần nào, bạn hỏi vibebiz *"đã cài đủ chưa?"*.

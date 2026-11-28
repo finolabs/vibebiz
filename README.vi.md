@@ -184,7 +184,7 @@ Mở một thư mục làm việc trong Antigravity rồi gõ `/idea`, hoặc k�
 
 ## Plugin đi kèm: diagram-design
 
-vibebiz viết bản mô tả sơ đồ; plugin riêng [diagram-design](https://github.com/cathrynlavery/diagram-design) (MIT) vẽ chúng. Plugin này không nằm trong kho mã này. Khi không có nó, kết quả hiển thị một bảng kèm ghi chú "chưa có sơ đồ".
+vibebiz viết bản mô tả sơ đồ; plugin riêng [diagram-design](https://github.com/cathrynlavery/diagram-design) (MIT) vẽ chúng. Plugin này không nằm trong kho mã này. Khi không có nó, kết quả hiển thị một bảng kèm ghi chú "chưa có sơ đồ", và lần đóng gói đầu tiên trong một thư mục làm việc, vibebiz hỏi một lần bạn có muốn cài không; nếu đồng ý, vibebiz tự cài trong Claude Code, Codex và Antigravity, còn trong Cowork thì chỉ bạn từng bước ([FAQ 17](docs/faq.md)).
 
 ## Quyền riêng tư
 
