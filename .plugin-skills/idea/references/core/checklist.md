@@ -45,7 +45,7 @@ Read the file or section each item names. Judge from what is written, the same w
 - Cost (M) passes when a small, medium or large size is written in `## Cost & Risk`, even if the scenarios are still open.
 - "Every other category" passes when each is `clear`, `deferred` with a reason in `coverage.md`, or waiting only on open questions someone other than the user owns. List the ones that fail in the note by plain name ("nhóm người dùng", "kết nối hệ thống"), not by code.
 
-**Content items** (slides, tech sections). Check the named section for each element the item lists. An element whose category is `deferred` with a reason passes, with a note, because the output shows the gap openly. Some items need judgment:
+**Content items** (slides, tech sections). Check the named section for each element the item lists. An element whose category is `deferred` with a reason passes, with a note, because the output shows the gap openly; so does an element whose gap is a named open question owned by someone other than the user (for D, also a figure behind the chosen direction), with a note naming the Q-### and its owner. Some items need judgment:
 
 - **One takeaway per slide** (board): for each slide's source section, can one sentence state its point as a title? It fails when a section mixes two decisions or two messages, or has no point at all; name the slide in the note.
 - **Testable stories and requirements** (tech): each story has its priority and at least one Given/When/Then scenario; each requirement has an `FR-###` id and says what must happen in a way someone could check; a requirement with a vague quality word and no number fails.
@@ -57,7 +57,7 @@ Read the file or section each item names. Judge from what is written, the same w
 **Evidence items** (both files):
 
 - **Numbers**: scan every figure in `spec.md` and `plan.md`. Each needs unit, source, period and the measured or assumed label; the same figure must be identical wherever it appears. Name the first few that fail in the note.
-- **No missing facts**: a slide or section that could only be written by adding a fact the files do not hold fails (for example a decision requested with no amount on file).
+- **No missing facts**: a slide or section that could only be written by adding a fact the files do not hold fails (for example a decision requested with no amount on file). A section that says the fact is not yet clarified and waiting on a named open question ("chưa làm rõ, chờ Q-###") owned by someone other than the user passes, with a note.
 - **Tech-review label**: while `estimate_status` is `not-tech-reviewed`, every estimate in `spec.md` and `plan.md` carries the "not tech-reviewed" label in the idea's language; once it is `tech-reviewed`, a `tech-review` entry exists in `decisions.md` and no estimate still carries the label. A mismatch between `coverage.md` and `decisions.md` fails.
 - **Gaps listed**: every element still `chưa làm rõ` is written as such in its section, not left blank or dropped.
 - **Dismissed risks** (board): each `dismissed-risk` entry in `decisions.md` also appears in `## Cost & Risk`.

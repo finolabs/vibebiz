@@ -126,10 +126,14 @@ Không phải ý tưởng nào cũng cần hỏi kỹ như nhau. vibebiz phân l
 
 ## Tiêu chuẩn sẵn sàng đóng gói (Definition of Ready)
 
-vibebiz chỉ đề xuất đóng gói chính thức khi ý tưởng đạt chuẩn:
-1. **Bốn điểm cốt lõi phải Rõ ràng (Clear)**: Vấn đề (A), Kết quả mong muốn (C), Phương án cân nhắc (D), và Phạm vi giải pháp (E).
-2. **Nếu có AI**: Điểm phù hợp với AI (F) bắt buộc phải Rõ ràng.
+Thiếu thông tin không có nghĩa là ý tưởng phải dừng lại. Điều gì bạn tự quyết được thì vibebiz hỏi bạn; điều gì phải chờ người khác trả lời (nhà cung cấp báo giá, đội kỹ thuật ước lượng, bộ phận pháp chế xác nhận) thì được ghi thành câu hỏi mở kèm tên người trả lời, đưa vào bộ tài liệu, rồi bổ sung sau bằng `/vibebiz:continue`.
+
+Một điểm được coi là **đã chốt** khi nó đã Rõ ràng, được Tạm hoãn có ghi rõ lý do, hoặc chỉ còn chờ câu hỏi mở của người khác. Riêng Phương án cân nhắc (D): khi bạn đã chọn hướng đi, các con số đằng sau hướng đó (ví dụ giá của nhà cung cấp) có thể bổ sung sau.
+
+vibebiz đề xuất đóng gói chính thức khi ý tưởng đạt chuẩn:
+1. **Bốn điểm cốt lõi đã chốt**: Vấn đề (A), Kết quả mong muốn (C), Phương án cân nhắc (D), và Phạm vi giải pháp (E), mỗi ý cần có đều đã được trả lời hoặc ghi thành câu hỏi mở kèm người trả lời.
+2. **Nếu có AI**: Điểm phù hợp với AI (F) đã chốt.
 3. **Chi phí và nguồn lực (M)**: Ít nhất phải có ước lượng quy mô (S, M hoặc L).
-4. **Các điểm còn lại**: Đã Rõ ràng hoặc Tạm hoãn có ghi rõ lý do.
+4. **Các điểm còn lại**: đã chốt. Điểm nào còn thiếu mà chính bạn trả lời được thì vibebiz hỏi tiếp, chưa đóng gói.
 
 Nếu chưa đạt chuẩn mà bạn cần tài liệu gấp, vibebiz sẽ xuất **Bản nháp (Draft)** với mọi vị trí chưa hoàn thiện được gắn nhãn rõ ràng là "chưa làm rõ".

@@ -95,7 +95,7 @@ Bạn cũng có thể mở tệp `index.html` trong thư mục làm việc bằn
 
 ## 6. Đóng gói tài liệu trình duyệt
 
-Khi ý tưởng đã sẵn sàng (rõ bài toán, mục tiêu định lượng, phương án lựa chọn và phạm vi bản đầu tiên), vibebiz sẽ gợi ý bạn đóng gói. Bạn cũng có thể chủ động yêu cầu bất cứ lúc nào:
+Khi ý tưởng đã sẵn sàng (rõ bài toán, mục tiêu định lượng, phương án lựa chọn và phạm vi bản đầu tiên; điều gì còn phải chờ người khác trả lời thì được ghi thành câu hỏi mở kèm người trả lời và bổ sung sau), vibebiz sẽ gợi ý bạn đóng gói. Bạn cũng có thể chủ động yêu cầu bất cứ lúc nào:
 
 ```
 /vibebiz:package

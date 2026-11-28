@@ -6,9 +6,9 @@ Stdlib only, so the unit test runs without the Agent SDK. Reads an idea folder
 - Readiness follows core/router.md "Readiness" (spec 001 Appendix A, FR-020):
   A, C, D, E settled; M sized; every other category settled. Settled is clear,
   deferred with a reason, or waiting: `partial` with an open question in
-  open-questions.md for that category owned by someone other than the user. A
-  waiting A, C, D, E or F also needs the idea's own `status` to be `ready` or
-  later, since only the plugin can judge that nothing the user can answer is left. M is sized when its status is `clear` or `partial`: the challenge lens
+  open-questions.md for that category owned by someone other than the user. Any
+  waiting category also needs the idea's own `status` to be `ready` or later,
+  since only the plugin can judge that nothing the user can answer is left. M is sized when its status is `clear` or `partial`: the challenge lens
   sets `partial` exactly when it records the size (core/lenses/challenge.md).
   F must be clear when the fixture's `involves_ai` is true; otherwise it counts like
   the other categories. An idea whose `cynefin` is `chaotic` is never ready (the
@@ -44,7 +44,7 @@ def find_idea(workspace: Path) -> Path | None:
     return folders[0] if folders else None
 
 
-_USER_OWNERS = ("user", "người dùng", "the user")
+_USER_OWNERS = ("user", "người dùng", "the user")  # whole owner values, lowercased
 _SETTLED_IDEA = ("ready", "packaged", "presented", "approved", "rejected", "needs-changes")
 
 
@@ -56,9 +56,9 @@ def waiting_categories(questions_path: Path) -> set[str]:
         return set()
     found = set()
     for block in re.split(r"(?m)^## Q-", text)[1:]:
-        field = lambda key: (re.search(rf"(?m)^- {key}:\s*(.*)$", block) or [None, ""])[1].strip()
+        field = lambda key: (re.search(rf"(?m)^- {key}:[ \t]*(.*)$", block) or [None, ""])[1].strip()
         owner = field("owner").lower()
-        if field("status").lower() == "open" and owner and not owner.startswith(_USER_OWNERS):
+        if field("status").lower() == "open" and owner and owner not in _USER_OWNERS:
             found.add(field("category").upper()[:1])
     return found
 
@@ -76,9 +76,9 @@ def readiness(coverage_path: Path, involves_ai: bool = False) -> tuple[bool, lis
     for code in ALL_CODES:
         cat = cats.get(code) if isinstance(cats.get(code), dict) else {}
         status = cat.get("status")
-        is_waiting = status == "partial" and code in waiting
+        is_waiting = status == "partial" and code in waiting and idea_settled
         if code in MUST_CLEAR or (code == "F" and involves_ai):
-            ok = status == "clear" or (is_waiting and idea_settled)
+            ok = status == "clear" or is_waiting
         elif code == "M":
             ok = status in ("clear", "partial")
         else:

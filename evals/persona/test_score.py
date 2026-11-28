@@ -54,11 +54,29 @@ class ReadinessWaiting(unittest.TestCase):
     def test_waiting_on_someone_else_is_settled(self):
         self.assertEqual(score.readiness(self.workspace("ready", "partial", "nhà cung cấp")), (True, []))
 
-    def test_a_required_category_needs_the_idea_marked_ready(self):
-        self.assertEqual(score.readiness(self.workspace("clarifying", "partial", "nhà cung cấp")), (False, ["D:partial"]))
+    def test_a_waiting_category_needs_the_idea_marked_ready(self):
+        self.assertEqual(score.readiness(self.workspace("clarifying", "partial", "nhà cung cấp")),
+                         (False, ["D:partial", "H:partial"]))
+
+    def test_any_waiting_category_needs_the_idea_marked_ready(self):
+        cov = self.workspace("clarifying", "clear", "nhà cung cấp")
+        text = cov.read_text(encoding="utf-8")
+        text = re.sub(r"(?m)^(  H: \{status: )\w+", r"\g<1>deferred", text, count=1)
+        text = re.sub(r"(?m)^(  K: \{status: )\w+", r"\g<1>partial", text, count=1)
+        cov.write_text(text, encoding="utf-8")
+        (cov.parent / "open-questions.md").write_text(
+            "# Open questions\n\n## Q-001\n\n- text: Có cần đồng ý của khách?\n- owner: Bộ phận pháp chế\n"
+            "- category: K\n- status: open\n", encoding="utf-8")
+        self.assertEqual(score.readiness(cov), (False, ["K:partial"]))
 
     def test_a_question_the_user_owns_is_not_waiting(self):
         self.assertEqual(score.readiness(self.workspace("ready", "partial", "user")), (False, ["D:partial"]))
+
+    def test_an_empty_owner_is_not_waiting(self):
+        self.assertEqual(score.readiness(self.workspace("ready", "partial", "")), (False, ["D:partial"]))
+
+    def test_an_owner_that_only_starts_like_the_user_is_someone_else(self):
+        self.assertEqual(score.readiness(self.workspace("ready", "partial", "user's manager")), (True, []))
 
 
 class ReadinessEdges(unittest.TestCase):

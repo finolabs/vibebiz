@@ -14,7 +14,7 @@ At the start of a session (the first round for this idea in this conversation), 
 
 1. **Re-read** every idea file listed above. The user may have edited them by hand; their edits are authoritative, so work from the current files and never restore an older version.
 2. **Set the depth** (see "Depth"): classify the idea right after intake, before the first round, and revisit the classification whenever the files or the latest answers change what it rests on.
-3. **Check readiness** (see "Readiness") before computing any frontier, every pass. Categories still `partial` because more detail could be added (a sized M without scenarios, a risk not yet discussed) do not prevent it. If ready, set `ready`, offer to package (recommended) or to keep refining, and stop the loop unless the user chooses to keep going; with nobody to answer, make that offer and stop. When the user chooses to package, hand over to the `package` entry skill (or name `/vibebiz:package` when you cannot start it from here); its steps call any Google Slides, Docs or Drive skill.
+3. **Check readiness** (see "Readiness") before computing any frontier, every pass. A sized M without scenarios does not prevent it (M's own rule); any other `partial` category counts only when it is settled by "Readiness", and one with a gap the user can answer is asked, not packaged. If ready, set `ready`, offer to package (recommended) or to keep refining, and stop the loop unless the user chooses to keep going; with nobody to answer, make that offer and stop. When the user chooses to package, hand over to the `package` entry skill (or name `/vibebiz:package` when you cannot start it from here); its steps call any Google Slides, Docs or Drive skill.
 4. **Resolve conflicts first**: if the last answers contradict an earlier decision, handle it (see "Contradictions") before anything else.
 5. **Check for two ideas** (see "Two ideas in one") when the intake or the latest answers suggest it.
 6. **Compute the frontier** and **rank** its askable categories (see "Frontier" and "Ranking").
@@ -184,10 +184,10 @@ Missing information alone never holds an idea back: what the user can decide is 
 
 The idea is ready to package when all of these hold:
 
-- A, C, D and E are settled, and each element the frontier table lists for them is recorded, either answered or as an open question with its owner; further detail the user could add is welcome later but does not hold readiness back;
+- A, C, D and E are settled, and each element the frontier table lists for them is recorded, either answered or as an open question with its owner; a partial A, C, D or E counts only when its remaining gaps are open questions owned by someone other than the user, or, for D, figures behind the chosen direction;
 - F is settled when the idea involves AI;
 - M has at least a small, medium or large size recorded;
-- every other category is settled.
+- every other category is settled; one with a gap the user can answer (for example K partial with no open question) is asked, not packaged.
 
 A waiting category stays `partial` in `coverage.md`; the package shows its gaps as "not yet clarified" with the open question and its owner, and when that answer arrives `continue` reopens what rests on it ("Waiting on someone else").
 
