@@ -4,9 +4,11 @@ All notable changes to vibebiz are recorded here. The format follows [Keep a Cha
 
 ## [Unreleased]
 
+## [0.1.10] - 2026-11-28
+
 ### Added
 
-- At your first package, when diagrams cannot be drawn yet (or Google Slides and Docs are not connected), vibebiz asks once whether to set that up: "Cài giúp tôi", "Để sau" or "Không cần". On a yes it installs it itself in Claude Code, Codex and Antigravity and walks you through it in Cowork; you always sign in to Google yourself. Your answer is kept in the workspace, so you are not asked again; "Để sau" brings one reminder line at the next package.
+- When you package and diagrams cannot be drawn yet, or you asked for Google Slides or Docs and they are not connected, vibebiz asks whether to set that up ("Cài giúp tôi", "Để sau", "Không cần"); on a yes it installs the diagram plugin in Claude Code, Codex and Antigravity and the Google plugin in Codex and Antigravity, only from the official source, and elsewhere walks you through the steps. You always sign in to Google yourself. Your answer is kept in the workspace, so it is not asked again (a skipped question is asked at the next package); "Để sau" brings one reminder line at the next package.
 - Asking "what is set up?" tells you which of these are present in this session.
 
 ### Changed
@@ -15,6 +17,13 @@ All notable changes to vibebiz are recorded here. The format follows [Keep a Cha
 - A session keeps asking until its rounds are used instead of stopping after one round and telling you to come back.
 - Asking what vibebiz is now opens with a short invitation: for anyone with a business or operations idea who is not sure they can write it up as a professional document.
 - Once you choose which direction to try first (fix the process, buy, build), vibebiz goes on to scope, cost and the rest, even while figures behind that choice are still open questions; before, the interview stalled there and recommended pausing.
+- When an answer someone else owed arrives, a point you chose to set aside stays set aside: vibebiz asks whether the answer changes it and reopens it only on your yes.
+- The English README shows English versions of the six example decks and documents; the Vietnamese README keeps the Vietnamese originals.
+- The privacy notice names the one exception to its network rule: after your yes, the app's own plugin install of a companion from its official source.
+
+### Fixed
+
+- In the tech document, a question left for you to confirm after a run nobody answered names the idea's owner ("chủ ý tưởng") instead of the bare field value `user`.
 
 ## [0.1.9] - 2026-11-27
 

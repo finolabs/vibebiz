@@ -24,7 +24,7 @@ In Drive mode (`references/core/workspace.md` §1a) every read and write in the 
 
 1. Re-read every idea file listed above; the user's hand edits are authoritative.
 2. If `cynefin` is `chaotic`, do not package: say in one sentence that the current crisis needs handling first and that the idea is saved, and stop.
-3. Check readiness by the router's rule (`references/core/router.md` "Readiness"): problem (A), outcome (C), alternatives (D) and scope (E) are settled, with each element the router's frontier table lists for them recorded, answered or as an open question with its owner; AI fit (F) is settled when the idea involves AI; cost (M) has at least a small, medium or large size; every other category is settled. Settled is `clear`, `deferred` with a reason, or waiting only on open questions someone else owns; missing information alone never holds an idea back.
+3. Check readiness by the router's rule (`references/core/router.md` "Readiness"): problem (A), outcome (C), alternatives (D) and scope (E) are settled, with each element the router's frontier table lists for them recorded, answered or as an open question with its owner; AI fit (F) is settled when the idea involves AI; cost (M) has at least a small, medium or large size; every other category is settled. Settled is `clear`, `deferred` with a reason, or waiting only on open questions someone else owns; missing information alone never holds an idea back. Before judging, make the router's repair "Name the wait before judging": where a waiting gap's section does not name its open question, the module that fills that category writes the "chưa làm rõ, chờ Q-###" line; that is a repair, not a question, and never a reason to go below readiness.
 4. **Below readiness**, list what is missing in plain words, one short line per category, then ask one question: continue the interview (recommended, because the board decides better on a complete case) or export a labelled draft now. Example:
 
    "Ý tưởng còn thiếu ba điểm trước khi trình: cách đo kết quả, so sánh với việc sửa quy trình hiện tại, và quy mô chi phí. Anh/chị muốn làm gì tiếp?"
@@ -46,7 +46,8 @@ Run these steps in this order, each to its end, and keep what each hands back:
 
 Then decide:
 
-- **A failed readiness item** in either checklist means the idea is below readiness after all: go to section 2, step 4, unless this is already a draft.
+- **A failed readiness item** in either checklist, other than the repair in the next line, means the idea is below readiness after all: go to section 2, step 4, unless this is already a draft.
+- **A failed item or a finding whose only defect is a waiting gap that does not name its open question** is a repair, not a return to the interview: make the repair of section 2, step 3, and rerun the checklist and analyze.
 - **A failed Spec Kit headings item** is a repair of the requirement's structure, not a question: add each missing mandatory heading in its place with "not yet clarified" (in the idea's language) beneath it, change nothing else in the file, and rerun the checklist.
 - **Analyze returns `return-to-interview`, or a content or evidence item failed**, and this is not a draft: hand the findings and the failed items to the router (its section "Findings from analyze"), which asks them within its round and budget rules. When the router reaches readiness again, start this module over from section 2; nothing is packaged until a new analyze run returns `clear`. If the user takes "Xuất bản nháp" at the budget offer, come back here as a draft.
 - **Analyze returns `clear`**, or this is a draft: go on. In a draft, the findings do not block; every gap analyze listed becomes a gap in the outputs.
