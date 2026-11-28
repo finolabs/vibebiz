@@ -40,7 +40,7 @@ Read the file or section each item names. Judge from what is written, the same w
 
 **Readiness items** (both files). Check each category against `coverage.md` and against its section:
 
-- Problem (A), outcome (C), alternatives (D) and scope (E) pass when `clear` with no gap for a required element, or when every gap left is an open question owned by someone other than the user (for D, also a figure behind the chosen direction) and the section names it; note the open questions.
+- Problem (A), outcome (C), alternatives (D) and scope (E) pass when `clear` with no gap for a required element, or when every gap left is an open question owned by someone other than the user (for D, also a figure behind the chosen direction) and the section names it; note the open questions. A gap that waits on someone else but whose section does not name its open question is reported as that repair ("name Q-### in the section"), with its category, never as a gap the user must answer: packaging makes the repair and reruns this checklist.
 - AI fit (F) passes when `clear`, or when the AI-fit section and the user stories show the idea uses no AI (rules or plain automation only); note which.
 - Cost (M) passes when a small, medium or large size is written in `## Cost & Risk`, even if the scenarios are still open.
 - "Every other category" passes when each is `clear`, `deferred` with a reason in `coverage.md`, or waiting only on open questions someone other than the user owns. List the ones that fail in the note by plain name ("nhóm người dùng", "kết nối hệ thống"), not by code.

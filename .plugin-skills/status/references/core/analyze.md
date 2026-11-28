@@ -67,7 +67,7 @@ Run every pass. Each pass has a letter used in finding ids.
 **G: gaps.** Every gap from the inventory, judged against readiness:
 - a gap in a category readiness requires (problem, outcome, alternatives and scope; AI fit when AI is involved; at least a small, medium or large size for cost) is never acceptable, unless it is an open question owned by someone other than the user (for D, also a figure behind the chosen direction) that the section names: that is expected, report it as low only when the section does not name the question;
 - a gap in a category marked `deferred` with a reason is expected: report it as low only when the section does not say it is deferred;
-- an open question marked `blocking` with `status: open`, unless someone other than the user owns it and its section names it: that is expected, so it is no gap and no finding here; the tech view still lists it as blocking;
+- an open question marked `blocking` with `status: open`, unless someone other than the user owns it: then it is expected, so it is no gap here, and the tech view still lists it as blocking; when its section does not name it, report it as low, as the first bullet does, whether it is blocking or not;
 - the riskiest assumption untested with no test in the plan's pilot.
 
 **T: terminology drift.** Two words used for one thing across files ("khách quay lại" in Outcome, "khách trung thành" in the plan), or a glossary term used with another meaning.
@@ -79,11 +79,11 @@ Run every pass. Each pass has a letter used in finding ids.
 | Severity | Meaning | Examples |
 |---|---|---|
 | critical | The board or the tech team would decide on something false, or a readiness condition is not met | a figure with two values; the plan contradicting the current decision; a readiness category with a gap the user can answer; a ground-rule conflict with no decision on file; build chosen without weighing doing nothing and fixing the process |
-| high | A claim the board or the tech team cannot check | an unmeasurable outcome; a vague word in a requirement; a story without acceptance; a figure missing source, period or label; a missing or stale estimate label; an open blocking question the user owns, or one its section does not name; a dismissed risk missing from the record |
+| high | A claim the board or the tech team cannot check | an unmeasurable outcome; a vague word in a requirement; a story without acceptance; a figure missing source, period or label; a missing or stale estimate label; an open blocking question the user owns; a dismissed risk missing from the record |
 | medium | The reader could be misled, but no decision changes | terminology drift; a duplicate that differs in substance; a requirement no story covers; a diagram brief out of step with its source on wording only |
-| low | Wording and tidiness | a duplicate with the same meaning; a deferred gap whose section does not say it is deferred |
+| low | Wording and tidiness | a duplicate with the same meaning; a deferred gap whose section does not say it is deferred; a gap waiting on someone else whose section does not name its open question, blocking or not |
 
-Every contradiction and every gap in a readiness category is critical or high and goes back to the interview before packaging, except a gap that is an open question owned by someone other than the user (for D, also a figure behind the chosen direction) and named in its section, which pass G expects. Medium and low findings go to the router too, which may ask them in the same round or leave them for the user to see in the draft.
+Every contradiction and every gap in a readiness category is critical or high and goes back to the interview before packaging, except a gap that is an open question owned by someone other than the user (for D, also a figure behind the chosen direction), which pass G expects: named in its section it is no finding, and unnamed it is low. Medium and low findings go to the router too, which may ask them in the same round or leave them for the user to see in the draft.
 
 ## 5. Each finding
 
@@ -99,14 +99,14 @@ Give each finding these fields:
   - `ask`: only the user can decide (which of two values stands, a missing target, a missing kill criterion);
   - `look-up`: the answer may already be in the workspace or the user's documents; the router looks it up before asking;
   - `owner`: the answer belongs to someone else (the tech team for an estimate, the warehouse for a volume); the router records or updates an open question;
-  - `restate`: the files already hold the answer and only another file is out of step (for example the plan still uses a superseded store count); the router confirms with the user before the owning module rewrites it, because analyze never edits.
+  - `restate`: the files already hold the answer and only another file is out of step (for example the plan still uses a superseded store count); the router confirms with the user before the owning module rewrites it, because analyze never edits. The one exception is a waiting gap whose section does not name its open question: the owning module adds the "chưa làm rõ, chờ Q-###" line without asking (router "Readiness", "Name the wait before judging"), so give it no `ask` line.
 - `ask`: for `ask` and `restate`, the decision in one plain sentence in the idea's language, with no file name, code or jargon. Example: "Kế hoạch ghi thử ở 24 cửa hàng, nhưng quyết định ngày 05/11 là thử ở 3 cửa hàng. Giữ con số nào?"
 
 ## 6. Return to the router
 
 Return one block in this order:
 
-1. **Verdict**: `clear` when there is no critical or high finding, `return-to-interview` otherwise. An open question owned by someone other than the user and named in its section is not a finding (pass G), so it never holds the verdict back, blocking or not.
+1. **Verdict**: `clear` when there is no critical or high finding, `return-to-interview` otherwise. An open question owned by someone other than the user is not a finding when its section names it and is low when it does not (pass G), so it never holds the verdict back, blocking or not.
 2. **Findings**: a table with the fields of section 5, critical first, then high, medium, low; within a severity, in pass order.
 3. **Counts**: findings by severity and by pass, and the overflow line when more than 50.
 4. **Gaps for the outputs**: the sections and fields that will show "not yet clarified", so the package module lists them in `gaps` and a labelled draft shows them.
